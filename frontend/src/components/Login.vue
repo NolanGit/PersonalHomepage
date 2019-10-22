@@ -1,33 +1,6 @@
 <template>
   <div class="search">
-    <div>
-      <i :class="searchIcon"></i>
-    </div>
-    <div>
-      <el-autocomplete
-        placeholder="请输入内容"
-        v-model="word"
-        @keyup.enter.native="search()"
-        class="search-input"
-        :fetch-suggestions="autoComplete"
-        ref="input"
-      >
-        <el-select
-          class="search-engine-select"
-          v-model="searchEngines.select"
-          slot="prepend"
-          placeholder="请选择"
-        >
-          <el-option
-            v-for="item in searchEngines.options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          ></el-option>
-        </el-select>
-        <el-button class="search-button" slot="append" icon="el-icon-search" @click="search()"></el-button>
-      </el-autocomplete>
-    </div>
+
   </div>
 </template>
 <script>
@@ -36,7 +9,7 @@ import Router from "vue-router";
 import { searchEnginesData, searchEnginesAutoComplete } from "../api/search";
 
 export default {
-  name: "search",
+  name: "login",
   data() {
     return {
       word: "",

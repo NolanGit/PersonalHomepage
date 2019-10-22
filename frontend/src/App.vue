@@ -1,11 +1,17 @@
 <template>
   <div id="app">
-    <search />
+    <el-row>
+      <login />
+    </el-row>
+    <el-row>
+      <search />
+    </el-row>
   </div>
 </template>
 
 <script>
 import search from "./components/Search.vue";
+import login from "./components/Login.vue";
 export default {
   methods: {
     startHacking() {
@@ -19,7 +25,8 @@ export default {
     }
   },
   components: {
-    search
+    search,
+    login
   },
   data() {
     return {

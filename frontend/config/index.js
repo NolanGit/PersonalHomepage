@@ -16,7 +16,15 @@ module.exports = {
                 pathRewrite: {
                     '^/api': ''
                 }
-            }
+            },
+            '/apis': {
+                target: 'https://www.baidu.com',
+                changeOrigin: true,
+                logLevel: 'debug',
+                pathRewrite: {
+                    '^/apis': ''
+                }
+            },
         },
         //
         host: 'localhost',
