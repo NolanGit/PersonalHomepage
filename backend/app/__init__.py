@@ -24,6 +24,6 @@ def create_app(config_name):
     app.register_blueprint(main_blueprint)
 
     from .search import search as search_blueprint
-    app.register_blueprint(search_blueprint)
+    app.register_blueprint(search_blueprint, url_prefix='/search')
 
     return app

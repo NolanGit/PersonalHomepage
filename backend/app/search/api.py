@@ -4,27 +4,27 @@ import requests
 import datetime
 import traceback
 import subprocess
-from . import prepareData
+from . import search
 from flask_cors import cross_origin
 from flask import render_template, session, redirect, url_for, current_app, flash, Response, request, jsonify
-from .prepare_data_model import prepare_data_script, sub_system, prepare_data_script_detail, prepare_data_log
+from .model import search_engines
 
 running_subprocess = []
 
 
-@prepareData.route('/prepareDataSubSystem', methods=['GET'])
+@search.route('/searchEnginesData', methods=['GET'])
 @cross_origin()
-def prepareDataSubSystem():
+def searchEnginesData():
     result = []
     try:
-        sub_system_query = sub_system.select().where(
-            (sub_system.is_valid == 1)).dicts()
-        for row in sub_system_query:
+        search_engines_query = search_engines.select().dicts()
+        for row in search_engines_query:
             result.append({
                 'id': row['id'],
                 'name': row['name'],
-                'user': row['user'],
-                'update_time': row['update_time']
+                'main_url': row['main_url'],
+                'auto_complete_url': row['auto_complete_url'],
+                'icon': row['icon']
             })
     except Exception as e:
         response = {

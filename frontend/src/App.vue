@@ -1,10 +1,6 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png" />
-    <div>
-      <el-button @click="startHacking">Start</el-button>
-      <search msg="Welcome to Your Vue.js App" />
-    </div>
+    <search />
   </div>
 </template>
 
@@ -24,6 +20,11 @@ export default {
   },
   components: {
     search
+  },
+  data() {
+    return {
+      searchData: ""
+    };
   }
 };
 </script>
