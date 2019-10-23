@@ -1,6 +1,26 @@
 <template>
-  <div class="search">
-
+  <div class="login-button">
+    <el-popover
+      class="login-popover"
+      placement="top"
+      width="160"
+      v-model="visible"
+      v-show="user==''"
+    >
+      <div style="text-align: right; margin: 0">
+        <el-input class="username" size="small" v-model="username" placeholder="用户名"></el-input>
+        <el-input class="password" size="small" v-model="password" placeholder="密码" show-password></el-input>
+        <el-button class="login" size="small" type="primary">登录</el-button>
+      </div>
+      <el-button type="text" slot="reference">登录</el-button>
+    </el-popover>
+    <el-dropdown trigger="hover" v-show="user!=''">
+      <span class="el-dropdown-link userinfo-inner">{{user}}</span>
+      <el-dropdown-menu slot="dropdown">
+        <el-dropdown-item>设置</el-dropdown-item>
+        <el-dropdown-item divided @click.native="logout">退出登录</el-dropdown-item>
+      </el-dropdown-menu>
+    </el-dropdown>
   </div>
 </template>
 <script>
@@ -12,108 +32,37 @@ export default {
   name: "login",
   data() {
     return {
-      word: "",
-      searchIcon: "search-icon el-icon-search",
-      searchEngines: {
-        select: "",
-        main_url: "",
-        auto_complete_url: "",
-        options: []
-      }
+      username: "",
+      password: "",
+      user: "asdf"
     };
   },
-  methods: {
-    searchEnginesDataFront() {
-      searchEnginesData().then(data => {
-        for (let s = 0; s < data.data.length; s++) {
-          this.searchEngines.options.push({
-            id: data.data[s].id,
-            main_url: data.data[s].main_url,
-            auto_complete_url: data.data[s].auto_complete_url,
-            icon: data.data[s].icon,
-            label: data.data[s].name,
-            value: data.data[s].name
-          });
-        }
-        this.searchEngines.select = this.searchEngines.options[0].value;
-        this.searchEngines.main_url = this.searchEngines.options[0].main_url;
-        this.searchEngines.auto_complete_url = this.searchEngines.options[0].auto_complete_url;
-      });
-    },
-    search() {
-      for (var s = 0; s < this.searchEngines.options.length; s++) {
-        if (this.searchEngines.options[s].value == this.searchEngines.select) {
-          break;
-        }
-      }
-      var searchUrl = this.searchEngines.options[s].main_url.replace(
-        "%word%",
-        this.word
-      );
-      window.open(searchUrl);
-      this.word=""
-    },
-    autoComplete(queryString, cb) {
-      if (
-        queryString === "" ||
-        queryString === [] ||
-        queryString === undefined
-      ) {
-        cb([]);
-      } else {
-        var lastWord = sessionStorage.getItem("lastWord");
-        if (lastWord == queryString) {
-          cb(eval(sessionStorage.getItem("lastWordAutoComplete")));
-        } else {
-          sessionStorage.setItem("lastWord", queryString);
-          var autoCompleteUrl = this.searchEngines.auto_complete_url.replace(
-            "%word%",
-            this.word
-          );
-          var para = {
-            autoCompleteUrl: autoCompleteUrl,
-            name: this.searchEngines.select
-          };
-          searchEnginesAutoComplete(para).then(data => {
-            function String2Dict(x) {
-              return {
-                value: x
-              };
-            }
-            var result = data.data.map(String2Dict);
-            sessionStorage.setItem(
-              "lastWordAutoComplete",
-              JSON.stringify(result)
-            );
-            cb(result);
-          });
-        }
-      }
-    }
-  },
-  created() {
-    this.searchEnginesDataFront();
-  },
-  mounted(){
-    this.$refs['input'].focus()
-  }
+  methods: {},
+  created() {},
+  mounted() {}
 };
 </script>
 <style scoped>
-.search-icon {
-  font-size: 100px;
-  padding-top: 80px;
-  padding-bottom: 60px;
+.login-button {
+  position: absolute;
+  right: 0px;
+  top: 0px;
+  z-index: 99;
+  margin-right: 20px;
 }
-.search-input {
-  margin-left: 50px;
-  margin-right: 50px;
-  width: 60%;
+.username {
+  padding-bottom: 3px;
 }
-.search-engine-select {
-  width: 120px;
+.password {
+  padding-bottom: 3px;
 }
-.search-button {
-  width: 70px;
+.login {
+  text-align: center;
+  margin-top: 3px;
+}
+.userinfo-inner {
+  font-size: 20px;
+  cursor: pointer;
+  color: rgb(23, 74, 168);
 }
 </style>
