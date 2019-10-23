@@ -55,9 +55,7 @@ export default {
   },
   methods: {
     md5It(str) {
-      console.log(str);
       str = md5(str);
-      console.log(str);
       return str;
     },
     login() {
@@ -84,9 +82,6 @@ export default {
               type: "error"
             });
           } else {
-            console.log(
-              this.md5It(this.md5It(this.password) + data.data.stable_salt)
-            );
             var para = {
               login_name: this.username,
               password: this.md5It(
