@@ -3,14 +3,16 @@ import time
 import requests
 import datetime
 
-from flask import render_template, session, redirect, url_for, current_app, request,jsonify
+from flask import render_template, session, redirect, url_for, current_app, request, jsonify, Response
 from . import main
 from flask_cors import cross_origin
+
 
 @main.route('/', defaults={'path': ''})
 @main.route('/<path:path>')
 def catch_all(path):
     return render_template("index.html")
+
 
 @main.route('/favicon.ico', methods=['GET'])
 @cross_origin()
