@@ -36,7 +36,7 @@ def searchEnginesAutoComplete():
             return jsonify({
                 'code': 200, 
                 'msg': '成功！', 
-                'data': eval(urllib.request.urlopen(request.get_json()['autoCompleteUrl']).read().decode('gbk').split('s:')[1].split('});')[0])
+                'data': eval(requests.get(request.get_json()['autoCompleteUrl']).text.split('s:')[1].split('});')[0])
             })
     except Exception as e:
         traceback.print_exc()
