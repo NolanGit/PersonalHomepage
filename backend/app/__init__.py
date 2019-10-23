@@ -26,4 +26,7 @@ def create_app(config_name):
     from .search import search as search_blueprint
     app.register_blueprint(search_blueprint, url_prefix='/search')
 
+    from .login import login as login_blueprint
+    app.register_blueprint(login_blueprint, url_prefix='/login')
+
     return app

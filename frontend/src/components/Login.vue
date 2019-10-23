@@ -8,13 +8,26 @@
       v-show="user==''"
     >
       <div style="text-align: right; margin: 0">
-        <el-input class="username" size="small" v-model="username" placeholder="用户名"></el-input>
-        <el-input class="password" size="small" v-model="password" placeholder="密码" show-password></el-input>
-        <el-button class="login" size="small" type="primary">登录</el-button>
+        <el-input
+          class="username"
+          size="small"
+          v-model="username"
+          placeholder="用户名"
+          @keyup.enter.native="login()"
+        ></el-input>
+        <el-input
+          class="password"
+          size="small"
+          v-model="password"
+          placeholder="密码"
+          show-password
+          @keyup.enter.native="login()"
+        ></el-input>
+        <el-button class="login" size="small" type="primary" @click="login()">登录</el-button>
       </div>
       <el-button type="text" slot="reference">登录</el-button>
     </el-popover>
-    <el-dropdown trigger="hover" v-show="user!=''">
+    <el-dropdown class="user-popover" trigger="hover" v-show="user!=''">
       <span class="el-dropdown-link userinfo-inner">{{user}}</span>
       <el-dropdown-menu slot="dropdown">
         <el-dropdown-item>设置</el-dropdown-item>
@@ -24,22 +37,100 @@
   </div>
 </template>
 <script>
+import md5 from "js-md5";
 import axios from "axios";
 import Router from "vue-router";
-import { searchEnginesData, searchEnginesAutoComplete } from "../api/search";
+import { userLogin, userLoginGetSalt } from "../api/login";
 
 export default {
   name: "login",
   data() {
     return {
+      visible: false,
       username: "",
       password: "",
-      user: "asdf"
+      salt: "",
+      user: ""
     };
   },
-  methods: {},
+  methods: {
+    md5It(str) {
+      console.log(str);
+      str = md5(str);
+      console.log(str);
+      return str;
+    },
+    login() {
+      if (
+        this.username === "" ||
+        this.password === "" ||
+        this.username === undefined ||
+        this.password === undefined ||
+        this.username.length == 0 ||
+        this.password.length == 0
+      ) {
+        this.$notify.error({
+          message: "请填写用户名和密码",
+          type: "error"
+        });
+      } else {
+        var para = {
+          login_name: this.username
+        };
+        userLoginGetSalt(para).then(data => {
+          if (data["code"] !== 200) {
+            this.$message({
+              message: data["msg"],
+              type: "error"
+            });
+          } else {
+            console.log(
+              this.md5It(this.md5It(this.password) + data.data.stable_salt)
+            );
+            var para = {
+              login_name: this.username,
+              password: this.md5It(
+                this.md5It(this.md5It(this.password) + data.data.stable_salt) +
+                  data.data.salt
+              ),
+              timestamp: Math.round(new Date() / 1000)
+            };
+            userLogin(para).then(data2 => {
+              if (data2["code"] !== 200) {
+                this.$message({
+                  message: data2.msg,
+                  type: "error"
+                });
+              } else {
+                this.visible = false;
+                this.$message({
+                  message: data2.msg,
+                  type: "success"
+                });
+                this.user = data2.user;
+                sessionStorage.setItem("user", JSON.stringify(data2.user));
+              }
+            });
+          }
+        });
+      }
+    },
+    logout() {
+      sessionStorage.removeItem("user");
+      this.user = "";
+      this.$message({
+        message: "退出成功！",
+        type: "success"
+      });
+    }
+  },
   created() {},
-  mounted() {}
+  mounted() {
+    try {
+      var user = sessionStorage.getItem("user").replace(/\"/g, "");
+      this.user = user;
+    } catch (error) {}
+  }
 };
 </script>
 <style scoped>
@@ -61,8 +152,11 @@ export default {
   margin-top: 3px;
 }
 .userinfo-inner {
-  font-size: 20px;
+  font-size: 14px;
   cursor: pointer;
-  color: rgb(23, 74, 168);
+  color: #409eff;
+}
+.user-popover {
+  padding-top: 12px;
 }
 </style>

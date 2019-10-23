@@ -20,8 +20,11 @@ class user(BaseModel):
     name = CharField()
     login_name = CharField()
     password = CharField()
+    stable_salt = CharField()
+    salt = CharField()
+    salt_expire_time = DateTimeField()
     role = CharField()
-    create_time = IntegerField()
+    create_time = DateTimeField()
     update_time = DateTimeField()
 
     class Meta:

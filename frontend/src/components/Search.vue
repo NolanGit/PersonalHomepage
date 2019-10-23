@@ -78,7 +78,7 @@ export default {
         this.word
       );
       window.open(searchUrl);
-      this.word=""
+      this.word = "";
     },
     autoComplete(queryString, cb) {
       if (
@@ -97,9 +97,15 @@ export default {
             "%word%",
             this.word
           );
+          try {
+            var user = sessionStorage.getItem("user").replace(/\"/g, "");
+          } catch (error) {
+            var user = undefined;
+          }
           var para = {
             autoCompleteUrl: autoCompleteUrl,
-            name: this.searchEngines.select
+            name: this.searchEngines.select,
+            user: user
           };
           searchEnginesAutoComplete(para).then(data => {
             function String2Dict(x) {
@@ -121,8 +127,8 @@ export default {
   created() {
     this.searchEnginesDataFront();
   },
-  mounted(){
-    this.$refs['input'].focus()
+  mounted() {
+    this.$refs["input"].focus();
   }
 };
 </script>
