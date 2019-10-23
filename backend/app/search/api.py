@@ -32,12 +32,11 @@ def searchEnginesData():
 @cross_origin()
 def searchEnginesAutoComplete():
     try:
-        if request.get_json()['name'] == '百度':
-            return jsonify({
-                'code': 200, 
-                'msg': '成功！', 
-                'data': eval(requests.get(request.get_json()['autoCompleteUrl']).text.split('s:')[1].split('});')[0])
-            })
+        return jsonify({
+            'code': 200, 
+            'msg': '成功！', 
+            'data': eval(requests.get(request.get_json()['autoCompleteUrl']).text.split('s:')[1].split('});')[0])
+        })
     except Exception as e:
         traceback.print_exc()
         response = {'code': 500, 'msg': '失败！错误信息：' + str(e) + '，请联系管理员。', 'data': []}
