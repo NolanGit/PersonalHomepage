@@ -1,79 +1,40 @@
 <template>
   <div class="weather">
     <el-row type="flex" justify="center" ref="weatherForm" :model="weatherForm" v-show="todayShow">
-      <el-col :span="9" :offset="0.8">
-        <el-card :body-style="{ padding: '0px' }" style="text-align:center">
-          <div slot="header" class="clearfix">
-            <span
-              style="text-align:center;color:#303133;font-family: Arial;font-weight:bold;font-size:20px;"
-            >今日天气</span>
-          </div>
-          <el-row>
-            <el-col :span="12" :offset="1" justify="center">
-              <i :class="iconfontWeatherClass" style="font-size:160px;"></i>
-              <div
-                style="text-align:center;color:#303133;font-family: Arial;font-weight:bold;font-size:40px;"
-              >{{weatherForm.tmp}}°C</div>
-            </el-col>
-            <el-col :span="10" :offset="0" justify="center">
-              <el-row type="flex" justify="left">
-                <span
-                  style="text-align:left;color:#303133;font-family: Arial;font-weight:bold;font-size:20px;margin-bottom: 20px;margin-top: 35px;"
-                >今日气温: {{weatherForm.tmp_min}}°C-{{weatherForm.tmp_max}}°C</span>
-              </el-row>
-              <el-row type="flex" justify="left">
-                <span
-                  style="text-align:left;color:#303133;font-family: Arial;font-weight:bold;font-size:20px;margin-bottom: 20px;margin-top: 20px;"
-                >风力: {{weatherForm.wind}}</span>
-              </el-row>
-              <el-row type="flex" justify="left">
-                <span
-                  style="text-align:left;color:#303133;font-family: Arial;font-weight:bold;font-size:20px;margin-bottom: 20px;margin-top: 20px;"
-                >体感温度: {{weatherForm.fl}}°C</span>
-              </el-row>
-            </el-col>
-          </el-row>
-          <div style="padding: 14px;">
-            <span></span>
-          </div>
-        </el-card>
-      </el-col>
-      <el-col :span="5" :offset="1">
-        <el-card :body-style="{ padding: '0px' }" style="text-align:center">
-          <div slot="header" class="clearfix">
-            <span
-              style="text-align:center;color:#303133;font-family: Arial;font-weight:bold;font-size:20px;"
-            >今日空气质量</span>
-          </div>
-          <i :class="iconfontAqiClass" style="font-size:160px;"></i>
-          <el-row>
-            <span
-              style="text-align:center;color:#303133;font-family: Arial;font-weight:bold;font-size:40px;"
-            >AQI:{{weatherForm.aqi}}</span>
-          </el-row>
-          <div style="padding: 14px;">
-            <span></span>
-          </div>
-        </el-card>
-      </el-col>
-      <el-col :span="5" :offset="1">
-        <el-card :body-style="{ padding: '0px' }" style="text-align:center">
-          <div slot="header" class="clearfix">
-            <span
-              style="text-align:center;color:#303133;font-family: Arial;font-weight:bold;font-size:20px;"
-            >明日天气</span>
-          </div>
-          <i :class="iconfontTomorrowWeatherClass" style="font-size:160px;"></i>
-          <el-row>
-            <span
-              style="text-align:center;color:#303133;font-family: Arial;font-weight:bold;font-size:40px;"
-            >{{weatherForm.tomorrow_tmp_min}}°C-{{weatherForm.tomorrow_tmp_max}}°C</span>
-          </el-row>
-          <div style="padding: 14px;">
-            <span></span>
-          </div>
-        </el-card>
-      </el-col>
+      <td>
+        <el-row type="flex" justify="left">
+          <td class="todayWeatherIcon">
+            <i :class="iconfontWeatherClass" style="font-size:60px;"></i>
+          </td>
+          <td class="todayWeatherText">
+            <div class="todayWeatherTextDiv">{{weatherForm.tmp}}°C</div>
+          </td>
+        </el-row>
+
+        <el-row type="flex" justify="left">
+          <td class="todayAqiIcon">
+            <i :class="iconfontAqiClass" style="font-size:30px;"></i>
+          </td>
+          <td class="todayAqiText">
+            <div class="todayAqiTextDiv">AQI:{{weatherForm.aqi}}</div>
+          </td>
+        </el-row>
+
+        <el-row type="flex" justify="left">
+          <td class="tomorrowWeatherIcon">
+            <i :class="iconfontTomorrowWeatherClass" style="font-size:30px;"></i>
+          </td>
+          <td class="tomorrowWeatherText">
+            <div>明日:{{weatherForm.tomorrow_tmp_min}}°C-{{weatherForm.tomorrow_tmp_max}}°C</div>
+          </td>
+        </el-row>
+      </td>
+      <div style="float:left;margin-top: 30px;width: 1px;height: 200px; background: darkgray;"></div>
+      <td>
+        <div class="weatherSideText">今日气温: {{weatherForm.tmp_min}}°C-{{weatherForm.tmp_max}}°C</div>
+        <div class="weatherSideText">风力: {{weatherForm.wind}}</div>
+        <div class="weatherSideText">体感温度: {{weatherForm.fl}}°C</div>
+      </td>
     </el-row>
   </div>
 </template>
@@ -84,20 +45,11 @@ import { getWeatherData } from "../api/weather";
 
 export default {
   name: "weather",
+  props: {
+    city: String
+  },
   data() {
     return {
-      locationList: {
-        options: [
-          {
-            value: "beijing",
-            label: "北京"
-          },
-          {
-            value: "shanghai",
-            label: "上海"
-          },
-        ]
-      },
       weatherForm: {
         tmp: "-",
         tmp_min: "-",
@@ -113,16 +65,21 @@ export default {
       iconfontWeatherClass: "el-icon-more",
       iconfontAqiClass: "el-icon-more",
       iconfontTomorrowWeatherClass: "el-icon-more",
-      todayShow: false
+      todayShow: true
     };
   },
   methods: {
     getWeatherDatafront(loc) {
       this.todayShow = false;
       this.value = loc;
+      try {
+        var user = sessionStorage.getItem("user").replace(/\"/g, "");
+      } catch (error) {
+        var user = undefined;
+      }
       let para = {
         location: this.value,
-        user: sessionStorage.getItem("user").replace(/\"/g, "")
+        user: user
       };
       getWeatherData(para)
         .then(data => {
@@ -334,9 +291,39 @@ export default {
   },
   created() {},
   mounted() {
-      this.getWeatherDatafront('beijing');
+    //this.getWeatherDatafront("beijing");
   }
 };
 </script>
 <style scoped>
+.todayWeatherTextDiv {
+  text-align: center;
+  color: #303133;
+  font-family: Arial;
+  font-weight: bold;
+  font-size: 20px;
+}
+.todayAqiTextDiv {
+  text-align: center;
+  color: #303133;
+  font-family: Arial;
+  font-weight: bold;
+  font-size: 20px;
+}
+.tomorrowWeatherText {
+  text-align: center;
+  color: #303133;
+  font-family: Arial;
+  font-weight: bold;
+  font-size: 20px;
+}
+.weatherSideText {
+  text-align: left;
+  color: #303133;
+  font-family: Arial;
+  font-weight: bold;
+  font-size: 20px;
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
 </style>

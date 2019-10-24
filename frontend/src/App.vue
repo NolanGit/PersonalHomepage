@@ -1,13 +1,17 @@
 <template>
   <div id="app">
-    <el-row>
+    <el-row class="loginRow">
       <login />
     </el-row>
-    <el-row>
+    <el-row class="searchRow">
       <search />
     </el-row>
-    <el-row>
-      <weather />
+    <el-row class="cardRow">
+      <el-col :span="9" :offset="0.8">
+        <el-card>
+          <weather :city="city" />
+        </el-card>
+      </el-col>
     </el-row>
   </div>
 </template>
@@ -24,7 +28,9 @@ export default {
     weather
   },
   data() {
-    return {};
+    return {
+      city: "beijing"
+    };
   }
 };
 </script>
@@ -33,5 +39,8 @@ export default {
 #app {
   font-family: Helvetica, sans-serif;
   text-align: center;
+}
+.cardRow {
+  padding-top: 40px;
 }
 </style>
