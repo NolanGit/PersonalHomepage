@@ -29,4 +29,7 @@ def create_app(config_name):
     from .login import login as login_blueprint
     app.register_blueprint(login_blueprint, url_prefix='/login')
 
+    from .weather import weather as weather_blueprint
+    app.register_blueprint(weather_blueprint, url_prefix='/weather')
+
     return app

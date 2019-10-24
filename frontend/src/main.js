@@ -4,6 +4,8 @@ import 'element-ui/lib/theme-chalk/index.css'
 import App from './App.vue'
 import router from './routes'
 import Vuex from 'vuex'
+import './assets/iconfont/iconfont.css'
+import 'font-awesome/css/font-awesome.min.css'
 
 Vue.use(ElementUI)
 Vue.use(Vuex)
