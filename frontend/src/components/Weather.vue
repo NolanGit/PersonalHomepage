@@ -312,7 +312,7 @@ export default {
   color: #303133;
   font-family: Arial;
   font-weight: bold;
-  font-size: 30px;
+  font-size: 38px;
   align-self: center;
 }
 .todayAqiText {
@@ -325,6 +325,7 @@ export default {
   font-weight: bold;
   font-size: 20px;
   align-self: center;
+  margin-left: 4px;
 }
 .tomorrowWeatherText {
   display: flex;
@@ -336,6 +337,7 @@ export default {
   font-weight: bold;
   font-size: 20px;
   align-self: center;
+  margin-left: 4px;
 }
 .weatherSideText {
   text-align: left;
