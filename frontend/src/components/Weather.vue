@@ -291,7 +291,7 @@ export default {
   },
   created() {},
   mounted() {
-    //this.getWeatherDatafront("beijing");
+    this.getWeatherDatafront(this.city);
   }
 };
 </script>
