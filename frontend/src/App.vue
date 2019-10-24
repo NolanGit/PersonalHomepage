@@ -8,7 +8,7 @@
     </el-row>
     <el-row class="cardRow">
       <el-col :span="7" :offset="1">
-        <el-card>
+        <el-card shadow="hover">
           <weather :city="city" />
         </el-card>
       </el-col>
