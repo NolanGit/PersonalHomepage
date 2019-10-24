@@ -13,7 +13,7 @@
 
         <el-row type="flex" justify="left">
           <td class="todayAqiIcon">
-            <i :class="iconfontAqiClass" style="font-size:30px;"></i>
+            <i :class="iconfontAqiClass" style="font-size:50px;"></i>
           </td>
           <td class="todayAqiText">
             <div class="todayAqiTextDiv">AQI:{{weatherForm.aqi}}</div>
@@ -22,19 +22,25 @@
 
         <el-row type="flex" justify="left">
           <td class="tomorrowWeatherIcon">
-            <i :class="iconfontTomorrowWeatherClass" style="font-size:30px;"></i>
+            <i :class="iconfontTomorrowWeatherClass" style="font-size:50px;"></i>
           </td>
           <td class="tomorrowWeatherText">
-            <div>明日:{{weatherForm.tomorrow_tmp_min}}°C-{{weatherForm.tomorrow_tmp_max}}°C</div>
+            <div
+              class="tomorrowWeatherTextDiv"
+            >明日:{{weatherForm.tomorrow_tmp_min}}°C-{{weatherForm.tomorrow_tmp_max}}°C</div>
           </td>
         </el-row>
       </td>
-      <div style="float:left;margin-top: 30px;width: 1px;height: 200px; background: darkgray;"></div>
+      <div
+        style="float:left;margin-top: 30px;width:1px;height: 200px; background: darkgray;margin-left: 25px;margin-right: 25px;"
+      ></div>
       <div class="weatherSideText">
         <td>
-          <div class="weatherSideText1">今日气温: {{weatherForm.tmp_min}}°C-{{weatherForm.tmp_max}}°C</div>
-          <div class="weatherSideText2">风力: {{weatherForm.wind}}</div>
-          <div class="weatherSideText3">体感温度: {{weatherForm.fl}}°C</div>
+          <div
+            class="weatherSideTextDetail"
+          >今日气温: {{weatherForm.tmp_min}}°C-{{weatherForm.tmp_max}}°C</div>
+          <div class="weatherSideTextDetail">风力: {{weatherForm.wind}}</div>
+          <div class="weatherSideTextDetail">体感温度: {{weatherForm.fl}}°C</div>
         </td>
       </div>
     </el-row>
@@ -309,19 +315,27 @@ export default {
   font-size: 30px;
   align-self: center;
 }
+.todayAqiText {
+  vertical-align: inherit;
+}
 .todayAqiTextDiv {
   text-align: center;
   color: #303133;
   font-family: Arial;
   font-weight: bold;
   font-size: 20px;
+  align-self: center;
 }
 .tomorrowWeatherText {
+  vertical-align: inherit;
+}
+.tomorrowWeatherTextDiv {
   text-align: center;
   color: #303133;
   font-family: Arial;
   font-weight: bold;
   font-size: 20px;
+  align-self: center;
 }
 .weatherSideText {
   text-align: left;
@@ -331,5 +345,9 @@ export default {
   font-size: 20px;
   margin-bottom: 20px;
   margin-top: 20px;
+}
+.weatherSideTextDetail {
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 </style>
