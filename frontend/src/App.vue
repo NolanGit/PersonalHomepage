@@ -7,7 +7,7 @@
       <search />
     </el-row>
     <el-row class="cardRow">
-      <el-col :span="9" :offset="0.8">
+      <el-col :span="7" :offset="1">
         <el-card>
           <weather :city="city" />
         </el-card>

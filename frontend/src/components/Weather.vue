@@ -4,7 +4,7 @@
       <td>
         <el-row type="flex" justify="left">
           <td class="todayWeatherIcon">
-            <i :class="iconfontWeatherClass" style="font-size:60px;"></i>
+            <i :class="iconfontWeatherClass" style="font-size:100px;"></i>
           </td>
           <td class="todayWeatherText">
             <div class="todayWeatherTextDiv">{{weatherForm.tmp}}°C</div>
@@ -30,11 +30,13 @@
         </el-row>
       </td>
       <div style="float:left;margin-top: 30px;width: 1px;height: 200px; background: darkgray;"></div>
-      <td>
-        <div class="weatherSideText">今日气温: {{weatherForm.tmp_min}}°C-{{weatherForm.tmp_max}}°C</div>
-        <div class="weatherSideText">风力: {{weatherForm.wind}}</div>
-        <div class="weatherSideText">体感温度: {{weatherForm.fl}}°C</div>
-      </td>
+      <div class="weatherSideText">
+        <td>
+          <div class="weatherSideText1">今日气温: {{weatherForm.tmp_min}}°C-{{weatherForm.tmp_max}}°C</div>
+          <div class="weatherSideText2">风力: {{weatherForm.wind}}</div>
+          <div class="weatherSideText3">体感温度: {{weatherForm.fl}}°C</div>
+        </td>
+      </div>
     </el-row>
   </div>
 </template>
@@ -296,12 +298,16 @@ export default {
 };
 </script>
 <style scoped>
+.todayWeatherText {
+  display: flex;
+}
 .todayWeatherTextDiv {
   text-align: center;
   color: #303133;
   font-family: Arial;
   font-weight: bold;
-  font-size: 20px;
+  font-size: 30px;
+  align-self: center;
 }
 .todayAqiTextDiv {
   text-align: center;
