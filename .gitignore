@@ -106,3 +106,4 @@ venv.bak/
 config.py
 backend/data.sqlite
 backend/app/homepage.config
+backend/run.py
