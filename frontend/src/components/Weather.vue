@@ -333,7 +333,9 @@ export default {
     }
   },
   created() {},
-  mounted() {}
+  mounted() {
+      this.getWeatherDatafront('beijing');
+  }
 };
 </script>
 <style scoped>
