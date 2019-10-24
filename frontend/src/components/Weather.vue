@@ -316,7 +316,7 @@ export default {
   align-self: center;
 }
 .todayAqiText {
-  vertical-align: inherit;
+  display: flex;
 }
 .todayAqiTextDiv {
   text-align: center;
@@ -327,7 +327,7 @@ export default {
   align-self: center;
 }
 .tomorrowWeatherText {
-  vertical-align: inherit;
+  display: flex;
 }
 .tomorrowWeatherTextDiv {
   text-align: center;
@@ -347,7 +347,7 @@ export default {
   margin-top: 20px;
 }
 .weatherSideTextDetail {
-  margin-top: 10px;
-  margin-bottom: 10px;
+  margin-top: 30px;
+  margin-bottom: 30px;
 }
 </style>
