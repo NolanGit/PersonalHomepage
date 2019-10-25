@@ -57,11 +57,12 @@ def searchLog():
     try:
         try:
             user = request.get_json()['user']
+            user_id = CommonFunc().get_user_id(user)
         except:
             user = ''
+            user_id = ''
         engine = request.get_json()['engine']
         search_text = request.get_json()['search_text']
-        user_id = CommonFunc().get_user_id(user)
         engine_id = CommonFunc().get_search_engine_id(engine)
         search_engines_log.create(user_id=user_id, user=user, engine_id=engine_id, search_text=search_text, ip=request.remote_addr, update_time=datetime.datetime.now())
         return jsonify({'code': 200, 'msg': '成功！', 'data': {}})
