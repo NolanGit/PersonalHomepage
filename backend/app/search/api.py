@@ -55,7 +55,10 @@ def searchEnginesSearch():
 @cross_origin()
 def searchLog():
     try:
-        user = request.get_json['user']
+        try:
+            user = request.get_json['user']
+        except:
+            user = ''
         engine = request.get_json['engine']
         search_text = request.get_json['search_text']
         user_id = CommonFunc().get_user_id(user)
