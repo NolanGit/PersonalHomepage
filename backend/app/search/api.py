@@ -60,7 +60,7 @@ def searchLog():
             user_id = CommonFunc().get_user_id(user)
         except:
             user = ''
-            user_id = ''
+            user_id = 0
         engine = request.get_json()['engine']
         search_text = request.get_json()['search_text']
         engine_id = CommonFunc().get_search_engine_id(engine)
