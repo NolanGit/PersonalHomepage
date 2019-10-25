@@ -7,3 +7,5 @@ export const searchEnginesData = params => { return axios.get(`${base}/search/se
 export const searchEnginesAutoComplete = params => { return axios.post(`${base}/search/searchEnginesAutoComplete`, params).then(res => res.data) }
 
 export const searchEnginesSearch = params => { return axios.post(`${base}/search/searchEnginesSearch`, params).then(res => res.data) }
+
+export const searchLog = params => { return axios.post(`${base}/search/searchLog`, params).then(res => res.data) }

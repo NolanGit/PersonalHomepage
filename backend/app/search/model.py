@@ -25,4 +25,16 @@ class search_engines(BaseModel):
     class Meta:
         table_name = 'search_engines'
 
-# search_engines.create_table()
+class search_engines_log(BaseModel):
+    user_id = IntegerField()
+    user = CharField()
+    engine_id= IntegerField()
+    search_text = CharField()
+    ip = CharField()
+    update_time = DateTimeField()
+
+    class Meta:
+        table_name = 'search_engines_log'
+
+search_engines.create_table()
+search_engines_log.create_table()
