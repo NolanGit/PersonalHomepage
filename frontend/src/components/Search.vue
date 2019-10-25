@@ -99,7 +99,7 @@ export default {
       }
       let para = {
         user: user,
-        engine: this.searchEngines.select_engine_id,
+        engine_id: this.searchEngines.select_engine_id,
         search_text: this.word
       };
       searchLog(para).then(data => {
