@@ -9,9 +9,10 @@
     <el-row class="cardRow">
       <el-col :span="7" :offset="1">
         <el-card shadow="hover">
-          <el-carousel height="150px">
+          <el-carousel>
             <el-carousel-item v-for="city in cities" :key="city">
               <weather :city="city" />
+              <el-button v-show="user!=''" type="primary">主要按钮</el-button>
             </el-carousel-item>
           </el-carousel>
         </el-card>
@@ -33,13 +34,13 @@ export default {
   },
   data() {
     return {
-      user: "beijing",
+      user: "",
       cities: [""]
     };
   },
   methods: {
     userLogined(user) {
-      console.log("worked " + user);
+      this.user = user;
     }
   }
 };
