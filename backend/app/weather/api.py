@@ -22,7 +22,7 @@ def weatherData():
             location = request.get_json()['location']
         except:
             r = requests.get('http://freeapi.ipip.net/' + request.remote_addr)
-            location = ['beijing'] if r.json()[1] == '局域网' else r.json()[1]
+            location = ['北京'] if r.json()[1] == '局域网' else r.json()[1]
         url = 'https://free-api.heweather.net/s6/weather'
         result = []
 
