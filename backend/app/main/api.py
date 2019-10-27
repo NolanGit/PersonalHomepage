@@ -24,7 +24,7 @@ def userInfo():
 @main.route('/favicon.ico', methods=['GET'])
 @cross_origin()
 def faviconico():
-    with open("C:\\auto_test\\CrmTools\\vue\\dist\\favicon.ico", 'rb') as f:
+    with open("../dist/star.ico", 'rb') as f:
         image = f.read()
     resp = Response(image, mimetype="image/jpeg")
     return resp
