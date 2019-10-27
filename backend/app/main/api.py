@@ -13,6 +13,13 @@ from flask_cors import cross_origin
 def catch_all(path):
     return render_template("index.html")
 
+@main.route('/userInfo', methods=['POST'])
+@cross_origin()
+def userInfo():
+    with open("C:\\auto_test\\CrmTools\\vue\\dist\\favicon.ico", 'rb') as f:
+        image = f.read()
+    resp = Response(image, mimetype="image/jpeg")
+    return resp
 
 @main.route('/favicon.ico', methods=['GET'])
 @cross_origin()

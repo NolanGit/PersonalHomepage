@@ -104,6 +104,7 @@ export default {
                 });
                 this.user = data2.user;
                 sessionStorage.setItem("user", JSON.stringify(data2.user));
+                this.$emit('user', this.user);
               }
             });
           }

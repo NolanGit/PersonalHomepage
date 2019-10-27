@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <el-row class="loginRow">
-      <login />
+      <login @user="userLogined" />
     </el-row>
     <el-row class="searchRow">
       <search />
@@ -9,7 +9,11 @@
     <el-row class="cardRow">
       <el-col :span="7" :offset="1">
         <el-card shadow="hover">
-          <weather :city="city" />
+          <el-carousel height="150px">
+            <el-carousel-item v-for="city in cities" :key="city">
+              <weather :city="city" />
+            </el-carousel-item>
+          </el-carousel>
         </el-card>
       </el-col>
     </el-row>
@@ -20,8 +24,8 @@
 import search from "./components/Search.vue";
 import login from "./components/Login.vue";
 import weather from "./components/Weather.vue";
+import { userInfo } from "../api/app";
 export default {
-  methods: {},
   components: {
     search,
     login,
@@ -29,8 +33,14 @@ export default {
   },
   data() {
     return {
-      city: "beijing"
+      user: "beijing",
+      cities: [""]
     };
+  },
+  methods: {
+    userLogined(user) {
+      console.log("worked " + user);
+    }
   }
 };
 </script>

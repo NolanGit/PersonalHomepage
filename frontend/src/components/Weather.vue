@@ -79,7 +79,7 @@ export default {
   methods: {
     getWeatherDatafront(loc) {
       this.todayShow = false;
-      this.value = loc;
+      this.value = loc == "" ? undefined : loc;
       try {
         var user = sessionStorage.getItem("user").replace(/\"/g, "");
       } catch (error) {
