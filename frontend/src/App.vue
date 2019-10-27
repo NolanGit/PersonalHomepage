@@ -24,7 +24,7 @@
 import search from "./components/Search.vue";
 import login from "./components/Login.vue";
 import weather from "./components/Weather.vue";
-import { userInfo } from "api/app";
+import { userInfo } from "./api/app";
 export default {
   components: {
     search,
