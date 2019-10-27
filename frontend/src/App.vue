@@ -9,14 +9,12 @@
     <el-row class="cardRow">
       <el-col :span="7" :offset="1">
         <el-card shadow="hover">
-          <el-carousel :autoplay="false" height="250px">
+          <el-carousel height="250px" trigger="click" interval="5000">
             <el-carousel-item v-for="city in cities" :key="city">
               <weather :city="city" />
             </el-carousel-item>
-            <el-carousel-item v-show="user!=''">
-              <el-button icon="el-icon-circle-plus-outline" circle></el-button>
-            </el-carousel-item>
           </el-carousel>
+          <el-button v-show="user!=''" icon="el-icon-circle-plus-outline" circle></el-button>
         </el-card>
       </el-col>
     </el-row>
@@ -48,6 +46,7 @@ export default {
   mounted() {
     var user = sessionStorage.getItem("user").replace(/\"/g, "");
     this.user = user == undefined ? "" : user;
+    console.log(this.user);
   }
 };
 </script>
