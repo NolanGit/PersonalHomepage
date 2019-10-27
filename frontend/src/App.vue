@@ -14,7 +14,7 @@
               <weather :city="city" />
             </el-carousel-item>
           </el-carousel>
-          <el-button v-show="user!=''" icon="el-icon-circle-plus-outline" circle></el-button>
+          <el-button v-show="user!=''" icon="el-icon-plus" size="mini" circle></el-button>
         </el-card>
       </el-col>
     </el-row>

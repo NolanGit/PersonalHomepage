@@ -104,7 +104,7 @@ export default {
                 });
                 this.user = data2.user;
                 sessionStorage.setItem("user", JSON.stringify(data2.user));
-                this.$emit('user', this.user);
+                this.$emit("user", this.user);
               }
             });
           }
@@ -118,6 +118,7 @@ export default {
         message: "退出成功！",
         type: "success"
       });
+      this.$emit("user", "");
     }
   },
   created() {},
