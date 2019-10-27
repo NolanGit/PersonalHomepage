@@ -12,7 +12,9 @@
           <el-carousel>
             <el-carousel-item v-for="city in cities" :key="city">
               <weather :city="city" />
-              <el-button v-show="user!=''" type="primary">主要按钮</el-button>
+            </el-carousel-item>
+            <el-carousel-item>
+              <el-button icon="el-icon-circle-plus-outline" circle v-show="user!=''">主要按钮</el-button>
             </el-carousel-item>
           </el-carousel>
         </el-card>
@@ -42,6 +44,12 @@ export default {
     userLogined(user) {
       this.user = user;
     }
+  },
+  mounted() {
+    try {
+      var user = sessionStorage.getItem("user").replace(/\"/g, "");
+      this.user = user;
+    } catch (error) {}
   }
 };
 </script>
