@@ -54,7 +54,14 @@
         </el-row>
       </el-carousel-item>
     </el-carousel>
-    <el-button v-show="user!=''" icon="el-icon-plus" size="mini" circle></el-button>
+    <el-popover placement="top" width="160" v-model="visible">
+      <p>添加城市</p>
+      <div style="text-align: right; margin: 0">
+        <el-input size="mini" placeholder="城市名称，如：北京"></el-input>
+        <el-button type="primary" size="mini" @click="visible = false">确定</el-button>
+      </div>
+      <el-button slot="reference" v-show="user!=''" icon="el-icon-plus" size="mini" circle></el-button>
+    </el-popover>
   </div>
 </template>
 <script>
