@@ -23,7 +23,12 @@ def weatherData():
             location = request.get_json()['location']
         except:
             r = requests.get('http://freeapi.ipip.net/' + request.remote_addr)
+            print(r.json())
             location = r.json()[1]
+            print('location1')
+            print(location)
+        print('location2')
+        print(location)
         url = 'https://free-api.heweather.net/s6/weather'
 
         payload = {'location': location, 'key': KEY}
