@@ -9,12 +9,12 @@
     <el-row class="cardRow">
       <el-col :span="7" :offset="1">
         <el-card shadow="hover">
-          <el-carousel>
+          <el-carousel autoplay="false" height="400px">
             <el-carousel-item v-for="city in cities" :key="city">
               <weather :city="city" />
             </el-carousel-item>
-            <el-carousel-item>
-              <el-button icon="el-icon-circle-plus-outline" circle v-show="user!=''">主要按钮</el-button>
+            <el-carousel-item v-show="user!=''">
+              <el-button icon="el-icon-circle-plus-outline" circle>主要按钮</el-button>
             </el-carousel-item>
           </el-carousel>
         </el-card>
