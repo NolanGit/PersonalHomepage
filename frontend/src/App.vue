@@ -9,12 +9,7 @@
     <el-row class="cardRow">
       <el-col :span="7" :offset="1">
         <el-card shadow="hover">
-          <el-carousel height="250px" trigger="click" interval="5000">
-            <el-carousel-item v-for="city in cities" :key="city">
-              <weather :city="city" />
-            </el-carousel-item>
-          </el-carousel>
-          <el-button v-show="user!=''" icon="el-icon-plus" size="mini" circle></el-button>
+          <weather :cities="cities" :user="user" />
         </el-card>
       </el-col>
     </el-row>

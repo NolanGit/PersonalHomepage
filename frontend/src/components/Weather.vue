@@ -1,49 +1,60 @@
 <template>
   <div class="weather">
-    <el-row type="flex" justify="center" ref="weatherForm" :model="weatherForm" v-show="todayShow">
-      <td>
-        <el-row type="flex" justify="left">
-          <td class="todayWeatherIcon">
-            <i :class="iconfontWeatherClass" style="font-size:100px;"></i>
-          </td>
-          <td class="todayWeatherText">
-            <div class="todayWeatherTextDiv">{{weatherForm.tmp}}°C</div>
-          </td>
-        </el-row>
+    <el-carousel height="250px" trigger="click" interval="5000">
+      <el-carousel-item v-for="city in cities" :key="city">
+        <el-row
+          type="flex"
+          justify="center"
+          ref="weatherForm"
+          :model="weatherForm"
+          v-show="todayShow"
+        >
+          <td>
+            <el-row type="flex" justify="left">
+              <td class="todayWeatherIcon">
+                <i :class="iconfontWeatherClass" style="font-size:100px;"></i>
+              </td>
+              <td class="todayWeatherText">
+                <div class="todayWeatherTextDiv">{{weatherForm.tmp}}°C</div>
+              </td>
+            </el-row>
 
-        <el-row type="flex" justify="left">
-          <td class="todayAqiIcon">
-            <i :class="iconfontAqiClass" style="font-size:50px;"></i>
-          </td>
-          <td class="todayAqiText">
-            <div class="todayAqiTextDiv">AQI:{{weatherForm.aqi}}</div>
-          </td>
-        </el-row>
+            <el-row type="flex" justify="left">
+              <td class="todayAqiIcon">
+                <i :class="iconfontAqiClass" style="font-size:50px;"></i>
+              </td>
+              <td class="todayAqiText">
+                <div class="todayAqiTextDiv">AQI:{{weatherForm.aqi}}</div>
+              </td>
+            </el-row>
 
-        <el-row type="flex" justify="left">
-          <td class="tomorrowWeatherIcon">
-            <i :class="iconfontTomorrowWeatherClass" style="font-size:50px;"></i>
+            <el-row type="flex" justify="left">
+              <td class="tomorrowWeatherIcon">
+                <i :class="iconfontTomorrowWeatherClass" style="font-size:50px;"></i>
+              </td>
+              <td class="tomorrowWeatherText">
+                <div
+                  class="tomorrowWeatherTextDiv"
+                >明日:{{weatherForm.tomorrow_tmp_min}}°C-{{weatherForm.tomorrow_tmp_max}}°C</div>
+              </td>
+            </el-row>
           </td>
-          <td class="tomorrowWeatherText">
-            <div
-              class="tomorrowWeatherTextDiv"
-            >明日:{{weatherForm.tomorrow_tmp_min}}°C-{{weatherForm.tomorrow_tmp_max}}°C</div>
-          </td>
-        </el-row>
-      </td>
-      <div
-        style="float:left;margin-top: 30px;width:1px;height: 200px; background: darkgray;margin-left: 25px;margin-right: 25px;"
-      ></div>
-      <div class="weatherSideText">
-        <td>
           <div
-            class="weatherSideTextDetail"
-          >今日气温: {{weatherForm.tmp_min}}°C-{{weatherForm.tmp_max}}°C</div>
-          <div class="weatherSideTextDetail">风力: {{weatherForm.wind}}</div>
-          <div class="weatherSideTextDetail">体感温度: {{weatherForm.fl}}°C</div>
-        </td>
-      </div>
-    </el-row>
+            style="float:left;margin-top: 30px;width:1px;height: 200px; background: darkgray;margin-left: 25px;margin-right: 25px;"
+          ></div>
+          <div class="weatherSideText">
+            <td>
+              <div
+                class="weatherSideTextDetail"
+              >今日气温: {{weatherForm.tmp_min}}°C-{{weatherForm.tmp_max}}°C</div>
+              <div class="weatherSideTextDetail">风力: {{weatherForm.wind}}</div>
+              <div class="weatherSideTextDetail">体感温度: {{weatherForm.fl}}°C</div>
+            </td>
+          </div>
+        </el-row>
+      </el-carousel-item>
+    </el-carousel>
+    <el-button v-show="user!=''" icon="el-icon-plus" size="mini" circle></el-button>
   </div>
 </template>
 <script>
@@ -54,7 +65,8 @@ import { getWeatherData } from "../api/weather";
 export default {
   name: "weather",
   props: {
-    city: String
+    cities: Array,
+    user: String
   },
   data() {
     return {
