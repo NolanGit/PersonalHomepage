@@ -46,10 +46,8 @@ export default {
     }
   },
   mounted() {
-    try {
-      var user = sessionStorage.getItem("user").replace(/\"/g, "");
-      this.user = user;
-    } catch (error) {}
+    var user = sessionStorage.getItem("user").replace(/\"/g, "");
+    this.user = user == undefined ? "" : user;
   }
 };
 </script>
