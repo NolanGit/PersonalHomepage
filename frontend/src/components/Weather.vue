@@ -54,11 +54,11 @@
         </el-row>
       </el-carousel-item>
     </el-carousel>
-    <el-popover placement="top" width="160" v-model="visible">
-      <p>添加城市</p>
+    <el-popover placement="top" width="160" v-model="popover.visible">
+      <p>添加城市：</p>
+      <el-input size="mini" v-model="popover.city" placeholder="城市名称，如：北京"></el-input>
       <div style="text-align: right; margin: 0">
-        <el-input size="mini" placeholder="城市名称，如：北京"></el-input>
-        <el-button type="primary" size="mini" @click="visible = false">确定</el-button>
+        <el-button type="primary" size="mini" @click="addCity()">确定</el-button>
       </div>
       <el-button slot="reference" v-show="user!=''" icon="el-icon-plus" size="mini" circle></el-button>
     </el-popover>
@@ -92,10 +92,17 @@ export default {
       iconfontWeatherClass: "el-icon-more",
       iconfontAqiClass: "el-icon-more",
       iconfontTomorrowWeatherClass: "el-icon-more",
-      todayShow: true
+      todayShow: true,
+      popover: {
+        visible: false,
+        city: ""
+      }
     };
   },
   methods: {
+    addCity() {
+      visible = false;
+    },
     getWeatherDatafront(loc) {
       this.todayShow = false;
       this.value = loc == "" ? undefined : loc;
