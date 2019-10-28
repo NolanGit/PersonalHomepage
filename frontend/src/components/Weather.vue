@@ -49,7 +49,7 @@
             </el-row>
           </td>
           <div
-            style="float:left;margin-top: 30px;width:1px;height: 180px; background: darkgray;margin-left: 25px;margin-right: 25px;"
+            style="float:left;margin-top: 30px;width:1px;height: 175px; background: darkgray;margin-left: 25px;margin-right: 25px;"
           ></div>
           <div class="weatherSideText">
             <td>

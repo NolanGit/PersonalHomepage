@@ -61,7 +61,7 @@ export default {
       if (user != "") {
         this.userInfoFront();
       } else {
-        window.reload();
+        location.reload();
       }
     }
   },
