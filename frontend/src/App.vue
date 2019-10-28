@@ -8,9 +8,11 @@
     </el-row>
     <el-row class="cardRow">
       <el-col :span="7" :offset="1">
-        <el-card shadow="hover">
-          <weather :locations="locations" :user="user" />
-        </el-card>
+        <transition name="el-zoom-in-top">
+          <el-card shadow="hover" v-show="show.weather">
+            <weather @weatherLoaded="weatherLoaded" :locations="locations" :user="user" />
+          </el-card>
+        </transition>
       </el-col>
     </el-row>
   </div>
@@ -30,7 +32,10 @@ export default {
   data() {
     return {
       user: "",
-      locations: [""]
+      locations: [""],
+      show: {
+        weather: false
+      }
     };
   },
   methods: {
@@ -63,6 +68,9 @@ export default {
       } else {
         location.reload();
       }
+    },
+    weatherLoaded() {
+      this.show.weather = true;
     }
   },
   created() {

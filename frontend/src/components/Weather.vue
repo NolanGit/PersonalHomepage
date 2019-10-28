@@ -9,7 +9,18 @@
           :model="weather.weatherForm"
           v-show="todayShow"
         >
-          <div class="location">{{weather.location}}</div>
+          <div>
+            <td>
+              <div class="location">{{weather.location}}</div>
+            </td>
+            <td>
+              <i
+                v-show="weather.id!=0"
+                class="el-icon-delete"
+                @click="weatherDelete(weather.location)"
+              ></i>
+            </td>
+          </div>
         </el-row>
         <el-row
           type="flex"
@@ -138,6 +149,9 @@ export default {
           });
         }
       });
+    },
+    weatherDelete(location) {
+      console.log(location);
     },
     getWeatherDatafront(locations) {
       this.todayShow = false;
@@ -436,6 +450,7 @@ export default {
         .catch(error => {
           console.log(error);
         });
+      this.$emit("weatherLoaded", true);
     }
   },
   created() {},

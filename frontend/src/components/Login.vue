@@ -55,9 +55,7 @@ export default {
   },
   methods: {
     md5It(str) {
-      console.log(str)
       str = md5(str);
-      console.log(str)
       return str;
     },
     login() {
