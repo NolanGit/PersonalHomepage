@@ -129,6 +129,7 @@ export default {
       if ((locations == "") | (locations.length == 0)) {
         locations = undefined;
       }
+      console.log(locations)
       try {
         var user = sessionStorage.getItem("user").replace(/\"/g, "");
       } catch (error) {
