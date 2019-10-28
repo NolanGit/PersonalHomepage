@@ -161,7 +161,7 @@ export default {
       } catch (error) {
         var user = undefined;
       }
-      if ((user != undefined) & (locations = undefined)) {
+      if ((user != undefined) & (locations == undefined)) {
         return;
       }
       let para = {
@@ -183,6 +183,7 @@ export default {
               single_result++
             ) {
               let {
+                id,
                 location,
                 fl,
                 tmp,
@@ -213,6 +214,7 @@ export default {
                 single_result
               ].weatherForm.tomorrow_tmp_max = tomorrow_tmp_max;
               this.weathers[single_result].location = location;
+              this.weathers[single_result].id = id;
               this.loading = false;
               if (cond_code_d == 100) {
                 this.weathers[single_result].iconfontWeatherClass =
