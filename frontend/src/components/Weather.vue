@@ -9,7 +9,7 @@
           :model="weather.weatherForm"
           v-show="todayShow"
         >
-          <div>{{weather.location}}</div>
+          <div class="location">{{weather.location}}</div>
         </el-row>
         <el-row
           type="flex"
@@ -49,7 +49,7 @@
             </el-row>
           </td>
           <div
-            style="float:left;margin-top: 30px;width:1px;height: 200px; background: darkgray;margin-left: 25px;margin-right: 25px;"
+            style="float:left;margin-top: 30px;width:1px;height: 180px; background: darkgray;margin-left: 25px;margin-right: 25px;"
           ></div>
           <div class="weatherSideText">
             <td>
@@ -492,5 +492,9 @@ export default {
 .weatherSideTextDetail {
   margin-top: 30px;
   margin-bottom: 30px;
+}
+.location {
+  font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB,
+    Microsoft YaHei, SimSun, sans-serif;
 }
 </style>
