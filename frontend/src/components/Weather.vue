@@ -13,12 +13,8 @@
             <td>
               <div class="location">{{weather.location}}</div>
             </td>
-            <td>
-              <i
-                v-show="weather.id!=0"
-                class="el-icon-delete"
-                @click="weatherDelete(weather.location)"
-              ></i>
+            <td v-show="weather.id==0?false:true">
+              <i class="weatherDelete el-icon-delete" @click="weatherDelete(weather.location)"></i>
             </td>
           </div>
         </el-row>
@@ -164,6 +160,9 @@ export default {
         var user = sessionStorage.getItem("user").replace(/\"/g, "");
       } catch (error) {
         var user = undefined;
+      }
+      if ((user != undefined) & (locations = undefined)) {
+        return;
       }
       let para = {
         locations: locations,
@@ -514,5 +513,8 @@ export default {
   font-weight: 600;
   font-size: 20px;
   color: #303133;
+}
+.weatherDelete {
+  margin-left: 10px;
 }
 </style>
