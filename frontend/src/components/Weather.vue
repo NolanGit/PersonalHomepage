@@ -58,7 +58,7 @@
       <p>添加城市：</p>
       <el-input size="mini" v-model="popover.city" placeholder="城市名称，如：北京"></el-input>
       <div style="text-align: right; margin: 0">
-        <el-button type="primary" size="mini" @click="addCity()">确定</el-button>
+        <el-button type="primary" size="mini" @click="addLocation()">确定</el-button>
       </div>
       <el-button slot="reference" v-show="user!=''" icon="el-icon-plus" size="mini" circle></el-button>
     </el-popover>
@@ -67,12 +67,12 @@
 <script>
 import axios from "axios";
 import Router from "vue-router";
-import { getWeatherData } from "../api/weather";
+import { weatherData, weatherPersonalizedSave } from "../api/weather";
 
 export default {
   name: "weather",
   props: {
-    cities: Array,
+    locations: Array,
     user: String
   },
   data() {
@@ -99,27 +99,46 @@ export default {
       todayShow: true,
       popover: {
         visible: false,
-        city: ""
+        location: ""
       }
     };
   },
   methods: {
-    addCity() {
+    addLocation() {
       this.popover.visible = false;
+      var para = {
+        user: sessionStorage.getItem("user").replace(/\"/g, ""),
+        location: this.popover.location
+      };
+      weatherPersonalizedSave(para).then(data => {
+        if (data["code"] !== 200) {
+          this.$message({
+            message: data["msg"],
+            type: "error"
+          });
+        } else {
+          this.$message({
+            message: data["msg"],
+            type: "success"
+          });
+        }
+      });
     },
-    getWeatherDatafront(loc) {
+    getWeatherDatafront(locations) {
       this.todayShow = false;
-      this.location = loc == "" ? undefined : loc;
+      if ((locations == "") | (locations.length == 0)) {
+        locations = undefined;
+      }
       try {
         var user = sessionStorage.getItem("user").replace(/\"/g, "");
       } catch (error) {
         var user = undefined;
       }
       let para = {
-        location: this.location,
+        locations: locations,
         user: user
       };
-      getWeatherData(para)
+      weatherData(para)
         .then(data => {
           if (data["code"] !== 200) {
             this.$message({
@@ -404,7 +423,7 @@ export default {
   },
   created() {},
   mounted() {
-    this.getWeatherDatafront(this.cities);
+    this.getWeatherDatafront(this.locations);
   }
 };
 </script>

@@ -17,7 +17,7 @@ class BaseModel(Model):
 
 
 class weather_personalized(BaseModel):
-    city = CharField()
+    location = CharField()
     user_id = IntegerField()
     is_valid = IntegerField()
     update_time = DateTimeField()

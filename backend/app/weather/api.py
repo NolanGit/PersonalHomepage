@@ -7,6 +7,8 @@ import configparser
 from . import weather
 from flask_cors import cross_origin
 from flask import render_template, session, redirect, url_for, current_app, flash, Response, request, jsonify
+from .model import weather_personalized
+from ..common_func import CommonFunc
 
 cf = configparser.ConfigParser()
 cf.read('app/homepage.config')
@@ -18,16 +20,17 @@ KEY = cf.get('config', 'KEY')
 def weatherData():
 
     try:
+        r = requests.get('http://freeapi.ipip.net/' + request.remote_addr)
+        locations = ['北京'] if r.json()[1] == '局域网' else r.json()[1].strip().split()
         try:
-            location = request.get_json()['location']
+            locations = locations + request.get_json()['locations']
         except:
-            r = requests.get('http://freeapi.ipip.net/' + request.remote_addr)
-            location = ['北京'] if r.json()[1] == '局域网' else r.json()[1].strip().split()
-        print(location)
+            pass
+        print(locations)
         url = 'https://free-api.heweather.net/s6/weather'
         result = []
 
-        for single_location in location:
+        for single_location in locations:
             response = {}
 
             payload = {'location': single_location, 'key': KEY}
@@ -52,6 +55,21 @@ def weatherData():
             result.append(response)
 
         return jsonify({'code': 200, 'msg': '成功！', 'data': result})
+    except Exception as e:
+        traceback.print_exc()
+        response = {'code': 500, 'msg': '失败！错误信息：' + str(e) + '，请联系管理员。', 'data': []}
+        return jsonify(response)
+
+
+@weather.route('/weatherPersonalizedSave', methods=['POST'])
+@cross_origin()
+def weatherPersonalizedSave():
+    try:
+        user = request.get_json()['user']
+        location = request.get_json()['location']
+        user_id = CommonFunc().get_user_id(user)
+        weather_personalized.create(location=location, user_id=user_id, is_valid=1, update_time=datetime.datetime.now())
+        return jsonify({'code': 200, 'msg': '成功！', 'data': []})
     except Exception as e:
         traceback.print_exc()
         response = {'code': 500, 'msg': '失败！错误信息：' + str(e) + '，请联系管理员。', 'data': []}

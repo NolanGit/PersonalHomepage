@@ -9,7 +9,7 @@
     <el-row class="cardRow">
       <el-col :span="7" :offset="1">
         <el-card shadow="hover">
-          <weather :cities="cities" :user="user" />
+          <weather :locations="locations" :user="user" />
         </el-card>
       </el-col>
     </el-row>
@@ -30,12 +30,25 @@ export default {
   data() {
     return {
       user: "",
-      cities: [""]
+      locations: [""]
     };
   },
   methods: {
     userLogined(user) {
       this.user = user;
+      var para = {
+        user: this.user
+      };
+      userInfo(para).then(data => {
+        if (data["code"] !== 200) {
+          this.$message({
+            message: data["msg"],
+            type: "error"
+          });
+        } else {
+          this.locations = data.data["locations"];
+        }
+      });
     }
   },
   mounted() {
