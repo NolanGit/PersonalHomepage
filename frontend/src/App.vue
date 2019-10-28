@@ -37,6 +37,7 @@ export default {
     userInfoFront() {
       var user = sessionStorage.getItem("user").replace(/\"/g, "");
       if (user != undefined) {
+        this.user = user;
         var para = {
           user: user
         };
