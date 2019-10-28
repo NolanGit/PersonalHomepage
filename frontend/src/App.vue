@@ -35,7 +35,11 @@ export default {
   },
   methods: {
     userInfoFront() {
-      var user = sessionStorage.getItem("user").replace(/\"/g, "");
+      try {
+        var user = sessionStorage.getItem("user").replace(/\"/g, "");
+      } catch (error) {
+        var user = undefined;
+      }
       if (user != undefined) {
         this.user = user;
         var para = {
@@ -61,7 +65,7 @@ export default {
       }
     }
   },
-  mounted() {
+  created() {
     this.userInfoFront();
   }
 };

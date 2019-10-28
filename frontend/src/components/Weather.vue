@@ -106,6 +106,7 @@ export default {
   watch: {
     locations(newVal, oldVal) {
       console.log("value changed 1", newVal);
+      this.getWeatherDatafront(newVal);
     }
   },
   methods: {
