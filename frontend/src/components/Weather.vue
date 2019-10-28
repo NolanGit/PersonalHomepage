@@ -9,6 +9,15 @@
           :model="weather.weatherForm"
           v-show="todayShow"
         >
+          <div>{{weather.location}}</div>
+        </el-row>
+        <el-row
+          type="flex"
+          justify="center"
+          ref="weatherForm"
+          :model="weather.weatherForm"
+          v-show="todayShow"
+        >
           <td>
             <el-row type="flex" justify="left">
               <td class="todayWeatherIcon">
