@@ -57,7 +57,7 @@ export default {
         });
       }
     },
-    userLogined(user) {
+    userLoginedOrLogout(user) {
       if (user != "") {
         this.userInfoFront();
       } else {
