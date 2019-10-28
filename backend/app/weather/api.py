@@ -36,6 +36,7 @@ def weatherData():
             payload = {'location': single_location, 'key': KEY}
             r = requests.post(url, params=payload)
             response['location'] = single_location
+            response['id'] = locations.index(single_location)
             response['fl'] = r.json()['HeWeather6'][0]['now']['fl']
             response['tmp'] = r.json()['HeWeather6'][0]['now']['tmp']
             response['wind'] = r.json()['HeWeather6'][0]['now']['wind_dir'] + str(r.json()['HeWeather6'][0]['now']['wind_sc']) + '级'
