@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <el-row class="loginRow">
-      <login @user="userLogined" />
+      <login @user="userLoginedOrLogout" />
     </el-row>
     <el-row class="searchRow">
       <search />
@@ -34,27 +34,34 @@ export default {
     };
   },
   methods: {
+    userInfoFront() {
+      var user = sessionStorage.getItem("user").replace(/\"/g, "");
+      if (user != undefined) {
+        var para = {
+          user: user
+        };
+        userInfo(para).then(data => {
+          if (data["code"] !== 200) {
+            this.$message({
+              message: data["msg"],
+              type: "error"
+            });
+          } else {
+            this.locations = data.data["locations"];
+          }
+        });
+      }
+    },
     userLogined(user) {
-      this.user = user;
-      var para = {
-        user: this.user
-      };
-      userInfo(para).then(data => {
-        if (data["code"] !== 200) {
-          this.$message({
-            message: data["msg"],
-            type: "error"
-          });
-        } else {
-          this.locations = data.data["locations"];
-        }
-      });
+      if (user != "") {
+        this.userInfoFront();
+      } else {
+        window.reload();
+      }
     }
   },
   mounted() {
-    var user = sessionStorage.getItem("user").replace(/\"/g, "");
-    this.user = user == undefined ? "" : user;
-    console.log(this.user);
+    this.userInfoFront();
   }
 };
 </script>

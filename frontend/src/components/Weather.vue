@@ -56,7 +56,7 @@
     </el-carousel>
     <el-popover placement="top" width="160" v-model="popover.visible">
       <p>添加城市：</p>
-      <el-input size="mini" v-model="popover.city" placeholder="城市名称，如：北京"></el-input>
+      <el-input size="mini" v-model="popover.location" placeholder="城市名称，如：北京"></el-input>
       <div style="text-align: right; margin: 0">
         <el-button type="primary" size="mini" @click="addLocation()">确定</el-button>
       </div>
