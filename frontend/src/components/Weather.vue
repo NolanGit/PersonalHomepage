@@ -63,21 +63,14 @@
         </el-row>
       </el-carousel-item>
     </el-carousel>
-    <div>
-      <td>
-        <el-popover placement="top" width="160" v-model="popover.visible">
-          <p>添加城市：</p>
-          <el-input size="mini" v-model="popover.location" placeholder="城市名称，如：北京"></el-input>
-          <div style="text-align: right; margin: 0">
-            <el-button type="primary" size="mini" @click="addLocation()">确定</el-button>
-          </div>
-          <el-button slot="reference" v-show="user!=''" icon="el-icon-plus" size="mini" circle></el-button>
-        </el-popover>
-      </td>
-      <td>
-        <el-button v-show="weather.id!=0" icon="el-icon-delete" size="mini" circle></el-button>
-      </td>
-    </div>
+    <el-popover placement="top" width="160" v-model="popover.visible">
+      <p>添加城市：</p>
+      <el-input size="mini" v-model="popover.location" placeholder="城市名称，如：北京"></el-input>
+      <div style="text-align: right; margin: 0">
+        <el-button type="primary" size="mini" @click="addLocation()">确定</el-button>
+      </div>
+      <el-button slot="reference" v-show="user!=''" icon="el-icon-plus" size="mini" circle></el-button>
+    </el-popover>
   </div>
 </template>
 <script>
@@ -207,7 +200,6 @@ export default {
                 single_result
               ].weatherForm.tomorrow_tmp_max = tomorrow_tmp_max;
               this.weathers[single_result].location = location;
-              this.weathers[single_result].id = id;
               this.loading = false;
               if (cond_code_d == 100) {
                 this.weathers[single_result].iconfontWeatherClass =
