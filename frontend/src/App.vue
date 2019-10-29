@@ -14,6 +14,9 @@
           </el-card>
         </transition>
       </el-col>
+      <el-col :span="7" :offset="1">
+        <bookmarks :user="user" />
+      </el-col>
     </el-row>
   </div>
 </template>
@@ -22,6 +25,7 @@
 import search from "./components/Search.vue";
 import login from "./components/Login.vue";
 import weather from "./components/Weather.vue";
+import bookmarks from "./components/bookmarks.vue";
 import { userInfo } from "./api/app";
 export default {
   components: {

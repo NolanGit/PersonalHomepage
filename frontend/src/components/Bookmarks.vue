@@ -16,6 +16,9 @@ import { bookmarksData } from "../api/bookmarks";
 
 export default {
   name: "bookmarks",
+  props: {
+    user: String
+  },
   data() {
     return {
       bookmarks: []
