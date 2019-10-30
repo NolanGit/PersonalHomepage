@@ -14,7 +14,7 @@
       </el-col>
     </el-row>
 
-    <el-popover placement="top" width="160" v-model="bookmarkPopover.visible">
+    <el-popover placement="top" width="260" v-model="bookmarkPopover.visible">
       <p>添加书签：</p>
       <el-input size="mini" v-model="bookmarkPopover.name" placeholder="网站名称"></el-input>
       <el-input size="mini" v-model="bookmarkPopover.url" placeholder="链接(需要完整填写，包括'http://')"></el-input>
@@ -22,7 +22,7 @@
       <div style="text-align: right; margin: 0">
         <el-button type="primary" size="mini" @click="bookmarkAdd()">确定</el-button>
       </div>
-      <el-button class="bookmarkButton" size="small" slot="reference" icon="el-icon-plus"></el-button>
+      <el-button size="small" slot="reference" icon="el-icon-plus" circle></el-button>
     </el-popover>
   </div>
 </template>
@@ -72,6 +72,9 @@ export default {
 };
 </script>
 <style scoped>
+.bookmarks-main {
+  min-height: 280px;
+}
 .bookmarksCard {
   padding: 0px;
 }

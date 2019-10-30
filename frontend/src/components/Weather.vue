@@ -1,6 +1,6 @@
 <template>
   <div class="weather">
-    <el-carousel height="250px" trigger="click" interval="5000">
+    <el-carousel height="250px" trigger="click" interval="5000" indicator-position="outside">
       <el-carousel-item v-for="weather in weathers" :key="weather">
         <el-row
           type="flex"
@@ -461,6 +461,9 @@ export default {
 };
 </script>
 <style scoped>
+.weather {
+  min-height: 280px;
+}
 .todayWeatherText {
   display: flex;
 }
