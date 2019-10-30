@@ -4,13 +4,8 @@
     <div>{{bookmarks}}</div>
     <el-row v-for="bookmarksSuite in bookmarksData" :key="bookmarksSuite">
       <el-col :span="6" v-for="bookmark in bookmarksSuite" :key="bookmark">
-        <el-card shadow="hover">
-          <td>
-            <i :class="bookmark.icon"></i>
-          </td>
-          <td>
-            <el-button type="text" @click="buttonClicked(bookmark.url)">{{bookmark.name}}</el-button>
-          </td>
+        <el-card class="bookmarksCard" shadow="hover">
+          <el-button :icon="bookmark.icon" @click="buttonClicked(bookmark.url)">{{bookmark.name}}</el-button>
         </el-card>
       </el-col>
     </el-row>
@@ -49,4 +44,7 @@ export default {
 };
 </script>
 <style scoped>
+.bookmarksCard {
+  padding: 0px;
+}
 </style>
