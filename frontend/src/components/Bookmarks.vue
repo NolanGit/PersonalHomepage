@@ -7,36 +7,23 @@
     </el-row>
     <el-row v-for="bookmarksSuite in bookmarksDataArray" :key="bookmarksSuite">
       <el-col :span="6" v-for="bookmark in bookmarksSuite" :key="bookmark">
-        <el-button
-          class="bookmarkButton"
-          size="small"
-          @click="buttonClicked(bookmark.url)"
-          v-show="bookmark.type!=-1"
-        >
+        <el-button class="bookmarkButton" size="small" @click="buttonClicked(bookmark.url)">
           <i :class="bookmark.icon" style="margin-right=5px;font-size=15px"></i>
           {{bookmark.name}}
         </el-button>
-
-        <el-popover placement="top" width="160" v-model="bookmarkPopover.visible">
-          <p>添加书签：</p>
-          <el-input size="mini" v-model="bookmarkPopover.name" placeholder="网站名称"></el-input>
-          <el-input size="mini" v-model="bookmarkPopover.url" placeholder="链接(需要完整填写，包括'http://')"></el-input>
-          <el-input size="mini" v-model="bookmarkPopover.icon" placeholder="图标名称"></el-input>
-          <div style="text-align: right; margin: 0">
-            <el-button type="primary" size="mini" @click="bookmarkAdd()">确定</el-button>
-          </div>
-          <el-button
-            class="bookmarkButton"
-            size="small"
-            v-show="bookmark.type==-1"
-            slot="reference"
-          >
-            {{bookmark.name}}
-          </el-button>
-        </el-popover>
-
       </el-col>
     </el-row>
+
+    <el-popover placement="top" width="160" v-model="bookmarkPopover.visible">
+      <p>添加书签：</p>
+      <el-input size="mini" v-model="bookmarkPopover.name" placeholder="网站名称"></el-input>
+      <el-input size="mini" v-model="bookmarkPopover.url" placeholder="链接(需要完整填写，包括'http://')"></el-input>
+      <el-input size="mini" v-model="bookmarkPopover.icon" placeholder="图标名称"></el-input>
+      <div style="text-align: right; margin: 0">
+        <el-button type="primary" size="mini" @click="bookmarkAdd()">确定</el-button>
+      </div>
+      <el-button class="bookmarkButton" size="small" slot="reference" icon="el-icon-plus"></el-button>
+    </el-popover>
   </div>
 </template>
 <script>
@@ -60,7 +47,7 @@ export default {
       bookmarksDataArray: [],
       bookmarksDataTemp: [],
       bookmarkPopover: {
-        visible: true,
+        visible: false,
         name: "",
         url: "https://",
         icon: ""
@@ -78,40 +65,7 @@ export default {
       this.bookmarkPopover.icon = "";
     },
     bookmarksDataAddAddButton(bookmarksData) {
-      if (this.bookmarksDataTemp == bookmarksData) {
-        return;
-      } else {
-        console.log("bookmarksData1");
-        console.log(bookmarksData);
-        if (
-          (bookmarksData[bookmarksData.length - 1].length == 4) |
-          (bookmarksData[bookmarksData.length - 1].length == 0)
-        ) {
-          bookmarksData.push([
-            {
-              icon: "el-icon-plus",
-              id: -1,
-              name: "增加",
-              update_time: "",
-              url: "",
-              type: -1
-            }
-          ]);
-        } else {
-          bookmarksData[bookmarksData.length - 1].push({
-            icon: "el-icon-plus",
-            id: -1,
-            name: "增加",
-            update_time: "",
-            url: "",
-            type: -1
-          });
-        }
-        this.bookmarksDataArray = bookmarksData;
-        this.bookmarksDataTemp = bookmarksData;
-        console.log("bookmarksData2");
-        console.log(bookmarksData);
-      }
+      this.bookmarksDataArray = bookmarksData;
     }
   },
   mounted() {}
