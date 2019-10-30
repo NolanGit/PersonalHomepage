@@ -2,7 +2,7 @@
   "id": "1482668",
   "name": "logos",
   "font_family": "iconfont",
-  "css_prefix_text": "icon",
+  "css_prefix_text": "icon-",
   "description": "",
   "glyphs": [
     {
