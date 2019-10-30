@@ -32,7 +32,7 @@ export default {
     }
   },
   mounted() {
-    console.log(bookmarks)
+    console.log(this.bookmarks)
   }
 };
 </script>
