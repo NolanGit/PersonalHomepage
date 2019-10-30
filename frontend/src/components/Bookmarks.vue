@@ -4,7 +4,7 @@
     <div>{{bookmarks}}</div>
     <el-row v-for="bookmarksSuite in bookmarksData" :key="bookmarksSuite">
       <el-col :span="6" v-for="bookmark in bookmarksSuite" :key="bookmark">
-        <el-button :icon="bookmark.icon" @click="buttonClicked(bookmark.url)">{{bookmark.name}}</el-button>
+        <el-button size="small" :icon="bookmark.icon" @click="buttonClicked(bookmark.url)">{{bookmark.name}}</el-button>
       </el-col>
     </el-row>
   </div>
@@ -22,7 +22,6 @@ export default {
   },
   watch: {
     bookmarksData(newVal, oldVal) {
-      console.log("value changed 1", newVal);
       this.bookmarksData = newVal;
     }
   },
@@ -45,5 +44,8 @@ export default {
 <style scoped>
 .bookmarksCard {
   padding: 0px;
+}
+.el-button [class*=el-icon-]+span {
+    margin-left: 5px;
 }
 </style>
