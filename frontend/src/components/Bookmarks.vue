@@ -2,7 +2,7 @@
   <div class="bookmarks-main">
     <div>{{user}}</div>
     <div>{{bookmarks}}</div>
-    <el-row v-for="bookmarksSuite in bookmarks" :key="bookmarksSuite">
+    <el-row v-for="bookmarksSuite in bookmarksData" :key="bookmarksSuite">
       <el-col :span="6" v-for="bookmark in bookmarksSuite" :key="bookmark">
         <el-card>
           <el-button type="text" @click="buttonClicked(bookmark)">{{bookmark.name}}</el-button>
@@ -20,10 +20,17 @@ export default {
   name: "bookmarks",
   props: {
     user: String,
-    bookmarks:Array,
+    bookmarks: Array
+  },
+  watch: {
+    bookmarks(newVal, oldVal) {
+      console.log("value changed 1", newVal);
+      this.bookmarksData = bookmarks;
+    }
   },
   data() {
     return {
+      bookmarksData: []
     };
   },
   methods: {
@@ -32,7 +39,7 @@ export default {
     }
   },
   mounted() {
-    console.log(this.bookmarks)
+    console.log(this.bookmarks);
   }
 };
 </script>
