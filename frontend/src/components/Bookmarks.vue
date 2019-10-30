@@ -38,7 +38,8 @@ export default {
   },
   data() {
     return {
-      bookmarksData: []
+      bookmarksData: [],
+      bookmarksDataTemp: []
     };
   },
   methods: {
@@ -50,18 +51,23 @@ export default {
       console.log("要增加？");
     },
     bookmarksDataAddAddButton(bookmarksData) {
-      if (bookmarksData.length != 0) {
-        console.log(bookmarksData);
-        bookmarksData.push({
-          icon: "el-icon-plus",
-          id: -1,
-          name: "增加",
-          update_time: "",
-          url: "",
-          type: -1
-        });
-        this.bookmarksData = bookmarksData;
+      if (this.bookmarksDataTemp == bookmarksData) {
+        return;
       } else {
+        if (bookmarksData.length != 0) {
+          console.log(bookmarksData);
+          bookmarksData.push({
+            icon: "el-icon-plus",
+            id: -1,
+            name: "增加",
+            update_time: "",
+            url: "",
+            type: -1
+          });
+          this.bookmarksData = bookmarksData;
+          this.bookmarksDataTemp = bookmarksData;
+        } else {
+        }
       }
     }
   },
