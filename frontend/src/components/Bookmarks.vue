@@ -51,15 +51,17 @@ export default {
     }
   },
   mounted() {
-    console.log(this.bookmarks);
-    this.bookmarks[-1].push({
-      icon: "el-icon-plus",
-      id: -1,
-      name: "增加",
-      update_time: "",
-      url: "",
-      type: -1
-    });
+    if (this.bookmarks.length != 0) {
+      console.log(this.bookmarks);
+      this.bookmarks[-1].push({
+        icon: "el-icon-plus",
+        id: -1,
+        name: "增加",
+        update_time: "",
+        url: "",
+        type: -1
+      });
+    }
   }
 };
 </script>
