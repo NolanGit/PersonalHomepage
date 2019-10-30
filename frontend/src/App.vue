@@ -15,7 +15,7 @@
         </transition>
       </el-col>
       <el-col :span="7" :offset="1">
-        <el-card shadow="never" v-show="show.weather">
+        <el-card shadow="hover" v-show="show.weather">
           <bookmarks :bookmarksData="bookmarksData" />
         </el-card>
       </el-col>
