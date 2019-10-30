@@ -15,7 +15,7 @@
         </transition>
       </el-col>
       <el-col :span="7" :offset="1">
-        <bookmarks :user="user" />
+        <bookmarks :bookmarks="bookmarks" />
       </el-col>
     </el-row>
   </div>
@@ -31,12 +31,14 @@ export default {
   components: {
     search,
     login,
-    weather
+    weather,
+    bookmarks
   },
   data() {
     return {
       user: "",
-      locations: [""],
+      locations: [],
+      bookmarks:[],
       show: {
         weather: false
       }
@@ -62,6 +64,7 @@ export default {
             });
           } else {
             this.locations = data.data["locations"];
+            this.bookmarks = data.data["bookmarks"];
           }
         });
       }

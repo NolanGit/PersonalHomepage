@@ -17,11 +17,11 @@ import { bookmarksData } from "../api/bookmarks";
 export default {
   name: "bookmarks",
   props: {
-    user: String
+    user: String,
+    bookmarks:Array,
   },
   data() {
     return {
-      bookmarks: []
     };
   },
   methods: {
@@ -33,16 +33,6 @@ export default {
     var para = {
       user: "孙浩然"
     };
-    bookmarksData(para).then(data => {
-      if (data["code"] !== 200) {
-        this.$message({
-          message: data["msg"],
-          type: "error"
-        });
-      } else {
-        console.log(data);
-      }
-    });
   }
 };
 </script>
