@@ -57,7 +57,7 @@ export default {
         if (bookmarksData.length != 0) {
           console.log("bookmarksData1");
           console.log(bookmarksData);
-          if (bookmarksData[-1].length == 4) {
+          if (bookmarksData[bookmarksData.length - 1].length == 4) {
             bookmarksData.push([
               {
                 icon: "el-icon-plus",
@@ -69,7 +69,7 @@ export default {
               }
             ]);
           } else {
-            bookmarksData[-1].push({
+            bookmarksData[bookmarksData.length - 1].push({
               icon: "el-icon-plus",
               id: -1,
               name: "增加",
