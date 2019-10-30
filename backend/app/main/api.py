@@ -9,6 +9,7 @@ from . import main
 from flask_cors import cross_origin
 from ..search.model import search_engines, search_engines_log
 from ..weather.model import weather_personalized
+from ..bookmarks.model import bookmarks as bookmarks_table
 from ..common_func import CommonFunc
 
 
@@ -29,6 +30,12 @@ def userInfo():
         result['locations'] = []
         for row in weather_personalized_query:
             result['locations'].append(row['location'])
+            
+        result['booksmarks'] = []
+        bookmarks_query = bookmarks_table.select().where((bookmarks_table.user_id == user_id) & (bookmarks_table.is_valid == 1)).order_by(bookmarks_table.order).dicts()
+        for row in bookmarks_query:
+            result['booksmarks'].append({'id': row['id'], 'name': row['name'], 'url': row['url'], 'icon': row['icon'], 'update_time': row['update_time']})
+        
         response = {'code': 200, 'msg': '成功！', 'data': result}
         return jsonify(response)
     except Exception as e:
