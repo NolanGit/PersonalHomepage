@@ -5,7 +5,7 @@
         <div class="bookmarks">书签</div>
       </div>
     </el-row>
-    <el-row v-for="bookmarksSuite in bookmarksData" :key="bookmarksSuite">
+    <el-row v-for="bookmarksSuite in bookmarksDataArray" :key="bookmarksSuite">
       <el-col :span="6" v-for="bookmark in bookmarksSuite" :key="bookmark">
         <el-button
           class="bookmarkButton"
@@ -16,8 +16,9 @@
           <i :class="bookmark.icon" style="margin-right=5px;font-size=15px"></i>
           {{bookmark.name}}
         </el-button>
-        <el-popover placement="top" width="260" v-model="bookmarkPopover.visible">
-          <p>添加城市：</p>
+
+        <el-popover placement="top" width="160" v-model="bookmarkPopover.visible">
+          <p>添加书签：</p>
           <el-input size="mini" v-model="bookmarkPopover.name" placeholder="网站名称"></el-input>
           <el-input size="mini" v-model="bookmarkPopover.url" placeholder="链接(需要完整填写，包括'http://')"></el-input>
           <el-input size="mini" v-model="bookmarkPopover.icon" placeholder="图标名称"></el-input>
@@ -30,10 +31,10 @@
             v-show="bookmark.type==-1"
             slot="reference"
           >
-            <i :class="bookmark.icon" style="margin-right=5px;font-size=15px"></i>
             {{bookmark.name}}
           </el-button>
         </el-popover>
+
       </el-col>
     </el-row>
   </div>
@@ -56,10 +57,10 @@ export default {
   },
   data() {
     return {
-      bookmarksData: [],
+      bookmarksDataArray: [],
       bookmarksDataTemp: [],
       bookmarkPopover: {
-        visible: false,
+        visible: true,
         name: "",
         url: "https://",
         icon: ""
@@ -106,7 +107,7 @@ export default {
             type: -1
           });
         }
-        this.bookmarksData = bookmarksData;
+        this.bookmarksDataArray = bookmarksData;
         this.bookmarksDataTemp = bookmarksData;
         console.log("bookmarksData2");
         console.log(bookmarksData);
