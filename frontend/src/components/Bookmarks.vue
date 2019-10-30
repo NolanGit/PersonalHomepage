@@ -33,7 +33,7 @@ export default {
   },
   watch: {
     bookmarksData(newVal, oldVal) {
-      this.bookmarksData = newVal;
+      this.bookmarksDataAddAddButton(newVal);
     }
   },
   data() {
@@ -48,21 +48,24 @@ export default {
     },
     bookmarkAdd() {
       console.log("要增加？");
+    },
+    bookmarksDataAddAddButton(bookmarksData) {
+      if (bookmarksData.length != 0) {
+        console.log(bookmarksData);
+        bookmarksData.push({
+          icon: "el-icon-plus",
+          id: -1,
+          name: "增加",
+          update_time: "",
+          url: "",
+          type: -1
+        });
+        this.bookmarksData = bookmarksData;
+      } else {
+      }
     }
   },
-  mounted() {
-    if (this.bookmarks.length != 0) {
-      console.log(this.bookmarks);
-      this.bookmarks[-1].push({
-        icon: "el-icon-plus",
-        id: -1,
-        name: "增加",
-        update_time: "",
-        url: "",
-        type: -1
-      });
-    }
-  }
+  mounted() {}
 };
 </script>
 <style scoped>
