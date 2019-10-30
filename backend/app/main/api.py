@@ -31,10 +31,10 @@ def userInfo():
         for row in weather_personalized_query:
             result['locations'].append(row['location'])
             
-        result['booksmarks'] = []
+        result['bookmarks'] = []
         bookmarks_query = bookmarks_table.select().where((bookmarks_table.user_id == user_id) & (bookmarks_table.is_valid == 1)).order_by(bookmarks_table.order).dicts()
         for row in bookmarks_query:
-            result['booksmarks'].append({'id': row['id'], 'name': row['name'], 'url': row['url'], 'icon': row['icon'], 'update_time': row['update_time']})
+            result['bookmarks'].append({'id': row['id'], 'name': row['name'], 'url': row['url'], 'icon': row['icon'], 'update_time': row['update_time']})
         
         response = {'code': 200, 'msg': '成功！', 'data': result}
         return jsonify(response)

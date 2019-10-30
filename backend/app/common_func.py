@@ -19,3 +19,20 @@ class CommonFunc(object):
         else:
             for row in search_engines_query:
                 return row['id']
+
+
+class User(object):
+
+    user_name = ''
+    user_id = 0
+
+    def __init__(self, user_id):
+        self.user_id = user_id
+
+    def get_user_id(self):
+        user_query = user.select().where(user.name == self.user_name).limit(1).dicts()
+        if len(user_query) == 0:
+            return None
+        else:
+            for row in user_query:
+                return row['id']
