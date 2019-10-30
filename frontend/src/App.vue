@@ -65,7 +65,7 @@ export default {
           } else {
             this.locations = data.data["locations"];
             this.bookmarksData = data.data["bookmarks"];
-            console.log(bookmarksData)
+            console.log(this.bookmarksData)
           }
         });
       }
