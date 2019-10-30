@@ -16,12 +16,7 @@
           <i :class="bookmark.icon" style="margin-right=5px;font-size=15px"></i>
           {{bookmark.name}}
         </el-button>
-        <el-popover
-          placement="top"
-          width="260"
-          v-model="bookmarkPopover.visible"
-          v-show="bookmark.type==-1"
-        >
+        <el-popover placement="top" width="260" v-model="bookmarkPopover.visible">
           <p>添加城市：</p>
           <el-input size="mini" v-model="bookmarkPopover.name" placeholder="网站名称"></el-input>
           <el-input size="mini" v-model="bookmarkPopover.url" placeholder="链接(需要完整填写，包括'http://')"></el-input>
@@ -29,7 +24,13 @@
           <div style="text-align: right; margin: 0">
             <el-button type="primary" size="mini" @click="addLocation()">确定</el-button>
           </div>
-          <el-button class="bookmarkButton" size="small" @click="bookmarkAdd()">
+          <el-button
+            class="bookmarkButton"
+            size="small"
+            @click="bookmarkAdd()"
+            v-show="bookmark.type==-1"
+            slot="reference"
+          >
             <i :class="bookmark.icon" style="margin-right=5px;font-size=15px"></i>
             {{bookmark.name}}
           </el-button>
