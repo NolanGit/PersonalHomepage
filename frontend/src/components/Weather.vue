@@ -121,7 +121,7 @@ export default {
   },
   watch: {
     locations(newVal, oldVal) {
-      console.log("value changed 1", newVal);
+      //console.log("value changed 1", newVal);
       this.getWeatherDatafront(newVal);
     }
   },
@@ -151,11 +151,11 @@ export default {
     },
     getWeatherDatafront(locations) {
       this.todayShow = false;
-      console.log(locations);
+      //console.log(locations);
       if ((locations == "") | (locations.length == 0)) {
         locations = undefined;
       }
-      console.log(locations);
+      //console.log(locations);
       try {
         var user = sessionStorage.getItem("user").replace(/\"/g, "");
       } catch (error) {

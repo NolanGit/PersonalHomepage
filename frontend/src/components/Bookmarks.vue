@@ -14,18 +14,18 @@
 <script>
 import axios from "axios";
 import Router from "vue-router";
-import { bookmarksData } from "../api/bookmarks";
+//import { bookmarksData } from "../api/bookmarks";
 
 export default {
   name: "bookmarks",
   props: {
     user: String,
-    bookmarks: Array
+    bookmarksData: Array
   },
   watch: {
-    bookmarks(newVal, oldVal) {
+    bookmarksData(newVal, oldVal) {
       console.log("value changed 1", newVal);
-      this.bookmarksData = bookmarks;
+      this.bookmarksData = newVal;
     }
   },
   data() {

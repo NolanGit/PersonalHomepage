@@ -15,7 +15,7 @@
         </transition>
       </el-col>
       <el-col :span="7" :offset="1">
-        <bookmarks :bookmarks="bookmarksData" />
+        <bookmarks :bookmarksData="bookmarksData" />
       </el-col>
     </el-row>
   </div>
