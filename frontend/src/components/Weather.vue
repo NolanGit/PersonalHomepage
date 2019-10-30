@@ -480,7 +480,7 @@ export default {
   color: #303133;
   font-family: Arial;
   font-weight: bold;
-  font-size: 20px;
+  font-size: 18px;
   align-self: center;
   margin-left: 4px;
 }
@@ -492,7 +492,7 @@ export default {
   color: #303133;
   font-family: Arial;
   font-weight: bold;
-  font-size: 20px;
+  font-size: 18px;
   align-self: center;
   margin-left: 4px;
 }

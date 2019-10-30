@@ -4,8 +4,13 @@
     <div>{{bookmarks}}</div>
     <el-row v-for="bookmarksSuite in bookmarksData" :key="bookmarksSuite">
       <el-col :span="6" v-for="bookmark in bookmarksSuite" :key="bookmark">
-        <el-card>
-          <el-button type="text" @click="buttonClicked(bookmark)">{{bookmark.name}}</el-button>
+        <el-card shadow="hover">
+          <td>
+            <i :class="bookmark.icon"></i>
+          </td>
+          <td>
+            <el-button type="text" @click="buttonClicked(bookmark.url)">{{bookmark.name}}</el-button>
+          </td>
         </el-card>
       </el-col>
     </el-row>
@@ -34,8 +39,8 @@ export default {
     };
   },
   methods: {
-    buttonClicked(bookmark) {
-      console.log(bookmark);
+    buttonClicked(bookmarkUrl) {
+      window.open(bookmarkUrl);
     }
   },
   mounted() {
