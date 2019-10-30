@@ -55,17 +55,33 @@ export default {
         return;
       } else {
         if (bookmarksData.length != 0) {
+          console.log("bookmarksData1");
           console.log(bookmarksData);
-          bookmarksData.push({
-            icon: "el-icon-plus",
-            id: -1,
-            name: "增加",
-            update_time: "",
-            url: "",
-            type: -1
-          });
+          if (bookmarksData[-1].length == 4) {
+            bookmarksData.push([
+              {
+                icon: "el-icon-plus",
+                id: -1,
+                name: "增加",
+                update_time: "",
+                url: "",
+                type: -1
+              }
+            ]);
+          } else {
+            bookmarksData[-1].push({
+              icon: "el-icon-plus",
+              id: -1,
+              name: "增加",
+              update_time: "",
+              url: "",
+              type: -1
+            });
+          }
           this.bookmarksData = bookmarksData;
           this.bookmarksDataTemp = bookmarksData;
+          console.log("bookmarksData2");
+          console.log(bookmarksData);
         } else {
         }
       }
