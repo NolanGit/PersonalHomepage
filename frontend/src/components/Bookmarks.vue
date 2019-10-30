@@ -22,7 +22,7 @@
           <el-input size="mini" v-model="bookmarkPopover.url" placeholder="链接(需要完整填写，包括'http://')"></el-input>
           <el-input size="mini" v-model="bookmarkPopover.icon" placeholder="图标名称"></el-input>
           <div style="text-align: right; margin: 0">
-            <el-button type="primary" size="mini" @click="addLocation()">确定</el-button>
+            <el-button type="primary" size="mini" @click="bookmarkConfirmAdd()">确定</el-button>
           </div>
           <el-button
             class="bookmarkButton"
@@ -73,8 +73,12 @@ export default {
       window.open(bookmarkUrl);
     },
     bookmarkAdd() {
-      console.log("要增加？");
+      this.bookmarkPopover.visible = true;
+      this.bookmarkPopover.url = "https://";
+      this.bookmarkPopover.name = "";
+      this.bookmarkPopover.icon = "";
     },
+    bookmarkConfirmAdd() {},
     bookmarksDataAddAddButton(bookmarksData) {
       if (this.bookmarksDataTemp == bookmarksData) {
         return;
