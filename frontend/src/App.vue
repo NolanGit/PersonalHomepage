@@ -15,7 +15,7 @@
         </transition>
       </el-col>
       <el-col :span="7" :offset="1">
-        <bookmarks :bookmarks="bookmarks" />
+        <bookmarks :bookmarks="bookmarksData" />
       </el-col>
     </el-row>
   </div>
@@ -38,7 +38,7 @@ export default {
     return {
       user: "",
       locations: [],
-      bookmarks:[],
+      bookmarksData:[],
       show: {
         weather: false
       }
@@ -64,7 +64,8 @@ export default {
             });
           } else {
             this.locations = data.data["locations"];
-            this.bookmarks = data.data["bookmarks"];
+            this.bookmarksData = data.data["bookmarks"];
+            console.log(bookmarksData)
           }
         });
       }
