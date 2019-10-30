@@ -4,18 +4,14 @@
     <div>{{bookmarks}}</div>
     <el-row v-for="bookmarksSuite in bookmarksData" :key="bookmarksSuite">
       <el-col :span="6" v-for="bookmark in bookmarksSuite" :key="bookmark">
-        <el-button
-          size="small"
-          :icon="bookmark.icon"
-          @click="buttonClicked(bookmark.url)"
-          v-show="bookmark.type!=-1"
-        >{{bookmark.name}}</el-button>
-        <el-button
-          size="small"
-          :icon="bookmark.icon"
-          @click="bookmarkAdd()"
-          v-show="bookmark.type==-1"
-        >{{bookmark.name}}</el-button>
+        <el-button size="small" @click="buttonClicked(bookmark.url)" v-show="bookmark.type!=-1">
+          <i :class="bookmark.icon" style="margin-right=5px;font-size=15px"></i>
+          {{bookmark.name}}
+        </el-button>
+        <el-button size="small" @click="bookmarkAdd()" v-show="bookmark.type==-1">
+          <i :class="bookmark.icon" style="margin-right=5px;font-size=15px"></i>
+          {{bookmark.name}}
+        </el-button>
       </el-col>
     </el-row>
   </div>
@@ -94,7 +90,7 @@ export default {
 .bookmarksCard {
   padding: 0px;
 }
-.el-button--small > span {
+/* .el-button--small > span {
   margin-left: 5px;
-}
+} */
 </style>
