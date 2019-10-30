@@ -1,6 +1,8 @@
 <template>
   <div class="bookmarks-main">
-    <el-row :gutter="20" v-for="bookmarksSuite in bookmarks" :key="bookmarksSuite">
+    <div>{{user}}</div>
+    <div>{{bookmarks}}</div>
+    <el-row v-for="bookmarksSuite in bookmarks" :key="bookmarksSuite">
       <el-col :span="6" v-for="bookmark in bookmarksSuite" :key="bookmark">
         <el-card>
           <el-button type="text" @click="buttonClicked(bookmark)">{{bookmark.name}}</el-button>
@@ -30,9 +32,7 @@ export default {
     }
   },
   mounted() {
-    var para = {
-      user: "孙浩然"
-    };
+    console.log(bookmarks)
   }
 };
 </script>
