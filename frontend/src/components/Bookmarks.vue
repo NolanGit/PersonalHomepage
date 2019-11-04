@@ -13,7 +13,6 @@
         </el-button>
       </el-col>
     </el-row>
-
     <el-popover placement="top" width="260" v-model="bookmarkPopover.visible">
       <p>添加书签：</p>
       <el-input size="mini" v-model="bookmarkPopover.name" placeholder="网站名称"></el-input>
@@ -24,18 +23,40 @@
       </div>
       <el-button size="small" slot="reference" icon="el-icon-plus" circle></el-button>
     </el-popover>
+    <el-button size="small" @click="bookmarkSetting()" icon="el-icon-setting" circle></el-button>
+    
+    <!--编辑界面-->
+    <el-dialog
+      title="编辑书签"
+      :visible.sync="bookmarksEdit.visible"
+      :close-on-click-modal="false"
+      width="40%"
+    >
+      <SlickList lockAxis="y" v-model="bookmarksDataArray">
+        <SlickItem
+          v-for="(item, index) in bookmarksDataArray"
+          :index="index"
+          :key="index"
+        >{{ item }}</SlickItem>
+      </SlickList>
+    </el-dialog>
   </div>
 </template>
 <script>
 import axios from "axios";
 import Router from "vue-router";
-//import { bookmarksData } from "../api/bookmarks";
+import { bookmarksAdd } from "../api/bookmarks";
+import { SlickList, SlickItem } from "vue-slicksort";
 
 export default {
   name: "bookmarks",
   props: {
     user: String,
     bookmarksData: Array
+  },
+  components: {
+    SlickItem,
+    SlickList
   },
   watch: {
     bookmarksData(newVal, oldVal) {
@@ -45,7 +66,9 @@ export default {
   data() {
     return {
       bookmarksDataArray: [],
-      bookmarksDataTemp: [],
+      bookmarksEdit: {
+        visible: false
+      },
       bookmarkPopover: {
         visible: false,
         name: "",
@@ -66,6 +89,9 @@ export default {
     },
     bookmarksDataAddAddButton(bookmarksData) {
       this.bookmarksDataArray = bookmarksData;
+    },
+    bookmarkSetting() {
+      this.bookmarksEdit.visible = true;
     }
   },
   mounted() {}
