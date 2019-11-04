@@ -13,18 +13,21 @@
         </el-button>
       </el-col>
     </el-row>
-    <el-popover placement="top" width="260" v-model="bookmarkPopover.visible">
-      <p>添加书签：</p>
-      <el-input size="mini" v-model="bookmarkPopover.name" placeholder="网站名称"></el-input>
-      <el-input size="mini" v-model="bookmarkPopover.url" placeholder="链接(需要完整填写，包括'http://')"></el-input>
-      <el-input size="mini" v-model="bookmarkPopover.icon" placeholder="图标名称"></el-input>
-      <div style="text-align: right; margin: 0">
-        <el-button type="primary" size="mini" @click="bookmarkAdd()">确定</el-button>
-      </div>
-      <el-button size="small" slot="reference" icon="el-icon-plus" circle></el-button>
-    </el-popover>
-    <el-button size="small" @click="bookmarkSetting()" icon="el-icon-setting" circle></el-button>
-    
+
+    <el-row type="flex" justify="center" class="bookmarkButtons" v-show="user!=''">
+      <el-popover placement="top" width="260" v-model="bookmarksPopover.visible">
+        <p>添加书签：</p>
+        <el-input size="mini" v-model="bookmarksPopover.name" placeholder="网站名称"></el-input>
+        <el-input size="mini" v-model="bookmarksPopover.url" placeholder="链接(需要完整填写，包括'http://')"></el-input>
+        <el-input size="mini" v-model="bookmarksPopover.icon" placeholder="图标名称"></el-input>
+        <div style="text-align: right; margin: 0">
+          <el-button type="primary" size="mini" @click="bookmarksAddButton()">确定</el-button>
+        </div>
+        <el-button size="small" slot="reference" icon="el-icon-plus" circle></el-button>
+      </el-popover>
+      <el-button size="small" @click="bookmarksSetting()" icon="el-icon-setting" circle></el-button>
+    </el-row>
+
     <!--编辑界面-->
     <el-dialog
       title="编辑书签"
@@ -69,7 +72,7 @@ export default {
       bookmarksEdit: {
         visible: false
       },
-      bookmarkPopover: {
+      bookmarksPopover: {
         visible: false,
         name: "",
         url: "https://",
@@ -82,15 +85,34 @@ export default {
       console.log(bookmarkUrl);
       window.open(bookmarkUrl);
     },
-    bookmarkAdd() {
-      this.bookmarkPopover.url = "https://";
-      this.bookmarkPopover.name = "";
-      this.bookmarkPopover.icon = "";
+    bookmarksAddButton() {
+      var para = {
+        url: this.bookmarksPopover.url,
+        name: this.bookmarksPopover.name,
+        icon: this.bookmarksPopover.icon,
+        user: sessionStorage.getItem("user").replace(/\"/g, "")
+      };
+      bookmarksAdd(para).then(data => {
+        if (data["code"] !== 200) {
+          this.$message({
+            message: data["msg"],
+            type: "error"
+          });
+        } else {
+          this.$message({
+            message: data["msg"],
+            type: "success"
+          });
+        }
+      });
+      this.bookmarksPopover.url = "https://";
+      this.bookmarksPopover.name = "";
+      this.bookmarksPopover.icon = "";
     },
     bookmarksDataAddAddButton(bookmarksData) {
       this.bookmarksDataArray = bookmarksData;
     },
-    bookmarkSetting() {
+    bookmarksSetting() {
       this.bookmarksEdit.visible = true;
     }
   },
@@ -115,5 +137,8 @@ export default {
   font-size: 20px;
   color: #303133;
   padding-bottom: 20px;
+}
+.bookmarkButtons {
+  margin-top: 20px;
 }
 </style>
