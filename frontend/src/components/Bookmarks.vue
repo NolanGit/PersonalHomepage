@@ -27,9 +27,21 @@
         <div style="text-align: right; margin: 0">
           <el-button type="primary" size="mini" @click="bookmarksAddButton()">确定</el-button>
         </div>
-        <el-button class="bookmarksOptionButtonAdd" size="small" slot="reference" icon="el-icon-plus" circle></el-button>
+        <el-button
+          class="bookmarksOptionButtonAdd"
+          size="small"
+          slot="reference"
+          icon="el-icon-plus"
+          circle
+        ></el-button>
       </el-popover>
-      <el-button class="bookmarksOptionButtonSetting" size="small" @click="bookmarksSetting()" icon="el-icon-setting" circle></el-button>
+      <el-button
+        class="bookmarksOptionButtonSetting"
+        size="small"
+        @click="bookmarksSetting()"
+        icon="el-icon-setting"
+        circle
+      ></el-button>
     </el-row>
 
     <!--编辑界面-->
@@ -42,7 +54,7 @@
       <SlickList lockAxis="y" useDragHandle="true" v-model="bookmarksEdit.list">
         <SlickItem v-for="(item, index) in bookmarksEdit.list" :index="index" :key="index">
           <td>
-          <div>{{item}}</div>
+            <div>{{item}}</div>
           </td>
           <td>
             <el-button size="small" @click="singleBookmarkSetting()" icon="el-icon-setting"></el-button>
@@ -124,9 +136,9 @@ export default {
       this.bookmarksDataArray = bookmarksData;
       console.log(this.bookmarksDataArray);
       for (var x = 0; x < this.bookmarksDataArray.length; x++) {
-        console.log(this.bookmarksDataArray[x]);
-        console.log(this.bookmarksDataArray[x].name);
-        this.bookmarksEdit.list.push(this.bookmarksDataArray[x].name);
+        for (var y = 0; y < this.bookmarksDataArray[x].length; y++) {
+          this.bookmarksEdit.list.push(this.bookmarksDataArray[x][y].name);
+        }
       }
       console.log(this.bookmarksEdit.list);
     },
@@ -162,11 +174,11 @@ export default {
 .bookmarksData {
   min-height: 210px;
 }
-.bookmarksOptionButtonAdd{
+.bookmarksOptionButtonAdd {
   margin-left: 5px;
   margin-right: 5px;
 }
-.bookmarksOptionButtonSetting{
+.bookmarksOptionButtonSetting {
   margin-left: 5px;
   margin-right: 5px;
 }
