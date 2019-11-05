@@ -51,13 +51,13 @@
       :close-on-click-modal="false"
       width="40%"
     >
-      <SlickList lockAxis="y" :useDragHandle="true" v-model="bookmarksEdit.list">
-        <SlickItem v-for="(item, index) in bookmarksEdit.list" :index="index" :key="index">
+      <SortableList lockAxis="y" useDragHandle="true" v-model="bookmarksEdit.list">
+        <SortableItem v-for="(item, index) in bookmarksEdit.list" :index="index" :key="index">
           <span>{{item}}</span>
           <el-button size="small" @click="singleBookmarkSetting()" icon="el-icon-setting"></el-button>
           <el-button size="small" @click="singleBookmarkDelete()" icon="el-icon-delete"></el-button>
-        </SlickItem>
-      </SlickList>
+        </SortableItem>
+      </SortableList>
     </el-dialog>
   </div>
 </template>
@@ -66,6 +66,24 @@ import axios from "axios";
 import Router from "vue-router";
 import { bookmarksAdd } from "../api/bookmarks";
 import { SlickList, SlickItem } from "vue-slicksort";
+import { ContainerMixin, ElementMixin } from "vue-slicksort";
+
+const SortableList = {
+  mixins: [ContainerMixin],
+  template: `
+    <ul class="list">
+      <slot />
+    </ul>
+  `
+};
+
+const SortableItem = {
+  mixins: [ElementMixin],
+  props: ["item"],
+  template: `
+    <li class="list-item">{{item}}</li>
+  `
+};
 
 export default {
   name: "bookmarks",
