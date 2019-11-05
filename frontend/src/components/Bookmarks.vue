@@ -45,11 +45,7 @@
     </el-row>
 
     <!--编辑界面-->
-    <el-drawer
-      title="编辑书签"
-      :visible.sync="bookmarksEdit.visible"
-      size="40%"
-    >
+    <el-drawer title="编辑书签" :visible.sync="bookmarksEdit.visible" size="40%">
       <SlickList lockAxis="y" v-model="bookmarksEdit.list" class="list">
         <SlickItem
           class="list-item"
@@ -61,6 +57,16 @@
         </SlickItem>
       </SlickList>
     </el-drawer>
+    <SlickList lockAxis="y" v-model="bookmarksEdit.list" class="list">
+      <SlickItem
+        class="list-item"
+        v-for="(item, index) in bookmarksEdit.list"
+        :index="index"
+        :key="index"
+      >
+        <span>{{ item }}</span>
+      </SlickItem>
+    </SlickList>
   </div>
 </template>
 <script>
