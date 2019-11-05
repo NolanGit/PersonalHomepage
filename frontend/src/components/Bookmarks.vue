@@ -51,8 +51,10 @@
       :close-on-click-modal="false"
       width="40%"
     >
-      <SlickList lockAxis="y" v-model="items">
-        <SlickItem v-for="(item, index) in items" :index="index" :key="index">{{ item }}</SlickItem>
+      <SlickList lockAxis="y" v-model="bookmarksEdit.list">
+        <SlickItem v-for="(item, index) in bookmarksEdit.list" :index="index" :key="index">
+          <span>{{ item }}</span>
+        </SlickItem>
       </SlickList>
     </el-dialog>
   </div>
@@ -72,7 +74,7 @@ export default {
   },
   components: {
     SlickItem,
-    SlickList,
+    SlickList
   },
   watch: {
     bookmarksData(newVal, oldVal) {
