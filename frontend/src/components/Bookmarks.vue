@@ -52,11 +52,12 @@
       width="40%"
     >
       <SortableList lockAxis="y" useDragHandle="true" v-model="bookmarksEdit.list">
-        <SortableItem v-for="(item, index) in bookmarksEdit.list" :index="index" :key="index">
-          <span>{{item}}</span>
-          <el-button size="small" @click="singleBookmarkSetting()" icon="el-icon-setting"></el-button>
-          <el-button size="small" @click="singleBookmarkDelete()" icon="el-icon-delete"></el-button>
-        </SortableItem>
+        <SortableItem
+          v-for="(item, index) in bookmarksEdit.list"
+          :index="index"
+          :key="index"
+          :item="item"
+        />
       </SortableList>
     </el-dialog>
   </div>
