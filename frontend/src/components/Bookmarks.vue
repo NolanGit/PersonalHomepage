@@ -18,7 +18,7 @@
       </el-col>
     </el-row>
 
-    <el-row type="flex" justify="center" class="bookmarksOptionButton">
+    <el-row type="flex" justify="center" class="bookmarksOptionButton" v-show="user!=''">
       <el-popover placement="top" width="260" v-model="bookmarksPopover.visible">
         <p>添加书签：</p>
         <el-input size="mini" v-model="bookmarksPopover.name" placeholder="网站名称"></el-input>
@@ -27,15 +27,9 @@
         <div style="text-align: right; margin: 0">
           <el-button type="primary" size="mini" @click="bookmarksAddButton()">确定</el-button>
         </div>
-        <el-button v-show="user!=''" size="small" slot="reference" icon="el-icon-plus" circle></el-button>
+        <el-button size="small" slot="reference" icon="el-icon-plus" circle></el-button>
       </el-popover>
-      <el-button
-        v-show="user!=''"
-        size="small"
-        @click="bookmarksSetting()"
-        icon="el-icon-setting"
-        circle
-      ></el-button>
+      <el-button size="small" @click="bookmarksSetting()" icon="el-icon-setting" circle></el-button>
     </el-row>
 
     <!--编辑界面-->
@@ -122,6 +116,7 @@ export default {
       this.bookmarksDataArray = bookmarksData;
       console.log(this.bookmarksDataArray);
       for (var x = 0; x < this.bookmarksDataArray.length; x++) {
+        console.log(this.bookmarksDataArray[x].name);
         this.bookmarksEdit.list.push(this.bookmarksDataArray[x].name);
       }
       console.log(this.bookmarksEdit.list);
@@ -156,6 +151,6 @@ export default {
   margin-top: 20px;
 }
 .bookmarksData {
-  min-height: 400px;
+  min-height: 210px;
 }
 </style>

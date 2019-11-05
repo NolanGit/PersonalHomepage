@@ -16,7 +16,7 @@
       </el-col>
       <el-col :span="7" :offset="1">
         <el-card shadow="hover" v-show="show.weather">
-          <bookmarks :bookmarksData="bookmarksData" />
+          <bookmarks :bookmarksData="bookmarksData" :user="user" />
         </el-card>
       </el-col>
     </el-row>
@@ -27,7 +27,7 @@
 import search from "./components/Search.vue";
 import login from "./components/Login.vue";
 import weather from "./components/Weather.vue";
-import bookmarks from "./components/bookmarks.vue";
+import bookmarks from "./components/Bookmarks.vue";
 import { userInfo } from "./api/app";
 export default {
   components: {
