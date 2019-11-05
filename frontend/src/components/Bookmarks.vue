@@ -51,9 +51,9 @@
       :close-on-click-modal="false"
       width="40%"
     >
-      <SortableList lockAxis="y" useDragHandle="true" v-model="items">
-        <SortableItem v-for="(item, index) in items" :index="index" :key="index" :item="item" />
-      </SortableList>
+      <SlickList lockAxis="y" v-model="items">
+        <SlickItem v-for="(item, index) in items" :index="index" :key="index">{{ item }}</SlickItem>
+      </SlickList>
     </el-dialog>
   </div>
 </template>
@@ -63,23 +63,6 @@ import Router from "vue-router";
 import { bookmarksAdd } from "../api/bookmarks";
 import { SlickList, SlickItem } from "vue-slicksort";
 import { ContainerMixin, ElementMixin } from "vue-slicksort";
-
-const SortableList = {
-  mixins: [ContainerMixin],
-  template: `
-    <ul class="list">
-      <slot />
-    </ul>
-  `
-};
-
-const SortableItem = {
-  mixins: [ElementMixin],
-  props: ["item"],
-  template: `
-    <li class="list-item">{{item}}</li>
-  `
-};
 
 export default {
   name: "bookmarks",
