@@ -5,16 +5,20 @@
         <div class="bookmarks">书签</div>
       </div>
     </el-row>
-    <el-row v-for="bookmarksSuite in bookmarksDataArray" :key="bookmarksSuite">
+    <el-row
+      class="bookmarksData"
+      v-for="bookmarksSuite in bookmarksDataArray"
+      :key="bookmarksSuite"
+    >
       <el-col :span="6" v-for="bookmark in bookmarksSuite" :key="bookmark">
-        <el-button class="bookmarkButton" size="small" @click="buttonClicked(bookmark.url)">
+        <el-button class="bookmarksButton" size="small" @click="buttonClicked(bookmark.url)">
           <i :class="bookmark.icon" style="margin-right=5px;font-size=15px"></i>
           {{bookmark.name}}
         </el-button>
       </el-col>
     </el-row>
 
-    <el-row type="flex" justify="center" class="bookmarkButtons">
+    <el-row type="flex" justify="center" class="bookmarksOptionButton">
       <el-popover placement="top" width="260" v-model="bookmarksPopover.visible">
         <p>添加书签：</p>
         <el-input size="mini" v-model="bookmarksPopover.name" placeholder="网站名称"></el-input>
@@ -42,11 +46,9 @@
       width="40%"
     >
       <SlickList lockAxis="y" v-model="bookmarksEdit.list">
-        <SlickItem
-          v-for="(item, index) in bookmarksEdit.list"
-          :index="index"
-          :key="index"
-        >{{ item }}</SlickItem>
+        <SlickItem v-for="(item, index) in bookmarksEdit.list" :index="index" :key="index">
+          <div>{{item}}</div>
+        </SlickItem>
       </SlickList>
     </el-dialog>
   </div>
@@ -69,7 +71,7 @@ export default {
   },
   watch: {
     bookmarksData(newVal, oldVal) {
-      this.bookmarksDataAddAddButton(newVal);
+      this.bookmarksDataInit(newVal);
     }
   },
   data() {
@@ -116,8 +118,9 @@ export default {
       this.bookmarksPopover.name = "";
       this.bookmarksPopover.icon = "";
     },
-    bookmarksDataAddAddButton(bookmarksData) {
+    bookmarksDataInit(bookmarksData) {
       this.bookmarksDataArray = bookmarksData;
+      console.log(this.bookmarksDataArray);
       for (var x = 0; x < this.bookmarksDataArray.length; x++) {
         this.bookmarksEdit.list.push(this.bookmarksDataArray[x].name);
       }
@@ -137,7 +140,7 @@ export default {
 .bookmarksCard {
   padding: 0px;
 }
-.bookmarkButton {
+.bookmarksButton {
   width: 90px;
   height: 40px;
 }
@@ -149,7 +152,10 @@ export default {
   color: #303133;
   padding-bottom: 20px;
 }
-.bookmarkButtons {
+.bookmarksOptionButton {
   margin-top: 20px;
+}
+.bookmarksData {
+  min-height: 400px;
 }
 </style>
