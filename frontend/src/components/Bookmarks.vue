@@ -14,7 +14,7 @@
       </el-col>
     </el-row>
 
-    <el-row type="flex" justify="center" class="bookmarkButtons" v-show="user!=''">
+    <el-row type="flex" justify="center" class="bookmarkButtons" v-if="user!=''">
       <el-popover placement="top" width="260" v-model="bookmarksPopover.visible">
         <p>添加书签：</p>
         <el-input size="mini" v-model="bookmarksPopover.name" placeholder="网站名称"></el-input>
@@ -70,7 +70,8 @@ export default {
     return {
       bookmarksDataArray: [],
       bookmarksEdit: {
-        visible: false
+        visible: false,
+        list:[]
       },
       bookmarksPopover: {
         visible: false,
@@ -111,6 +112,11 @@ export default {
     },
     bookmarksDataAddAddButton(bookmarksData) {
       this.bookmarksDataArray = bookmarksData;
+      for(var x=0;x<this.bookmarksDataArray.length;x++){
+        this.bookmarksEdit.list.push(
+          this.bookmarksDataArray[x].name
+        )
+      }
     },
     bookmarksSetting() {
       this.bookmarksEdit.visible = true;
