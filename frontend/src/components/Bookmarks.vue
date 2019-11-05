@@ -35,35 +35,7 @@
           circle
         ></el-button>
       </el-popover>
-      <el-popover placement="top" width="260" v-model="bookmarksEdit.visible">
-        <SlickList lockAxis="y" v-model="bookmarksEdit.list" class="list">
-          <SlickItem
-            class="list-item"
-            v-for="(item, index) in bookmarksEdit.list"
-            :index="index"
-            :key="index"
-          >
-            <span>{{ item }}</span>
-            <el-button
-              class="list-button"
-              size="small"
-              icon="el-icon-delete"
-              circle
-            ></el-button>
-          </SlickItem>
-        </SlickList>
-        <div style="text-align: right; margin: 0">
-          <el-button type="primary" size="mini" @click="bookmarksAddButton()">确定</el-button>
-        </div>
-        <el-button
-          class="bookmarksOptionButtonAdd"
-          size="small"
-          slot="reference"
-          icon="el-icon-setting"
-          circle
-        ></el-button>
-      </el-popover>
-      
+
       <el-button
         class="bookmarksOptionButtonSetting"
         size="small"
@@ -74,7 +46,7 @@
     </el-row>
 
     <!--编辑界面-->
-    <!-- <el-drawer title="编辑书签" :visible.sync="bookmarksEdit.visible" size="40%">
+    <el-drawer title="编辑书签" :visible.sync="bookmarksEdit.visible" size="40%">
       <SlickList useDragHandle="true" lockAxis="y" v-model="bookmarksEdit.list" class="list">
         <SlickItem
           class="list-item"
@@ -92,7 +64,8 @@
           ></el-button>
         </SlickItem>
       </SlickList>
-    </el-drawer>-->
+    </el-drawer>
+    
   </div>
 </template>
 <script>
@@ -255,6 +228,15 @@ export default {
   cursor: pointer;
 }
 .list-item {
+  list-style: none;
+  padding: 10px 0;
+  height: 40px;
+  width: 100%;
+  color: #606266;
+  font-size: 14px;
+  z-index: 3000;
+  box-sizing: border-box;
+  user-select: none;
   display: flex;
   align-items: center;
   width: 100%;
@@ -265,52 +247,5 @@ export default {
   user-select: none;
   color: #333;
   font-weight: 400;
-}
-.stylizedHelper {
-  background: blue;
-  color: #fff;
-}
-.SortableList {
-  display: flex;
-  width: 600px;
-  white-space: nowrap;
-  max-height: 80vh;
-  margin: 0 auto;
-  padding: 0;
-  overflow: auto;
-  background-color: #f3f3f3;
-  border: 1px solid #efefef;
-  cursor: pointer;
-}
-.SortableItem {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  padding: 20px;
-  background-color: #fff;
-  border-bottom: 1px solid #efefef;
-  box-sizing: border-box;
-  user-select: none;
-  color: #333;
-  font-weight: 400;
-  border: 1px solid #ccc;
-}
-.SortableList2 {
-  width: 300px;
-  margin: 20px auto;
-  border: 1px solid #efefef;
-}
-.SortableItem2 {
-  width: 300px;
-  border: 1px solid #efefef;
-  text-align: center;
-}
-.SortableItem2 p {
-  font-size: 24px;
-  font-weight: bold;
-  cursor: pointer;
-  background: #efefef;
-  margin: 0;
-  height: 30px;
 }
 </style>
