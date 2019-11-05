@@ -1,42 +1,56 @@
 <template>
   <div class="bookmarks-main">
-    <el-row type="flex" justify="center">
-      <div>
-        <div class="bookmarks">书签</div>
-      </div>
-    </el-row>
-    <el-row
-      class="bookmarksData"
-      v-for="bookmarksSuite in bookmarksDataArray"
-      :key="bookmarksSuite"
-    >
-      <el-col :span="6" v-for="bookmark in bookmarksSuite" :key="bookmark">
-        <el-button class="bookmarksButton" size="small" @click="buttonClicked(bookmark.url)">
-          <i :class="bookmark.icon" style="margin-right=5px;font-size=15px"></i>
-          {{bookmark.name}}
-        </el-button>
+    <el-row>
+      <el-col>
+        <el-row type="flex" justify="center">
+          <div>
+            <div class="bookmarks">书签</div>
+          </div>
+        </el-row>
+        <el-row
+          class="bookmarksData"
+          v-for="bookmarksSuite in bookmarksDataArray"
+          :key="bookmarksSuite"
+        >
+          <el-col :span="6" v-for="bookmark in bookmarksSuite" :key="bookmark">
+            <el-button class="bookmarksButton" size="small" @click="buttonClicked(bookmark.url)">
+              <i :class="bookmark.icon" style="margin-right=5px;font-size=15px"></i>
+              {{bookmark.name}}
+            </el-button>
+          </el-col>
+        </el-row>
+
+        <el-row type="flex" justify="center" class="bookmarksOptionButton" v-show="user!=''">
+          <el-popover placement="top" width="260" v-model="bookmarksPopover.visible">
+            <p>添加书签：</p>
+            <el-input size="mini" v-model="bookmarksPopover.name" placeholder="网站名称"></el-input>
+            <el-input
+              size="mini"
+              v-model="bookmarksPopover.url"
+              placeholder="链接(需要完整填写，包括'http://')"
+            ></el-input>
+            <el-input size="mini" v-model="bookmarksPopover.icon" placeholder="图标名称"></el-input>
+            <div style="text-align: right; margin: 0">
+              <el-button type="primary" size="mini" @click="bookmarksAddButton()">确定</el-button>
+            </div>
+            <el-button
+              class="bookmarksOptionButtonAdd"
+              size="small"
+              slot="reference"
+              icon="el-icon-plus"
+              circle
+            ></el-button>
+          </el-popover>
+          <el-button
+            class="bookmarksOptionButtonSetting"
+            size="small"
+            @click="bookmarksSetting()"
+            icon="el-icon-setting"
+            circle
+          ></el-button>
+        </el-row>
       </el-col>
-    </el-row>
-
-    <el-row type="flex" justify="center" class="bookmarksOptionButton" v-show="user!=''">
-      <el-popover placement="top" width="260" v-model="bookmarksPopover.visible">
-        <p>添加书签：</p>
-        <el-input size="mini" v-model="bookmarksPopover.name" placeholder="网站名称"></el-input>
-        <el-input size="mini" v-model="bookmarksPopover.url" placeholder="链接(需要完整填写，包括'http://')"></el-input>
-        <el-input size="mini" v-model="bookmarksPopover.icon" placeholder="图标名称"></el-input>
-        <div style="text-align: right; margin: 0">
-          <el-button type="primary" size="mini" @click="bookmarksAddButton()">确定</el-button>
-        </div>
-        <el-button
-          class="bookmarksOptionButtonAdd"
-          size="small"
-          slot="reference"
-          icon="el-icon-plus"
-          circle
-        ></el-button>
-      </el-popover>
-
-      <el-popover placement="top" width="260" v-model="bookmarksEdit.visible">
+      <el-col>
         <SlickList useDragHandle="true" lockAxis="y" v-model="bookmarksEdit.list" class="list">
           <SlickItem
             class="list-item"
@@ -53,38 +67,8 @@
             ></el-button>
           </SlickItem>
         </SlickList>
-        <div style="text-align: right; margin: 0">
-          <el-button type="primary" size="mini">确定</el-button>
-        </div>
-        <el-button
-          class="bookmarksOptionButtonSetting"
-          size="small"
-          slot="reference"
-          icon="el-icon-setting"
-          circle
-        ></el-button>
-      </el-popover>
+      </el-col>
     </el-row>
-
-    <!--编辑界面-->
-    <!-- <el-drawer title="编辑书签" :visible.sync="bookmarksEdit.visible" size="40%">
-      <SlickList useDragHandle="true" lockAxis="y" v-model="bookmarksEdit.list" class="list">
-        <SlickItem
-          class="list-item"
-          v-for="(item, index) in bookmarksEdit.list"
-          :index="index"
-          :key="index"
-        >
-          <span>{{ item }}</span>
-          <el-button
-            class="list-button"
-            size="small"
-            @click="bookmarksDelete()"
-            icon="el-icon-delete"
-          ></el-button>
-        </SlickItem>
-      </SlickList>
-    </el-drawer>-->
   </div>
 </template>
 <script>
@@ -250,12 +234,59 @@ export default {
   display: flex;
   align-items: center;
   width: 100%;
-  padding: 5px;
+  padding: 20px;
   background-color: #fff;
   border-bottom: 1px solid #efefef;
   box-sizing: border-box;
   user-select: none;
   color: #333;
   font-weight: 400;
+}
+.stylizedHelper {
+  background: blue;
+  color: #fff;
+}
+.SortableList {
+  display: flex;
+  width: 600px;
+  white-space: nowrap;
+  max-height: 80vh;
+  margin: 0 auto;
+  padding: 0;
+  overflow: auto;
+  background-color: #f3f3f3;
+  border: 1px solid #efefef;
+  cursor: pointer;
+}
+.SortableItem {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 20px;
+  background-color: #fff;
+  border-bottom: 1px solid #efefef;
+  box-sizing: border-box;
+  user-select: none;
+  color: #333;
+  font-weight: 400;
+  border: 1px solid #ccc;
+}
+.SortableList2 {
+  width: 300px;
+  margin: 20px auto;
+  border: 1px solid #efefef;
+}
+.SortableItem2 {
+  width: 300px;
+  border: 1px solid #efefef;
+  text-align: center;
+}
+.SortableItem2 p {
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+  background: #efefef;
+  margin: 0;
+  height: 30px;
 }
 </style>
