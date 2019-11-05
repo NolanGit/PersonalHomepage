@@ -51,8 +51,12 @@
       :close-on-click-modal="false"
       width="40%"
     >
-      <SlickList lockAxis="y" useDragHandle="true" v-model="bookmarksEdit.list">
-        <SlickItem v-for="(item, index) in bookmarksEdit.list" :index="index" :key="index">{{item}}</SlickItem>
+      <SlickList lockAxis="y" :useDragHandle="true" v-model="bookmarksEdit.list">
+        <SlickItem v-for="(item, index) in bookmarksEdit.list" :index="index" :key="index">
+          <span>{{item}}</span>
+          <el-button size="small" @click="singleBookmarkSetting()" icon="el-icon-setting"></el-button>
+          <el-button size="small" @click="singleBookmarkDelete()" icon="el-icon-delete"></el-button>
+        </SlickItem>
       </SlickList>
     </el-dialog>
   </div>
