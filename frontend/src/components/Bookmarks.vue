@@ -51,13 +51,8 @@
       :close-on-click-modal="false"
       width="40%"
     >
-      <SortableList lockAxis="y" useDragHandle="true" v-model="bookmarksEdit.list">
-        <SortableItem
-          v-for="(item, index) in bookmarksEdit.list"
-          :index="index"
-          :key="index"
-          :item="item"
-        />
+      <SortableList lockAxis="y" useDragHandle="true" v-model="items">
+        <SortableItem v-for="(item, index) in items" :index="index" :key="index" :item="item" />
       </SortableList>
     </el-dialog>
   </div>
@@ -103,6 +98,16 @@ export default {
   },
   data() {
     return {
+      items: [
+        "Item 1",
+        "Item 2",
+        "Item 3",
+        "Item 4",
+        "Item 5",
+        "Item 6",
+        "Item 7",
+        "Item 8"
+      ],
       bookmarksDataArray: [],
       bookmarksEdit: {
         visible: false,
