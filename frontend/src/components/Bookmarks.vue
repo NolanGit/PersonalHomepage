@@ -37,20 +37,22 @@
       </el-popover>
 
       <el-popover placement="top" width="260" v-model="bookmarksEdit.visible">
-        <SlickItem
-          class="list-item"
-          v-for="(item, index) in bookmarksEdit.list"
-          :index="index"
-          :key="index"
-        >
-          <span>{{ item }}</span>
-          <el-button
-            class="list-button"
-            size="small"
-            @click="bookmarksDelete()"
-            icon="el-icon-delete"
-          ></el-button>
-        </SlickItem>
+        <SlickList useDragHandle="true" lockAxis="y" v-model="bookmarksEdit.list" class="list">
+          <SlickItem
+            class="list-item"
+            v-for="(item, index) in bookmarksEdit.list"
+            :index="index"
+            :key="index"
+          >
+            <span>{{ item }}</span>
+            <el-button
+              class="list-button"
+              size="small"
+              @click="bookmarksDelete()"
+              icon="el-icon-delete"
+            ></el-button>
+          </SlickItem>
+        </SlickList>
         <div style="text-align: right; margin: 0">
           <el-button type="primary" size="mini">确定</el-button>
         </div>
