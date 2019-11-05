@@ -89,7 +89,9 @@ export default {
   },
   components: {
     SlickItem,
-    SlickList
+    SlickList,
+    SortableItem,
+    SortableList
   },
   watch: {
     bookmarksData(newVal, oldVal) {
