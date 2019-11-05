@@ -35,18 +35,8 @@
           circle
         ></el-button>
       </el-popover>
-      <el-button
-        class="bookmarksOptionButtonSetting"
-        size="small"
-        @click="bookmarksSetting()"
-        icon="el-icon-setting"
-        circle
-      ></el-button>
-    </el-row>
 
-    <!--编辑界面-->
-    <el-drawer title="编辑书签" :visible.sync="bookmarksEdit.visible" size="40%">
-      <SlickList lockAxis="y" v-model="bookmarksEdit.list" class="list">
+      <el-popover placement="top" width="260" v-model="bookmarksEdit.visible">
         <SlickItem
           class="list-item"
           v-for="(item, index) in bookmarksEdit.list"
@@ -54,19 +44,45 @@
           :key="index"
         >
           <span>{{ item }}</span>
+          <el-button
+            class="list-button"
+            size="small"
+            @click="bookmarksDelete()"
+            icon="el-icon-delete"
+          ></el-button>
+        </SlickItem>
+        <div style="text-align: right; margin: 0">
+          <el-button type="primary" size="mini" @click="bookmarksAddButton()">确定</el-button>
+        </div>
+        <el-button
+          class="bookmarksOptionButtonSetting"
+          size="small"
+          slot="reference"
+          icon="el-icon-setting"
+          circle
+        ></el-button>
+      </el-popover>
+    </el-row>
+
+    <!--编辑界面-->
+    <el-drawer title="编辑书签" :visible.sync="bookmarksEdit.visible" size="40%">
+      <SlickList useDragHandle="true" lockAxis="y" v-model="bookmarksEdit.list" class="list">
+        <SlickItem
+          class="list-item"
+          v-for="(item, index) in bookmarksEdit.list"
+          :index="index"
+          :key="index"
+        >
+          <span>{{ item }}</span>
+          <el-button
+            class="list-button"
+            size="small"
+            @click="bookmarksDelete()"
+            icon="el-icon-delete"
+          ></el-button>
         </SlickItem>
       </SlickList>
     </el-drawer>
-    <SlickList lockAxis="y" v-model="bookmarksEdit.list" class="list">
-      <SlickItem
-        class="list-item"
-        v-for="(item, index) in bookmarksEdit.list"
-        :index="index"
-        :key="index"
-      >
-        <span>{{ item }}</span>
-      </SlickItem>
-    </SlickList>
   </div>
 </template>
 <script>
