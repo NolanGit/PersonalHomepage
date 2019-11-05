@@ -51,7 +51,7 @@
         </el-row>
       </el-col>
       <el-col>
-        <SlickList useDragHandle="true" lockAxis="y" v-model="bookmarksEdit.list" class="list">
+        <SlickList lockAxis="y" v-model="bookmarksEdit.list" class="list">
           <SlickItem
             class="list-item"
             v-for="(item, index) in bookmarksEdit.list"
