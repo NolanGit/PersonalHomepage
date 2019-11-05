@@ -35,9 +35,9 @@
       :close-on-click-modal="false"
       width="40%"
     >
-      <SlickList lockAxis="y" v-model="bookmarksDataArray">
+      <SlickList lockAxis="y" v-model="bookmarksEdit.list">
         <SlickItem
-          v-for="(item, index) in bookmarksDataArray"
+          v-for="(item, index) in bookmarksEdit.list"
           :index="index"
           :key="index"
         >{{ item }}</SlickItem>
@@ -71,7 +71,7 @@ export default {
       bookmarksDataArray: [],
       bookmarksEdit: {
         visible: false,
-        list:[]
+        list: []
       },
       bookmarksPopover: {
         visible: false,
@@ -112,10 +112,8 @@ export default {
     },
     bookmarksDataAddAddButton(bookmarksData) {
       this.bookmarksDataArray = bookmarksData;
-      for(var x=0;x<this.bookmarksDataArray.length;x++){
-        this.bookmarksEdit.list.push(
-          this.bookmarksDataArray[x].name
-        )
+      for (var x = 0; x < this.bookmarksDataArray.length; x++) {
+        this.bookmarksEdit.list.push(this.bookmarksDataArray[x].name);
       }
     },
     bookmarksSetting() {
