@@ -51,14 +51,11 @@
       :close-on-click-modal="false"
       width="40%"
     >
-      <SortableList lockAxis="y" v-model="bookmarksEdit.list" useDragHandle="true">
-        <SortableItem
-          v-for="(item, index) in bookmarksEdit.list"
-          :index="index"
-          :item="item"
-          :key="index"
-        ></SortableItem>
-      </SortableList>
+      <SlickList lockAxis="y" v-model="items" class="list">
+        <SlickItem class="list-item" v-for="(item, index) in items" :index="index" :key="index">
+          <span>{{ item }}</span>
+        </SlickItem>
+      </SlickList>
     </el-dialog>
   </div>
 </template>
@@ -68,22 +65,7 @@ import Router from "vue-router";
 import { bookmarksAdd } from "../api/bookmarks";
 import { SlickList, SlickItem } from "vue-slicksort";
 import { ContainerMixin, ElementMixin } from "vue-slicksort";
-const SortableList = {
-  mixins: [ContainerMixin],
-  template: `
-    <ul class="list">
-      <slot />
-    </ul>
-  `
-};
 
-const SortableItem = {
-  mixins: [ElementMixin],
-  props: ["item"],
-  template: `
-    <li class="list-item">{{item}}</li>
-  `
-};
 export default {
   name: "bookmarks",
   props: {
@@ -92,9 +74,7 @@ export default {
   },
   components: {
     SlickItem,
-    SlickList,
-    SortableItem,
-    SortableList
+    SlickList
   },
   watch: {
     bookmarksData(newVal, oldVal) {
@@ -204,5 +184,27 @@ export default {
 .bookmarksOptionButtonSetting {
   margin-left: 5px;
   margin-right: 5px;
+}
+.list {
+    max-height: 80vh;
+    margin: 0 auto;
+    padding: 0;
+    overflow: auto;
+    background-color: #f3f3f3;
+    border: 1px solid #efefef;
+    max-width:600px;
+    cursor:pointer;
+}
+.list-item {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 20px;
+    background-color: #fff;
+    border-bottom: 1px solid #efefef;
+    box-sizing: border-box;
+    user-select: none;
+    color: #333;
+    font-weight: 400;
 }
 </style>
