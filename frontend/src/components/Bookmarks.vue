@@ -35,7 +35,7 @@
           circle
         ></el-button>
       </el-popover>
-      <el-popover placement="top" width="260" v-model="bookmarksPopover.visible">
+      <el-popover placement="top" width="260" v-model="bookmarksEdit.visible">
         <SlickList lockAxis="y" v-model="bookmarksEdit.list" class="list">
           <SlickItem
             class="list-item"
@@ -63,6 +63,7 @@
           circle
         ></el-button>
       </el-popover>
+      
       <el-button
         class="bookmarksOptionButtonSetting"
         size="small"
