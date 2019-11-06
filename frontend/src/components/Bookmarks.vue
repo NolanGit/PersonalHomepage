@@ -197,7 +197,7 @@ export default {
       for (let x = 0; x < this.bookmarksDataArray.length; x++) {
         temp.push([]);
         for (let y = 0; y < this.bookmarksDataArray[x].length; y++) {
-          temp[temp.length - 1].push(this.bookmarksDataArray[x][y]);
+          temp[temp.length - 1].push(this.bookmarksDataArray[x][y].name);
         }
       }
       console.log(temp);
