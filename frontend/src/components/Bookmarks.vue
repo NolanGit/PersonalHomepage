@@ -54,9 +54,14 @@
           :index="index"
           :key="index"
         >
-          <SlickList :lockToContainerEdges="true" class="list" lockAxis="x" v-model="item.itemArr">
+          <SlickList
+            :lockToContainerEdges="true"
+            class="list-x"
+            lockAxis="x"
+            v-model="item.itemArr"
+          >
             <SlickItem
-              class="list-item"
+              class="list-item-x"
               v-for="(singleItem, singleIndex) in item.itemArr"
               :index="singleIndex"
               :key="singleIndex"
@@ -237,6 +242,30 @@ export default {
   background-color: #fff;
   border-bottom: 1px solid #efefef;
   box-sizing: border-box;
+  user-select: none;
+  color: #333;
+  font-weight: 400;
+}
+.list-x {
+  width: 600px;
+  height: 300px;
+  white-space: nowrap;
+}
+.list-item-x {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  width: 100%;
+  padding: 20px;
+  background-color: #fff;
+  border-bottom: 1px solid #efefef;
+  box-sizing: border-box;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
   user-select: none;
   color: #333;
   font-weight: 400;
