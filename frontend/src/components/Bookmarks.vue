@@ -104,7 +104,7 @@ export default {
   watch: {
     bookmarksData(newVal, oldVal) {
       this.bookmarksDataInit(newVal);
-    },
+    }
     // bookmarksEditData(newVal, oldVal) {
     //   this.bookmarksEditDataInit(newVal);
     // }
@@ -193,7 +193,6 @@ export default {
       this.bookmarksEdit.list = bookmarksEditData;
     },
     bookmarksSetting() {
-      this.bookmarksEdit.visible = true;
       var temp = [];
       for (let x = 0; x < this.bookmarksDataArray.length; x++) {
         temp.push([]);
@@ -201,6 +200,9 @@ export default {
           temp[temp.length - 1].push(this.bookmarksDataArray[x][y]);
         }
       }
+      console.log(temp);
+      this.bookmarksEdit.list = temp;
+      this.bookmarksEdit.visible = true;
     }
   },
   mounted() {}
