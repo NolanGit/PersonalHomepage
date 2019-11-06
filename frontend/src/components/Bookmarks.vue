@@ -54,13 +54,7 @@
           :index="index"
           :key="index"
         >
-          <SlickList
-            :lockToContainerEdges="true"
-            class="list"
-            axis="x"
-            lockAxis="x"
-            v-model="item.itemArr"
-          >
+          <SlickList :lockToContainerEdges="true" class="list" lockAxis="x" v-model="item.itemArr">
             <SlickItem
               class="list-item"
               v-for="(singleItem, singleIndex) in item"
@@ -111,9 +105,9 @@ export default {
     bookmarksData(newVal, oldVal) {
       this.bookmarksDataInit(newVal);
     },
-    bookmarksEditData(newVal, oldVal) {
-      this.bookmarksEditDataInit(newVal);
-    }
+    // bookmarksEditData(newVal, oldVal) {
+    //   this.bookmarksEditDataInit(newVal);
+    // }
   },
   data() {
     return {
@@ -200,6 +194,13 @@ export default {
     },
     bookmarksSetting() {
       this.bookmarksEdit.visible = true;
+      var temp = [];
+      for (let x = 0; x < this.bookmarksDataArray.length; x++) {
+        temp.push([]);
+        for (let y = 0; y < this.bookmarksDataArray[x].length; y++) {
+          temp[temp.length - 1].push(this.bookmarksDataArray[x][y]);
+        }
+      }
     }
   },
   mounted() {}
