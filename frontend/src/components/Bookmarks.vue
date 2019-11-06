@@ -47,21 +47,25 @@
 
     <!--编辑界面-->
     <el-dialog title="编辑书签" :visible.sync="bookmarksEdit.visible" width="40%">
-      <SlickList lockAxis="y" v-model="bookmarksEdit.list" class="list">
+      <SlickList axis="x" lockAxis="x" v-model="bookmarksEdit.list" class="list">
         <SlickItem
           class="list-item"
           v-for="(item, index) in bookmarksEdit.list"
           :index="index"
           :key="index"
-        >
-          <span>{{ item }}</span>
+        ><SlickList :lockToContainerEdges="true" class="list" lockAxis="y" v-model="item.itemArr">
+                    <SlickItem class="list-item" v-for="(singleItem, singleIndex) in item" :index="singleIndex" :key="singleIndex">
+                        {{ singleItem }}
+                    </SlickItem>
+                </SlickList>
+          <!-- <span>{{ item }}</span>
           <el-button
             class="list-button"
             size="small"
             @click="bookmarksDelete()"
             icon="el-icon-delete"
             circle
-          ></el-button>
+          ></el-button> -->
         </SlickItem>
       </SlickList>
     </el-dialog>
@@ -170,11 +174,12 @@ export default {
     bookmarksDataInit(bookmarksData) {
       this.bookmarksDataArray = bookmarksData;
       console.log(this.bookmarksDataArray);
-      for (var x = 0; x < this.bookmarksDataArray.length; x++) {
-        for (var y = 0; y < this.bookmarksDataArray[x].length; y++) {
-          this.bookmarksEdit.list.push(this.bookmarksDataArray[x][y].name);
-        }
-      }
+      this.bookmarksEdit.list=this.bookmarksDataArray
+      // for (var x = 0; x < this.bookmarksDataArray.length; x++) {
+      //   for (var y = 0; y < this.bookmarksDataArray[x].length; y++) {
+      //     this.bookmarksEdit.list.push(this.bookmarksDataArray[x][y].name);
+      //   }
+      // }
       console.log(this.bookmarksEdit.list);
     },
     bookmarksSetting() {
