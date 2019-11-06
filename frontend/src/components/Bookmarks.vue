@@ -57,6 +57,7 @@
           <SlickList
             :lockToContainerEdges="true"
             class="list-x"
+            axis="x"
             lockAxis="x"
             v-model="item.itemArr"
           >
