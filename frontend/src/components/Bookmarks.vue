@@ -47,7 +47,7 @@
 
     <!--编辑界面-->
     <el-dialog title="编辑书签" :visible.sync="bookmarksEdit.visible" width="40%">
-      <SlickList lockAxis="x" axis="x" v-model="bookmarksEdit.list" class="list">
+      <SlickList lockAxis="y" v-model="bookmarksEdit.list" class="list">
         <SlickItem
           class="list-item"
           v-for="(item, index) in bookmarksEdit.list"
@@ -217,30 +217,6 @@ export default {
   background-color: #fff;
   border-bottom: 1px solid #efefef;
   box-sizing: border-box;
-  user-select: none;
-  color: #333;
-  font-weight: 400;
-}
-.list-x {
-  width: 600px;
-  height: 300px;
-  white-space: nowrap;
-}
-.list-item-x {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  width: 100%;
-  padding: 20px;
-  background-color: #fff;
-  border-bottom: 1px solid #efefef;
-  box-sizing: border-box;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
   color: #333;
   font-weight: 400;
