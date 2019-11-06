@@ -19,23 +19,13 @@
     </el-row>
 
     <el-row type="flex" justify="center" class="bookmarksOptionButton" v-show="user!=''">
-      <el-popover placement="top" width="260" v-model="bookmarksPopover.visible">
-        <p>添加书签：</p>
-        <el-input size="mini" v-model="bookmarksPopover.name" placeholder="网站名称"></el-input>
-        <el-input size="mini" v-model="bookmarksPopover.url" placeholder="链接(需要完整填写，包括'http://')"></el-input>
-        <el-input size="mini" v-model="bookmarksPopover.icon" placeholder="图标名称"></el-input>
-        <div style="text-align: right; margin: 0">
-          <el-button type="primary" size="mini" @click="bookmarksAddButton()">确定</el-button>
-        </div>
-        <el-button
-          class="bookmarksOptionButtonAdd"
-          size="small"
-          slot="reference"
-          icon="el-icon-plus"
-          circle
-        ></el-button>
-      </el-popover>
-
+      <el-button
+        class="bookmarksOptionButtonAdd"
+        size="small"
+        @click="bookmarksOptionButtonAddClicked()"
+        icon="el-icon-plus"
+        circle
+      ></el-button>
       <el-button
         class="bookmarksOptionButtonSetting"
         size="small"
@@ -46,6 +36,14 @@
     </el-row>
 
     <!--编辑界面-->
+    <el-dialog title="新增书签" :visible.sync="bookmarksPopover.visible" width="40%">
+      <el-input size="mini" v-model="bookmarksPopover.name" placeholder="网站名称"></el-input>
+      <el-input size="mini" v-model="bookmarksPopover.url" placeholder="链接(需要完整填写，包括'http://')"></el-input>
+      <el-input size="mini" v-model="bookmarksPopover.icon" placeholder="图标名称"></el-input>
+      <el-button type="primary" size="mini" @click="bookmarksAddButton()">确定</el-button>
+    </el-dialog>
+
+    <!--编辑界面-->
     <el-dialog title="编辑书签" :visible.sync="bookmarksEdit.visible" width="40%">
       <SlickList lockAxis="y" v-model="bookmarksEdit.list" class="list">
         <SlickItem
@@ -54,14 +52,10 @@
           :index="index"
           :key="index"
         >
+          <i class="el-icon-s-operation"></i>
           <span>{{ item }}</span>
-          <el-button
-            class="list-button"
-            size="small"
-            @click="bookmarksDelete()"
-            icon="el-icon-delete"
-            circle
-          ></el-button>
+          <i class="el-icon-setting" @click="bookmarksSetting()"></i>
+          <i class="el-icon-delete" @click="bookmarksDelete()"></i>
         </SlickItem>
       </SlickList>
     </el-dialog>
@@ -142,6 +136,9 @@ export default {
     bookmarksEditDataInit(bookmarksEditData) {
       this.bookmarksEdit.list = bookmarksEditData;
     },
+    bookmarksOptionButtonAddClicked() {
+      this.bookmarksPopover.visible = true;
+    },
     bookmarksSetting() {
       var temp = [];
       for (let x = 0; x < this.bookmarksDataArray.length; x++) {
@@ -195,7 +192,6 @@ export default {
   margin: 0 auto;
   padding: 0;
   overflow: auto;
-  background-color: #f3f3f3;
   border: 1px solid #efefef;
   max-width: 600px;
   cursor: pointer;
