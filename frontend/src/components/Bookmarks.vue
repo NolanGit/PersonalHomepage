@@ -2,45 +2,79 @@
   <div class="bookmarks-main">
     <el-row type="flex" justify="center">
       <div>
-        <div class="bookmarks">书签</div>
+        <div class="bookmarks-label">书签</div>
       </div>
     </el-row>
     <el-row
-      class="bookmarksData"
+      class="bookmarks-data-row"
       v-for="bookmarksSuite in bookmarksDataArray"
       :key="bookmarksSuite"
     >
       <el-col :span="6" v-for="bookmark in bookmarksSuite" :key="bookmark">
-        <el-button class="bookmarksButton" size="small" @click="buttonClicked(bookmark.url)">
+        <el-button
+          class="bookmarks-main-button"
+          size="small"
+          @click="bookmarksClicked(bookmark.url)"
+        >
           <i :class="bookmark.icon" style="margin-right=5px;font-size=15px"></i>
           {{bookmark.name}}
         </el-button>
       </el-col>
     </el-row>
 
-    <el-row type="flex" justify="center" class="bookmarksOptionButton" v-show="user!=''">
+    <el-row type="flex" justify="center" class="bookmarks-option-button" v-show="user!=''">
       <el-button
-        class="bookmarksOptionButtonAdd"
+        class="bookmarks-option-button-add"
         size="small"
         @click="bookmarksOptionButtonAddClicked()"
         icon="el-icon-plus"
         circle
       ></el-button>
       <el-button
-        class="bookmarksOptionButtonSetting"
+        class="bookmarks-option-button-edit-form"
         size="small"
-        @click="bookmarksSetting()"
+        @click="bookmarksOptionButtonSettingDialogClicked()"
         icon="el-icon-setting"
         circle
       ></el-button>
     </el-row>
 
     <!--编辑界面-->
-    <el-dialog title="新增书签" :visible.sync="bookmarksPopover.visible" width="40%">
-      <el-input size="mini" v-model="bookmarksPopover.name" placeholder="网站名称"></el-input>
-      <el-input size="mini" v-model="bookmarksPopover.url" placeholder="链接(需要完整填写，包括'http://')"></el-input>
-      <el-input size="mini" v-model="bookmarksPopover.icon" placeholder="图标名称"></el-input>
-      <el-button type="primary" size="mini" @click="bookmarksAddButton()">确定</el-button>
+    <el-dialog title="新增书签" :visible.sync="bookmarksEditForm.visible" width="40%">
+      <el-form ref="form" :model="bookmarksEditForm" label-width="80px">
+        <el-form-item label="网站名称">
+          <el-input
+            class="edit-form-name"
+            size="small"
+            v-model="bookmarksEditForm.name"
+            placeholder="网站名称"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="链接">
+          <el-input
+            class="edit-form-url"
+            size="small"
+            v-model="bookmarksEditForm.url"
+            placeholder="链接(需要完整填写，包括'http://')"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="图标名称">
+          <el-input
+            class="edit-form-icon"
+            size="small"
+            v-model="bookmarksEditForm.icon"
+            placeholder="图标名称"
+          ></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button
+            class="edit-form-confirm"
+            type="primary"
+            size="small"
+            @click="bookmarksAddFront()"
+          >确定</el-button>
+        </el-form-item>
+      </el-form>
     </el-dialog>
 
     <!--编辑界面-->
@@ -93,7 +127,7 @@ export default {
         visible: false,
         list: []
       },
-      bookmarksPopover: {
+      bookmarksEditForm: {
         visible: false,
         name: "",
         url: "https://",
@@ -102,15 +136,15 @@ export default {
     };
   },
   methods: {
-    buttonClicked(bookmarkUrl) {
+    bookmarksClicked(bookmarkUrl) {
       console.log(bookmarkUrl);
       window.open(bookmarkUrl);
     },
-    bookmarksAddButton() {
+    bookmarksAddFront() {
       var para = {
-        url: this.bookmarksPopover.url,
-        name: this.bookmarksPopover.name,
-        icon: this.bookmarksPopover.icon,
+        url: this.bookmarksEditForm.url,
+        name: this.bookmarksEditForm.name,
+        icon: this.bookmarksEditForm.icon,
         user: sessionStorage.getItem("user").replace(/\"/g, "")
       };
       bookmarksAdd(para).then(data => {
@@ -126,9 +160,9 @@ export default {
           });
         }
       });
-      this.bookmarksPopover.url = "https://";
-      this.bookmarksPopover.name = "";
-      this.bookmarksPopover.icon = "";
+      this.bookmarksEditForm.url = "https://";
+      this.bookmarksEditForm.name = "";
+      this.bookmarksEditForm.icon = "";
     },
     bookmarksDataInit(bookmarksData) {
       this.bookmarksDataArray = bookmarksData;
@@ -137,9 +171,9 @@ export default {
       this.bookmarksEdit.list = bookmarksEditData;
     },
     bookmarksOptionButtonAddClicked() {
-      this.bookmarksPopover.visible = true;
+      this.bookmarksEditForm.visible = true;
     },
-    bookmarksSetting() {
+    bookmarksOptionButtonSettingDialogClicked() {
       var temp = [];
       for (let x = 0; x < this.bookmarksDataArray.length; x++) {
         for (let y = 0; y < this.bookmarksDataArray[x].length; y++) {
@@ -158,14 +192,7 @@ export default {
 .bookmarks-main {
   min-height: 280px;
 }
-.bookmarksCard {
-  padding: 0px;
-}
-.bookmarksButton {
-  width: 90px;
-  height: 40px;
-}
-.bookmarks {
+.bookmarks-label {
   font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB,
     Microsoft YaHei, SimSun, sans-serif;
   font-weight: 600;
@@ -173,17 +200,21 @@ export default {
   color: #303133;
   padding-bottom: 20px;
 }
-.bookmarksOptionButton {
-  margin-top: 20px;
-}
-.bookmarksData {
+.bookmarks-data-row {
   min-height: 210px;
 }
-.bookmarksOptionButtonAdd {
+.bookmarks-main-button {
+  width: 90px;
+  height: 40px;
+}
+.bookmarks-option-button {
+  margin-top: 20px;
+}
+.bookmarks-option-button-add {
   margin-left: 5px;
   margin-right: 5px;
 }
-.bookmarksOptionButtonSetting {
+.bookmarks-option-button-edit-form {
   margin-left: 5px;
   margin-right: 5px;
 }
@@ -216,5 +247,14 @@ export default {
   user-select: none;
   color: #333;
   font-weight: 400;
+}
+.edit-form-name {
+  width: 70%;
+}
+.edit-form-url {
+  width: 70%;
+}
+.edit-form-icon {
+  width: 70%;
 }
 </style>
