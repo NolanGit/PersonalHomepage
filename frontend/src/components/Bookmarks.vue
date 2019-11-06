@@ -100,7 +100,8 @@ export default {
   name: "bookmarks",
   props: {
     user: String,
-    bookmarksData: Array
+    bookmarksData: Array,
+    bookmarksEditData: Array
   },
   components: {
     SlickItem,
@@ -109,6 +110,9 @@ export default {
   watch: {
     bookmarksData(newVal, oldVal) {
       this.bookmarksDataInit(newVal);
+    },
+    bookmarksEditData(newVal, oldVal) {
+      this.bookmarksEditDataInit(newVal);
     }
   },
   data() {
@@ -190,14 +194,9 @@ export default {
     },
     bookmarksDataInit(bookmarksData) {
       this.bookmarksDataArray = bookmarksData;
-      console.log(this.bookmarksDataArray);
-      this.bookmarksEdit.list = this.bookmarksDataArray;
-      // for (var x = 0; x < this.bookmarksDataArray.length; x++) {
-      //   for (var y = 0; y < this.bookmarksDataArray[x].length; y++) {
-      //     this.bookmarksEdit.list.push(this.bookmarksDataArray[x][y].name);
-      //   }
-      // }
-      console.log(this.bookmarksEdit.list);
+    },
+    bookmarksEditDataInit(bookmarksEditData) {
+      this.bookmarksEdit.list = bookmarksEditData;
     },
     bookmarksSetting() {
       this.bookmarksEdit.visible = true;
