@@ -47,20 +47,34 @@
 
     <!--编辑界面-->
     <el-dialog title="编辑书签" :visible.sync="bookmarksEdit.visible" width="40%">
-      <SlickList axis="x" lockAxis="x" v-model="bookmarksEdit.list" class="list">
+      <SlickList lockAxis="y" v-model="bookmarksEdit.list" class="list">
         <SlickItem
           class="list-item"
           v-for="(item, index) in bookmarksEdit.list"
           :index="index"
           :key="index"
         >
-          <SlickList :lockToContainerEdges="true" class="list" lockAxis="y" v-model="item.itemArr">
+          <SlickList
+            :lockToContainerEdges="true"
+            class="list"
+            axis="x"
+            lockAxis="x"
+            v-model="item.itemArr"
+          >
             <SlickItem
               class="list-item"
               v-for="(singleItem, singleIndex) in item"
               :index="singleIndex"
               :key="singleIndex"
-            ><span>{{ singleItem }}</span></SlickItem>
+            >
+              <span>{{ singleItem }}</span>
+              <el-button
+                class="list-button"
+                size="small"
+                @click="bookmarksDelete()"
+                icon="el-icon-delete"
+              ></el-button>
+            </SlickItem>
           </SlickList>
           <!-- <span>{{ item }}</span>
           <el-button
