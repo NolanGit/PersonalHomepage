@@ -54,35 +54,14 @@
           :index="index"
           :key="index"
         >
-          <SlickList
-            :lockToContainerEdges="true"
-            class="list-x"
-            lockAxis="y"
-            v-model="item.itemArr"
-          >
-            <SlickItem
-              class="list-item-x"
-              v-for="(singleItem, singleIndex) in item.itemArr"
-              :index="singleIndex"
-              :key="singleIndex"
-            >
-              <span>{{ singleItem }}</span>
-              <el-button
-                class="list-button"
-                size="small"
-                @click="bookmarksDelete()"
-                icon="el-icon-delete"
-              ></el-button>
-            </SlickItem>
-          </SlickList>
-          <!-- <span>{{ item }}</span>
+          <span>{{ item }}</span>
           <el-button
             class="list-button"
             size="small"
             @click="bookmarksDelete()"
             icon="el-icon-delete"
             circle
-          ></el-button>-->
+          ></el-button>
         </SlickItem>
       </SlickList>
     </el-dialog>
@@ -166,12 +145,8 @@ export default {
     bookmarksSetting() {
       var temp = [];
       for (let x = 0; x < this.bookmarksDataArray.length; x++) {
-        temp.push({});
-        temp[temp.length - 1].itemArr = [];
         for (let y = 0; y < this.bookmarksDataArray[x].length; y++) {
-          temp[temp.length - 1].itemArr.push(
-            this.bookmarksDataArray[x][y].name
-          );
+          temp.push(this.bookmarksDataArray[x][y].name);
         }
       }
       console.log(temp);
