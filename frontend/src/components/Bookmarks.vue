@@ -57,7 +57,7 @@
           <SlickList :lockToContainerEdges="true" class="list" lockAxis="x" v-model="item.itemArr">
             <SlickItem
               class="list-item"
-              v-for="(singleItem, singleIndex) in item"
+              v-for="(singleItem, singleIndex) in item.itemArr"
               :index="singleIndex"
               :key="singleIndex"
             >
@@ -94,8 +94,7 @@ export default {
   name: "bookmarks",
   props: {
     user: String,
-    bookmarksData: Array,
-    bookmarksEditData: Array
+    bookmarksData: Array
   },
   components: {
     SlickItem,
@@ -111,39 +110,6 @@ export default {
   },
   data() {
     return {
-      msg: "Hello, This is Vue-Slicksort-Demo ！",
-      flag: true,
-      list: [
-        {
-          title: "list1"
-        },
-        {
-          title: "list2"
-        },
-        {
-          title: "list3"
-        },
-        {
-          title: "list4"
-        },
-        {
-          title: "list5"
-        }
-      ],
-      items: [
-        {
-          name: "title1",
-          itemArr: ["Item1", "Item2", "Item3"]
-        },
-        {
-          name: "title2",
-          itemArr: ["Item4", "Item5", "Item6"]
-        },
-        {
-          name: "title3",
-          itemArr: ["Item7", "Item8", "Item9"]
-        }
-      ],
       bookmarksDataArray: [],
       bookmarksEdit: {
         visible: false,
@@ -195,9 +161,12 @@ export default {
     bookmarksSetting() {
       var temp = [];
       for (let x = 0; x < this.bookmarksDataArray.length; x++) {
-        temp.push([]);
+        temp.push({});
+        temp[temp.length - 1].itemArr = [];
         for (let y = 0; y < this.bookmarksDataArray[x].length; y++) {
-          temp[temp.length - 1].push(this.bookmarksDataArray[x][y].name);
+          temp[temp.length - 1].itemArr.push(
+            this.bookmarksDataArray[x][y].name
+          );
         }
       }
       console.log(temp);

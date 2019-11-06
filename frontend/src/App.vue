@@ -16,7 +16,7 @@
       </el-col>
       <el-col :span="7" :offset="1">
         <el-card shadow="hover" v-show="show.weather">
-          <bookmarks :bookmarksData="bookmarksData" :bookmarksEditData="bookmarksEditData" :user="user" />
+          <bookmarks :bookmarksData="bookmarksData" :user="user" />
         </el-card>
       </el-col>
     </el-row>
@@ -67,7 +67,6 @@ export default {
           } else {
             this.locations = data.data["locations"];
             this.bookmarksData = data.data["bookmarks"];
-            this.bookmarksEditData = data.data["bookmarks_edit_data"];
           }
         });
       }
