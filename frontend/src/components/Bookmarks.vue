@@ -79,9 +79,9 @@
 
     <!--编辑界面-->
     <el-dialog title="编辑书签" :visible.sync="bookmarksEdit.visible" width="40%">
-      <SlickList lockAxis="y" v-model="bookmarksEdit.list" class="list">
+      <SlickList lockAxis="y" v-model="bookmarksEdit.list" class="slick_list">
         <SlickItem
-          class="list-item"
+          class="slick_list_item"
           v-for="(item, index) in bookmarksEdit.list"
           :index="index"
           :key="index"
@@ -92,6 +92,12 @@
           <i class="el-icon-delete" @click="bookmarksDelete()"></i>
         </SlickItem>
       </SlickList>
+      <el-button
+        class="edit-form-confirm"
+        type="primary"
+        size="small"
+        @click="bookmarksEditSubmit()"
+      >确定</el-button>
     </el-dialog>
   </div>
 </template>
@@ -218,7 +224,7 @@ export default {
   margin-left: 5px;
   margin-right: 5px;
 }
-.list {
+.slick_list {
   max-height: 80vh;
   margin: 0 auto;
   padding: 0;
@@ -227,7 +233,7 @@ export default {
   max-width: 600px;
   cursor: pointer;
 }
-.list-item {
+.slick_list_item {
   list-style: none;
   padding: 10px 0;
   height: 40px;
