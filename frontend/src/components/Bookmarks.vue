@@ -191,6 +191,9 @@ export default {
       this.bookmarksEdit.visible = true;
     }
   },
+  created() {
+    this.searchEnginesDataFront();
+  },
   mounted() {}
 };
 </script>

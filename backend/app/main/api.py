@@ -10,7 +10,7 @@ from flask_cors import cross_origin
 from ..search.model import search_engines, search_engines_log
 from ..weather.model import weather_personalized
 from ..bookmarks.model import bookmarks as bookmarks_table
-from ..common_func import CommonFunc
+from ..common_func import CommonFunc, User
 
 
 @main.route('/', defaults={'path': ''})
@@ -24,15 +24,20 @@ def catch_all(path):
 def userInfo():
     try:
         result = {}
-        user = request.get_json()['user']
-        user_id = CommonFunc().get_user_id(user)
-        weather_personalized_query = weather_personalized.select().where((weather_personalized.user_id == user_id) & (weather_personalized.is_valid == 1)).dicts()
-        result['locations'] = []
-        for row in weather_personalized_query:
-            result['locations'].append(row['location'])
+        try:
+            user_name = request.get_json()['user']
+            user = User(user_name)
+        except:
+            user.user_id = 0
+
+        if user.user_id != 0:
+            weather_personalized_query = weather_personalized.select().where((weather_personalized.user_id == user.user_id) & (weather_personalized.is_valid == 1)).dicts()
+            result['locations'] = []
+            for row in weather_personalized_query:
+                result['locations'].append(row['location'])
 
         result['bookmarks'] = []
-        bookmarks_query = bookmarks_table.select().where((bookmarks_table.user_id == user_id) & (bookmarks_table.is_valid == 1)).order_by(bookmarks_table.order).dicts()
+        bookmarks_query = bookmarks_table.select().where((bookmarks_table.user_id == user.user_id) & (bookmarks_table.is_valid == 1)).order_by(bookmarks_table.order).dicts()
         for row in bookmarks_query:
             result['bookmarks'].append({'id': row['id'], 'name': row['name'], 'url': row['url'], 'icon': row['icon'], 'update_time': row['update_time']})
         temp = []

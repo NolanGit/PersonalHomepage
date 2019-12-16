@@ -53,23 +53,21 @@ export default {
       } catch (error) {
         var user = undefined;
       }
-      if (user != undefined) {
-        this.user = user;
-        var para = {
-          user: user
-        };
-        userInfo(para).then(data => {
-          if (data["code"] !== 200) {
-            this.$message({
-              message: data["msg"],
-              type: "error"
-            });
-          } else {
-            this.locations = data.data["locations"];
-            this.bookmarksData = data.data["bookmarks"];
-          }
-        });
-      }
+      this.user = user;
+      var para = {
+        user: user
+      };
+      userInfo(para).then(data => {
+        if (data["code"] !== 200) {
+          this.$message({
+            message: data["msg"],
+            type: "error"
+          });
+        } else {
+          this.locations = data.data["locations"];
+          this.bookmarksData = data.data["bookmarks"];
+        }
+      });
     },
     userLoginedOrLogout(user) {
       if (user != "") {
