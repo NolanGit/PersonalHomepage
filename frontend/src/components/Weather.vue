@@ -152,7 +152,11 @@ export default {
     getWeatherDatafront(locations) {
       this.todayShow = false;
       //console.log(locations);
-      if ((locations == "") | (locations.length == 0)) {
+      if (
+        (locations == undefined) |
+        (locations == "") |
+        (locations.length == 0)
+      ) {
         locations = undefined;
       }
       //console.log(locations);
