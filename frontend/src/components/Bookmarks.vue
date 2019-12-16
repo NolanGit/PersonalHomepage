@@ -5,22 +5,21 @@
         <div class="bookmarks-label">书签</div>
       </div>
     </el-row>
-    <el-row
-      class="bookmarks-data-row"
-      v-for="bookmarksSuite in bookmarksDataArray"
-      :key="bookmarksSuite"
-    >
-      <el-col :span="6" v-for="bookmark in bookmarksSuite" :key="bookmark">
-        <el-button
-          class="bookmarks-main-button"
-          size="small"
-          @click="bookmarksClicked(bookmark.url)"
-        >
-          <i :class="bookmark.icon" style="margin-right=5px;font-size=15px"></i>
-          {{bookmark.name}}
-        </el-button>
-      </el-col>
-    </el-row>
+    
+    <div class="bookmarks-data-row">
+      <el-row v-for="bookmarksSuite in bookmarksDataArray" :key="bookmarksSuite">
+        <el-col :span="6" v-for="bookmark in bookmarksSuite" :key="bookmark">
+          <el-button
+            class="bookmarks-main-button"
+            size="small"
+            @click="bookmarksClicked(bookmark.url)"
+          >
+            <i :class="bookmark.icon" style="margin-right=5px;font-size=15px"></i>
+            {{bookmark.name}}
+          </el-button>
+        </el-col>
+      </el-row>
+    </div>
 
     <el-row type="flex" justify="center" class="bookmarks-option-button" v-show="user!=undefined">
       <el-button
