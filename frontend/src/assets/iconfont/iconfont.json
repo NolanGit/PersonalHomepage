@@ -1210,6 +1210,13 @@
       "unicode_decimal": 59051
     },
     {
+      "icon_id": "5203232",
+      "name": "地图",
+      "font_class": "ditu",
+      "unicode": "e6ac",
+      "unicode_decimal": 59052
+    },
+    {
       "icon_id": "10918065",
       "name": "alipay-line",
       "font_class": "alipay-line",

@@ -232,6 +232,7 @@ l = [
     'iconfont icon-zhihu-fill',
     'iconfont icon-vuejs-line',
     'iconfont icon-wechat-pay-line',
+    'iconfont icon-ditu',
 ]
 for sl in l:
     print(sl)
