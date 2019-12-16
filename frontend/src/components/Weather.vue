@@ -76,7 +76,7 @@
       <div style="text-align: right; margin: 0">
         <el-button type="primary" size="mini" @click="addLocation()">确定</el-button>
       </div>
-      <el-button slot="reference" v-show="user!=''" icon="el-icon-plus" size="mini" circle></el-button>
+      <el-button slot="reference" v-show="user!=undefined" icon="el-icon-plus" size="mini" circle></el-button>
     </el-popover>
   </div>
 </template>
@@ -152,11 +152,7 @@ export default {
     getWeatherDatafront(locations) {
       this.todayShow = false;
       //console.log(locations);
-      if (
-        (locations == undefined) |
-        (locations == "") |
-        (locations.length == 0)
-      ) {
+      if (locations == undefined || locations == "" || locations.length == 0) {
         locations = undefined;
       }
       //console.log(locations);

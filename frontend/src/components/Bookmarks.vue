@@ -22,7 +22,7 @@
       </el-col>
     </el-row>
 
-    <el-row type="flex" justify="center" class="bookmarks-option-button" v-show="user!=''">
+    <el-row type="flex" justify="center" class="bookmarks-option-button" v-show="user!=undefined">
       <el-button
         class="bookmarks-option-button-add"
         size="small"
