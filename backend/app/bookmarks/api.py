@@ -17,7 +17,12 @@ from ..common_func import CommonFunc
 def bookmarksData():
     try:
         result = []
-        user_id = CommonFunc().get_user_id(request.get_json()['user'])
+        try:
+            user_name = request.get_json()['user']
+            user = User(user_name)
+            user_id=user.user_id
+        except:
+            user_id = 0
         bookmarks_query = bookmarks_table.select().where((bookmarks_table.user_id == user_id) & (bookmarks_table.is_valid == 1)).order_by(bookmarks_table.order).dicts()
         for row in bookmarks_query:
             result.append({'id': row['id'], 'name': row['name'], 'url': row['url'], 'icon': row['icon'], 'update_time': row['update_time']})
@@ -34,7 +39,12 @@ def bookmarksData():
 def bookmarksAdd():
     try:
         result = []
-        user_id = CommonFunc().get_user_id(request.get_json()['user'])
+        try:
+            user_name = request.get_json()['user']
+            user = User(user_name)
+            user_id=user.user_id
+        except:
+            user_id = 0
         name = request.get_json()['name']
         url = request.get_json()['url']
         icon = request.get_json()['icon']
@@ -53,7 +63,12 @@ def bookmarksAdd():
 @cross_origin()
 def bookmarksDelete():
     try:
-        user_id = CommonFunc().get_user_id(request.get_json()['user'])
+        try:
+            user_name = request.get_json()['user']
+            user = User(user_name)
+            user_id=user.user_id
+        except:
+            user_id = 0
         id = request.get_json()['id']
         bookmarks_table.update(is_valid=0, update_time=datetime.datetime.now()).where(bookmarks_table.id == id).execute()
         response = {'code': 200, 'msg': '成功！', 'data': []}
@@ -68,7 +83,12 @@ def bookmarksDelete():
 @cross_origin()
 def bookmarksReorder():
     try:
-        user_id = CommonFunc().get_user_id(request.get_json()['user'])
+        try:
+            user_name = request.get_json()['user']
+            user = User(user_name)
+            user_id=user.user_id
+        except:
+            user_id = 0
         bookmarks = request.get_json()['bookmarks']
         bookmarks_table.update(is_valid=0, update_time=datetime.datetime.now()).where(bookmarks_table.user_id == user_id).execute()
         for bookmark in bookmarks:
