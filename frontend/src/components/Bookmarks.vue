@@ -5,7 +5,7 @@
         <div class="bookmarks-label">书签</div>
       </div>
     </el-row>
-    
+
     <div class="bookmarks-data-row">
       <el-row v-for="bookmarksSuite in bookmarksDataArray" :key="bookmarksSuite">
         <el-col :span="6" v-for="bookmark in bookmarksSuite" :key="bookmark">
@@ -87,8 +87,8 @@
         >
           <i class="el-icon-s-operation"></i>
           <span>{{ item }}</span>
-          <i class="el-icon-setting" @click="bookmarksSetting()"></i>
-          <i class="el-icon-delete" @click="bookmarksDelete()"></i>
+          <i class="el-icon-setting" @click="bookmarksSetting(item)"></i>
+          <i class="el-icon-delete" @click="bookmarksDelete(item)"></i>
         </SlickItem>
       </SlickList>
       <el-button
@@ -188,7 +188,16 @@ export default {
       console.log(temp);
       this.bookmarksEdit.list = temp;
       this.bookmarksEdit.visible = true;
-    }
+    },
+    bookmarksEditSubmit(){
+      console.log(bookmarksEdit.list)
+    },
+    bookmarksSetting(item){
+      console.log(item)
+    },
+    bookmarksDelete(item){
+      console.log(item)
+    },
   },
   created() {},
   mounted() {}
