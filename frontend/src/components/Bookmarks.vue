@@ -89,16 +89,23 @@
           <span class="slick_list_item_span">{{ item }}</span>
           <div class="slick_list_item_button">
             <el-button size="mini" class="el-icon-setting" @click="bookmarksSetting(item)"></el-button>
-            <el-button size="mini" class="el-icon-delete" @click="bookmarksDelete(item)"></el-button>
+            <el-button
+              type="danger"
+              size="mini"
+              class="el-icon-delete"
+              @click="bookmarksDelete(item)"
+            ></el-button>
           </div>
         </SlickItem>
       </SlickList>
-      <el-button
-        class="edit-form-confirm"
-        type="primary"
-        size="small"
-        @click="bookmarksEditSubmit()"
-      >确定</el-button>
+      <span slot="footer" class="dialog-footer">
+        <el-button
+          class="edit-form-confirm"
+          type="primary"
+          size="small"
+          @click="bookmarksEditSubmit()"
+        >确定</el-button>
+      </span>
     </el-dialog>
   </div>
 </template>
@@ -266,7 +273,7 @@ export default {
   font-weight: 400;
 }
 .slick_list_item_span {
-  margin-left: 20em;
+  margin-left: 20px;
 }
 .slick_list_item_button {
   margin-right: 10px;
