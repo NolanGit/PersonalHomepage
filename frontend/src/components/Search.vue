@@ -11,6 +11,7 @@
         class="search-input"
         :fetch-suggestions="autoComplete"
         ref="input"
+        @select="search()"
       >
         <el-select
           class="search-engine-select"
