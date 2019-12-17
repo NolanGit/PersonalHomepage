@@ -190,7 +190,7 @@ export default {
       this.bookmarksEdit.visible = true;
     },
     bookmarksEditSubmit(){
-      console.log(bookmarksEdit.list)
+      console.log(this.bookmarksEdit.list)
     },
     bookmarksSetting(item){
       console.log(item)
