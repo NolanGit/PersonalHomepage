@@ -87,8 +87,8 @@
         >
           <i class="el-icon-s-operation"></i>
           <span>{{ item }}</span>
-          <i class="el-icon-setting" @click="bookmarksSetting(item)"></i>
-          <i class="el-icon-delete" @click="bookmarksDelete(item)"></i>
+          <el-button class="el-icon-setting" @click="bookmarksSetting(item)"></el-button>
+          <el-button class="el-icon-delete" @click="bookmarksDelete(item)"></el-button>
         </SlickItem>
       </SlickList>
       <el-button
