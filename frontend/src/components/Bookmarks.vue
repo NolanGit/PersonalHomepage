@@ -86,17 +86,11 @@
           :key="index"
         >
           <i class="el-icon-s-operation"></i>
-          <span>{{ item }}</span>
-          <el-button
-            size="mini"
-            class="slick_list_item_button el-icon-setting"
-            @click="bookmarksSetting(item)"
-          ></el-button>
-          <el-button
-            size="mini"
-            class="slick_list_item_button el-icon-delete"
-            @click="bookmarksDelete(item)"
-          ></el-button>
+          <span class="slick_list_item_span">{{ item }}</span>
+          <div class="slick_list_item_button">
+            <el-button size="mini" class="el-icon-setting" @click="bookmarksSetting(item)"></el-button>
+            <el-button size="mini" class="el-icon-delete" @click="bookmarksDelete(item)"></el-button>
+          </div>
         </SlickItem>
       </SlickList>
       <el-button
@@ -271,8 +265,12 @@ export default {
   color: #333;
   font-weight: 400;
 }
+.slick_list_item_span {
+  margin-left: 20em;
+}
 .slick_list_item_button {
   margin-right: 10px;
+  margin-left: auto;
 }
 .edit-form-name {
   width: 70%;
