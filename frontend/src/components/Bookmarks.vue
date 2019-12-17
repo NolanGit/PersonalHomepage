@@ -87,8 +87,16 @@
         >
           <i class="el-icon-s-operation"></i>
           <span>{{ item }}</span>
-          <el-button class="el-icon-setting" @click="bookmarksSetting(item)"></el-button>
-          <el-button class="el-icon-delete" @click="bookmarksDelete(item)"></el-button>
+          <el-button
+            size="mini"
+            class="slick_list_item_button el-icon-setting"
+            @click="bookmarksSetting(item)"
+          ></el-button>
+          <el-button
+            size="mini"
+            class="slick_list_item_button el-icon-delete"
+            @click="bookmarksDelete(item)"
+          ></el-button>
         </SlickItem>
       </SlickList>
       <el-button
@@ -189,15 +197,15 @@ export default {
       this.bookmarksEdit.list = temp;
       this.bookmarksEdit.visible = true;
     },
-    bookmarksEditSubmit(){
-      console.log(this.bookmarksEdit.list)
+    bookmarksEditSubmit() {
+      console.log(this.bookmarksEdit.list);
     },
-    bookmarksSetting(item){
-      console.log(item)
+    bookmarksSetting(item) {
+      console.log(item);
     },
-    bookmarksDelete(item){
-      console.log(item)
-    },
+    bookmarksDelete(item) {
+      console.log(item);
+    }
   },
   created() {},
   mounted() {}
@@ -262,6 +270,9 @@ export default {
   user-select: none;
   color: #333;
   font-weight: 400;
+}
+.slick_list_item_button {
+  margin-right: 10px;
 }
 .edit-form-name {
   width: 70%;
