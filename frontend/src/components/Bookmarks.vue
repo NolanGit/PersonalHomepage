@@ -209,7 +209,7 @@ export default {
     },
     bookmarksEditSubmit() {
       console.log(this.bookmarksEdit.list);
-      for (let x = 0; this.bookmarksEdit.list.length; x++) {
+      for (let x = 0; x < this.bookmarksEdit.list.length; x++) {
         this.bookmarksEdit.list[x].order = x + 1;
       }
       console.log(this.bookmarksEdit.list);
