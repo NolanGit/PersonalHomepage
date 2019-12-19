@@ -79,9 +79,9 @@ def bookmarksDelete():
         return jsonify(response)
 
 
-@bookmarks.route('/bookmarksReorder', methods=['POST'])
+@bookmarks.route('/bookmarksEdit', methods=['POST'])
 @cross_origin()
-def bookmarksReorder():
+def bookmarksEdit():
     try:
         try:
             user_name = request.get_json()['user']

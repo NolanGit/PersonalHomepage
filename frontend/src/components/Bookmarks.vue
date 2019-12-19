@@ -44,7 +44,7 @@
 
     <!--编辑界面-->
     <el-dialog title="新增书签" :visible.sync="bookmarksEditForm.visible" width="40%">
-      <el-form ref="form" :model="bookmarksEditForm" label-width="80px">
+      <el-form ref="form" :model="bookmarksEditForm" label-width="50px" size="mini">
         <el-form-item label="网站名称">
           <el-input
             class="edit-form-name"
@@ -116,7 +116,7 @@
 <script>
 import axios from "axios";
 import Router from "vue-router";
-import { bookmarksAdd } from "../api/bookmarks";
+import { bookmarksAdd, bookmarksEdit } from "../api/bookmarks";
 import { SlickList, SlickItem } from "vue-slicksort";
 import { ContainerMixin, ElementMixin } from "vue-slicksort";
 
@@ -208,6 +208,10 @@ export default {
       this.bookmarksEdit.visible = true;
     },
     bookmarksEditSubmit() {
+      console.log(this.bookmarksEdit.list);
+      for (let x = 0; this.bookmarksEdit.list.length; x++) {
+        this.bookmarksEdit.list[x].order = x + 1;
+      }
       console.log(this.bookmarksEdit.list);
     },
     bookmarksSetting(item, index) {
