@@ -8,7 +8,7 @@ from . import weather
 from flask_cors import cross_origin
 from flask import render_template, session, redirect, url_for, current_app, flash, Response, request, jsonify
 from .model import weather_personalized
-from ..common_func import CommonFunc
+from ..common_func import User
 
 cf = configparser.ConfigParser()
 cf.read('app/homepage.config')
@@ -66,9 +66,10 @@ def weatherData():
 @cross_origin()
 def weatherPersonalizedSave():
     try:
-        user = request.get_json()['user']
+        user_name = request.get_json()['user']
+        user = User(user_name)
+        user_id=user.user_id
         location = request.get_json()['location']
-        user_id = CommonFunc().get_user_id(user)
         weather_personalized.create(location=location, user_id=user_id, is_valid=1, update_time=datetime.datetime.now())
         return jsonify({'code': 200, 'msg': '成功！', 'data': []})
     except Exception as e:
