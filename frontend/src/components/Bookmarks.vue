@@ -208,11 +208,27 @@ export default {
       this.bookmarksEdit.visible = true;
     },
     bookmarksEditSubmit() {
-      console.log(this.bookmarksEdit.list);
       for (let x = 0; x < this.bookmarksEdit.list.length; x++) {
         this.bookmarksEdit.list[x].order = x + 1;
       }
       console.log(this.bookmarksEdit.list);
+      var para = {
+        bookmarks: this.bookmarksEdit.list,
+        user: sessionStorage.getItem("user").replace(/\"/g, "")
+      };
+      bookmarksEdit(para).then(data => {
+        if (data["code"] !== 200) {
+          this.$message({
+            message: data["msg"],
+            type: "error"
+          });
+        } else {
+          this.$message({
+            message: data["msg"],
+            type: "success"
+          });
+        }
+      });
     },
     bookmarksSetting(item, index) {
       console.log(item, index);
