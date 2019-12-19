@@ -44,7 +44,7 @@
 
     <!--编辑界面-->
     <el-dialog
-      title="{{bookmarksEditForm.title}}"
+      :title="bookmarksEditForm.title"
       :visible.sync="bookmarksEditForm.visible"
       width="40%"
     >
@@ -77,7 +77,7 @@
           :index="index"
           :key="index"
         >
-          <i class="el-icon-s-operation"></i>
+          <i class="el-icon-s-operation" style="color: #6a6c70;"></i>
           <span class="slick_list_item_span">{{ item.name }}</span>
           <div class="slick_list_item_button">
             <el-button size="mini" class="el-icon-setting" @click="bookmarksSetting(item, index)"></el-button>
