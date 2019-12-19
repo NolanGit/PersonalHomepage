@@ -7,7 +7,11 @@
     </el-row>
 
     <div class="bookmarks-data-row-main">
-      <el-row class="margin_bottom-medium" v-for="bookmarksSuite in bookmarksDataArray" :key="bookmarksSuite">
+      <el-row
+        class="margin_bottom-medium"
+        v-for="bookmarksSuite in bookmarksDataArray"
+        :key="bookmarksSuite"
+      >
         <el-col :span="6" v-for="bookmark in bookmarksSuite" :key="bookmark">
           <el-button
             class="bookmarks-main-button"
@@ -86,7 +90,7 @@
           :key="index"
         >
           <i class="el-icon-s-operation"></i>
-          <span class="slick_list_item_span">{{ item }}</span>
+          <span class="slick_list_item_span">{{ item.name }}</span>
           <div class="slick_list_item_button">
             <el-button size="mini" class="el-icon-setting" @click="bookmarksSetting(item)"></el-button>
             <el-button
@@ -191,7 +195,12 @@ export default {
       var temp = [];
       for (let x = 0; x < this.bookmarksDataArray.length; x++) {
         for (let y = 0; y < this.bookmarksDataArray[x].length; y++) {
-          temp.push(this.bookmarksDataArray[x][y].name);
+          temp.push({
+            id: this.bookmarksDataArray[x][y].id,
+            name: this.bookmarksDataArray[x][y].name,
+            url: this.bookmarksDataArray[x][y].url,
+            icon: this.bookmarksDataArray[x][y].icon
+          });
         }
       }
       console.log(temp);
