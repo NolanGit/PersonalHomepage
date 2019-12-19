@@ -70,12 +70,14 @@
           ></el-input>
         </el-form-item>
         <span slot="footer" class="dialog-footer">
-          <el-button
-            class="edit-form-confirm"
-            type="primary"
-            size="small"
-            @click="bookmarksAddFront()"
-          >确定</el-button>
+          <el-form-item>
+            <el-button
+              class="edit-form-confirm"
+              type="primary"
+              size="small"
+              @click="bookmarksAddFront()"
+            >确定</el-button>
+          </el-form-item>
         </span>
       </el-form>
     </el-dialog>
