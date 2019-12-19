@@ -6,8 +6,8 @@
       </div>
     </el-row>
 
-    <div class="bookmarks-data-row">
-      <el-row v-for="bookmarksSuite in bookmarksDataArray" :key="bookmarksSuite">
+    <div class="bookmarks-data-row-main">
+      <el-row class="margin_bottom-medium" v-for="bookmarksSuite in bookmarksDataArray" :key="bookmarksSuite">
         <el-col :span="6" v-for="bookmark in bookmarksSuite" :key="bookmark">
           <el-button
             class="bookmarks-main-button"
@@ -224,7 +224,7 @@ export default {
   color: #303133;
   padding-bottom: 20px;
 }
-.bookmarks-data-row {
+.bookmarks-data-row-main {
   min-height: 210px;
 }
 .bookmarks-main-button {
@@ -287,5 +287,29 @@ export default {
 }
 .edit-form-icon {
   width: 70%;
+}
+.text-mini {
+  font-size: 10px;
+}
+.text-small {
+  font-size: 14px;
+}
+.text-medium {
+  font-size: 20px;
+}
+.margin_right-small {
+  margin-right: 10px;
+}
+.margin_left-medium {
+  margin-left: 20px;
+}
+.margin_bottom-medium {
+  margin-bottom: 20px;
+}
+.margin_bottom-large {
+  margin-bottom: 40px;
+}
+.margin-top-medium {
+  margin-top: 20px;
 }
 </style>
