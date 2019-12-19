@@ -69,16 +69,14 @@
             placeholder="图标名称"
           ></el-input>
         </el-form-item>
-        <span slot="footer" class="dialog-footer">
-          <el-form-item>
-            <el-button
-              class="edit-form-confirm"
-              type="primary"
-              size="small"
-              @click="bookmarksAddFront()"
-            >确定</el-button>
-          </el-form-item>
-        </span>
+        <el-form-item>
+          <el-button
+            class="edit-form-confirm"
+            type="primary"
+            size="small"
+            @click="bookmarksAddFront()"
+          >确定</el-button>
+        </el-form-item>
       </el-form>
     </el-dialog>
 
