@@ -36,14 +36,18 @@
       <el-button
         class="bookmarks-option-button-edit-form"
         size="small"
-        @click="bookmarksOptionButtonSettingDialogClicked()"
+        @click="bookmarksOptionButtonSettingClicked()"
         icon="el-icon-setting"
         circle
       ></el-button>
     </el-row>
 
     <!--编辑界面-->
-    <el-dialog title="新增书签" :visible.sync="bookmarksEditForm.visible" width="40%">
+    <el-dialog
+      title="{{bookmarksEditForm.title}}"
+      :visible.sync="bookmarksEditForm.visible"
+      width="40%"
+    >
       <el-form ref="form" :model="bookmarksEditForm" label-width="50px" size="mini">
         <el-form-item label="网站名称">
           <el-input
@@ -74,13 +78,13 @@
             class="edit-form-confirm"
             type="primary"
             size="small"
-            @click="bookmarksAddFront()"
+            @click="bookmarksEditFormConfirmClicked()"
           >确定</el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
 
-    <!--编辑界面-->
+    <!--编辑顺序界面-->
     <el-dialog title="编辑书签" :visible.sync="bookmarksEdit.visible" width="40%">
       <SlickList lockAxis="y" v-model="bookmarksEdit.list" class="slick_list">
         <SlickItem
@@ -97,7 +101,7 @@
               type="danger"
               size="mini"
               class="el-icon-delete"
-              @click="bookmarksDelete(item, index)"
+              @click="bookmarksDeleteSubmit(item, index)"
             ></el-button>
           </div>
         </SlickItem>
@@ -132,11 +136,8 @@ export default {
   },
   watch: {
     bookmarksData(newVal, oldVal) {
-      this.bookmarksDataInit(newVal);
+      this.bookmarksDataArray = newVal;
     }
-    // bookmarksEditData(newVal, oldVal) {
-    //   this.bookmarksEditDataInit(newVal);
-    // }
   },
   data() {
     return {
@@ -150,48 +151,52 @@ export default {
         name: "",
         url: "https://",
         icon: ""
-      }
+      },
+      bookmarksEditTempIndex: 0
     };
   },
   methods: {
     bookmarksClicked(bookmarkUrl) {
-      console.log(bookmarkUrl);
       window.open(bookmarkUrl);
     },
-    bookmarksAddFront() {
-      var para = {
-        url: this.bookmarksEditForm.url,
-        name: this.bookmarksEditForm.name,
-        icon: this.bookmarksEditForm.icon,
-        user: sessionStorage.getItem("user").replace(/\"/g, "")
-      };
-      bookmarksAdd(para).then(data => {
-        if (data["code"] !== 200) {
-          this.$message({
-            message: data["msg"],
-            type: "error"
-          });
-        } else {
-          this.$message({
-            message: data["msg"],
-            type: "success"
-          });
-        }
-      });
-      this.bookmarksEditForm.url = "https://";
-      this.bookmarksEditForm.name = "";
-      this.bookmarksEditForm.icon = "";
-    },
-    bookmarksDataInit(bookmarksData) {
-      this.bookmarksDataArray = bookmarksData;
-    },
-    bookmarksEditDataInit(bookmarksEditData) {
-      this.bookmarksEdit.list = bookmarksEditData;
+    bookmarksEditFormConfirmClicked() {
+      if (this.bookmarksEditForm.label == "新增书签") {
+        var para = {
+          url: this.bookmarksEditForm.url,
+          name: this.bookmarksEditForm.name,
+          icon: this.bookmarksEditForm.icon,
+          user: sessionStorage.getItem("user").replace(/\"/g, "")
+        };
+        bookmarksAdd(para).then(data => {
+          if (data["code"] !== 200) {
+            this.$message({
+              message: data["msg"],
+              type: "error"
+            });
+          } else {
+            this.$message({
+              message: data["msg"],
+              type: "success"
+            });
+          }
+        });
+      } else if (this.bookmarksEditForm.label == "编辑书签") {
+        const tempEditIndex = this.bookmarksEditTempIndex;
+        this.bookmarksEdit.list[tempIndex].url = this.bookmarksEditForm.url;
+        this.bookmarksEdit.list[tempIndex].name = this.bookmarksEditForm.name;
+        this.bookmarksEdit.list[tempIndex].icon = this.bookmarksEditForm.icon;
+      }
     },
     bookmarksOptionButtonAddClicked() {
-      this.bookmarksEditForm.visible = true;
+      this.bookmarksEditForm = {
+        label: "新增书签",
+        visible: true,
+        name: "",
+        url: "https://",
+        icon: ""
+      };
     },
-    bookmarksOptionButtonSettingDialogClicked() {
+    bookmarksOptionButtonSettingClicked() {
       var temp = [];
       for (let x = 0; x < this.bookmarksDataArray.length; x++) {
         for (let y = 0; y < this.bookmarksDataArray[x].length; y++) {
@@ -227,13 +232,21 @@ export default {
             message: data["msg"],
             type: "success"
           });
+          this.bookmarksEdit.visible = false;
         }
       });
     },
     bookmarksSetting(item, index) {
-      console.log(item, index);
+      this.bookmarksEditTempIndex = index;
+      this.bookmarksEditForm = {
+        label: "编辑书签",
+        visible: true,
+        name: item.name,
+        url: item.url,
+        icon: item.icon
+      };
     },
-    bookmarksDelete(item, index) {
+    bookmarksDeleteSubmit(item, index) {
       this.bookmarksEdit.list.splice(index, 1);
       console.log(item, index);
     }
