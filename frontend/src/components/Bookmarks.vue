@@ -69,14 +69,14 @@
             placeholder="图标名称"
           ></el-input>
         </el-form-item>
-        <el-form-item>
+        <span slot="footer" class="dialog-footer">
           <el-button
             class="edit-form-confirm"
             type="primary"
             size="small"
             @click="bookmarksAddFront()"
           >确定</el-button>
-        </el-form-item>
+        </span>
       </el-form>
     </el-dialog>
 
@@ -92,12 +92,12 @@
           <i class="el-icon-s-operation"></i>
           <span class="slick_list_item_span">{{ item.name }}</span>
           <div class="slick_list_item_button">
-            <el-button size="mini" class="el-icon-setting" @click="bookmarksSetting(item)"></el-button>
+            <el-button size="mini" class="el-icon-setting" @click="bookmarksSetting(item, index)"></el-button>
             <el-button
               type="danger"
               size="mini"
               class="el-icon-delete"
-              @click="bookmarksDelete(item)"
+              @click="bookmarksDelete(item, index)"
             ></el-button>
           </div>
         </SlickItem>
@@ -210,11 +210,12 @@ export default {
     bookmarksEditSubmit() {
       console.log(this.bookmarksEdit.list);
     },
-    bookmarksSetting(item) {
-      console.log(item);
+    bookmarksSetting(item, index) {
+      console.log(item, index);
     },
-    bookmarksDelete(item) {
-      console.log(item);
+    bookmarksDelete(item, index) {
+      this.bookmarksEdit.list.splice(index, 1);
+      console.log(item, index);
     }
   },
   created() {},
