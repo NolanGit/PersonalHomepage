@@ -48,38 +48,22 @@
       :visible.sync="bookmarksEditForm.visible"
       width="40%"
     >
-      <el-form ref="form" :model="bookmarksEditForm" label-width="50px" size="mini">
+      <el-form ref="form" :model="bookmarksEditForm" size="mini">
         <el-form-item label="网站名称">
-          <el-input
-            class="edit-form-name"
-            size="small"
-            v-model="bookmarksEditForm.name"
-            placeholder="网站名称"
-          ></el-input>
+          <el-input size="small" v-model="bookmarksEditForm.name" placeholder="网站名称"></el-input>
         </el-form-item>
         <el-form-item label="链接">
           <el-input
-            class="edit-form-url"
             size="small"
             v-model="bookmarksEditForm.url"
             placeholder="链接(需要完整填写，包括'http://')"
           ></el-input>
         </el-form-item>
         <el-form-item label="图标名称">
-          <el-input
-            class="edit-form-icon"
-            size="small"
-            v-model="bookmarksEditForm.icon"
-            placeholder="图标名称"
-          ></el-input>
+          <el-input size="small" v-model="bookmarksEditForm.icon" placeholder="图标名称"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button
-            class="edit-form-confirm"
-            type="primary"
-            size="small"
-            @click="bookmarksEditFormConfirmClicked()"
-          >确定</el-button>
+          <el-button type="primary" size="small" @click="bookmarksEditFormConfirmClicked()">确定</el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -160,7 +144,7 @@ export default {
       window.open(bookmarkUrl);
     },
     bookmarksEditFormConfirmClicked() {
-      if (this.bookmarksEditForm.label == "新增书签") {
+      if (this.bookmarksEditForm.title == "新增书签") {
         var para = {
           url: this.bookmarksEditForm.url,
           name: this.bookmarksEditForm.name,
@@ -180,7 +164,7 @@ export default {
             });
           }
         });
-      } else if (this.bookmarksEditForm.label == "编辑书签") {
+      } else if (this.bookmarksEditForm.title == "编辑书签") {
         const tempEditIndex = this.bookmarksEditTempIndex;
         this.bookmarksEdit.list[tempIndex].url = this.bookmarksEditForm.url;
         this.bookmarksEdit.list[tempIndex].name = this.bookmarksEditForm.name;
@@ -189,7 +173,7 @@ export default {
     },
     bookmarksOptionButtonAddClicked() {
       this.bookmarksEditForm = {
-        label: "新增书签",
+        title: "新增书签",
         visible: true,
         name: "",
         url: "https://",
@@ -239,7 +223,7 @@ export default {
     bookmarksSetting(item, index) {
       this.bookmarksEditTempIndex = index;
       this.bookmarksEditForm = {
-        label: "编辑书签",
+        title: "编辑书签",
         visible: true,
         name: item.name,
         url: item.url,
@@ -321,15 +305,6 @@ export default {
 .slick_list_item_button {
   margin-right: 10px;
   margin-left: auto;
-}
-.edit-form-name {
-  width: 70%;
-}
-.edit-form-url {
-  width: 70%;
-}
-.edit-form-icon {
-  width: 70%;
 }
 .text-mini {
   font-size: 10px;
