@@ -69,10 +69,10 @@
             <el-button size="small" @click="bookmarksIconFront()">选择图标</el-button>
           </div>
         </el-form-item>
-        <el-form-item>
-          <el-button type="primary" size="small" @click="bookmarksEditFormConfirmClicked()">确定</el-button>
-        </el-form-item>
       </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" size="small" @click="bookmarksEditFormConfirmClicked()">确定</el-button>
+      </span>
     </el-dialog>
 
     <!--编辑顺序界面-->
