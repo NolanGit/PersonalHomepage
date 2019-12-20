@@ -16,7 +16,7 @@
       </el-col>
       <el-col :span="7" :offset="1">
         <el-card shadow="hover" v-show="show.weather">
-          <bookmarks :bookmarksData="bookmarksData" :user="user" />
+          <bookmarks :bookmarksData="bookmarksData" @bookmarksUpdate="userInfoFront" :user="user" />
         </el-card>
       </el-col>
     </el-row>

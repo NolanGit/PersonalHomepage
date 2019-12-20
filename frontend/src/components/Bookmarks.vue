@@ -241,6 +241,7 @@ export default {
           });
           this.bookmarksEdit.visible = false;
         }
+      this.$emit("bookmarksUpdate");
       });
     },
     bookmarksSetting(item, index) {
