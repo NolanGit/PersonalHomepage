@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-row v-for="iconsuite in icons" :key="iconsuite">
+    <el-row v-for="iconsuite in iconData" :key="iconsuite">
       <el-col :span="2" v-for="icon in iconsuite" :key="icon">
         <el-button size="small" @click="iconChoosed(icon.name)">
           <i :class="icon.name" style="margin-right=5px;font-size=15px"></i>选择
@@ -31,10 +31,18 @@ export default {
     }
   },
   mounted() {
-    for (let x = 0; x < Math.floor(this.icons.length / 12); x++) {
+    for (let x = 0; x < Math.floor(this.icons.length / 12) + 1; x++) {
+      console.log("x=", x);
       this.iconData.push([]);
       for (let y = 0; y < 12; y++) {
+        console.log("y=", y);
         this.iconData[this.iconData.length - 1].push(this.icons[x * 12 + y]);
+        if (
+          x == Math.floor(this.icons.length / 12) &&
+          y == this.icons.length % 12
+        ) {
+          break;
+        }
       }
     }
     console.log(this.iconData);
