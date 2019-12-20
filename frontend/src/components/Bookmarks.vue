@@ -50,14 +50,18 @@
     >
       <el-form ref="form" :model="bookmarksEditForm" size="mini">
         <el-form-item label="网站名称">
-          <el-input size="small" v-model="bookmarksEditForm.name" placeholder="网站名称"></el-input>
+          <div class="div-flex">
+            <el-input size="small" v-model="bookmarksEditForm.name" placeholder="网站名称"></el-input>
+          </div>
         </el-form-item>
         <el-form-item label="链接">
-          <el-input
-            size="small"
-            v-model="bookmarksEditForm.url"
-            placeholder="链接(需要完整填写，包括'http://')"
-          ></el-input>
+          <div class="div-flex">
+            <el-input
+              size="small"
+              v-model="bookmarksEditForm.url"
+              placeholder="链接(需要完整填写，包括'http://')"
+            ></el-input>
+          </div>
         </el-form-item>
         <el-form-item label="图标名称">
           <div class="div-flex">

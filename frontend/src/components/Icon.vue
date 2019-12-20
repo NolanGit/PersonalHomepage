@@ -2,7 +2,7 @@
   <div>
     <el-row v-for="iconsuite in iconData" :key="iconsuite" class="margin_bottom-medium">
       <el-col :span="2" v-for="icon in iconsuite" :key="icon">
-        <el-button size="small" @click="iconChoosed(icon.name)">
+        <el-button size="medium" @click="iconChoosed(icon.name)">
           <i :class="icon.name" style="margin-right=5px;font-size=15px"></i>
         </el-button>
       </el-col>
