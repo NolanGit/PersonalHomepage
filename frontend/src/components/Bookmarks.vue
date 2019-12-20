@@ -263,6 +263,7 @@ export default {
     },
     iconNameGet(data) {
       this.bookmarksEditForm.icon = data;
+      this.icon.visible = false;
     }
   },
   created() {},
