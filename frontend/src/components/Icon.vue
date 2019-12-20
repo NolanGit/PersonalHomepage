@@ -1,8 +1,8 @@
 <template>
   <div>
-    <div v-for="icon in iconData" :key="icon">
+    <div v-for="icon in icons" :key="icon">
       <el-button>
-        <i :class="icon" style="margin-right=5px;font-size=15px"></i>选择
+        <i :class="icon.name" style="margin-right=5px;font-size=15px"></i>选择
       </el-button>
     </div>
   </div>
@@ -31,7 +31,10 @@ export default {
   },
   methods: {},
   created() {},
-  mounted() {}
+  mounted() {
+    this.iconData = icons;
+    console.log(icons);
+  }
 };
 </script>
 <style scoped>
