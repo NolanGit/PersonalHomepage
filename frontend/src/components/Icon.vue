@@ -10,7 +10,7 @@ import { SlickList, SlickItem } from "vue-slicksort";
 import { ContainerMixin, ElementMixin } from "vue-slicksort";
 
 export default {
-  name: "Icon",
+  name: "IconComponet",
   props: {
     icons: Array
   },

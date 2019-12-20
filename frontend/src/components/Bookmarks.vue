@@ -103,14 +103,14 @@
 
     <!--选择图标界面-->
     <el-dialog title="编辑书签" :visible.sync="icon.visible" width="70%">
-      <icon :icons="icon.data"></icon>
+      <IconComponet :icons="icon.data"></IconComponet>
     </el-dialog>
   </div>
 </template>
 <script>
 import axios from "axios";
 import Router from "vue-router";
-import icon from "./Icon.vue";
+import IconComponet from "./Icon.vue";
 import { bookmarksAdd, bookmarksEdit, bookmarksIcon } from "../api/bookmarks";
 import { SlickList, SlickItem } from "vue-slicksort";
 import { ContainerMixin, ElementMixin } from "vue-slicksort";
