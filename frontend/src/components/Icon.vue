@@ -32,8 +32,8 @@ export default {
   methods: {},
   created() {},
   mounted() {
-    this.iconData = icons;
-    console.log(icons);
+    this.iconData = this.icons;
+    console.log(this.icons);
   }
 };
 </script>
