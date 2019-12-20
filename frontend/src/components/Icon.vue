@@ -2,7 +2,9 @@
   <div>
     <el-row v-for="iconsuite in icons" :key="iconsuite">
       <el-col :span="2" v-for="icon in iconsuite" :key="icon">
-        <el-button :icon="icon.name" size="small" @click="iconChoosed(icon.name)">选择</el-button>
+        <el-button size="small" @click="iconChoosed(icon.name)">
+          <i :class="icon.name" style="margin-right=5px;font-size=15px"></i>选择
+        </el-button>
       </el-col>
     </el-row>
   </div>
@@ -32,7 +34,7 @@ export default {
     for (let x = 0; x < Math.floor(this.icons.length / 12); x++) {
       this.iconData.push([]);
       for (let y = 0; y < 12; y++) {
-        this.iconData[-1].push(this.icons[x * 12 + y]);
+        this.iconData[this.iconData.length - 1].push(this.icons[x * 12 + y]);
       }
     }
   }
