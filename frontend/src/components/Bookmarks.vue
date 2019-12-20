@@ -60,8 +60,10 @@
           ></el-input>
         </el-form-item>
         <el-form-item label="图标名称">
-          <el-input size="small" v-model="bookmarksEditForm.icon" placeholder="图标名称"></el-input>
-          <el-button type="primary" size="small" @click="bookmarksIconFront()">选择</el-button>
+          <div class="div-flex">
+            <el-input size="small" v-model="bookmarksEditForm.icon" placeholder="图标名称" disabled></el-input>
+            <el-button size="small" @click="bookmarksIconFront()">选择图标</el-button>
+          </div>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" size="small" @click="bookmarksEditFormConfirmClicked()">确定</el-button>
@@ -102,8 +104,8 @@
     </el-dialog>
 
     <!--选择图标界面-->
-    <el-dialog title="编辑书签" :visible.sync="icon.visible" width="70%">
-      <IconComponet :icons="icon.data"></IconComponet>
+    <el-dialog title="选择喜欢的图标" :visible.sync="icon.visible" width="70%">
+      <IconComponet @iconName="iconNameGet" :icons="icon.data"></IconComponet>
     </el-dialog>
   </div>
 </template>
@@ -258,6 +260,9 @@ export default {
           this.icon.data = data.data;
         }
       });
+    },
+    iconNameGet(data) {
+      this.bookmarksEditForm.icon = data;
     }
   },
   created() {},
@@ -330,6 +335,9 @@ export default {
 .slick_list_item_button {
   margin-right: 10px;
   margin-left: auto;
+}
+.div-flex {
+  display: flex;
 }
 .text-mini {
   font-size: 10px;
