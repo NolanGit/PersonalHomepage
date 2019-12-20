@@ -72,7 +72,7 @@ def icon():
         icon_query = icon_table.select().dicts()
         for row in icon_query:
             result.append({'id': row['id'], 'name': row['name']})
-        response = {'code': 200, 'msg': '成功！', 'data': []}
+        response = {'code': 200, 'msg': '成功！', 'data': result}
 
     except Exception as e:
         response = {'code': 500, 'msg': '失败！错误信息：' + str(e) + '，请联系管理员。', 'data': []}

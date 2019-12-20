@@ -253,10 +253,6 @@ export default {
             type: "error"
           });
         } else {
-          this.$message({
-            message: data["msg"],
-            type: "success"
-          });
           this.icon.visible = true;
           this.icon.data = data.data;
         }

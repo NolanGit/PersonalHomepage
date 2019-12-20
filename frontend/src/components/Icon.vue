@@ -16,6 +16,7 @@ export default {
   },
   watch: {
     icons(newVal, oldVal) {
+      console.log(newVal);
       this.iconData = newVal;
     }
   },
