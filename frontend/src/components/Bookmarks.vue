@@ -61,6 +61,7 @@
         </el-form-item>
         <el-form-item label="图标名称">
           <el-input size="small" v-model="bookmarksEditForm.icon" placeholder="图标名称"></el-input>
+          <el-button type="primary" size="small" @click="bookmarksIconFront()">选择</el-button>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" size="small" @click="bookmarksEditFormConfirmClicked()">确定</el-button>
@@ -99,12 +100,18 @@
         >确定</el-button>
       </span>
     </el-dialog>
+
+    <!--编辑顺序界面-->
+    <el-dialog title="编辑书签" :visible.sync="bookmarksEdit.visible" width="40%">
+      <icon :icons="iconData"></icon>
+    </el-dialog>
   </div>
 </template>
 <script>
 import axios from "axios";
 import Router from "vue-router";
-import { bookmarksAdd, bookmarksEdit } from "../api/bookmarks";
+import icon from "./Icon.vue";
+import { bookmarksAdd, bookmarksEdit, bookmarksIcon } from "../api/bookmarks";
 import { SlickList, SlickItem } from "vue-slicksort";
 import { ContainerMixin, ElementMixin } from "vue-slicksort";
 
@@ -136,7 +143,8 @@ export default {
         url: "https://",
         icon: ""
       },
-      bookmarksEditTempIndex: 0
+      bookmarksEditTempIndex: 0,
+      iconData: []
     };
   },
   methods: {
@@ -233,6 +241,22 @@ export default {
     bookmarksDeleteSubmit(item, index) {
       this.bookmarksEdit.list.splice(index, 1);
       console.log(item, index);
+    },
+    bookmarksIconFront() {
+      bookmarksIcon().then(data => {
+        if (data["code"] !== 200) {
+          this.$message({
+            message: data["msg"],
+            type: "error"
+          });
+        } else {
+          this.$message({
+            message: data["msg"],
+            type: "success"
+          });
+          this.iconData = data.data;
+        }
+      });
     }
   },
   created() {},

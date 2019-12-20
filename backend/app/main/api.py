@@ -10,6 +10,7 @@ from flask_cors import cross_origin
 from ..search.model import search_engines, search_engines_log
 from ..weather.model import weather_personalized
 from ..bookmarks.model import bookmarks as bookmarks_table
+from ..bookmarks.model import icon as icon_table
 from ..common_func import CommonFunc, User
 
 
@@ -61,3 +62,19 @@ def faviconico():
         image = f.read()
     resp = Response(image, mimetype="image/jpeg")
     return resp
+
+
+@main.route('/icon', methods=['GET'])
+@cross_origin()
+def icon():
+    try:
+        result=[]
+        icon_query = icon_table.select().dicts()
+        for row in icon_query:
+            result.append({'id': row['id'], 'name': row['name']})
+        response = {'code': 200, 'msg': '成功！', 'data': []}
+
+    except Exception as e:
+        response = {'code': 500, 'msg': '失败！错误信息：' + str(e) + '，请联系管理员。', 'data': []}
+    finally:
+        return jsonify(response)
