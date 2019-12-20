@@ -180,6 +180,7 @@ export default {
               message: data["msg"],
               type: "success"
             });
+            this.$emit("bookmarksUpdate");
           }
         });
       } else if (this.bookmarksEditForm.title == "编辑书签") {
@@ -241,7 +242,7 @@ export default {
           });
           this.bookmarksEdit.visible = false;
         }
-      this.$emit("bookmarksUpdate");
+        this.$emit("bookmarksUpdate");
       });
     },
     bookmarksSetting(item, index) {
