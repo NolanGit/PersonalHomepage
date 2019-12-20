@@ -32,17 +32,15 @@ export default {
   },
   mounted() {
     for (let x = 0; x < Math.floor(this.icons.length / 12) + 1; x++) {
-      console.log("x=", x);
       this.iconData.push([]);
       for (let y = 0; y < 12; y++) {
-        console.log("y=", y);
-        this.iconData[this.iconData.length - 1].push(this.icons[x * 12 + y]);
         if (
           x == Math.floor(this.icons.length / 12) &&
           y == this.icons.length % 12
         ) {
           break;
         }
+        this.iconData[this.iconData.length - 1].push(this.icons[x * 12 + y]);
       }
     }
     console.log(this.iconData);
