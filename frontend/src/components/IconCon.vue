@@ -4,10 +4,6 @@
   </div>
 </template>
 <script>
-import axios from "axios";
-import Router from "vue-router";
-import { SlickList, SlickItem } from "vue-slicksort";
-import { ContainerMixin, ElementMixin } from "vue-slicksort";
 
 export default {
   name: "IconComponet",
