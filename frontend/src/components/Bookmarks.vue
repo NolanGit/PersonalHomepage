@@ -101,9 +101,9 @@
       </span>
     </el-dialog>
 
-    <!--编辑顺序界面-->
-    <el-dialog title="编辑书签" :visible.sync="bookmarksEdit.visible" width="40%">
-      <icon :icons="iconData"></icon>
+    <!--选择图标界面-->
+    <el-dialog title="编辑书签" :visible.sync="icon.visible" width="70%">
+      <icon :icons="icon.data"></icon>
     </el-dialog>
   </div>
 </template>
@@ -144,7 +144,10 @@ export default {
         icon: ""
       },
       bookmarksEditTempIndex: 0,
-      iconData: []
+      icon:{
+        visible:false,
+        data:[]
+      }
     };
   },
   methods: {
@@ -254,7 +257,8 @@ export default {
             message: data["msg"],
             type: "success"
           });
-          this.iconData = data.data;
+          this.icon.visible = true;
+          this.icon.data = data.data;
         }
       });
     }
