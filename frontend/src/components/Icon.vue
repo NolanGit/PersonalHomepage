@@ -1,10 +1,11 @@
 <template>
   <div>
-    <el-button v-for="icon in iconData" :key="icon" :icon="icon"></el-button>
+    <div v-for="icon in iconData" :key="icon">
+      <el-button :icon="icon"></el-button>
+    </div>
   </div>
 </template>
 <script>
-
 export default {
   name: "IconComponet",
   props: {

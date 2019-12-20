@@ -256,6 +256,7 @@ export default {
         } else {
           this.icon.visible = true;
           this.icon.data = data.data;
+          console.log(this.icon.data)
         }
       });
     }
