@@ -21,7 +21,12 @@ export default {
   },
   data() {
     return {
-      iconData: []
+      iconData: [
+        {
+          id: 1,
+          name: "iconfont icon-tianmaochaoshigouwuche"
+        }
+      ]
     };
   },
   methods: {},
