@@ -185,9 +185,14 @@ export default {
       } else if (this.bookmarksEditForm.title == "编辑书签") {
         const tempEditIndex = this.bookmarksEditTempIndex;
         this.bookmarksEdit.list[tempEditIndex].url = this.bookmarksEditForm.url;
-        this.bookmarksEdit.list[tempEditIndex].name = this.bookmarksEditForm.name;
-        this.bookmarksEdit.list[tempEditIndex].icon = this.bookmarksEditForm.icon;
+        this.bookmarksEdit.list[
+          tempEditIndex
+        ].name = this.bookmarksEditForm.name;
+        this.bookmarksEdit.list[
+          tempEditIndex
+        ].icon = this.bookmarksEditForm.icon;
       }
+      this.bookmarksEditForm.visible = false;
     },
     bookmarksOptionButtonAddClicked() {
       this.bookmarksEditForm = {
