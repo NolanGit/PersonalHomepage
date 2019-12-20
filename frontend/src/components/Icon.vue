@@ -3,7 +3,7 @@
     <el-row v-for="iconsuite in iconData" :key="iconsuite" class="margin_bottom-medium">
       <el-col :span="2" v-for="icon in iconsuite" :key="icon">
         <el-button size="medium" @click="iconChoosed(icon.name)">
-          <i :class="icon.name" style="margin-right=5px;font-size=20px"></i>
+          <i :class="icon.name + ' icon-medium'"></i>
         </el-button>
       </el-col>
     </el-row>
@@ -74,5 +74,8 @@ export default {
 }
 .margin-top-medium {
   margin-top: 20px;
+}
+.icon-medium {
+  font-size: 20px;
 }
 </style>
