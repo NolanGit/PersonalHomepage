@@ -54,7 +54,7 @@
             <el-input size="small" v-model="bookmarksEditForm.name" placeholder="网站名称"></el-input>
           </div>
         </el-form-item>
-        <el-form-item label="链接">
+        <el-form-item label="网站链接">
           <div class="div-flex">
             <el-input
               size="small"
@@ -184,9 +184,9 @@ export default {
         });
       } else if (this.bookmarksEditForm.title == "编辑书签") {
         const tempEditIndex = this.bookmarksEditTempIndex;
-        this.bookmarksEdit.list[tempIndex].url = this.bookmarksEditForm.url;
-        this.bookmarksEdit.list[tempIndex].name = this.bookmarksEditForm.name;
-        this.bookmarksEdit.list[tempIndex].icon = this.bookmarksEditForm.icon;
+        this.bookmarksEdit.list[tempEditIndex].url = this.bookmarksEditForm.url;
+        this.bookmarksEdit.list[tempEditIndex].name = this.bookmarksEditForm.name;
+        this.bookmarksEdit.list[tempEditIndex].icon = this.bookmarksEditForm.icon;
       }
     },
     bookmarksOptionButtonAddClicked() {
