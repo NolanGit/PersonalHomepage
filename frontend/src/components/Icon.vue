@@ -37,6 +37,7 @@ export default {
         this.iconData[this.iconData.length - 1].push(this.icons[x * 12 + y]);
       }
     }
+    console.log(this.iconData);
   }
 };
 </script>
