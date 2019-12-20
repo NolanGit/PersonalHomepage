@@ -145,9 +145,14 @@ export default {
         icon: ""
       },
       bookmarksEditTempIndex: 0,
-      icon:{
-        visible:false,
-        data:[]
+      icon: {
+        visible: false,
+        data: [
+          {
+            id: 1,
+            name: "iconfont icon-tianmaochaoshigouwuche"
+          }
+        ]
       }
     };
   },
@@ -256,7 +261,7 @@ export default {
         } else {
           this.icon.visible = true;
           this.icon.data = data.data;
-          console.log(this.icon.data)
+          console.log(this.icon.data);
         }
       });
     }
