@@ -110,7 +110,7 @@
 <script>
 import axios from "axios";
 import Router from "vue-router";
-import IconComponet from "./IconCon.vue";
+import IconComponet from "./Icon.vue";
 import { bookmarksAdd, bookmarksEdit, bookmarksIcon } from "../api/bookmarks";
 import { SlickList, SlickItem } from "vue-slicksort";
 import { ContainerMixin, ElementMixin } from "vue-slicksort";
@@ -123,7 +123,8 @@ export default {
   },
   components: {
     SlickItem,
-    SlickList
+    SlickList,
+    IconComponet
   },
   watch: {
     bookmarksData(newVal, oldVal) {
