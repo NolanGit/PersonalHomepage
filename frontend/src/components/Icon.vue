@@ -1,7 +1,9 @@
 <template>
   <div>
     <div v-for="icon in iconData" :key="icon">
-      <el-button :icon="icon.name">选择</el-button>
+      <el-button>
+        <i :class="icon" style="margin-right=5px;font-size=15px"></i>选择
+      </el-button>
     </div>
   </div>
 </template>
