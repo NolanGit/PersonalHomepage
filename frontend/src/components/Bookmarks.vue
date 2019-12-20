@@ -147,12 +147,7 @@ export default {
       bookmarksEditTempIndex: 0,
       icon: {
         visible: false,
-        data: [
-          {
-            id: 1,
-            name: "iconfont icon-tianmaochaoshigouwuche"
-          }
-        ]
+        data: []
       }
     };
   },

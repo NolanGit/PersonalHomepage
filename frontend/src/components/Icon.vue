@@ -1,10 +1,10 @@
 <template>
   <div>
-    <div v-for="icon in icons" :key="icon">
-      <el-button>
-        <i :class="icon.name" style="margin-right=5px;font-size=15px"></i>选择
-      </el-button>
-    </div>
+    <el-row v-for="iconsuite in icons" :key="iconsuite">
+      <el-col :span="2" v-for="icon in iconsuite" :key="icon">
+        <el-button :icon="icon.name" size="small" @click="iconChoosed(icon.name)">选择</el-button>
+      </el-col>
+    </el-row>
   </div>
 </template>
 <script>
@@ -15,25 +15,26 @@ export default {
   },
   watch: {
     icons(newVal, oldVal) {
-      console.log(newVal);
       this.iconData = newVal;
     }
   },
   data() {
     return {
-      iconData: [
-        {
-          id: 1,
-          name: "iconfont icon-tianmaochaoshigouwuche"
-        }
-      ]
+      iconData: []
     };
   },
-  methods: {},
-  created() {},
+  methods: {
+    iconChoosed(iconName) {
+      this.$emit("iconName", iconName);
+    }
+  },
   mounted() {
-    this.iconData = this.icons;
-    console.log(this.icons);
+    for (let x = 0; x < Math.floor(this.icons.length / 12); x++) {
+      this.iconData.push([]);
+      for (let y = 0; y < 12; y++) {
+        this.iconData[-1].push(this.icons[x * 12 + y]);
+      }
+    }
   }
 };
 </script>
