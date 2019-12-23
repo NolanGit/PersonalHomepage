@@ -28,13 +28,15 @@ import search from "./components/Search.vue";
 import login from "./components/Login.vue";
 import weather from "./components/Weather.vue";
 import bookmarks from "./components/Bookmarks.vue";
+import stock from "./components/Stock.vue";
 import { userInfo } from "./api/app";
 export default {
   components: {
     search,
     login,
     weather,
-    bookmarks
+    bookmarks,
+    stock
   },
   data() {
     return {

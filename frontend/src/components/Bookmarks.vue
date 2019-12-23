@@ -116,7 +116,7 @@
 <script>
 import axios from "axios";
 import Router from "vue-router";
-import IconComponet from "./Icon.vue";
+import IconComponet from "./common/Icon.vue";
 import { bookmarksAdd, bookmarksEdit, bookmarksIcon } from "../api/bookmarks";
 import { SlickList, SlickItem } from "vue-slicksort";
 import { ContainerMixin, ElementMixin } from "vue-slicksort";
