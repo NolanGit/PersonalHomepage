@@ -6,14 +6,16 @@
 - 搜索引擎
 - 天气
 - 书签
-### To Do
+### Working on:
 - 股票
 - 基金
+- 后台管理页面（定时任务脚本统一驱动和管理）
+### To Do
 - 黄金
 - AppStore价格监控
 - 新闻
 - 便签
 - 智能家居？
-- 常用ip
+- 常用ip绑定
 ### 2019-12-19的样子
 ![image](https://user-images.githubusercontent.com/27627484/71140235-9b342980-224b-11ea-824a-eeddb06e7f22.png)
