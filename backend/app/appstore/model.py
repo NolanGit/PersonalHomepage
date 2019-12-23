@@ -22,14 +22,19 @@ class appstore(BaseModel):
     expect_price = IntegerField()
     user_id = IntegerField()
     order = IntegerField()
-    is_notify = IntegerField()
     is_valid = IntegerField()
+    notify = IntegerField() # 1:是,2:否
+    notify_method = IntegerField() # 1:微信,2:邮件
+    notify_time = DateTimeField()
+    notify_interval = IntegerField()
+    notify_interval_unit = IntegerField() # 1:小时,2:天
+    notify_trigger_time = DateTimeField()
     update_time = DateTimeField()
 
     class Meta:
         table_name = 'appstore'
 
-#用户表增加email
+#用户表增加email和微信推送id的config
 
 class appstore_price_data(BaseModel):
     app_id = IntegerField()

@@ -23,3 +23,6 @@ class User(object):
         user_query = user.select().where(user.name == self.user_name).limit(1).dicts()
         for row in user_query:
             self.user_id = row['id']
+            self.role = row['role']
+            self.create_time = row['create_time']
+            self.update_time = row['update_time']
