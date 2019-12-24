@@ -138,8 +138,9 @@ export default {
       this.$emit("user", "");
     },
     settingDrawerMainClicked() {
-      this.settingDrawerMain.visible = true;
+      console.log("this.settingDrawerMain.visible");
       console.log(this.settingDrawerMain.visible);
+      this.settingDrawerMain.visible = true;
     }
   },
   created() {},
