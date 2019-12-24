@@ -30,7 +30,7 @@
     <el-dropdown class="user-popover" trigger="hover" v-show="user!=''">
       <span class="el-dropdown-link userinfo-inner">{{user}}</span>
       <el-dropdown-menu slot="dropdown">
-        <el-dropdown-item @click="settingDrawerMain.visible=true">设置</el-dropdown-item>
+        <el-dropdown-item @click="settingDrawerMainClicked()">设置</el-dropdown-item>
         <el-dropdown-item divided @click.native="logout">退出登录</el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
@@ -136,6 +136,10 @@ export default {
         type: "success"
       });
       this.$emit("user", "");
+    },
+    settingDrawerMainClicked() {
+      this.settingDrawerMain.visible = true;
+      console.log(this.settingDrawerMain.visible);
     }
   },
   created() {},
