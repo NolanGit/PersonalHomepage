@@ -96,6 +96,7 @@ export default {
       this.show.weather = true;
     },
     consoleSettingClicked() {
+      console.log(123)
       this.drawer.title = "hey";
       this.drawer.visible = true;
       this.drawer.direction = "top";
