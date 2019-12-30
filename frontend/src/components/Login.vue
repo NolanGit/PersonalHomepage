@@ -30,20 +30,10 @@
     <el-dropdown class="user-popover" trigger="hover" v-show="user!=''">
       <span class="el-dropdown-link userinfo-inner">{{user}}</span>
       <el-dropdown-menu slot="dropdown">
-        <el-dropdown-item @click.native="settingDrawerMainClicked">设置</el-dropdown-item>
+        <el-dropdown-item @click.native="consoleSettingClicked">控制台</el-dropdown-item>
         <el-dropdown-item divided @click.native="logout">退出登录</el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
-    <el-drawer title="设置" :visible.sync="settingDrawerMain.visible" direction="right">
-      <span>我来啦!</span>
-    </el-drawer>
-    <el-drawer
-      :title="settingDrawerDetail.title"
-      :visible.sync="settingDrawerDetail.visible"
-      direction="right"
-    >
-      <span>我来啦!</span>
-    </el-drawer>
   </div>
 </template>
 <script>
@@ -60,14 +50,7 @@ export default {
       username: "",
       password: "",
       salt: "",
-      user: "",
-      settingDrawerMain: {
-        visible: false
-      },
-      settingDrawerDetail: {
-        title: "",
-        visible: false
-      }
+      user: ""
     };
   },
   methods: {
@@ -137,10 +120,8 @@ export default {
       });
       this.$emit("user", "");
     },
-    settingDrawerMainClicked() {
-      console.log("this.settingDrawerMain.visible");
-      console.log(this.settingDrawerMain.visible);
-      this.settingDrawerMain.visible = true;
+    consoleSettingClicked() {
+      this.$emit("consoleSettingClicked");
     }
   },
   created() {},
