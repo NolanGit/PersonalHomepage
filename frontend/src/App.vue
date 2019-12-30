@@ -110,6 +110,10 @@ export default {
 </script>
 
 <style>
+#app {
+  font-family: Helvetica, sans-serif;
+  text-align: center;
+}
 .cardRow {
   padding-top: 120px;
 }
