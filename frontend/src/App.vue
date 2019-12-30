@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <el-row class="loginRow">
-      <login @settingClicked="consoleSettingClicked" @user="userLoginedOrLogout" />
+      <login @consoleSettingClicked="consoleSettingClicked" @user="userLoginedOrLogout" />
     </el-row>
     <el-row class="searchRow">
       <search />
