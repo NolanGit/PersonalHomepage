@@ -34,13 +34,13 @@
         <el-dropdown-item divided @click.native="logout">退出登录</el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
-    <el-drawer title="设置" :visible.sync="settingDrawerMain.visible" direction="top" size="50%">
+    <el-drawer title="设置" :visible.sync="settingDrawerMain.visible" direction="right">
       <span>我来啦!</span>
     </el-drawer>
     <el-drawer
       :title="settingDrawerDetail.title"
       :visible.sync="settingDrawerDetail.visible"
-      direction="top"
+      direction="right"
     >
       <span>我来啦!</span>
     </el-drawer>
