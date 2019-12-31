@@ -4,7 +4,7 @@ import logging
 import datetime
 import traceback
 import subprocess
-from console_model import console, console_script_sub_system, console_script, console_script_detail, console_script_detail, console_script_log, console_script_schedule
+from .console_model import console, console_script_sub_system, console_script, console_script_detail, console_script_detail, console_script_log, console_script_schedule
 
 
 def schedule_get():
