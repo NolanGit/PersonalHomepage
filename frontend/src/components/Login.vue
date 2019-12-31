@@ -34,6 +34,14 @@
         <el-dropdown-item divided @click.native="logout">退出登录</el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
+    <el-drawer
+      :title="drawer.title"
+      :visible.sync="drawer.visible"
+      :direction="drawer.direction"
+      :size="drawer.size"
+    >
+      <span>我来啦!</span>
+    </el-drawer>
   </div>
 </template>
 <script>
@@ -50,7 +58,13 @@ export default {
       username: "",
       password: "",
       salt: "",
-      user: ""
+      user: "",
+      drawer: {
+        title: "",
+        size: "",
+        visible: false,
+        direction: "ttb"
+      }
     };
   },
   methods: {
@@ -121,7 +135,10 @@ export default {
       this.$emit("user", "");
     },
     consoleSettingClicked() {
-      this.$emit("consoleSettingClicked");
+      this.title = "";
+      this.size = "60%";
+      this.visible = true;
+      this.direction = "ttb";
     }
   },
   created() {},

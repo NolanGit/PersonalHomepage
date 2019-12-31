@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <el-row class="loginRow">
-      <login @consoleSettingClicked="consoleSettingClicked" @user="userLoginedOrLogout" />
+      <login @user="userLoginedOrLogout" />
     </el-row>
     <el-row class="searchRow">
       <search />
@@ -20,14 +20,6 @@
         </el-card>
       </el-col>
     </el-row>
-    <el-drawer
-      :title="drawer.title"
-      :visible.sync="drawer.visible"
-      :direction="drawer.direction"
-      :size="drawer.size"
-    >
-      <span>我来啦!</span>
-    </el-drawer>
   </div>
 </template>
 
@@ -54,12 +46,6 @@ export default {
       show: {
         weather: false
       },
-      drawer: {
-        title: "",
-        size: "",
-        visible: false,
-        size: "50%"
-      }
     };
   },
   methods: {
@@ -95,13 +81,6 @@ export default {
     weatherLoaded() {
       this.show.weather = true;
     },
-    consoleSettingClicked() {
-      console.log(123)
-      this.drawer.title = "hey";
-      this.drawer.visible = true;
-      this.drawer.direction = "ttb";
-      this.drawer.size = "60%";
-    }
   },
   created() {
     this.userInfoFront();
