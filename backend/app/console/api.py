@@ -5,7 +5,7 @@ import datetime
 import traceback
 import subprocess
 import collections
-from . import console
+from . import console as consoleApi
 from flask_cors import cross_origin
 from flask import render_template, session, redirect, url_for, current_app, flash, Response, request, jsonify
 from .console_model import console, console_script_sub_system, console_script, console_script_detail, console_script_detail, console_script_log, console_script_schedule
@@ -21,7 +21,7 @@ def subprocess_run(command):
     return len(running_subprocess) - 1
 
 
-@console.route('/get', methods=['GET'])
+@consoleApi.route('/get', methods=['GET'])
 @cross_origin()
 def consoleGet():
     result = []
@@ -36,7 +36,7 @@ def consoleGet():
     return jsonify(response)
 
 
-@console.route('/consoleScriptSubSystem', methods=['GET'])
+@consoleApi.route('/consoleScriptSubSystem', methods=['GET'])
 @cross_origin()
 def consoleScriptSubSystem():
     result = []
@@ -51,7 +51,7 @@ def consoleScriptSubSystem():
     return jsonify(response)
 
 
-@console.route('/consoleScriptSubSystemScript', methods=['POST'])
+@consoleApi.route('/consoleScriptSubSystemScript', methods=['POST'])
 @cross_origin()
 def consoleScriptSubSystemScript():
     sub_system_id = request.get_json()['sub_system_id']
@@ -101,7 +101,7 @@ def consoleScriptSubSystemScript():
     return jsonify(response)
 
 
-@console.route('/consoleScriptRun', methods=['POST'])
+@consoleApi.route('/consoleScriptRun', methods=['POST'])
 @cross_origin()
 def consoleScriptRun():
     global running_subprocess
@@ -156,7 +156,7 @@ def consoleScriptRun():
         return jsonify(response)
 
 
-@console.route('/consoleScriptTerminate', methods=['POST'])
+@consoleApi.route('/consoleScriptTerminate', methods=['POST'])
 @cross_origin()
 def consoleScriptTerminate():
     global running_subprocess
@@ -175,7 +175,7 @@ def consoleScriptTerminate():
         return jsonify(response)
 
 
-@console.route('/consoleScriptRunOutput', methods=['POST'])
+@consoleApi.route('/consoleScriptRunOutput', methods=['POST'])
 @cross_origin()
 def consoleScriptRunOutput():
     global running_subprocess
@@ -199,7 +199,7 @@ def consoleScriptRunOutput():
         return jsonify(response)
 
 
-@console.route('/consoleScriptEdit', methods=['POST'])
+@consoleApi.route('/consoleScriptEdit', methods=['POST'])
 @cross_origin()
 def consoleScriptEdit():
     try:
@@ -414,7 +414,7 @@ def consoleScriptEdit():
         return jsonify(response)
 
 
-@console.route('/console_scriptReplay', methods=['POST'])
+@consoleApi.route('/console_scriptReplay', methods=['POST'])
 @cross_origin()
 def console_scriptReplay():
     try:
@@ -442,7 +442,7 @@ def console_scriptReplay():
         return jsonify(response)
 
 
-@console.route('/consoleScriptDelete', methods=['POST'])
+@consoleApi.route('/consoleScriptDelete', methods=['POST'])
 @cross_origin()
 def consoleScriptDelete():
     try:
@@ -461,7 +461,7 @@ def consoleScriptDelete():
         return jsonify(response)
 
 
-@console.route('/consoleScriptSaveOutput', methods=['POST'])
+@consoleApi.route('/consoleScriptSaveOutput', methods=['POST'])
 @cross_origin()
 def consoleScriptSaveOutput():
     try:
@@ -480,7 +480,7 @@ def consoleScriptSaveOutput():
         return jsonify(response)
 
 
-@console.route('/consoleScriptGetLogs', methods=['POST'])
+@consoleApi.route('/consoleScriptGetLogs', methods=['POST'])
 @cross_origin()
 def consoleScriptGetLogs():
     try:
@@ -517,7 +517,7 @@ def consoleScriptGetLogs():
         return jsonify(response)
 
 
-@console.route('/consoleScriptGetNewestLog', methods=['POST'])
+@consoleApi.route('/consoleScriptGetNewestLog', methods=['POST'])
 @cross_origin()
 def consoleScriptGetNewestLog():
     try:
@@ -550,7 +550,7 @@ def consoleScriptGetNewestLog():
         return jsonify(response)
 
 
-@console.route('/consoleScriptSchedule', methods=['POST'])
+@consoleApi.route('/consoleScriptSchedule', methods=['POST'])
 @cross_origin()
 def consoleScriptSchedule():
     try:
@@ -587,7 +587,7 @@ def consoleScriptSchedule():
         return jsonify(response)
 
 
-@console.route('/consoleScriptScheduleEdit', methods=['POST'])
+@consoleApi.route('/consoleScriptScheduleEdit', methods=['POST'])
 @cross_origin()
 def consoleScriptScheduleEdit():
     try:
@@ -683,7 +683,7 @@ def consoleScriptScheduleEdit():
         return jsonify(response)
 
 
-@console.route('/consoleScriptScheduleDelete', methods=['POST'])
+@consoleApi.route('/consoleScriptScheduleDelete', methods=['POST'])
 @cross_origin()
 def consoleScriptScheduleDelete():
     try:
@@ -702,7 +702,7 @@ def consoleScriptScheduleDelete():
         return jsonify(response)
 
 
-@console.route('/consoleScriptExtraButtonScriptRun', methods=['POST'])
+@consoleApi.route('/consoleScriptExtraButtonScriptRun', methods=['POST'])
 @cross_origin()
 def consoleScriptExtraButtonScriptRun():
     global running_subprocess
