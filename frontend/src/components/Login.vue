@@ -53,6 +53,9 @@ import { userLogin, userLoginGetSalt } from "../api/login";
 
 export default {
   name: "login",
+  components: {
+    Console
+  },
   data() {
     return {
       visible: false,
