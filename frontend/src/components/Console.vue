@@ -1,18 +1,16 @@
 <template>
   <div class="console-main">
-    <div class="div-flex">
-      <el-row>
-        <el-col v-for="consoleOption in consoleOptions" :key="consoleOption" :span="5" :offset="1">
-          <el-card class="box-card">
-            <div slot="header" class="clearfix">
-              <span>{{consoleOption.name}}</span>
-            </div>
-            <i :class="consoleOption.icon"></i>
-            <el-button style="float: right; padding: 3px 0" type="text">进入</el-button>
-          </el-card>
-        </el-col>
-      </el-row>
-    </div>
+    <el-row>
+      <el-col v-for="consoleOption in consoleOptions" :key="consoleOption" :span="5" :offset="1">
+        <el-card class="box-card">
+          <div slot="header" class="clearfix">
+            <span>{{consoleOption.name}}</span>
+          </div>
+          <i :class="consoleOption.icon"></i>
+          <el-button style="float: right; padding: 3px 0" type="text">进入</el-button>
+        </el-card>
+      </el-col>
+    </el-row>
     <el-drawer
       :title="drawer.title"
       :visible.sync="drawer.visible"
