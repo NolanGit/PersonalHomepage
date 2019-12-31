@@ -35,4 +35,7 @@ def create_app(config_name):
     from .bookmarks import bookmarks as bookmarks_blueprint
     app.register_blueprint(bookmarks_blueprint, url_prefix='/bookmarks')
 
+    from .console import console as console_blueprint
+    app.register_blueprint(console_blueprint, url_prefix='/console')
+
     return app
