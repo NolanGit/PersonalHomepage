@@ -135,10 +135,10 @@ export default {
       this.$emit("user", "");
     },
     consoleSettingClicked() {
-      this.title = "";
-      this.size = "60%";
-      this.visible = true;
-      this.direction = "ttb";
+      this.drawer.title = "";
+      this.drawer.size = "60%";
+      this.drawer.visible = true;
+      this.drawer.direction = "ttb";
     }
   },
   created() {},
