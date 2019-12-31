@@ -54,6 +54,7 @@ export default {
       var user = sessionStorage.getItem("user").replace(/\"/g, "");
       this.user = user;
     } catch (error) {}
+    this.consoleGetFront()
   }
 };
 </script>
