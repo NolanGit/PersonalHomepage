@@ -110,6 +110,7 @@ export default {
         }
       });
       this.word = "";
+      this.autoComplete("")
     },
     autoComplete(queryString, cb) {
       if (
