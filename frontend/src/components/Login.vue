@@ -40,7 +40,7 @@
       :direction="drawer.direction"
       :size="drawer.size"
     >
-      <span>我来啦!</span>
+      <Console />
     </el-drawer>
   </div>
 </template>
@@ -48,6 +48,7 @@
 import md5 from "js-md5";
 import axios from "axios";
 import Router from "vue-router";
+import Console from "./Console.vue";
 import { userLogin, userLoginGetSalt } from "../api/login";
 
 export default {

@@ -23,7 +23,19 @@ class console_script_sub_system(BaseModel):
     update_time = DateTimeField(null=True)
 
     class Meta:
-        table_name = 'sub_system'
+        table_name = 'console_script_sub_system'
+
+
+class console(BaseModel):
+    name = CharField()
+    order = IntegerField()
+    icon = CharField(null=True)
+    component_name = CharField(null=True)
+    is_valid = IntegerField(null=True)
+    update_time = DateTimeField(null=True)
+
+    class Meta:
+        table_name = 'console'
 
 
 class console_script(BaseModel):
@@ -98,6 +110,7 @@ class console_script_schedule(BaseModel):
         table_name = 'console_script_schedule'
 
 
+console().create_table()
 console_script_sub_system().create_table()
 console_script().create_table()
 console_script_detail().create_table()
