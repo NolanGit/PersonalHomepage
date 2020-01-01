@@ -7,7 +7,7 @@
             <span>{{consoleOption.name}}</span>
           </div>
           <i :class="consoleOption.icon" style="font-size: 30px;"></i>
-          <el-button style="float: right">进入</el-button>
+          <el-button style="float: right" size="small">进入</el-button>
         </el-card>
       </el-col>
     </el-row>
