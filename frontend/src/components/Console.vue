@@ -1,6 +1,6 @@
 <template>
   <div class="console-main">
-    <el-row>
+    <el-row class="margin_bottom-large">
       <el-col v-for="consoleOption in consoleOptions" :key="consoleOption" :span="5" :offset="1">
         <el-card class="box-card">
           <div slot="header" class="clearfix">
