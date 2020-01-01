@@ -6,8 +6,8 @@
           <div slot="header" class="clearfix">
             <span>{{consoleOption.name}}</span>
           </div>
-          <i :class="consoleOption.icon"></i>
-          <el-button style="float: right; padding: 3px 0" type="text">进入</el-button>
+          <i :class="consoleOption.icon" style="font-size: 30px;"></i>
+          <el-button style="float: right; padding: 3px 0">进入</el-button>
         </el-card>
       </el-col>
     </el-row>

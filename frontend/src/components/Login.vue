@@ -140,7 +140,7 @@ export default {
     },
     consoleSettingClicked() {
       this.drawer.title = "";
-      this.drawer.size = "60%";
+      this.drawer.size = "200";
       this.drawer.visible = true;
       this.drawer.direction = "ttb";
     }
