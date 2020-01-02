@@ -7,7 +7,7 @@
             <span>{{consoleOption.name}}</span>
           </div>
           <i :class="consoleOption.icon" style="font-size: 30px;"></i>
-          <el-button style="float: right" size="small">进入</el-button>
+          <el-button style="float: right" size="small" @click="consoleOptionClicked(consoleOption)">进入</el-button>
         </el-card>
       </el-col>
     </el-row>
@@ -50,6 +50,10 @@ export default {
           console.log(this.consoleOptions);
         }
       });
+    },
+    consoleOptionClicked(consoleOption){
+        console.log(consoleOption)
+        
     }
   },
   created() {},
