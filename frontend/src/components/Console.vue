@@ -16,7 +16,11 @@
       :visible.sync="drawer.visible"
       :direction="drawer.direction"
       :size="drawer.size"
-    ></el-drawer>
+    >
+    <div>
+
+    </div>
+    </el-drawer>
   </div>
 </template>
 <script>
