@@ -7,7 +7,11 @@
             <span>{{consoleOption.name}}</span>
           </div>
           <i :class="consoleOption.icon" style="font-size: 30px;"></i>
-          <el-button style="float: right" size="small" @click="consoleOptionClicked(consoleOption)">进入</el-button>
+          <el-button
+            style="float: right"
+            size="small"
+            @click="consoleOptionClicked(consoleOption)"
+          >进入</el-button>
         </el-card>
       </el-col>
     </el-row>
@@ -16,11 +20,7 @@
       :visible.sync="drawer.visible"
       :direction="drawer.direction"
       :size="drawer.size"
-    >
-    <div>
-
-    </div>
-    </el-drawer>
+    ></el-drawer>
   </div>
 </template>
 <script>
@@ -38,7 +38,8 @@ export default {
         size: "",
         visible: false,
         direction: "ttb"
-      }
+      },
+      activeComponent: ""
     };
   },
   methods: {
@@ -55,9 +56,13 @@ export default {
         }
       });
     },
-    consoleOptionClicked(consoleOption){
-        console.log(consoleOption)
-        
+    consoleOptionClicked(consoleOption) {
+      console.log(consoleOption);
+      this.activeComponent = consoleOption.component_name;
+      this.drawer.title = consoleOption.name;
+      this.drawer.visible = true;
+      this.drawer.direction = "ttb";
+      this.drawer.size = "80%";
     }
   },
   created() {},
