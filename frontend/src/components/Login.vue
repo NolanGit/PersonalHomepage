@@ -139,7 +139,7 @@ export default {
       this.$emit("user", "");
     },
     consoleSettingClicked() {
-      this.drawer.title = "";
+      this.drawer.title = "控制台";
       this.drawer.size = "500";
       this.drawer.visible = true;
       this.drawer.direction = "ttb";
