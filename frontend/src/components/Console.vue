@@ -21,8 +21,8 @@
       :direction="drawer.direction"
       :size="drawer.size"
     >
-      <div v-if="activeComponent=='consoleScript'">
-        <ConsoleScript/>
+      <div v-if="activeComponent==1">
+        <ConsoleScript />
       </div>
     </el-drawer>
   </div>
@@ -47,7 +47,7 @@ export default {
         visible: false,
         direction: "ttb"
       },
-      activeComponent: ""
+      activeComponent: 1
     };
   },
   methods: {
@@ -66,7 +66,7 @@ export default {
     },
     consoleOptionClicked(consoleOption) {
       console.log(consoleOption);
-      this.activeComponent = consoleOption.component_name;
+      //this.activeComponent = consoleOption.component_name;
       this.drawer.title = consoleOption.name;
       this.drawer.visible = true;
       this.drawer.direction = "ttb";
