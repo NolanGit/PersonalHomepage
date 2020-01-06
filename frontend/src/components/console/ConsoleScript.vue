@@ -2101,19 +2101,6 @@ export default {
   },
   mounted() {
     this.getSubSystem();
-    var para = {
-      url: this.$route.path,
-      user: sessionStorage.getItem("user").replace(/\"/g, "")
-    };
-    log(para).then(data => {
-      if (data["code"] !== 200) {
-        this.$message({
-          message: "系统运行日志记录错误，请联系管理员：" + data["msg"],
-          type: "error"
-        });
-      } else {
-      }
-    });
   }
 };
 </script>
