@@ -47,7 +47,7 @@ export default {
         visible: false,
         direction: "ttb"
       },
-      activeComponent: 1
+      activeComponent: 0
     };
   },
   methods: {
@@ -66,7 +66,7 @@ export default {
     },
     consoleOptionClicked(consoleOption) {
       console.log(consoleOption);
-      //this.activeComponent = consoleOption.component_name;
+      this.activeComponent = 1;
       this.drawer.title = consoleOption.name;
       this.drawer.visible = true;
       this.drawer.direction = "ttb";

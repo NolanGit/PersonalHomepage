@@ -1176,7 +1176,7 @@ export default {
       }
       this.activedSystem = this.subSystem[s].id;
       this.activeTab = "0";
-      this.prepareDataSubSystemScriptFront(this.subSystem[s].id);
+      this.consoleScriptSubSystemScriptFront(this.subSystem[s].id);
     },
     //增加组件
     editFormAddSingleData() {
@@ -1241,7 +1241,7 @@ export default {
         detail: this.edit.formData,
         user: sessionStorage.getItem("user").replace(/\"/g, "")
       };
-      prepareDataEdit(para).then(data => {
+      consoleScriptEdit(para).then(data => {
         if (data["code"] !== 200) {
           this.$message({
             message: data["msg"],
@@ -1253,7 +1253,7 @@ export default {
             type: "success"
           });
           this.edit.visible = false;
-          this.prepareDataSubSystemScriptFront(this.edit.sub_system_id);
+          this.consoleScriptSubSystemScriptFront(this.edit.sub_system_id);
         }
         this.edit.buttonLoading = false;
       });
@@ -1309,7 +1309,7 @@ export default {
             script_id: this.formData[this.activeTab].id,
             user: sessionStorage.getItem("user").replace(/\"/g, "")
           };
-          prepareDataDelete(para).then(data => {
+          consoleScriptDelete(para).then(data => {
             if (data["code"] !== 200) {
               this.$message({
                 message: data["msg"],
@@ -1320,7 +1320,7 @@ export default {
                 message: data["msg"],
                 type: "success"
               });
-              this.prepareDataSubSystemScriptFront(this.activedSystem);
+              this.consoleScriptSubSystemScriptFront(this.activedSystem);
             }
           });
         })
@@ -1328,7 +1328,7 @@ export default {
     },
     //展示编辑脚本dialog
     singleDataSetting() {
-      this.prepareDataSubSystemScriptFront(this.activedSystem).then(data => {
+      this.consoleScriptSubSystemScriptFront(this.activedSystem).then(data => {
         //console.log(data)
         this.edit.dialogTitle = "编辑脚本";
         this.edit.title = data[this.activeTab].title;
@@ -1349,7 +1349,7 @@ export default {
         script_id: this.formData[this.activeTab].id,
         user: sessionStorage.getItem("user").replace(/\"/g, "")
       };
-      prepareDataGetLogs(para).then(data => {
+      consoleScriptGetLogs(para).then(data => {
         if (data["code"] !== 200) {
           this.$message({
             message: data["msg"],
@@ -1375,7 +1375,7 @@ export default {
         script_id: this.formData[this.activeTab].id,
         user: sessionStorage.getItem("user").replace(/\"/g, "")
       };
-      prepareDataReplay(para).then(data => {
+      consoleScriptReplay(para).then(data => {
         if (data["code"] !== 200) {
           this.$message({
             message: data["msg"],
@@ -1425,7 +1425,7 @@ export default {
         script_id: this.formData[this.activeTab].id,
         user: sessionStorage.getItem("user").replace(/\"/g, "")
       };
-      prepareDataGetNewestLog(para).then(data => {
+      consoleScriptGetNewestLog(para).then(data => {
         if (data["code"] !== 200) {
           this.$message({
             message: data["msg"],
@@ -1485,7 +1485,7 @@ export default {
         interval_unit: this.schedule.scheduleData.interval.unit.select,
         schedule_id: this.schedule.scheduleData.schedule_id
       };
-      prepareDataScheduleEdit(para).then(data => {
+      consoleScriptScheduleEdit(para).then(data => {
         if (data["code"] !== 200) {
           this.$message({
             message: data["msg"],
@@ -1525,7 +1525,7 @@ export default {
         user: sessionStorage.getItem("user").replace(/\"/g, ""),
         script_id: this.formData[this.activeTab].id
       };
-      prepareDataSchedule(para).then(data => {
+      consoleScriptSchedule(para).then(data => {
         if (data["code"] !== 200) {
           this.$message({
             message: data["msg"],
@@ -1567,7 +1567,7 @@ export default {
           user: sessionStorage.getItem("user").replace(/\"/g, ""),
           schedule_id: schedule_id
         };
-        prepareDataScheduleDelete(para).then(data => {
+        consoleScriptScheduleDelete(para).then(data => {
           if (data["code"] !== 200) {
             this.$message({
               message: data["msg"],
@@ -1583,7 +1583,7 @@ export default {
       });
     },
     //展示子系统下的脚本
-    prepareDataSubSystemScriptFront(sub_system_id) {
+    consoleScriptSubSystemScriptFront(sub_system_id) {
       //console.log('sub_system_id: ' + sub_system_id)
       this.formDataLoading = true;
       for (
@@ -1600,7 +1600,7 @@ export default {
         user: sessionStorage.getItem("user").replace(/\"/g, ""),
         sub_system_id: this.subSystem[subSystemIndex].id
       };
-      return prepareDataSubSystemScript(para).then(data => {
+      return consoleScriptSubSystemScript(para).then(data => {
         if (data["code"] !== 200) {
           this.$message({
             message: data["msg"],
@@ -1660,7 +1660,7 @@ export default {
       var para = {
         user: sessionStorage.getItem("user").replace(/\"/g, "")
       };
-      prepareDataSubSystem(para).then(data => {
+      consoleScriptSubSystem(para).then(data => {
         if (data["code"] !== 200) {
           this.$message({
             message: data["msg"],
@@ -1682,7 +1682,7 @@ export default {
         process_id: process_id,
         user: sessionStorage.getItem("user").replace(/\"/g, "")
       };
-      prepareDataRunOutput(para).then(data => {
+      consoleScriptRunOutput(para).then(data => {
         if (data["code"] !== 200) {
           this.$message({
             message: data["msg"],
@@ -1725,7 +1725,7 @@ export default {
               log_id: this.output.log_id,
               output: this.output.text
             };
-            prepareDataSaveOutput(para2).then(data => {
+            consoleScriptSaveOutput(para2).then(data => {
               if (data["data"]["status"] == -1) {
                 this.$message({
                   message: "记录运行日志错误！请联系管理员" + data["msg"],
@@ -1832,7 +1832,7 @@ export default {
         process_id: process_id,
         user: sessionStorage.getItem("user").replace(/\"/g, "")
       };
-      prepareDataRunOutput(para).then(data => {
+      consoleScriptRunOutput(para).then(data => {
         if (data["code"] !== 200) {
           this.$message({
             message: data["msg"],
@@ -1906,7 +1906,7 @@ export default {
         command: command
       };
       this.extra_button.loading = true;
-      prepareDataExtraButtonScriptRun(para).then(data => {
+      consoleScriptExtraButtonScriptRun(para).then(data => {
         if (data["code"] !== 200) {
           this.$message({
             message: data["msg"],
@@ -2025,7 +2025,7 @@ export default {
           user: sessionStorage.getItem("user").replace(/\"/g, ""),
           process_id: this.output.process_id
         };
-        prepareDataTerminate(para).then(data => {
+        consoleScriptTerminate(para).then(data => {
           if (data["code"] !== 200) {
             this.$message({
               message: data["msg"],
@@ -2075,7 +2075,7 @@ export default {
         detail: detail,
         user: sessionStorage.getItem("user").replace(/\"/g, "")
       };
-      prepareDataRun(para).then(data => {
+      consoleScriptRun(para).then(data => {
         if (data["code"] !== 200) {
           this.$message({
             message: data["msg"],
