@@ -374,7 +374,7 @@
       :visible.sync="output.visible"
       :close-on-click-modal="false"
       size="70%"
-      direction="ttb"
+      direction="btt"
       @close="output.text=''"
     >
       <div class="margin_left-medium margin_right-medium">
@@ -2187,7 +2187,7 @@ export default {
   font-family: PingFang SC;
 }
 .output-div {
-  height: 50%;
+  height: 45vh;
   width: 100%;
   overflow-x: hidden;
   overflow-y: hidden;
