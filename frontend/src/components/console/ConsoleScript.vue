@@ -849,7 +849,7 @@
       <div class="add" style="width: 99.87%;" @click="editFormAddSingleData()">
         <span>+ 添加参数</span>
       </div>
-      <div slot="footer" class="dialog-footer">
+      <div class="dialog-footer">
         <el-button size="small" @click.native="edit.visible=false">关闭</el-button>
         <el-button
           type="primary"
@@ -861,7 +861,7 @@
     </el-drawer>
 
     <!--选择器编辑选项界面-->
-    <el-dialog
+    <el-drawer
       title="编辑"
       :visible.sync="singleDataOptionDialog.visible"
       :close-on-click-modal="false"
@@ -907,11 +907,11 @@
       <div class="add" style="width: 99.87%;" @click="singleDataOptionDialogAddSingleData()">
         <span>+ 添加选项</span>
       </div>
-      <div slot="footer" class="dialog-footer">
+      <div class="dialog-footer">
         <el-button size="small" @click="singleDataOptionDialog.visible = false">关闭</el-button>
         <el-button type="primary" size="small" @click="singleDataOptionDialogSubmited()">保存</el-button>
       </div>
-    </el-popover>
+    </el-drawer>
 
     <!--编辑定时任务界面-->
     <el-drawer
@@ -988,7 +988,7 @@
           </el-select>
         </td>
       </div>
-      <div slot="footer" class="dialog-footer">
+      <div class="dialog-footer">
         <el-button size="small" @click="schedule.dialogVisible = false">关闭</el-button>
         <el-button type="primary" size="small" @click="singleDataScheduleAddScheduleSubmit()">提交</el-button>
       </div>
