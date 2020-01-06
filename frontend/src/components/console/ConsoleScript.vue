@@ -402,7 +402,7 @@
       @closed="editFormClosed"
     >
       <div class="edit-form-card margin_left-medium margin_right-medium">
-        <el-scrollbar class="unique_scrollbar">
+        <div class="scrollbar-div" ref="scrollbarDiv">
           <el-card>
             <div>
               <td type="flex" class="td--label">
@@ -858,7 +858,7 @@
               @click.native="editFormSubmited()"
             >提交</el-button>
           </div>
-        </el-scrollbar>
+        </div>
       </div>
     </el-drawer>
 
@@ -2305,5 +2305,25 @@ export default {
   margin-bottom: 20px;
   margin-left: 20px;
   margin-right: 20px;
+}
+.scrollbar-div {
+  max-height: 70vh;
+  width: 100%;
+  overflow-x: hidden;
+  overflow-y: overlay;
+}
+.scrollbar-div::-webkit-scrollbar {
+  width: 3px;
+  height: 1px;
+}
+.scrollbar-div::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+  background: rgba(83, 83, 83, 0.18);
+}
+.scrollbar-div::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.13);
+  border-radius: 10px;
+  background: #f3f3f300;
 }
 </style>
