@@ -1018,6 +1018,7 @@ import {
 } from "../../api/console";
 
 export default {
+  name: "ConsoleScript",
   data() {
     return {
       pickerOptions: {

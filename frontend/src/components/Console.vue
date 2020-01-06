@@ -20,16 +20,24 @@
       :visible.sync="drawer.visible"
       :direction="drawer.direction"
       :size="drawer.size"
-    ></el-drawer>
+    >
+      <div v-if="activeComponent=='consoleScript'">
+        <ConsoleScript/>
+      </div>
+    </el-drawer>
   </div>
 </template>
 <script>
 import axios from "axios";
 import Router from "vue-router";
+import ConsoleScript from "./console/ConsoleScript.vue";
 import { consoleGet } from "../api/console";
 
 export default {
   name: "Console",
+  components: {
+    ConsoleScript
+  },
   data() {
     return {
       consoleOptions: [],
