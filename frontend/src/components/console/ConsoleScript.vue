@@ -495,370 +495,370 @@
               </td>
             </div>
           </el-card>
+          <div v-for="singleData in edit.formData" :key="singleData.key">
+            <div class="edit-form-card">
+              <el-card class="edit-form-card">
+                <el-col :span="21">
+                  <div>
+                    <td type="flex" class="td--label">
+                      <p class="td__p--label">组件名称：</p>
+                    </td>
+                    <td>
+                      <el-input
+                        size="small"
+                        v-model="singleData.label"
+                        placeholder="请输入组件名称"
+                        class="main_input--large"
+                      ></el-input>
+                    </td>
+                  </div>
+                  <div>
+                    <td type="flex" class="td--label">
+                      <p class="td__p--label">组件类型：</p>
+                    </td>
+                    <td>
+                      <el-select
+                        size="small"
+                        v-model="singleData.type"
+                        placeholder="请选择组件类型"
+                        filterable
+                        default-first-option
+                        class="main_select--large"
+                      >
+                        <el-option
+                          v-for="item in edit.typeOptions"
+                          :key="item.value"
+                          :label="item.label"
+                          :value="item.value"
+                        ></el-option>
+                      </el-select>
+                    </td>
+                  </div>
+                  <div v-if="singleData.type=='select'">
+                    <td type="flex" class="td--label">
+                      <p class="td__p--label">选项：</p>
+                    </td>
+                    <td>
+                      <el-button
+                        size="small"
+                        @click.native="singleDataOptionDialogClicked(edit.formData.indexOf(singleData),singleData.options)"
+                      >编辑选项</el-button>
+                    </td>
+                  </div>
+                  <div v-if="singleData.type=='select'">
+                    <td type="flex" class="td--label">
+                      <p class="td__p--label">是否可创建选项：</p>
+                    </td>
+                    <td>
+                      <el-select
+                        size="small"
+                        v-model="singleData.createable"
+                        placeholder="不选择时为否"
+                        filterable
+                        default-first-option
+                        class="main_select--large"
+                      >
+                        <el-option
+                          v-for="item in edit.boolOptions"
+                          :key="item.value"
+                          :label="item.label"
+                          :value="item.value"
+                        ></el-option>
+                      </el-select>
+                    </td>
+                  </div>
+                  <div v-if="singleData.type!='date'&&singleData.type!='dateRange'">
+                    <td type="flex" class="td--label">
+                      <p class="td__p--label">默认值：</p>
+                    </td>
+                    <td v-if="singleData.type!='select'">
+                      <el-tooltip
+                        open-delay="1000"
+                        effect="dark"
+                        :content="singleData.value"
+                        placement="top"
+                      >
+                        <el-input
+                          size="small"
+                          v-model="singleData.value"
+                          placeholder="如无默认值可以留空"
+                          class="main_input--large"
+                        ></el-input>
+                      </el-tooltip>
+                    </td>
+                    <td v-if="singleData.type=='select'">
+                      <el-tooltip
+                        open-delay="1000"
+                        effect="dark"
+                        :content="singleData.value"
+                        placement="top"
+                      >
+                        <el-input
+                          size="small"
+                          v-model="singleData.value"
+                          placeholder="请输入选项中的'值'作为默认值，如无默认值可留空"
+                          class="main_input--large"
+                        ></el-input>
+                      </el-tooltip>
+                    </td>
+                    <td v-if="singleData.type=='select'">
+                      <el-tooltip
+                        class="edit-form-question-mark question-mark"
+                        effect="dark"
+                        content="注意：如选择器有默认值，需要填写的是选项中的'值'，而非'标签'"
+                        placement="top"
+                      >
+                        <i class="fa fa-question-circle-o"></i>
+                      </el-tooltip>
+                    </td>
+                  </div>
+                  <div>
+                    <td type="flex" class="td--label">
+                      <p class="td__p--label">是否只读：</p>
+                    </td>
+                    <td>
+                      <el-select
+                        size="small"
+                        v-model="singleData.disabled"
+                        placeholder="不选择时为否"
+                        filterable
+                        default-first-option
+                        class="main_select--large"
+                      >
+                        <el-option
+                          v-for="item in edit.boolOptions"
+                          :key="item.value"
+                          :label="item.label"
+                          :value="item.value"
+                        ></el-option>
+                      </el-select>
+                    </td>
+                  </div>
+                  <div v-if="singleData.type!='dateRange'">
+                    <td type="flex" class="td--label">
+                      <p class="td__p--label">占位文字：</p>
+                    </td>
+                    <td>
+                      <el-tooltip
+                        open-delay="1000"
+                        effect="dark"
+                        :content="singleData.placeHolder"
+                        placement="top"
+                      >
+                        <el-input
+                          size="small"
+                          v-model="singleData.placeHolder"
+                          placeholder="如无占位文字可以留空"
+                          class="main_input--large"
+                        ></el-input>
+                      </el-tooltip>
+                    </td>
+                  </div>
+                  <div>
+                    <td type="flex" class="td--label">
+                      <p class="td__p--label">备注：</p>
+                    </td>
+                    <td>
+                      <el-tooltip
+                        open-delay="1000"
+                        effect="dark"
+                        :content="singleData.remark"
+                        placement="top"
+                      >
+                        <el-input
+                          size="small"
+                          v-model="singleData.remark"
+                          placeholder="如无备注可以留空"
+                          class="main_input--large"
+                        ></el-input>
+                      </el-tooltip>
+                    </td>
+                  </div>
+                  <div>
+                    <td type="flex" class="td--label">
+                      <p class="td__p--label">是否有额外按钮：</p>
+                    </td>
+                    <td>
+                      <el-select
+                        size="small"
+                        v-model="singleData.extra_button"
+                        placeholder="不选择时为否"
+                        filterable
+                        default-first-option
+                        class="main_select--large"
+                      >
+                        <el-option
+                          v-for="item in edit.boolOptions"
+                          :key="item.value"
+                          :label="item.label"
+                          :value="item.value"
+                        ></el-option>
+                      </el-select>
+                    </td>
+                    <td>
+                      <el-tooltip
+                        class="edit-form-question-mark question-mark"
+                        effect="dark"
+                        content="额外按钮配置为'是'时，组件右侧会出现一个按钮，点击按钮可以运行'额外按钮运行脚本'的脚本"
+                        placement="top"
+                      >
+                        <i class="fa fa-question-circle-o"></i>
+                      </el-tooltip>
+                    </td>
+                  </div>
+                  <div v-if="singleData.extra_button==1">
+                    <td type="flex" class="td--label">
+                      <p class="td__p--label">额外按钮名称：</p>
+                    </td>
+                    <td>
+                      <el-tooltip
+                        open-delay="1000"
+                        effect="dark"
+                        :content="singleData.extra_button_label"
+                        placement="top"
+                      >
+                        <el-input
+                          size="small"
+                          v-model="singleData.extra_button_label"
+                          placeholder="请输入额外按钮名称"
+                          class="main_input--large"
+                        ></el-input>
+                      </el-tooltip>
+                    </td>
+                  </div>
+                  <div v-if="singleData.extra_button==1">
+                    <td type="flex" class="td--label">
+                      <p class="td__p--label">额外按钮运行脚本：</p>
+                    </td>
+                    <td>
+                      <el-tooltip
+                        open-delay="1000"
+                        effect="dark"
+                        :content="singleData.extra_button_script"
+                        placement="top"
+                      >
+                        <el-input
+                          size="small"
+                          v-model="singleData.extra_button_script"
+                          placeholder="请输入额外按钮运行脚本"
+                          class="main_input--large"
+                        ></el-input>
+                      </el-tooltip>
+                    </td>
+                    <td>
+                      <el-tooltip
+                        class="edit-form-question-mark question-mark"
+                        effect="dark"
+                        content="点击'额外按钮'可以运行此处填写的脚本，并将此处脚本的运行输出返回至页面"
+                        placement="top"
+                      >
+                        <i class="fa fa-question-circle-o"></i>
+                      </el-tooltip>
+                    </td>
+                  </div>
+                  <div>
+                    <td type="flex" class="td--label">
+                      <p class="td__p--label">是否为重要字段：</p>
+                    </td>
+                    <td>
+                      <el-select
+                        size="small"
+                        v-model="singleData.is_important"
+                        placeholder="不选择时为否"
+                        filterable
+                        default-first-option
+                        class="main_select--large"
+                      >
+                        <el-option
+                          v-for="item in edit.boolOptions"
+                          :key="item.value"
+                          :label="item.label"
+                          :value="item.value"
+                        ></el-option>
+                      </el-select>
+                    </td>
+                    <td>
+                      <el-tooltip
+                        class="edit-form-question-mark question-mark"
+                        effect="dark"
+                        content="重要字段将被使用单独的一列在运行记录中展示，建议不要设置太多重要字段，否则会拖慢页面速度"
+                        placement="top"
+                      >
+                        <i class="fa fa-question-circle-o"></i>
+                      </el-tooltip>
+                    </td>
+                  </div>
+                  <div>
+                    <td type="flex" class="td--label">
+                      <p class="td__p--label">是否显示：</p>
+                    </td>
+                    <td>
+                      <el-select
+                        size="small"
+                        v-model="singleData.visible"
+                        placeholder="不选择时为是"
+                        filterable
+                        default-first-option
+                        class="main_select--large"
+                      >
+                        <el-option
+                          v-for="item in edit.boolOptions"
+                          :key="item.value"
+                          :label="item.label"
+                          :value="item.value"
+                        ></el-option>
+                      </el-select>
+                    </td>
+                    <td>
+                      <el-tooltip
+                        class="edit-form-question-mark question-mark"
+                        effect="dark"
+                        content="当选为'否'时，组件在页面上将不可见"
+                        placement="top"
+                      >
+                        <i class="fa fa-question-circle-o"></i>
+                      </el-tooltip>
+                    </td>
+                  </div>
+                </el-col>
+                <el-col :span="3">
+                  <div class="editFormRightButtons">
+                    <td>
+                      <i
+                        class="editFormRightButton editFormMoveUp el-icon-top"
+                        @click="editFormMoveUp(edit.formData.indexOf(singleData))"
+                      ></i>
+                    </td>
+                    <td>
+                      <i
+                        class="editFormRightButton editFormMoveDown el-icon-bottom"
+                        @click="editFormMoveDown(edit.formData.indexOf(singleData))"
+                      ></i>
+                    </td>
+                    <td>
+                      <i
+                        class="editFormRightButton editFormDeleted el-icon-close"
+                        @click="editFormDeleted(edit.formData.indexOf(singleData))"
+                      ></i>
+                    </td>
+                  </div>
+                </el-col>
+              </el-card>
+            </div>
+          </div>
+          <div class="add" style="width: 99.87%;" @click="editFormAddSingleData()">
+            <span>+ 添加参数</span>
+          </div>
+          <div class="dialog-footer">
+            <el-button size="small" @click.native="edit.visible=false">关闭</el-button>
+            <el-button
+              type="primary"
+              size="small"
+              :loading="edit.buttonLoading"
+              @click.native="editFormSubmited()"
+            >提交</el-button>
+          </div>
         </el-scrollbar>
-      </div>
-      <div v-for="singleData in edit.formData" :key="singleData.key">
-        <div class="edit-form-card">
-          <el-card class="edit-form-card">
-            <el-col :span="21">
-              <div>
-                <td type="flex" class="td--label">
-                  <p class="td__p--label">组件名称：</p>
-                </td>
-                <td>
-                  <el-input
-                    size="small"
-                    v-model="singleData.label"
-                    placeholder="请输入组件名称"
-                    class="main_input--large"
-                  ></el-input>
-                </td>
-              </div>
-              <div>
-                <td type="flex" class="td--label">
-                  <p class="td__p--label">组件类型：</p>
-                </td>
-                <td>
-                  <el-select
-                    size="small"
-                    v-model="singleData.type"
-                    placeholder="请选择组件类型"
-                    filterable
-                    default-first-option
-                    class="main_select--large"
-                  >
-                    <el-option
-                      v-for="item in edit.typeOptions"
-                      :key="item.value"
-                      :label="item.label"
-                      :value="item.value"
-                    ></el-option>
-                  </el-select>
-                </td>
-              </div>
-              <div v-if="singleData.type=='select'">
-                <td type="flex" class="td--label">
-                  <p class="td__p--label">选项：</p>
-                </td>
-                <td>
-                  <el-button
-                    size="small"
-                    @click.native="singleDataOptionDialogClicked(edit.formData.indexOf(singleData),singleData.options)"
-                  >编辑选项</el-button>
-                </td>
-              </div>
-              <div v-if="singleData.type=='select'">
-                <td type="flex" class="td--label">
-                  <p class="td__p--label">是否可创建选项：</p>
-                </td>
-                <td>
-                  <el-select
-                    size="small"
-                    v-model="singleData.createable"
-                    placeholder="不选择时为否"
-                    filterable
-                    default-first-option
-                    class="main_select--large"
-                  >
-                    <el-option
-                      v-for="item in edit.boolOptions"
-                      :key="item.value"
-                      :label="item.label"
-                      :value="item.value"
-                    ></el-option>
-                  </el-select>
-                </td>
-              </div>
-              <div v-if="singleData.type!='date'&&singleData.type!='dateRange'">
-                <td type="flex" class="td--label">
-                  <p class="td__p--label">默认值：</p>
-                </td>
-                <td v-if="singleData.type!='select'">
-                  <el-tooltip
-                    open-delay="1000"
-                    effect="dark"
-                    :content="singleData.value"
-                    placement="top"
-                  >
-                    <el-input
-                      size="small"
-                      v-model="singleData.value"
-                      placeholder="如无默认值可以留空"
-                      class="main_input--large"
-                    ></el-input>
-                  </el-tooltip>
-                </td>
-                <td v-if="singleData.type=='select'">
-                  <el-tooltip
-                    open-delay="1000"
-                    effect="dark"
-                    :content="singleData.value"
-                    placement="top"
-                  >
-                    <el-input
-                      size="small"
-                      v-model="singleData.value"
-                      placeholder="请输入选项中的'值'作为默认值，如无默认值可留空"
-                      class="main_input--large"
-                    ></el-input>
-                  </el-tooltip>
-                </td>
-                <td v-if="singleData.type=='select'">
-                  <el-tooltip
-                    class="edit-form-question-mark question-mark"
-                    effect="dark"
-                    content="注意：如选择器有默认值，需要填写的是选项中的'值'，而非'标签'"
-                    placement="top"
-                  >
-                    <i class="fa fa-question-circle-o"></i>
-                  </el-tooltip>
-                </td>
-              </div>
-              <div>
-                <td type="flex" class="td--label">
-                  <p class="td__p--label">是否只读：</p>
-                </td>
-                <td>
-                  <el-select
-                    size="small"
-                    v-model="singleData.disabled"
-                    placeholder="不选择时为否"
-                    filterable
-                    default-first-option
-                    class="main_select--large"
-                  >
-                    <el-option
-                      v-for="item in edit.boolOptions"
-                      :key="item.value"
-                      :label="item.label"
-                      :value="item.value"
-                    ></el-option>
-                  </el-select>
-                </td>
-              </div>
-              <div v-if="singleData.type!='dateRange'">
-                <td type="flex" class="td--label">
-                  <p class="td__p--label">占位文字：</p>
-                </td>
-                <td>
-                  <el-tooltip
-                    open-delay="1000"
-                    effect="dark"
-                    :content="singleData.placeHolder"
-                    placement="top"
-                  >
-                    <el-input
-                      size="small"
-                      v-model="singleData.placeHolder"
-                      placeholder="如无占位文字可以留空"
-                      class="main_input--large"
-                    ></el-input>
-                  </el-tooltip>
-                </td>
-              </div>
-              <div>
-                <td type="flex" class="td--label">
-                  <p class="td__p--label">备注：</p>
-                </td>
-                <td>
-                  <el-tooltip
-                    open-delay="1000"
-                    effect="dark"
-                    :content="singleData.remark"
-                    placement="top"
-                  >
-                    <el-input
-                      size="small"
-                      v-model="singleData.remark"
-                      placeholder="如无备注可以留空"
-                      class="main_input--large"
-                    ></el-input>
-                  </el-tooltip>
-                </td>
-              </div>
-              <div>
-                <td type="flex" class="td--label">
-                  <p class="td__p--label">是否有额外按钮：</p>
-                </td>
-                <td>
-                  <el-select
-                    size="small"
-                    v-model="singleData.extra_button"
-                    placeholder="不选择时为否"
-                    filterable
-                    default-first-option
-                    class="main_select--large"
-                  >
-                    <el-option
-                      v-for="item in edit.boolOptions"
-                      :key="item.value"
-                      :label="item.label"
-                      :value="item.value"
-                    ></el-option>
-                  </el-select>
-                </td>
-                <td>
-                  <el-tooltip
-                    class="edit-form-question-mark question-mark"
-                    effect="dark"
-                    content="额外按钮配置为'是'时，组件右侧会出现一个按钮，点击按钮可以运行'额外按钮运行脚本'的脚本"
-                    placement="top"
-                  >
-                    <i class="fa fa-question-circle-o"></i>
-                  </el-tooltip>
-                </td>
-              </div>
-              <div v-if="singleData.extra_button==1">
-                <td type="flex" class="td--label">
-                  <p class="td__p--label">额外按钮名称：</p>
-                </td>
-                <td>
-                  <el-tooltip
-                    open-delay="1000"
-                    effect="dark"
-                    :content="singleData.extra_button_label"
-                    placement="top"
-                  >
-                    <el-input
-                      size="small"
-                      v-model="singleData.extra_button_label"
-                      placeholder="请输入额外按钮名称"
-                      class="main_input--large"
-                    ></el-input>
-                  </el-tooltip>
-                </td>
-              </div>
-              <div v-if="singleData.extra_button==1">
-                <td type="flex" class="td--label">
-                  <p class="td__p--label">额外按钮运行脚本：</p>
-                </td>
-                <td>
-                  <el-tooltip
-                    open-delay="1000"
-                    effect="dark"
-                    :content="singleData.extra_button_script"
-                    placement="top"
-                  >
-                    <el-input
-                      size="small"
-                      v-model="singleData.extra_button_script"
-                      placeholder="请输入额外按钮运行脚本"
-                      class="main_input--large"
-                    ></el-input>
-                  </el-tooltip>
-                </td>
-                <td>
-                  <el-tooltip
-                    class="edit-form-question-mark question-mark"
-                    effect="dark"
-                    content="点击'额外按钮'可以运行此处填写的脚本，并将此处脚本的运行输出返回至页面"
-                    placement="top"
-                  >
-                    <i class="fa fa-question-circle-o"></i>
-                  </el-tooltip>
-                </td>
-              </div>
-              <div>
-                <td type="flex" class="td--label">
-                  <p class="td__p--label">是否为重要字段：</p>
-                </td>
-                <td>
-                  <el-select
-                    size="small"
-                    v-model="singleData.is_important"
-                    placeholder="不选择时为否"
-                    filterable
-                    default-first-option
-                    class="main_select--large"
-                  >
-                    <el-option
-                      v-for="item in edit.boolOptions"
-                      :key="item.value"
-                      :label="item.label"
-                      :value="item.value"
-                    ></el-option>
-                  </el-select>
-                </td>
-                <td>
-                  <el-tooltip
-                    class="edit-form-question-mark question-mark"
-                    effect="dark"
-                    content="重要字段将被使用单独的一列在运行记录中展示，建议不要设置太多重要字段，否则会拖慢页面速度"
-                    placement="top"
-                  >
-                    <i class="fa fa-question-circle-o"></i>
-                  </el-tooltip>
-                </td>
-              </div>
-              <div>
-                <td type="flex" class="td--label">
-                  <p class="td__p--label">是否显示：</p>
-                </td>
-                <td>
-                  <el-select
-                    size="small"
-                    v-model="singleData.visible"
-                    placeholder="不选择时为是"
-                    filterable
-                    default-first-option
-                    class="main_select--large"
-                  >
-                    <el-option
-                      v-for="item in edit.boolOptions"
-                      :key="item.value"
-                      :label="item.label"
-                      :value="item.value"
-                    ></el-option>
-                  </el-select>
-                </td>
-                <td>
-                  <el-tooltip
-                    class="edit-form-question-mark question-mark"
-                    effect="dark"
-                    content="当选为'否'时，组件在页面上将不可见"
-                    placement="top"
-                  >
-                    <i class="fa fa-question-circle-o"></i>
-                  </el-tooltip>
-                </td>
-              </div>
-            </el-col>
-            <el-col :span="3">
-              <div class="editFormRightButtons">
-                <td>
-                  <i
-                    class="editFormRightButton editFormMoveUp el-icon-top"
-                    @click="editFormMoveUp(edit.formData.indexOf(singleData))"
-                  ></i>
-                </td>
-                <td>
-                  <i
-                    class="editFormRightButton editFormMoveDown el-icon-bottom"
-                    @click="editFormMoveDown(edit.formData.indexOf(singleData))"
-                  ></i>
-                </td>
-                <td>
-                  <i
-                    class="editFormRightButton editFormDeleted el-icon-close"
-                    @click="editFormDeleted(edit.formData.indexOf(singleData))"
-                  ></i>
-                </td>
-              </div>
-            </el-col>
-          </el-card>
-        </div>
-      </div>
-      <div class="add" style="width: 99.87%;" @click="editFormAddSingleData()">
-        <span>+ 添加参数</span>
-      </div>
-      <div class="dialog-footer">
-        <el-button size="small" @click.native="edit.visible=false">关闭</el-button>
-        <el-button
-          type="primary"
-          size="small"
-          :loading="edit.buttonLoading"
-          @click.native="editFormSubmited()"
-        >提交</el-button>
       </div>
     </el-drawer>
 
