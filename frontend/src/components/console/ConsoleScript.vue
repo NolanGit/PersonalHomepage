@@ -374,7 +374,7 @@
       :visible.sync="output.visible"
       :close-on-click-modal="false"
       size="40%"
-      :direction="btt"
+      direction="btt"
       @close="output.text=''"
     >
       <div class="margin_left-medium margin_right-medium">
@@ -2269,9 +2269,10 @@ export default {
   width: 100%;
   overflow-x: hidden;
   overflow-y: overlay;
+  padding-right: 19px;
 }
 .scrollbar-div::-webkit-scrollbar {
-  width: 3px;
+  width: 5px;
   height: 1px;
 }
 .scrollbar-div::-webkit-scrollbar-thumb {
