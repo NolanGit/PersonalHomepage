@@ -2187,7 +2187,7 @@ export default {
   font-family: PingFang SC;
 }
 .output-div {
-  height: 50vh;
+  height: 50%;
   width: 100%;
   overflow-x: hidden;
   overflow-y: hidden;
