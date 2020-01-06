@@ -401,7 +401,7 @@
       width="60%"
       @closed="editFormClosed"
     >
-      <div class="edit-form-card">
+      <div class="edit-form-card margin_left-medium margin_right-medium">
         <el-card>
           <div>
             <td type="flex" class="td--label">
@@ -868,48 +868,50 @@
       width="55%"
       @closed="singleDataOptionDialogClosed"
     >
-      <div v-for="singleDataOption in singleDataOptionDialog.data" :key="singleDataOption.key">
-        <div>
-          <td type="flex" class="td--label--short">
-            <p class="td__p--label">标签：</p>
-          </td>
-          <td>
-            <el-tooltip
-              open-delay="1000"
-              effect="dark"
-              :content="singleDataOption.label"
-              placement="top"
-            >
-              <el-input size="small" v-model="singleDataOption.label" placeholder="请输入选项展示文字"></el-input>
-            </el-tooltip>
-          </td>
-          <td type="flex" class="td--label--short">
-            <p class="singleDataOptionDialogValue">值：</p>
-          </td>
-          <td>
-            <el-tooltip
-              open-delay="1000"
-              effect="dark"
-              :content="singleDataOption.value"
-              placement="top"
-            >
-              <el-input size="small" v-model="singleDataOption.value" placeholder="请输入选项实际的值"></el-input>
-            </el-tooltip>
-          </td>
-          <td>
-            <i
-              class="singleDataOptionDialogDeleted el-icon-delete"
-              @click="singleDataOptionDialogDeleted(singleDataOptionDialog.data.indexOf(singleDataOption))"
-            ></i>
-          </td>
+      <div class="margin_left-medium margin_right-medium">
+        <div v-for="singleDataOption in singleDataOptionDialog.data" :key="singleDataOption.key">
+          <div>
+            <td type="flex" class="td--label--short">
+              <p class="td__p--label">标签：</p>
+            </td>
+            <td>
+              <el-tooltip
+                open-delay="1000"
+                effect="dark"
+                :content="singleDataOption.label"
+                placement="top"
+              >
+                <el-input size="small" v-model="singleDataOption.label" placeholder="请输入选项展示文字"></el-input>
+              </el-tooltip>
+            </td>
+            <td type="flex" class="td--label--short">
+              <p class="singleDataOptionDialogValue">值：</p>
+            </td>
+            <td>
+              <el-tooltip
+                open-delay="1000"
+                effect="dark"
+                :content="singleDataOption.value"
+                placement="top"
+              >
+                <el-input size="small" v-model="singleDataOption.value" placeholder="请输入选项实际的值"></el-input>
+              </el-tooltip>
+            </td>
+            <td>
+              <i
+                class="singleDataOptionDialogDeleted el-icon-delete"
+                @click="singleDataOptionDialogDeleted(singleDataOptionDialog.data.indexOf(singleDataOption))"
+              ></i>
+            </td>
+          </div>
         </div>
-      </div>
-      <div class="add" style="width: 99.87%;" @click="singleDataOptionDialogAddSingleData()">
-        <span>+ 添加选项</span>
-      </div>
-      <div class="dialog-footer">
-        <el-button size="small" @click="singleDataOptionDialog.visible = false">关闭</el-button>
-        <el-button type="primary" size="small" @click="singleDataOptionDialogSubmited()">保存</el-button>
+        <div class="add" style="width: 99.87%;" @click="singleDataOptionDialogAddSingleData()">
+          <span>+ 添加选项</span>
+        </div>
+        <div class="dialog-footer">
+          <el-button size="small" @click="singleDataOptionDialog.visible = false">关闭</el-button>
+          <el-button type="primary" size="small" @click="singleDataOptionDialogSubmited()">保存</el-button>
+        </div>
       </div>
     </el-drawer>
 
@@ -921,76 +923,78 @@
       width="40%"
       @closed="schedulenDialogClosed"
     >
-      <div>
-        <td type="flex" class="td--label">
-          <p class="td__p--label">定时运行时间：</p>
-        </td>
-        <td>
-          <el-date-picker
-            v-model="schedule.scheduleData.triggerDate"
-            type="date"
-            placeholder="选择日期时间"
-            value-format="yyyy-MM-dd"
-            size="small"
-            class="main_select--medium"
-          ></el-date-picker>
-        </td>
-        <td>
-          <el-time-select
-            v-model="schedule.scheduleData.triggerTime"
-            :picker-options="{
+      <div class="margin_left-medium margin_right-medium">
+        <div>
+          <td type="flex" class="td--label">
+            <p class="td__p--label">定时运行时间：</p>
+          </td>
+          <td>
+            <el-date-picker
+              v-model="schedule.scheduleData.triggerDate"
+              type="date"
+              placeholder="选择日期时间"
+              value-format="yyyy-MM-dd"
+              size="small"
+              class="main_select--medium"
+            ></el-date-picker>
+          </td>
+          <td>
+            <el-time-select
+              v-model="schedule.scheduleData.triggerTime"
+              :picker-options="{
               start: '00:00',
               step: '00:15',
               end: '24:00'
             }"
-            placeholder="选择时间"
-            size="small"
-            class="main_select--medium"
-          ></el-time-select>
-        </td>
-      </div>
-      <div>
-        <td type="flex" class="td--label">
-          <p class="td__p--label">重复：</p>
-        </td>
-        <td>
-          <el-switch
-            v-model="schedule.scheduleData.is_automatic"
-            false
-            active-color="#3383BA"
-            inactive-color="#80868C"
-          ></el-switch>
-        </td>
-        <td v-show="schedule.scheduleData.is_automatic==true">
-          <p class="inline_margin--medium">每</p>
-        </td>
-        <td v-show="schedule.scheduleData.is_automatic==true">
-          <el-input
-            v-model="schedule.scheduleData.interval.value"
-            placeholder="请输入"
-            size="small"
-            class="main_input--tiny inline_margin--small"
-          ></el-input>
-        </td>
-        <td v-show="schedule.scheduleData.is_automatic==true">
-          <el-select
-            v-model="schedule.scheduleData.interval.unit.select"
-            placeholder="请选择"
-            size="small"
-            class="main_select--medium"
-          >
-            <el-option
-              v-for="item in schedule.scheduleData.interval.unit.options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            ></el-option>
-          </el-select>
-        </td>
-      </div>
-      <div class="dialog-footer">
-        <el-button size="small" @click="schedule.dialogVisible = false">关闭</el-button>
-        <el-button type="primary" size="small" @click="singleDataScheduleAddScheduleSubmit()">提交</el-button>
+              placeholder="选择时间"
+              size="small"
+              class="main_select--medium"
+            ></el-time-select>
+          </td>
+        </div>
+        <div>
+          <td type="flex" class="td--label">
+            <p class="td__p--label">重复：</p>
+          </td>
+          <td>
+            <el-switch
+              v-model="schedule.scheduleData.is_automatic"
+              false
+              active-color="#3383BA"
+              inactive-color="#80868C"
+            ></el-switch>
+          </td>
+          <td v-show="schedule.scheduleData.is_automatic==true">
+            <p class="inline_margin--medium">每</p>
+          </td>
+          <td v-show="schedule.scheduleData.is_automatic==true">
+            <el-input
+              v-model="schedule.scheduleData.interval.value"
+              placeholder="请输入"
+              size="small"
+              class="main_input--tiny inline_margin--small"
+            ></el-input>
+          </td>
+          <td v-show="schedule.scheduleData.is_automatic==true">
+            <el-select
+              v-model="schedule.scheduleData.interval.unit.select"
+              placeholder="请选择"
+              size="small"
+              class="main_select--medium"
+            >
+              <el-option
+                v-for="item in schedule.scheduleData.interval.unit.options"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              ></el-option>
+            </el-select>
+          </td>
+        </div>
+        <div class="dialog-footer">
+          <el-button size="small" @click="schedule.dialogVisible = false">关闭</el-button>
+          <el-button type="primary" size="small" @click="singleDataScheduleAddScheduleSubmit()">提交</el-button>
+        </div>
       </div>
     </el-drawer>
   </section>
@@ -2275,5 +2279,29 @@ export default {
   box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.13);
   border-radius: 10px;
   background: #f3f3f300;
+}
+.margin-top-medium {
+  margin-top: 20px;
+}
+.margin_bottom-medium {
+  margin-bottom: 20px;
+}
+.margin_bottom-large {
+  margin-bottom: 40px;
+}
+.margin_left-medium {
+  margin-left: 20px;
+}
+.margin_right-small {
+  margin-right: 10px;
+}
+.margin_right-medium {
+  margin-right: 20px;
+}
+.margin-medium {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  margin-left: 20px;
+  margin-right: 20px;
 }
 </style>

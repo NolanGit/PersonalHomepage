@@ -21,8 +21,10 @@
       :direction="drawer.direction"
       :size="drawer.size"
     >
-      <div v-if="activeComponent=='ConsoleScript'">
-        <ConsoleScript />
+      <div class="margin-medium">
+        <div v-if="activeComponent=='ConsoleScript'">
+          <ConsoleScript />
+        </div>
       </div>
     </el-drawer>
   </div>
@@ -47,7 +49,7 @@ export default {
         visible: false,
         direction: "ttb"
       },
-      activeComponent: ''
+      activeComponent: ""
     };
   },
   methods: {
@@ -64,10 +66,7 @@ export default {
       });
     },
     consoleOptionClicked(consoleOption) {
-      console.log(consoleOption);
       this.activeComponent = consoleOption.component_name;
-      console.log(this.activeComponent);
-      console.log(this.activeComponent=='ConsoleScript');
       this.drawer.title = consoleOption.name;
       this.drawer.visible = true;
       this.drawer.direction = "ttb";
@@ -97,11 +96,8 @@ export default {
 .text-medium {
   font-size: 20px;
 }
-.margin_right-small {
-  margin-right: 10px;
-}
-.margin_left-medium {
-  margin-left: 20px;
+.margin-top-medium {
+  margin-top: 20px;
 }
 .margin_bottom-medium {
   margin-bottom: 20px;
@@ -109,7 +105,19 @@ export default {
 .margin_bottom-large {
   margin-bottom: 40px;
 }
-.margin-top-medium {
+.margin_left-medium {
+  margin-left: 20px;
+}
+.margin_right-small {
+  margin-right: 10px;
+}
+.margin_right-medium {
+  margin-right: 20px;
+}
+.margin-medium{
   margin-top: 20px;
+  margin-bottom: 20px;
+  margin-left: 20px;
+  margin-right: 20px;
 }
 </style>
