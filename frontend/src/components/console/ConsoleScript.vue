@@ -369,7 +369,7 @@
     </el-row>
 
     <!--运行界面-->
-    <el-dialog
+    <el-popover
       title="输出"
       :visible.sync="output.visible"
       :close-on-click-modal="false"
@@ -391,10 +391,10 @@
         >停止运行</el-button>
         <el-button size="small" @click.native="outputDialogClose()">关闭</el-button>
       </div>
-    </el-dialog>
+    </el-popover>
 
     <!--编辑界面-->
-    <el-dialog
+    <el-drawer
       :title="edit.dialogTitle"
       :visible.sync="edit.visible"
       :close-on-click-modal="false"
@@ -858,7 +858,7 @@
           @click.native="editFormSubmited()"
         >提交</el-button>
       </div>
-    </el-dialog>
+    </el-drawer>
 
     <!--选择器编辑选项界面-->
     <el-dialog
@@ -911,10 +911,10 @@
         <el-button size="small" @click="singleDataOptionDialog.visible = false">关闭</el-button>
         <el-button type="primary" size="small" @click="singleDataOptionDialogSubmited()">保存</el-button>
       </div>
-    </el-dialog>
+    </el-popover>
 
     <!--编辑定时任务界面-->
-    <el-dialog
+    <el-drawer
       :title="schedule.label"
       :visible.sync="schedule.dialogVisible"
       :close-on-click-modal="false"
@@ -992,7 +992,7 @@
         <el-button size="small" @click="schedule.dialogVisible = false">关闭</el-button>
         <el-button type="primary" size="small" @click="singleDataScheduleAddScheduleSubmit()">提交</el-button>
       </div>
-    </el-dialog>
+    </el-drawer>
   </section>
 </template>
 
