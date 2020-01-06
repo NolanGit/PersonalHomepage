@@ -2307,7 +2307,7 @@ export default {
   margin-right: 20px;
 }
 .scrollbar-div {
-  max-height: 100vh;
+  max-height: 90vh;
   width: 100%;
   overflow-x: hidden;
   overflow-y: overlay;
