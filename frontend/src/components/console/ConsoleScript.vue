@@ -398,7 +398,7 @@
       :title="edit.dialogTitle"
       :visible.sync="edit.visible"
       :close-on-click-modal="false"
-      width="60%"
+      size="60%"
       @closed="editFormClosed"
     >
       <div class="edit-form-card margin_left-medium margin_right-medium">
@@ -867,7 +867,7 @@
       title="编辑"
       :visible.sync="singleDataOptionDialog.visible"
       :close-on-click-modal="false"
-      width="55%"
+      size="40%"
       @closed="singleDataOptionDialogClosed"
     >
       <div class="margin_left-medium margin_right-medium">
@@ -922,7 +922,7 @@
       :title="schedule.label"
       :visible.sync="schedule.dialogVisible"
       :close-on-click-modal="false"
-      width="40%"
+      size="40%"
       @closed="schedulenDialogClosed"
     >
       <div class="margin_left-medium margin_right-medium">
