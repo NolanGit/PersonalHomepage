@@ -405,7 +405,7 @@
       @closed="editFormClosed"
     >
       <div class="edit-form-card margin_left-medium margin_right-medium">
-        <div class="scrollbar-div" ref="scrollbarDiv">
+        <div class="scrollbar-div padding-right-19" ref="scrollbarDiv">
           <div class="margin_bottom-medium">
             <el-card>
               <div>
@@ -2264,12 +2264,14 @@ export default {
   margin-right: 0px;
   margin-bottom: 0px;
 }
+.padding-right-19{
+  padding-right: 19px;
+}
 .scrollbar-div {
   max-height: 70vh;
   width: 100%;
   overflow-x: hidden;
   overflow-y: overlay;
-  padding-right: 19px;
 }
 .scrollbar-div::-webkit-scrollbar {
   width: 5px;
