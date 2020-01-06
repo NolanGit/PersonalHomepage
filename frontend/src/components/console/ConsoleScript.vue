@@ -849,15 +849,15 @@
           <div class="add" style="width: 99.87%;" @click="editFormAddSingleData()">
             <span>+ 添加参数</span>
           </div>
-          <div class="dialog-footer">
-            <el-button size="small" @click.native="edit.visible=false">关闭</el-button>
-            <el-button
-              type="primary"
-              size="small"
-              :loading="edit.buttonLoading"
-              @click.native="editFormSubmited()"
-            >提交</el-button>
-          </div>
+        </div>
+        <div class="dialog-footer">
+          <el-button size="small" @click.native="edit.visible=false">关闭</el-button>
+          <el-button
+            type="primary"
+            size="small"
+            :loading="edit.buttonLoading"
+            @click.native="editFormSubmited()"
+          >提交</el-button>
         </div>
       </div>
     </el-drawer>
