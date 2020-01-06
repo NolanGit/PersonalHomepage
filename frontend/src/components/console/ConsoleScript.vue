@@ -369,11 +369,11 @@
     </el-row>
 
     <!--运行界面-->
-    <el-popover
+    <el-drawer
       title="输出"
       :visible.sync="output.visible"
       :close-on-click-modal="false"
-      width="80%"
+      size="40%"
       @close="output.text=''"
     >
       <el-card shadow="hover">
@@ -391,7 +391,7 @@
         >停止运行</el-button>
         <el-button size="small" @click.native="outputDialogClose()">关闭</el-button>
       </div>
-    </el-popover>
+    </el-drawer>
 
     <!--编辑界面-->
     <el-drawer
@@ -496,7 +496,7 @@
             </div>
           </el-card>
           <div v-for="singleData in edit.formData" :key="singleData.key">
-            <div class="edit-form-card">
+            <div class="margin_bottom-medium">
               <el-card class="edit-form-card">
                 <el-col :span="21">
                   <div>
@@ -2144,9 +2144,6 @@ export default {
 }
 .min_height-medium {
   min-height: 150px;
-}
-.main-row {
-  padding-top: 20px;
 }
 .td--label {
   max-width: 200px;
