@@ -373,8 +373,8 @@
       title="输出"
       :visible.sync="output.visible"
       :close-on-click-modal="false"
-      size="40%"
-      direction="btt"
+      size="70%"
+      direction="ttb"
       @close="output.text=''"
     >
       <div class="margin_left-medium margin_right-medium">
