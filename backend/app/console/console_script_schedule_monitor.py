@@ -4,7 +4,7 @@ import logging
 import datetime
 import traceback
 import subprocess
-from .console_model import console, console_script_sub_system, console_script, console_script_detail, console_script_detail, console_script_log, console_script_schedule
+from console_model import console, console_script_sub_system, console_script, console_script_detail, console_script_detail, console_script_log, console_script_schedule
 
 
 def schedule_get():
@@ -26,7 +26,8 @@ def run(schedules):
                 console_script_query = console_script(id=script_id)
                 console_script_query.runs = int(runs)
                 console_script_query.save()
-
+                
+                start_time = datetime.datetime.now()
                 subprocess_instance = subprocess.Popen(schedule['command'], shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, bufsize=1)
                 output = ''
                 for x in range(3000):
@@ -42,7 +43,8 @@ def run(schedules):
                     version=schedule['version'],
                     output=schedule['command'] + '<br>' + str(output).replace('\n', '<br>').replace(' ', '&nbsp;'),
                     user=schedule['user'] + '(定时)',
-                    start_time=datetime.datetime.now())
+                    start_time=start_time,
+                    end_time=datetime.datetime.now())
                 console_script_schedule.update(is_valid=0).where(console_script_schedule.id == schedule['id']).execute()
                 generate_next_schedule(schedule)
     except Exception as e:
