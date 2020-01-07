@@ -369,19 +369,22 @@
     </el-row>
 
     <!--运行界面-->
-    <el-popover
+    <el-drawer
       title="输出"
       :visible.sync="output.visible"
       :close-on-click-modal="false"
-      width="80%"
+      size="70%"
+      direction="btt"
       @close="output.text=''"
     >
-      <el-card shadow="hover">
-        <div class="output-div" ref="outputDialog">
-          <div class="output-html" v-html="output.text"></div>
-        </div>
-      </el-card>
-      <div slot="footer" class="dialog-footer">
+      <div class="margin_left-medium margin_right-medium">
+        <el-card shadow="hover">
+          <div class="output-div" ref="outputDialog">
+            <div class="output-html" v-html="output.text"></div>
+          </div>
+        </el-card>
+      </div>
+      <div class="dialog-footer">
         <el-button
           size="small"
           plain
@@ -391,7 +394,7 @@
         >停止运行</el-button>
         <el-button size="small" @click.native="outputDialogClose()">关闭</el-button>
       </div>
-    </el-popover>
+    </el-drawer>
 
     <!--编辑界面-->
     <el-drawer
@@ -402,102 +405,109 @@
       @closed="editFormClosed"
     >
       <div class="edit-form-card margin_left-medium margin_right-medium">
-        <div class="scrollbar-div" ref="scrollbarDiv">
+        <div class="scrollbar-div padding-right-19" ref="scrollbarDiv">
           <el-card shadow="never">
-            <el-card>
-              <div>
-                <td type="flex" class="td--label">
-                  <p class="td__p--label">脚本名称：</p>
-                </td>
-                <td>
-                  <el-tooltip open-delay="1000" effect="dark" :content="edit.title" placement="top">
-                    <el-input
-                      size="small"
-                      v-model="edit.title"
-                      placeholder="请输入名称"
-                      class="main_input--large"
-                    ></el-input>
-                  </el-tooltip>
-                </td>
-              </div>
-              <div>
-                <td type="flex" class="td--label">
-                  <p class="td__p--label">起始文件夹：</p>
-                </td>
-                <td>
-                  <el-tooltip
-                    open-delay="1000"
-                    effect="dark"
-                    :content="edit.start_folder"
-                    placement="top"
-                  >
-                    <el-input
-                      size="small"
-                      v-model="edit.start_folder"
-                      placeholder="请输入起始文件夹"
-                      class="main_input--large"
-                    ></el-input>
-                  </el-tooltip>
-                </td>
-              </div>
-              <div>
-                <td type="flex" class="td--label">
-                  <p class="td__p--label">起始脚本：</p>
-                </td>
-                <td>
-                  <el-tooltip
-                    open-delay="1000"
-                    effect="dark"
-                    :content="edit.start_script"
-                    placement="top"
-                  >
-                    <el-input
-                      size="small"
-                      v-model="edit.start_script"
-                      placeholder="请输入起始脚本"
-                      class="main_input--large"
-                    ></el-input>
-                  </el-tooltip>
-                </td>
-              </div>
-              <div>
-                <td type="flex" class="td--label">
-                  <p class="td__p--label">组合方式：</p>
-                </td>
-                <td>
-                  <div>
-                    <td class="dialog-type-order">
-                      <el-radio v-model="edit.type" label="1">顺序</el-radio>
-                    </td>
-                    <td class="dialog-type-tooltip">
-                      <el-tooltip
-                        class="question-mark"
-                        effect="dark"
-                        content="顺序组合组件值来生成脚本"
-                        placement="top"
-                      >
-                        <i class="fa fa-question-circle-o"></i>
-                      </el-tooltip>
-                    </td>
-                    <td class="dialog-type-replace">
-                      <el-radio v-model="edit.type" label="2">替换</el-radio>
-                    </td>
-                    <td class="dialog-type-tooltip">
-                      <el-tooltip
-                        class="question-mark"
-                        effect="dark"
-                        content="使用组件值替换起始脚本中格式为'%组件名称%'的字段来生成脚本"
-                        placement="top"
-                      >
-                        <i class="fa fa-question-circle-o"></i>
-                      </el-tooltip>
-                    </td>
-                  </div>
-                </td>
-              </div>
-            </el-card>
+            <div class="margin_bottom-medium">
+              <el-card>
+                <div>
+                  <td type="flex" class="td--label">
+                    <p class="td__p--label">脚本名称：</p>
+                  </td>
+                  <td>
+                    <el-tooltip
+                      open-delay="1000"
+                      effect="dark"
+                      :content="edit.title"
+                      placement="top"
+                    >
+                      <el-input
+                        size="small"
+                        v-model="edit.title"
+                        placeholder="请输入名称"
+                        class="main_input--large"
+                      ></el-input>
+                    </el-tooltip>
+                  </td>
+                </div>
+                <div>
+                  <td type="flex" class="td--label">
+                    <p class="td__p--label">起始文件夹：</p>
+                  </td>
+                  <td>
+                    <el-tooltip
+                      open-delay="1000"
+                      effect="dark"
+                      :content="edit.start_folder"
+                      placement="top"
+                    >
+                      <el-input
+                        size="small"
+                        v-model="edit.start_folder"
+                        placeholder="请输入起始文件夹"
+                        class="main_input--large"
+                      ></el-input>
+                    </el-tooltip>
+                  </td>
+                </div>
+                <div>
+                  <td type="flex" class="td--label">
+                    <p class="td__p--label">起始脚本：</p>
+                  </td>
+                  <td>
+                    <el-tooltip
+                      open-delay="1000"
+                      effect="dark"
+                      :content="edit.start_script"
+                      placement="top"
+                    >
+                      <el-input
+                        size="small"
+                        v-model="edit.start_script"
+                        placeholder="请输入起始脚本"
+                        class="main_input--large"
+                      ></el-input>
+                    </el-tooltip>
+                  </td>
+                </div>
+                <div>
+                  <td type="flex" class="td--label">
+                    <p class="td__p--label">组合方式：</p>
+                  </td>
+                  <td>
+                    <div>
+                      <td class="dialog-type-order">
+                        <el-radio v-model="edit.type" label="1">顺序</el-radio>
+                      </td>
+                      <td class="dialog-type-tooltip">
+                        <el-tooltip
+                          class="question-mark"
+                          effect="dark"
+                          content="顺序组合组件值来生成脚本"
+                          placement="top"
+                        >
+                          <i class="fa fa-question-circle-o"></i>
+                        </el-tooltip>
+                      </td>
+                      <td class="dialog-type-replace">
+                        <el-radio v-model="edit.type" label="2">替换</el-radio>
+                      </td>
+                      <td class="dialog-type-tooltip">
+                        <el-tooltip
+                          class="question-mark"
+                          effect="dark"
+                          content="使用组件值替换起始脚本中格式为'%组件名称%'的字段来生成脚本"
+                          placement="top"
+                        >
+                          <i class="fa fa-question-circle-o"></i>
+                        </el-tooltip>
+                      </td>
+                    </div>
+                  </td>
+                </div>
+              </el-card>
+            </div>
             <div v-for="singleData in edit.formData" :key="singleData.key">
-              <div class="edit-form-card">
+              <div class="margin_bottom-medium">
                 <el-card class="edit-form-card">
                   <el-col :span="21">
                     <div>
@@ -1024,7 +1034,6 @@ import {
   consoleScriptScheduleDelete,
   consoleScriptExtraButtonScriptRun
 } from "../../api/console";
-
 export default {
   name: "ConsoleScript",
   data() {
@@ -2147,9 +2156,6 @@ export default {
 .min_height-medium {
   min-height: 150px;
 }
-.main-row {
-  padding-top: 20px;
-}
 .td--label {
   max-width: 200px;
   min-width: 140px;
@@ -2187,7 +2193,7 @@ export default {
   font-family: PingFang SC;
 }
 .output-div {
-  height: 50vh;
+  height: 45vh;
   width: 100%;
   overflow-x: hidden;
   overflow-y: hidden;
@@ -2264,6 +2270,9 @@ export default {
   margin-right: 0px;
   margin-bottom: 0px;
 }
+.padding-right-19 {
+  padding-right: 19px;
+}
 .scrollbar-div {
   max-height: 70vh;
   width: 100%;
@@ -2271,7 +2280,7 @@ export default {
   overflow-y: overlay;
 }
 .scrollbar-div::-webkit-scrollbar {
-  width: 3px;
+  width: 5px;
   height: 1px;
 }
 .scrollbar-div::-webkit-scrollbar-thumb {
@@ -2327,5 +2336,12 @@ export default {
   box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.13);
   border-radius: 10px;
   background: #f3f3f300;
+}
+.dialog-footer {
+  margin: 20px 20px 20px 20px;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  z-index: 99;
 }
 </style>
