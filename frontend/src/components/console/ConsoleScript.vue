@@ -170,7 +170,7 @@
                     placement="top"
                   >
                     <el-popover placement="left" width="1010" trigger="click">
-                      <div class="scrollbar-div" ref="scrollbarDiv">
+                      <div class="scrollbar-div max-height-medium" ref="scrollbarDiv">
                         <el-table
                           size="small"
                           :data="output.logs"
@@ -185,7 +185,7 @@
                             :property="important_field"
                             :label="important_field"
                           ></el-table-column>
-                          <el-table-column min-width="250" property="options" label="操作">
+                          <el-table-column min-width="235" property="options" label="操作">
                             <template slot-scope="scope">
                               <el-popover placement="left" width="350" trigger="hover">
                                 <tr v-for="(key,index) in scope.row.detail" :key="key">
@@ -220,7 +220,7 @@
                               >回放</el-button>
                             </template>
                           </el-table-column>
-                          <el-table-column width="135" property="update_time" label="运行开始时间"></el-table-column>
+                          <el-table-column width="150" property="update_time" label="运行开始时间"></el-table-column>
                           <el-table-column width="80" property="duration" label="耗时"></el-table-column>
                           <el-table-column width="80" property="log_id" label="运行ID"></el-table-column>
                         </el-table>
@@ -2292,6 +2292,12 @@ export default {
   box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.13);
   border-radius: 10px;
   background: #f3f3f300;
+}
+.max-height-large{
+  max-height: 70vh;
+}
+.max-height-medium{
+  max-height: 40vh;
 }
 .margin-top-medium {
   margin-top: 20px;

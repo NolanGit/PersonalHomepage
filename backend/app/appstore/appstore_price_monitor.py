@@ -103,14 +103,8 @@ if sys.argv[1] == GET:
     appstore_query = appstore.select().where(appstore.is_valid == 1).dicts()
     for single_appstore_query in appstore_query:
         app = App(single_appstore_query.url)
-        crawling_times = int(
-            len(appstore_price_data.select().where(
-                (appstore_price_data.date == datetime.datetime.now().date())
-                &
-                (appstore_price_data.id == single_appstore_query['app_id']))))
         appstore_price_data.create(
             app_id=single_appstore_query['app_id'],
-            crawling_times=crawling_times,
             time=datetime.datetime.now().strftime('%H:%M:%S'),
             date=datetime.datetime.now().date(),
         )

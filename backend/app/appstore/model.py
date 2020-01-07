@@ -38,7 +38,6 @@ class appstore(BaseModel):
 
 class appstore_price_data(BaseModel):
     app_id = IntegerField()
-    crawling_times = IntegerField()
     time = TimeField()
     date = DateField()
 
