@@ -40,7 +40,7 @@
       :direction="drawer.direction"
       :size="drawer.size"
     >
-      <Console @consoleOptionSelected="consoleOptionSelected" />
+      <Console />
     </el-drawer>
   </div>
 </template>
@@ -143,9 +143,6 @@ export default {
       this.drawer.size = "500";
       this.drawer.visible = true;
       this.drawer.direction = "ttb";
-    },
-    consoleOptionSelected() {
-      this.drawer.visible = false;
     }
   },
   created() {},
