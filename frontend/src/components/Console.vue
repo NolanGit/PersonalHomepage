@@ -66,6 +66,7 @@ export default {
       });
     },
     consoleOptionClicked(consoleOption) {
+      this.$emit("consoleOptionSelected");
       this.activeComponent = consoleOption.component_name;
       this.drawer.title = consoleOption.name;
       this.drawer.visible = true;
