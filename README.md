@@ -20,7 +20,7 @@
 ## 介绍（更新于2020-1-9）
 ### 主页：
 ![image](https://user-images.githubusercontent.com/27627484/71998100-fae58980-3279-11ea-806e-8a1a9c09df51.png)
-### 搜索：使用百度的自动补全功能，增加引擎的话是在数据库中增加数据(search_engines)
+### 搜索：使用百度的自动补全接口，增加引擎的话是在数据库中增加数据(search_engines)
 - 自动提示和切换搜索引擎
 ![image](https://user-images.githubusercontent.com/27627484/71998812-3f255980-327b-11ea-9e6d-7ad97cd5c18d.png)
 ### 天气：登录后可以进行自定义，如不登录则展示IP所在地的天气信息
