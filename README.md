@@ -8,7 +8,6 @@
 - 书签
 - 后台管理页面（定时任务脚本统一驱动和管理）
 ### Working on:
-- 权限控制
 - 股票
 - 基金
 - AppStore价格监控
@@ -38,4 +37,15 @@
 ##### 控制台主页：如需增加模块，需要配置数据库（console）
 ![image](https://user-images.githubusercontent.com/27627484/71999094-c4a90980-327b-11ea-97ae-7e683663aa50.png)
 ##### 脚本运行平台：可以通过配置生成前端页面表单，然后通过填写表单来提交脚本至后端运行并展示运行结果，可以定时运行、参数回放、记录运行时间、记录运行日志、通过配置生成运行结果表格、运行额外脚本动态参数化前端组件
-截图待补充
+- 首页：左侧为脚本所属系统页
+![image](https://user-images.githubusercontent.com/27627484/72076975-6dfe0700-3331-11ea-9253-717766654a2d.png)
+- 首页：右侧为具体脚本，通过右上角的"+"可以增加脚本，增加脚本会增加tab
+![image](https://user-images.githubusercontent.com/27627484/72077181-ca612680-3331-11ea-9a88-37c6ead5e6f9.png)
+- 编辑脚本：
+
+  - 脚本名称：展示在tab上
+  - 起始文件夹：配置在此处的文件夹会使用cd命令打开
+  
+![image](https://user-images.githubusercontent.com/27627484/72078174-95ee6a00-3333-11ea-9d24-be5e4ff41309.png)
+![image](https://user-images.githubusercontent.com/27627484/72077217-d947d900-3331-11ea-97ce-6a7cbda6e09d.png)
+![image](https://user-images.githubusercontent.com/27627484/72077227-df3dba00-3331-11ea-9e03-b82439f5cda8.png)
