@@ -8,6 +8,7 @@
 - 书签
 - 后台管理页面（定时任务脚本统一驱动和管理）
 ### Working on:
+- 权限控制
 - 股票
 - 基金
 - AppStore价格监控
@@ -67,3 +68,9 @@
 - 定时任务：最小颗粒度为一小时，实际上更小也可以，但是没有试过，如果调小颗粒度，则需要减小定时任务扫库脚本的运行步长。定时任务驱动的脚本，在列表中会在运行人后方加上"(定时)"字样
 ![image](https://user-images.githubusercontent.com/27627484/72083322-90e1e880-333c-11ea-9995-774f0faeae73.png)
 
+
+## 目录结构和初始化
+
+后端代码位于/backend，后端入口文件位于/backend/run.py，前端代码位于/frontend，前端编译的产物位于/dist，clone项目后，首先在/frontend目录执行"npm i"以安装前端环境，然后使用"npm run build"编译前端项目并生成压缩后代码到dist文件夹，但由于本项目未将dist加入gitignore，所以直接运行应该也没有问题
+后端数据库为sqlite文件（PersonalHomepage\backend\data.sqlite），表和期初数已经处理完，建表语句为后端各个模块目录的model.py文件
+配置文件：两个配置文件"PersonalHomepage\backend\app\homepage.config"和"PersonalHomepage\backend\app\config.py"（todo：待补充）

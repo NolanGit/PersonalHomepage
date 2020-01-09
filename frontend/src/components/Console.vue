@@ -2,7 +2,7 @@
   <div class="console-main">
     <el-row class="margin_bottom-large">
       <el-col v-for="consoleOption in consoleOptions" :key="consoleOption" :span="5" :offset="1">
-        <el-card class="box-card">
+        <el-card class="box-card" shadow="hover">
           <div slot="header" class="clearfix">
             <span>{{consoleOption.name}}</span>
           </div>
