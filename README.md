@@ -38,6 +38,8 @@
 ### 脚本运行平台：可以通过配置生成前端页面表单，然后通过填写表单来提交脚本至后端运行并展示运行结果，可以定时运行、参数回放、记录运行时间、记录运行日志、通过配置生成运行结果表格、运行额外脚本动态参数化前端组件，用于后台程序的统一驱动，定时任务需要配置\backend\app\console\console_script_schedule_monitor.py为定时运行，步长需小于一小时
 - 首页：左侧为脚本所属系统页，右侧为具体脚本，通过右上角的"+"可以增加脚本，增加脚本会增加tab
 ![image](https://user-images.githubusercontent.com/27627484/72076975-6dfe0700-3331-11ea-9253-717766654a2d.png)
+- 按钮区域：
+  依次为：回放我上一次运行的参数（回填到表单中）、展示我上一次运行的日志、展示最近50条运行记录、配置定时运行、编辑脚本和删除按钮
 ![image](https://user-images.githubusercontent.com/27627484/72077181-ca612680-3331-11ea-9a88-37c6ead5e6f9.png)
 - 编辑脚本：
 
@@ -58,7 +60,7 @@
   - 是否在列表展示：配置为是时，在运行列表中会以单独一列的方式呈现运行时提交的参数
   - 是否显示：配置为否时前端不展示
   
-![image](https://user-images.githubusercontent.com/27627484/72078174-95ee6a00-3333-11ea-9d24-be5e4ff41309.png)
-![image](https://user-images.githubusercontent.com/27627484/72077217-d947d900-3331-11ea-97ce-6a7cbda6e09d.png)
+  ![image](https://user-images.githubusercontent.com/27627484/72078174-95ee6a00-3333-11ea-9d24-be5e4ff41309.png)
+  ![image](https://user-images.githubusercontent.com/27627484/72077217-d947d900-3331-11ea-97ce-6a7cbda6e09d.png)
 - 运行列表：默认展示运行人、操作、运行开始时间、耗时、运行ID五列，其中操作列包含三个按钮：参数、日志和回放，参数按钮悬浮可以展示参数，日志按钮点击可以展示日志、回放按钮点击可以将所选运行记录的参数回填至当前表单上。运行列表可以通过配置组件的"是否在列表展示"选项来自定义列，但不建议设置过多。
 ![image](https://user-images.githubusercontent.com/27627484/72077227-df3dba00-3331-11ea-9e03-b82439f5cda8.png)
