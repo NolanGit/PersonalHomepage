@@ -27,7 +27,7 @@
 - 增加城市
 ![image](https://user-images.githubusercontent.com/27627484/71998875-53695680-327b-11ea-99ce-28e75fd20675.png)
 ### 书签：登陆后可以自定义，不登录时展示的书签是在数据库中修改（bookmarks.user_id==0）
-- 修改展示顺序
+- 拖动修改展示顺序
 ![image](https://user-images.githubusercontent.com/27627484/71998914-6c720780-327b-11ea-84a1-d4c5efeceaee.png)
 - 修改书签详情
 ![image](https://user-images.githubusercontent.com/27627484/71998951-7ac02380-327b-11ea-8249-d48f6aa21adb.png)
