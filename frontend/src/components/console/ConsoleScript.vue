@@ -769,7 +769,7 @@
                     </div>
                     <div>
                       <td type="flex" class="td--label">
-                        <p class="td__p--label">是否为重要字段：</p>
+                        <p class="td__p--label">是否在列表展示：</p>
                       </td>
                       <td>
                         <el-select
@@ -792,7 +792,7 @@
                         <el-tooltip
                           class="edit-form-question-mark question-mark"
                           effect="dark"
-                          content="重要字段将被使用单独的一列在运行记录中展示，建议不要设置太多重要字段，否则会拖慢页面速度"
+                          content="选为是会将此组件使用单独的一列在运行记录中展示，建议不要设置太多列，否则会拖慢页面速度"
                           placement="top"
                         >
                           <i class="fa fa-question-circle-o"></i>
