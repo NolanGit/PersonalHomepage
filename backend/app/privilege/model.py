@@ -18,8 +18,8 @@ class BaseModel(Model):
 
 class role(BaseModel):
     name = CharField()
-    remark = CharField()
-    update_time = DateTimeField()
+    remark = CharField(null=True)
+    update_time = DateTimeField(null=True)
 
     class Meta:
         table_name = 'role'
@@ -27,8 +27,8 @@ class role(BaseModel):
 class privilege(BaseModel):
     name = CharField()
     mark = CharField()
-    remark = CharField()
-    update_time = DateTimeField()
+    remark = CharField(null=True)
+    update_time = DateTimeField(null=True)
 
     class Meta:
         table_name = 'privilege'

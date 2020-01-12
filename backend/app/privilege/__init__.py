@@ -1,4 +1,4 @@
 from flask import Blueprint
 
-weather = Blueprint('weather', __name__)
+privilege = Blueprint('privilege', __name__)
 from . import api

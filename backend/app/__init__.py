@@ -38,4 +38,7 @@ def create_app(config_name):
     from .console import console as console_blueprint
     app.register_blueprint(console_blueprint, url_prefix='/console')
 
+    from .privilege import privilege as privilege_blueprint
+    app.register_blueprint(privilege_blueprint, url_prefix='/privilege')
+
     return app
