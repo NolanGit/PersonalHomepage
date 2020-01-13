@@ -19,17 +19,6 @@ KEY = cf.get('config', 'KEY')
 def privilege_flush(User):
     pass
 
-def permission_required(privellge):
-    def decorator(f):
-        @wraps(f)
-        def decorated_function(*args, **kwargs):
-            request.get_json()['sub_system_id']
-            print(request.get_json()['sub_system_id'])
-            print(privellge)
-            return f(*args, **kwargs)
-
-        return decorated_function
-    return decorator
 
 @privilege.route('/get', methods=['POST'])
 @cross_origin()

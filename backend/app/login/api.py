@@ -47,13 +47,13 @@ def userLogin():
             if timestamp < salt_expire_time:
                 password2compare = CommonFunc().md5_it(password_without_salt + salt)
                 if password == password2compare:
-                    response = {'code': 200, 'msg': '登录成功！', 'user': row['name']}
                     user_key = CommonFunc().random_str(40)
                     privilege_key = CommonFunc().random_str(40)
                     user_dict = {'user_id': row['id'], 'privilege_key': privilege_key}
                     redis_conn = get_redis_conn()
                     redis_conn.hmset(user_key, user_dict)
                     set_user_privilege_to_redis(redis_conn,row['role_id'],privilege_key)
+                    response = {'code': 200, 'msg': '登录成功！', 'user': row['name'], 'user_key':user_key}
                     return jsonify(response)
                 else:
                     response = {
