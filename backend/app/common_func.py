@@ -1,3 +1,4 @@
+import redis
 from .login.model import user
 from .search.model import search_engines
 
@@ -26,3 +27,11 @@ class User(object):
             self.role = row['role']
             self.create_time = row['create_time']
             self.update_time = row['update_time']
+
+
+class RedisClass(object):
+
+    pool = redis.ConnectionPool(host='localhost', port=6379, db=1)
+
+    def __init__(self, pool):
+        self.pool = pool
