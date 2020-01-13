@@ -11,10 +11,17 @@ from .func import CommonFunc
 from flask_cors import cross_origin
 from flask import render_template, session, redirect, url_for, current_app, flash, Response, request, jsonify
 from .model import user
+from ..privilege.model import privilege, privilege_role
 
 
 def get_redis_conn():
     return redis.Redis(connection_pool=redis.ConnectionPool(host='localhost', port=6379, db=1))
+
+
+def set_user_privilege_to_redis(redis_conn, user_role_id, privilege_key):
+    privilege_role_query = privilege_role.select().where(privilege_role.role_id == user_role_id).dicts()
+    for single_privilege_role_query in privilege_role_query:
+        redis_conn.rpush(privilege_key, privilege.get(privilege.id == single_privilege_role_query['privilege_id']))
 
 
 @login.route('/userLogin', methods=['POST'])
@@ -42,11 +49,11 @@ def userLogin():
                 if password == password2compare:
                     response = {'code': 200, 'msg': '登录成功！', 'user': row['name']}
                     user_key = CommonFunc().random_str(40)
-                    privelige_key = CommonFunc().random_str(40)
-                    user_dict = {'user_id': row['id'], 'privelige_key': privelige_key}
+                    privilege_key = CommonFunc().random_str(40)
+                    user_dict = {'user_id': row['id'], 'privilege_key': privilege_key}
                     redis_conn = get_redis_conn()
                     redis_conn.hmset(user_key, user_dict)
-                    #redis_conn.set(salt, row['id'])
+                    set_user_privilege_to_redis(redis_conn,row['role_id'],privilege_key)
                     return jsonify(response)
                 else:
                     response = {

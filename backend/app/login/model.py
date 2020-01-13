@@ -23,7 +23,7 @@ class user(BaseModel):
     stable_salt = CharField()
     salt = CharField()
     salt_expire_time = DateTimeField()
-    role = CharField()
+    role = IntegerField()
     create_time = DateTimeField()
     update_time = DateTimeField()
 
