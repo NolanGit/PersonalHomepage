@@ -10,7 +10,7 @@ from functools import wraps
 from flask_cors import cross_origin
 from flask import session, redirect, url_for, current_app, flash, Response, request, jsonify, abort
 from .model import role, privilege, privilege_role
-from ..common_func import User
+#from ..common_func import User
 cf = configparser.ConfigParser()
 cf.read('app/homepage.config')
 KEY = cf.get('config', 'KEY')
