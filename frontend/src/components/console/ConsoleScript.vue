@@ -368,14 +368,14 @@
       </el-col>
     </el-row>
 
+
     <!--运行界面-->
     <el-drawer
       title="输出"
       :visible.sync="output.visible"
-      :close-on-click-modal="false"
       size="70%"
       direction="btt"
-      @close="output.text=''"
+      :before-close="outputDialogClose"
     >
       <div class="margin_left-medium margin_right-medium">
         <el-card shadow="hover">
@@ -384,15 +384,8 @@
           </div>
         </el-card>
       </div>
-      <div class="dialog-footer">
-        <el-button
-          size="small"
-          plain
-          v-show="output.canBeTerminate"
-          type="danger"
-          @click.native="terminate()"
-        >停止运行</el-button>
-        <el-button size="small" @click.native="outputDialogClose()">关闭</el-button>
+      <div class="dialog-footer" v-show="output.canBeTerminate">
+        <el-button size="small" plain type="danger" @click.native="terminate()">停止运行</el-button>
       </div>
     </el-drawer>
 
@@ -2060,15 +2053,14 @@ export default {
     //关闭运行窗口
     outputDialogClose() {
       if (this.output.isAlert) {
-        this.$confirm(
-          "在运行中关闭运行窗口会导致运行日志保存不完整，仍然要关闭吗?",
-          "提示",
-          {}
-        ).then(() => {
-          this.output.visible = false;
-        });
+        this.$confirm('在运行中关闭运行窗口会导致运行日志保存不完整，仍然要关闭吗?', '提示', {
+        }).then(_ => {
+          this.output.text = ""
+          done();
+        })
       } else {
-        this.output.visible = false;
+        this.output.text = ""
+        done();
       }
     },
     //提交
