@@ -6,7 +6,9 @@ import router from './routes'
 import Vuex from 'vuex'
 import './assets/iconfont/iconfont.css'
 import 'font-awesome/css/font-awesome.min.css'
+import VueCookies from 'vue-cookies'
 
+Vue.use(VueCookies)
 Vue.use(ElementUI)
 Vue.use(Vuex)
 

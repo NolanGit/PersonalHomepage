@@ -1,5 +1,6 @@
 import time
 import json
+import redis
 import requests
 import datetime
 import traceback
@@ -10,6 +11,10 @@ from .func import CommonFunc
 from flask_cors import cross_origin
 from flask import render_template, session, redirect, url_for, current_app, flash, Response, request, jsonify
 from .model import user
+
+
+def get_redis_conn():
+    return redis.Redis(connection_pool=redis.ConnectionPool(host='localhost', port=6379, db=1))
 
 
 @login.route('/userLogin', methods=['POST'])
@@ -36,6 +41,12 @@ def userLogin():
                 password2compare = CommonFunc().md5_it(password_without_salt + salt)
                 if password == password2compare:
                     response = {'code': 200, 'msg': '登录成功！', 'user': row['name']}
+                    user_key = CommonFunc().random_str(40)
+                    privelige_key = CommonFunc().random_str(40)
+                    user_dict = {'user_id': row['id'], 'privelige_key': privelige_key}
+                    redis_conn = get_redis_conn()
+                    redis_conn.hmset(user_key, user_dict)
+                    #redis_conn.set(salt, row['id'])
                     return jsonify(response)
                 else:
                     response = {
@@ -46,7 +57,7 @@ def userLogin():
             else:
                 response = {
                     'code': 403,
-                    'msg': '时间戳已过期，请重新登录！',
+                    'msg': '时间戳已过期，请刷新页面！',
                 }
                 return jsonify(response)
 
