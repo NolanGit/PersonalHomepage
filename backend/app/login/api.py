@@ -15,7 +15,7 @@ from ..privilege.model import privilege, privilege_role
 
 
 def get_redis_conn():
-    return redis.Redis(connection_pool=redis.ConnectionPool(host='localhost', port=6379, db=1))
+    return redis.Redis(connection_pool=redis.ConnectionPool(host='127.0.0.1', port=6379))
 
 
 def set_user_privilege_to_redis(redis_conn, user_role_id, privilege_key):
