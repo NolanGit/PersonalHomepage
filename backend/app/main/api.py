@@ -12,7 +12,7 @@ from ..weather.model import weather_personalized
 from ..bookmarks.model import bookmarks as bookmarks_table
 from ..bookmarks.model import icon as icon_table
 from ..login.api import User
-from .. privilege.api import privilegeFunction
+from ..privilege.api import permission_required
 
 
 @main.route('/', defaults={'path': ''})
@@ -22,7 +22,7 @@ def catch_all(path):
 
 
 @main.route('/userInfo', methods=['POST'])
-@privilegeFunction.permission_required('/userInfo')
+@permission_required('/userInfo')
 @cross_origin()
 def userInfo():
     try:

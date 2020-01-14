@@ -21,6 +21,26 @@ def privilege_flush(User):
     pass
 
 
+def permission_required(privellge):
+
+    def decorator(f):
+
+        @wraps(f)
+        def decorated_function(*args, **kwargs):
+            print(privilege)
+            user_key = request.cookies.get('user_key')
+            privilege_list = privilegeFunction().privellge_get(user_key)
+            print(privilege_list)
+            if privilege in privilege_list:
+                return f(*args, **kwargs)
+            else:
+                abort(403)
+
+        return decorated_function
+
+    return decorator
+
+
 class privilegeFunction(object):
 
     def __init__(self):
@@ -72,7 +92,7 @@ class privilegeFunction(object):
             return decorated_function
 
         return decorator
-        
+
 
 @privilege.route('/get', methods=['POST'])
 @cross_origin()
