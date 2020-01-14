@@ -22,7 +22,7 @@ def catch_all(path):
 
 
 @main.route('/userInfo', methods=['POST'])
-@permission_required('/userInfo')
+@permission_required(privellge='/userInfo')
 @cross_origin()
 def userInfo():
     try:
