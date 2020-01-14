@@ -22,7 +22,7 @@ def privilege_flush(User):
 
 
 def permission_required(privellge):
-
+    print(privellge)
     def decorator(f):
 
         @wraps(f)
