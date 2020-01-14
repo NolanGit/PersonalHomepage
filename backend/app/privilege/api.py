@@ -21,14 +21,15 @@ def privilege_flush(User):
     pass
 
 
-def permission_required(privellge):
-    def decorator(f,privellge):
+def permission_required(privilege):
+    print(privellge)
+    def decorator(f):
 
         @wraps(f)
         def decorated_function(*args, **kwargs):
             print(privilege)
             user_key = request.cookies.get('user_key')
-            privilege_list = privilegeFunction().privellge_get(user_key)
+            privilege_list = privilegeFunction().privilege_get(user_key)
             print(privilege_list)
             if privilege in privilege_list:
                 return f(*args, **kwargs)
@@ -66,7 +67,7 @@ class privilegeFunction(object):
         self.set_user_privilege_to_redis(user_role_id, privilege_key)
         return user_key
 
-    def privellge_get(self, user_key):
+    def privilege_get(self, user_key):
         privilege_key = self.get_redis_conn().hget(user_key, "privilege_key")
         return self.get_redis_conn().lrange(privilege_key, 0, -1)
 
@@ -81,7 +82,7 @@ class privilegeFunction(object):
             def decorated_function(*args, **kwargs):
                 print(privilege)
                 user_key = request.cookies.get('user_key')
-                privilege_list = self.privellge_get(user_key)
+                privilege_list = self.privilege_get(user_key)
                 print(privilege_list)
                 if privilege in privilege_list:
                     return f(*args, **kwargs)
