@@ -21,9 +21,8 @@ def privilege_flush(User):
     pass
 
 
-def permission_required(privellge):
-    print(privellge)
-    def decorator(f):
+def permission_required():
+    def decorator(f,privellge):
 
         @wraps(f)
         def decorated_function(*args, **kwargs):
