@@ -21,7 +21,7 @@ def get_redis_conn():
 def set_user_privilege_to_redis(redis_conn, user_role_id, privilege_key):
     privilege_role_query = privilege_role.select().where(privilege_role.role_id == user_role_id).dicts()
     for single_privilege_role_query in privilege_role_query:
-        redis_conn.rpush(privilege_key, privilege.get(privilege.id == single_privilege_role_query['privilege_id']))
+        redis_conn.rpush(privilege_key, privilege.get(privilege.id == single_privilege_role_query['privilege_id']).mark)
 
 
 @login.route('/userLogin', methods=['POST'])
