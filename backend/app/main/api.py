@@ -14,6 +14,8 @@ from ..bookmarks.model import icon as icon_table
 from ..login.api import User
 from ..privilege.api import permission_required
 
+URL_PREFIX = ''
+
 
 @main.route('/', defaults={'path': ''})
 @main.route('/<path:path>')
@@ -22,7 +24,7 @@ def catch_all(path):
 
 
 @main.route('/userInfo', methods=['POST'])
-@permission_required('/userInfo')
+@permission_required(URL_PREFIX + '/userInfo')
 @cross_origin()
 def userInfo():
     try:

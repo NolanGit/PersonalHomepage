@@ -26,10 +26,8 @@ def permission_required(privilege):
 
         @wraps(f)
         def decorated_function(*args, **kwargs):
-            print(privilege)
             user_key = request.cookies.get('user_key')
             privilege_list = privilegeFunction().privilege_get(user_key)
-            print(privilege_list)
             if privilege in privilege_list:
                 return f(*args, **kwargs)
             else:
