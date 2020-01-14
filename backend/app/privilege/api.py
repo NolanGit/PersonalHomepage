@@ -62,7 +62,7 @@ class privilegeFunction(object):
         return user_key, privilege_key
 
     def init_user_and_privilege(self, user_id):
-        user_role_id = user.get(id == user_id).role_id
+        user_role_id = user.get(user.id == user_id).role_id
         user_key, privilege_key = self.set_user_to_redis(user_id)
         self.set_user_privilege_to_redis(user_role_id, privilege_key)
         return user_key
