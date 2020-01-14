@@ -120,6 +120,7 @@ export default {
                   message: data2.msg,
                   type: "success"
                 });
+                this.$cookies.set("user_key",data2.user_key)  
                 this.user = data2.user;
                 sessionStorage.setItem("user", JSON.stringify(data2.user));
                 this.$emit("user", this.user);
