@@ -7,21 +7,12 @@ import traceback
 import subprocess
 import urllib.request
 from . import login
-from .func import CommonFunc
+from ..common_func import CommonFunc
 from flask_cors import cross_origin
 from flask import render_template, session, redirect, url_for, current_app, flash, Response, request, jsonify
 from .model import user
 from ..privilege.model import privilege, privilege_role
-
-
-def get_redis_conn():
-    return redis.Redis(connection_pool=redis.ConnectionPool(host='127.0.0.1', port=6379))
-
-
-def set_user_privilege_to_redis(redis_conn, user_role_id, privilege_key):
-    privilege_role_query = privilege_role.select().where(privilege_role.role_id == user_role_id).dicts()
-    for single_privilege_role_query in privilege_role_query:
-        redis_conn.rpush(privilege_key, privilege.get(privilege.id == single_privilege_role_query['privilege_id']).mark)
+from ..privilege.api import privilegeFunction
 
 
 @login.route('/userLogin', methods=['POST'])
@@ -47,13 +38,8 @@ def userLogin():
             if timestamp < salt_expire_time:
                 password2compare = CommonFunc().md5_it(password_without_salt + salt)
                 if password == password2compare:
-                    user_key = CommonFunc().random_str(40)
-                    privilege_key = CommonFunc().random_str(40)
-                    user_dict = {'user_id': row['id'], 'privilege_key': privilege_key}
-                    redis_conn = get_redis_conn()
-                    redis_conn.hmset(user_key, user_dict)
-                    set_user_privilege_to_redis(redis_conn,row['role_id'],privilege_key)
-                    response = {'code': 200, 'msg': '登录成功！', 'user': row['name'], 'user_key':user_key}
+                    user_key = privilegeFunction().init_user_and_privilege(row['id'], row['role_id'])
+                    response = {'code': 200, 'msg': '登录成功！', 'user': row['name'], 'user_key': user_key}
                     return jsonify(response)
                 else:
                     response = {
