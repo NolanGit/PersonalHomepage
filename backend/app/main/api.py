@@ -11,7 +11,7 @@ from ..search.model import search_engines, search_engines_log
 from ..weather.model import weather_personalized
 from ..bookmarks.model import bookmarks as bookmarks_table
 from ..bookmarks.model import icon as icon_table
-from ..common_func import CommonFunc, User
+from ..login.api import User
 
 
 @main.route('/', defaults={'path': ''})
@@ -28,7 +28,7 @@ def userInfo():
         try:
             user_name = request.get_json()['user']
             user = User(user_name)
-            user_id=user.user_id
+            user_id = user.user_id
         except:
             user_id = 0
 
@@ -68,7 +68,7 @@ def faviconico():
 @cross_origin()
 def icon():
     try:
-        result=[]
+        result = []
         icon_query = icon_table.select().dicts()
         for row in icon_query:
             result.append({'id': row['id'], 'name': row['name']})

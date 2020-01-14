@@ -11,7 +11,7 @@ from flask_cors import cross_origin
 from flask import session, redirect, url_for, current_app, flash, Response, request, jsonify, abort
 from .model import role, privilege_role
 from .model import privilege as privilege_model
-from ..common_func import CommonFunc, User
+from ..common_func import CommonFunc
 cf = configparser.ConfigParser()
 cf.read('app/homepage.config')
 KEY = cf.get('config', 'KEY')
