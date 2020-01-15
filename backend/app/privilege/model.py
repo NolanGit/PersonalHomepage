@@ -19,6 +19,7 @@ class BaseModel(Model):
 class role(BaseModel):
     name = CharField()
     remark = CharField(null=True)
+    is_valid = IntegerField()
     update_time = DateTimeField(null=True)
 
     class Meta:
@@ -37,6 +38,7 @@ class privilege(BaseModel):
 class privilege_role(BaseModel):
     privilege_id = IntegerField()
     role_id = IntegerField()
+    is_valid = IntegerField()
 
     class Meta:
         table_name = 'privilege_role'

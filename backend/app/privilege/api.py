@@ -108,7 +108,7 @@ class privilegeFunction(object):
         return user_key
 
 
-@privilege.route('/get', methods=['POST'])
+@privilege.route('/privilegeGet', methods=['GET'])
 @cross_origin()
 def get():
 
@@ -122,6 +122,46 @@ def get():
                 'mark': row['mark'],
                 'remark': row['remark'],
                 'update_time': row['update_time'],
+            })
+        return jsonify({'code': 200, 'msg': '成功！', 'data': result})
+    except Exception as e:
+        traceback.print_exc()
+        response = {'code': 500, 'msg': '失败！错误信息：' + str(e) + '，请联系管理员。', 'data': []}
+        return jsonify(response)
+
+
+@privilege.route('/userGet', methods=['GET'])
+@cross_origin()
+def userGet():
+
+    try:
+        result = []
+        user_query = user.select().where(user.is_valid == 1).dicts()
+        for row in user_query:
+            result.append({
+                'id': row['id'],
+                'name': row['name'],
+                'role_id': row['role_id'],
+            })
+        return jsonify({'code': 200, 'msg': '成功！', 'data': result})
+    except Exception as e:
+        traceback.print_exc()
+        response = {'code': 500, 'msg': '失败！错误信息：' + str(e) + '，请联系管理员。', 'data': []}
+        return jsonify(response)
+
+
+@privilege.route('/roleGet', methods=['GET'])
+@cross_origin()
+def roleGet():
+
+    try:
+        result = []
+        role_query = role.select().where(role.is_valid == 1).dicts()
+        for row in role_query:
+            result.append({
+                'id': row['id'],
+                'name': row['name'],
+                'remark': row['remark'],
             })
         return jsonify({'code': 200, 'msg': '成功！', 'data': result})
     except Exception as e:

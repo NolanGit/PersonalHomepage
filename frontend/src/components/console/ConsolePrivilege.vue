@@ -1,26 +1,25 @@
 <template>
   <section>
-
+    <el-table :data="tableData" stripe style="width: 100%">
+      <el-table-column prop="date" label="日期" width="180"></el-table-column>
+      <el-table-column prop="name" label="姓名" width="180"></el-table-column>
+      <el-table-column prop="address" label="地址"></el-table-column>
+      <el-table-column prop="address" label="操作"></el-table-column>
+    </el-table>
   </section>
 </template>
 
 <script>
 import axios from "axios";
 import BScroll from "better-scroll";
-import {
-} from "../../api/console";
+import {} from "../../api/console";
 export default {
   name: "ConsolePrivilege",
   data() {
-    return {
-    }
+    return {};
   },
-  methods: {
-
-  },
-  mounted() {
-      
-  }
+  methods: {},
+  mounted() {}
 };
 </script>
 
@@ -191,10 +190,10 @@ export default {
   border-radius: 10px;
   background: #f3f3f300;
 }
-.max-height-large{
+.max-height-large {
   max-height: 70vh;
 }
-.max-height-medium{
+.max-height-medium {
   max-height: 40vh;
 }
 .margin-top-medium {
