@@ -28,6 +28,7 @@ class privilege(BaseModel):
     name = CharField()
     mark = CharField()
     remark = CharField(null=True)
+    is_valid = IntegerField()
     update_time = DateTimeField(null=True)
 
     class Meta:

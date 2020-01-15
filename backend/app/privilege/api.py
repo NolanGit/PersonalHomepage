@@ -71,7 +71,7 @@ class privilegeFunction(object):
         #获取redis连接
         return redis.Redis(connection_pool=pool)
 
-    def set_user_privilege_to_redis(self, user_instance):
+    def flush_user_privilege_to_redis(self, user_instance):
         '''
             存用户的权限列表到redis
             args : user_instance(User)
@@ -82,7 +82,8 @@ class privilegeFunction(object):
             for single_privilege_role_query in privilege_role_query:
                 self.get_redis_conn().rpush(user_instance.role_id, privilege_model.get(privilege_model.id == single_privilege_role_query['privilege_id']).mark)
         else:
-            return
+            privilegeFunction().get_redis_conn().delete(user_instance.role_id)
+            self.flush_user_privilege_to_redis(user_instance)
 
     def set_user_to_redis(self, user_instance, ip):
         '''
@@ -97,10 +98,13 @@ class privilegeFunction(object):
         self.get_redis_conn().hmset(user_instance.id, dict)
         return user_key
 
+    def delete_set_user_to_redis(self, user_key):
+        self.get_redis_conn().delete(user_key)
+
     def init_user_and_privilege(self, user_id, ip):
         user_instance = user.get(user.id == user_id)
         user_key = self.set_user_to_redis(user_instance, ip)
-        self.set_user_privilege_to_redis(user_instance)
+        self.flush_user_privilege_to_redis(user_instance)
         return user_key
 
 
@@ -110,7 +114,15 @@ def get():
 
     try:
         result = []
-
+        privilege_model_query = privilege_model.select().where(privilege_model.is_valid == 1).dicts()
+        for row in privilege_model_query:
+            result.append({
+                'id': row['id'],
+                'name': row['name'],
+                'mark': row['mark'],
+                'remark': row['remark'],
+                'update_time': row['update_time'],
+            })
         return jsonify({'code': 200, 'msg': '成功！', 'data': result})
     except Exception as e:
         traceback.print_exc()
