@@ -17,23 +17,41 @@ cf = configparser.ConfigParser()
 cf.read('app/homepage.config')
 KEY = cf.get('config', 'KEY')
 
-
-def privilege_flush(User):
-    pass
+pool = redis.ConnectionPool(host='localhost', port=6379, decode_responses=True)
 
 
 def permission_required(privilege):
-
     def decorator(f):
-
         @wraps(f)
         def decorated_function(*args, **kwargs):
             user_key = request.cookies.get('user_key')
-            privilege_list = privilegeFunction().privilege_get(user_key)
-            if privilege in privilege_list:
-                return f(*args, **kwargs)
-            else:
+            redis_conn = privilegeFunction().get_redis_conn()
+
+            user_id = redis_conn.get(user_key)
+
+            #是否存在cookie
+            if user_id == None:
                 abort(403)
+                return
+            password, ip, random_str, role_id = redis_conn.hmget(user_id, 'password', 'ip', 'random_str', 'role_id')
+
+            #ip是否一致
+            if ip != request.remote_addr:
+                abort(403)
+                return
+            user_key_in_redis = CommonFunc().md5_it(random_str + password)
+
+            #cookie是否相同
+            if user_key != user_key_in_redis:
+                abort(403)
+                return
+
+            #是否存在相应权限
+            privilege_list = redis_conn.lrange(role_id, 0, -1)
+            if privilege not in privilege_list:
+                abort(403)
+            else:
+                return f(*args, **kwargs)
 
         return decorated_function
 
@@ -41,57 +59,39 @@ def permission_required(privilege):
 
 
 class privilegeFunction(object):
-
+    '''
+        加密：使用随机字符串+登录用户的密码加密，生成cookie，redis保存cookie、加密后的密码、随机字符串、对应用户id、ip、过期时间，cookie发给客户端后，客户端请求接口要带上cookie
+        解密：后端收到cookie后，校验过期时间，如有效则校验ip，如有效则取出cookie对应的加密后的密码、加密时使用的随机字符串，按照加密规则加密后和cookie对比，如果一致，进一步判断权限
+        注意：用户修改密码后，应同步处理redis，以使修改密码后cookie失效
+    '''
     def __init__(self):
-        pool = redis.ConnectionPool(host='localhost', port=6379, decode_responses=True)
-        self.pool = pool
+        pass
 
     def get_redis_conn(self):
-        return redis.Redis(connection_pool=self.pool)
+        return redis.Redis(connection_pool=pool)
 
-    def set_user_privilege_to_redis(self, user_role_id, privilege_key):
-        privilege_role_query = privilege_role.select().where(privilege_role.role_id == user_role_id).dicts()
-        for single_privilege_role_query in privilege_role_query:
-            self.get_redis_conn().rpush(privilege_key, privilege_model.get(privilege_model.id == single_privilege_role_query['privilege_id']).mark)
+    def set_user_privilege_to_redis(self, user_instance):
+        temp = privilegeFunction().get_redis_conn().get(user_instance.role_id)
+        if temp == None:
+            privilege_role_query = privilege_role.select().where(privilege_role.role_id == user_instance.role_id).dicts()
+            for single_privilege_role_query in privilege_role_query:
+                self.get_redis_conn().rpush(user_instance.role_id, privilege_model.get(privilege_model.id == single_privilege_role_query['privilege_id']).mark)
+        else:
+            return
 
-    def set_user_to_redis(self, user_id):
-        user_key = CommonFunc().random_str(40)
-        privilege_key = CommonFunc().random_str(40)
-        user_dict = {'user_id': user_id, 'privilege_key': privilege_key}
-        self.get_redis_conn().hmset(user_key, user_dict)
-        return user_key, privilege_key
-
-    def init_user_and_privilege(self, user_id):
-        user_role_id = user.get(user.id == user_id).role_id
-        user_key, privilege_key = self.set_user_to_redis(user_id)
-        self.set_user_privilege_to_redis(user_role_id, privilege_key)
+    def set_user_to_redis(self, user_instance, ip):
+        random_str = CommonFunc().random_str(40)
+        user_key = CommonFunc().md5_it(random_str + user_instance.password)
+        self.get_redis_conn().set(user_key, user_instance.id, 36000)
+        dict = {'password': user_instance.password, 'ip': ip, 'random_str': random_str, 'role_id': user_instance.role_id}
+        self.get_redis_conn().hmset(user_instance.id, dict)
         return user_key
 
-    def privilege_get(self, user_key):
-        privilege_key = self.get_redis_conn().hget(user_key, "privilege_key")
-        return self.get_redis_conn().lrange(privilege_key, 0, -1)
-
-    def user_id_get(self, user_key):
-        return self.get_redis_conn().hget(user_key, "user_id")
-
-    def permission_required(self, privellge):
-
-        def decorator(f):
-
-            @wraps(f)
-            def decorated_function(*args, **kwargs):
-                print(privilege)
-                user_key = request.cookies.get('user_key')
-                privilege_list = self.privilege_get(user_key)
-                print(privilege_list)
-                if privilege in privilege_list:
-                    return f(*args, **kwargs)
-                else:
-                    abort(403)
-
-            return decorated_function
-
-        return decorator
+    def init_user_and_privilege(self, user_id, ip):
+        user_instance = user.get(user.id == user_id)
+        user_key = self.set_user_to_redis(user_instance, ip)
+        self.set_user_privilege_to_redis(user_instance)
+        return user_key
 
 
 @privilege.route('/get', methods=['POST'])
