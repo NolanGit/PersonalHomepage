@@ -68,9 +68,14 @@ class privilegeFunction(object):
         pass
 
     def get_redis_conn(self):
+        #获取redis连接
         return redis.Redis(connection_pool=pool)
 
     def set_user_privilege_to_redis(self, user_instance):
+        '''
+            存用户的权限列表到redis
+            args : user_instance(User)
+        '''
         temp = privilegeFunction().get_redis_conn().get(user_instance.role_id)
         if temp == None:
             privilege_role_query = privilege_role.select().where(privilege_role.role_id == user_instance.role_id).dicts()
@@ -80,6 +85,11 @@ class privilegeFunction(object):
             return
 
     def set_user_to_redis(self, user_instance, ip):
+        '''
+            存用户相关信息到redis，返回一个加密串
+            args : user_instance(User), ip(String)
+            return : user_key(String)
+        '''
         random_str = CommonFunc().random_str(40)
         user_key = CommonFunc().md5_it(random_str + user_instance.password)
         self.get_redis_conn().set(user_key, user_instance.id, 36000)
