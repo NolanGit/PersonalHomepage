@@ -1,11 +1,74 @@
 <template>
   <section>
-    <el-table :data="tableData" stripe style="width: 100%">
-      <el-table-column prop="date" label="日期" width="180"></el-table-column>
-      <el-table-column prop="name" label="姓名" width="180"></el-table-column>
-      <el-table-column prop="address" label="地址"></el-table-column>
-      <el-table-column prop="address" label="操作"></el-table-column>
-    </el-table>
+    <el-row class="main-row" :gutter="20">
+      <el-col :span="5" class="lift-side-bar">
+        <el-card class="left-side-box-card">
+          <el-collapse v-model="activeSystem" @change="handleChange" accordion>
+            <el-collapse-item title="用户设置" name="用户设置">
+              <div class="collapse-div" v-show="singleSystem.scriptText!=''">包括用户密码、角色的修改</div>
+            </el-collapse-item>
+            <el-collapse-item title="权限设置" name="权限设置">
+              <div class="collapse-div" v-show="singleSystem.scriptText!=''">包括角色对应权限的设置</div>
+            </el-collapse-item>
+          </el-collapse>
+        </el-card>
+      </el-col>
+      <el-col :span="19" class="right-side-bar">
+        <div>
+          <el-table :data="tableData" stripe style="width: 100%">
+            <el-table-column prop="id" label="ID" width="180"></el-table-column>
+            <el-table-column prop="name" label="姓名" width="180"></el-table-column>
+            <el-table-column prop="role" label="角色" width="180"></el-table-column>
+            <el-table-column prop="create_time" label="创建时间"></el-table-column>
+            <el-table-column label="操作">
+              <template slot-scope="scope">
+                <el-button
+                  class="noMargin"
+                  size="mini"
+                  plain
+                  type="primary"
+                  icon="el-icon-setting"
+                  @click="setting(scope.row.output)"
+                >修改</el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
+        <div>
+          <el-table :data="tableData" stripe style="width: 100%">
+            <el-table-column prop="id" label="ID" width="180"></el-table-column>
+            <el-table-column prop="name" label="名称" width="180"></el-table-column>
+            <el-table-column prop="role" label="备注" width="180"></el-table-column>
+            <el-table-column prop="create_time" label="创建时间"></el-table-column>
+            <el-table-column label="操作">
+              <template slot-scope="scope">
+                <el-button
+                  class="noMargin"
+                  size="mini"
+                  plain
+                  type="primary"
+                  icon="el-icon-setting"
+                  @click="setting(scope.row.output)"
+                >配置对应权限</el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
+      </el-col>
+      <el-drawer
+        :title="edit.dialogTitle"
+        :visible.sync="edit.visible"
+        :close-on-click-modal="false"
+        size="60%"
+        @closed="editFormClosed"
+      >
+        <div>
+          <el-checkbox-group v-model="checkList">
+            <el-checkbox v-for="asd in dad" :key="asd" :label="asd"></el-checkbox>
+          </el-checkbox-group>
+        </div>
+      </el-drawer>
+    </el-row>
   </section>
 </template>
 
