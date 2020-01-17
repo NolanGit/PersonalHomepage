@@ -28,12 +28,11 @@ def permission_required(privilege):
             user_key = request.cookies.get('user_key')
             redis_conn = privilegeFunction().get_redis_conn0()
 
-            user_id = redis_conn.get(user_key)
-
             #是否存在cookie
-            if user_id == None:
+            if redis_conn.exists(user_key) == 0:
                 abort(403)
                 return
+            user_id = redis_conn.get(user_key)
             password, ip, random_str, role_id = redis_conn.hmget(user_id, 'password', 'ip', 'random_str', 'role_id')
 
             #ip是否一致
