@@ -67,22 +67,22 @@ class privilegeFunction(object):
     def __init__(self):
         pass
 
-    def get_redis_conn(self):
+    def get_redis_conn(self, db):
         #获取redis连接
-        return redis.Redis(connection_pool=pool)
+        return redis.Redis(connection_pool=pool, db=db)
 
     def flush_user_privilege_to_redis(self, user_instance):
         '''
             存用户的权限列表到redis
             args : user_instance(User)
         '''
-        temp = privilegeFunction().get_redis_conn().lrange(user_instance.role_id,0,-1)
+        temp = privilegeFunction().get_redis_conn(1).lrange(user_instance.role_id, 0, -1)
         if temp == None:
             privilege_role_query = privilege_role.select().where(privilege_role.role_id == user_instance.role_id).dicts()
             for single_privilege_role_query in privilege_role_query:
-                self.get_redis_conn().rpush(user_instance.role_id, privilege_model.get(privilege_model.id == single_privilege_role_query['privilege_id']).mark)
+                self.get_redis_conn(1).rpush(user_instance.role_id, privilege_model.get(privilege_model.id == single_privilege_role_query['privilege_id']).mark)
         else:
-            privilegeFunction().get_redis_conn().delete(user_instance.role_id)
+            privilegeFunction().get_redis_conn(1).delete(user_instance.role_id)
             self.flush_user_privilege_to_redis(user_instance)
 
     def set_user_to_redis(self, user_instance, ip):
@@ -93,14 +93,14 @@ class privilegeFunction(object):
         '''
         random_str = CommonFunc().random_str(40)
         user_key = CommonFunc().md5_it(random_str + user_instance.password)
-        self.get_redis_conn().set(user_key, user_instance.id, 36000)
+        self.get_redis_conn(0).set(user_key, user_instance.id, 36000)
         dict = {'password': user_instance.password, 'ip': ip, 'random_str': random_str, 'role_id': user_instance.role_id}
-        self.get_redis_conn().hmset(user_instance.id, dict)
+        self.get_redis_conn(0).hmset(user_instance.id, dict)
         ###################################没考虑到用户id和角色id重复的情况
         return user_key
 
-    def delete_set_user_to_redis(self, user_key):
-        self.get_redis_conn().delete(user_key)
+    def delete_set_user_to_redis(self, db, user_key):
+        self.get_redis_conn(db).delete(user_key)
 
     def init_user_and_privilege(self, user_id, ip):
         user_instance = user.get(user.id == user_id)
