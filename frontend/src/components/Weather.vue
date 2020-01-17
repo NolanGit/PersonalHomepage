@@ -62,7 +62,7 @@
             <td>
               <div
                 class="weatherSideTextDetail"
-              >今日气温: {{weather.weatherForm.tmp_min}}°C-{{weather.weatherForm.tmp_max}}°C</div>
+              >今日: {{weather.weatherForm.tmp_min}}°C-{{weather.weatherForm.tmp_max}}°C</div>
               <div class="weatherSideTextDetail">风力: {{weather.weatherForm.wind}}</div>
               <div class="weatherSideTextDetail">体感: {{weather.weatherForm.fl}}°C</div>
             </td>

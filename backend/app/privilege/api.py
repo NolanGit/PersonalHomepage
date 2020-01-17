@@ -105,7 +105,7 @@ class privilegeFunction(object):
         return user_key
 
     def del_user_to_redis(self, db, user_key):
-        self.get_redis_conn(db).delete(user_key)
+        self.get_redis_conn0().delete(user_key)
 
     def init_user_and_privilege(self, user_id, ip):
         user_instance = user.get(user.id == user_id)
