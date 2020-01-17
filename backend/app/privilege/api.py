@@ -76,7 +76,7 @@ class privilegeFunction(object):
             存用户的权限列表到redis
             args : user_instance(User)
         '''
-        temp = privilegeFunction().get_redis_conn().get(user_instance.role_id)
+        temp = privilegeFunction().get_redis_conn().lrange(user_instance.role_id,0,-1)
         if temp == None:
             privilege_role_query = privilege_role.select().where(privilege_role.role_id == user_instance.role_id).dicts()
             for single_privilege_role_query in privilege_role_query:
@@ -96,6 +96,7 @@ class privilegeFunction(object):
         self.get_redis_conn().set(user_key, user_instance.id, 36000)
         dict = {'password': user_instance.password, 'ip': ip, 'random_str': random_str, 'role_id': user_instance.role_id}
         self.get_redis_conn().hmset(user_instance.id, dict)
+        ###################################没考虑到用户id和角色id重复的情况
         return user_key
 
     def delete_set_user_to_redis(self, user_key):
