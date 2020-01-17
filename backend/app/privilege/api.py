@@ -48,7 +48,7 @@ def permission_required(privilege):
                 return
 
             #是否存在相应权限
-            privilege_list = redis_conn.lrange(role_id, 0, -1)
+            privilege_list = privilegeFunction().get_redis_conn1().lrange(role_id, 0, -1)
             if privilege not in privilege_list:
                 abort(403)
             else:
