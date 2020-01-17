@@ -29,7 +29,7 @@ def permission_required(privilege):
             redis_conn = privilegeFunction().get_redis_conn0()
 
             #是否存在cookie
-            if redis_conn.exists(user_key) == 0:
+            if user_key == None or redis_conn.exists(user_key) == 0:
                 abort(403)
                 return
             user_id = redis_conn.get(user_key)
