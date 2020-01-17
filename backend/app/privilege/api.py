@@ -77,8 +77,7 @@ class privilegeFunction(object):
             args : user_instance(User)
         '''
         temp = privilegeFunction().get_redis_conn(1).exists(user_instance.role_id)
-        print(temp)
-        if temp == None:
+        if temp == 0:
             privilege_role_query = privilege_role.select().where(privilege_role.role_id == user_instance.role_id).dicts()
             for single_privilege_role_query in privilege_role_query:
                 self.get_redis_conn(1).rpush(user_instance.role_id, privilege_model.get(privilege_model.id == single_privilege_role_query['privilege_id']).mark)
