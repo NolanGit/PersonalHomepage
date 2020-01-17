@@ -53,7 +53,7 @@ def userLogin():
             if timestamp < salt_expire_time:
                 password2compare = CommonFunc().md5_it(password_without_salt + salt)
                 if password == password2compare:
-                    user_key = privilegeFunction().init_user_and_privilege(row['id'], ip)
+                    user_key = privilegeFunction().init_user_and_privilege(row['id'], request.remote_addr)
                     response = {'code': 200, 'msg': '登录成功！', 'user': row['name'], 'user_key': user_key}
                     return jsonify(response)
                 else:
