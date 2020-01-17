@@ -37,7 +37,7 @@ def userLogin():
     password = request.get_json()['password']
     timestamp = request.get_json()['timestamp']
     ip = request.remote_addr
-    print('Login name:' + login_name + ' IP:' + str(ip))
+    # print('Login name:' + login_name + ' IP:' + str(ip))
     user_query = user.select().where(user.login_name == login_name).dicts()
     if len(user_query) == 0:
         response = {
@@ -53,7 +53,7 @@ def userLogin():
             if timestamp < salt_expire_time:
                 password2compare = CommonFunc().md5_it(password_without_salt + salt)
                 if password == password2compare:
-                    user_key = privilegeFunction().init_user_and_privilege(row['id'], request.remote_addr)
+                    user_key = privilegeFunction().init_user_and_privilege(row['id'], ip)
                     response = {'code': 200, 'msg': '登录成功！', 'user': row['name'], 'user_key': user_key}
                     return jsonify(response)
                 else:

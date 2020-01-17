@@ -76,15 +76,15 @@ class privilegeFunction(object):
             存用户的权限列表到redis
             args : user_instance(User)
         '''
-        temp = privilegeFunction().get_redis_conn(1).exists(user_instance.role_id)
+        temp = privilegeFunction().get_redis_conn(3).exists(user_instance.role_id)
         print(temp)
         if temp == 0:
             privilege_role_query = privilege_role.select().where(privilege_role.role_id == user_instance.role_id).dicts()
             for single_privilege_role_query in privilege_role_query:
                 print(privilege_model.get(privilege_model.id == single_privilege_role_query['privilege_id']).mark)
-                self.get_redis_conn(1).rpush(user_instance.role_id, privilege_model.get(privilege_model.id == single_privilege_role_query['privilege_id']).mark)
+                self.get_redis_conn(3).rpush(user_instance.role_id, privilege_model.get(privilege_model.id == single_privilege_role_query['privilege_id']).mark)
         else:
-            privilegeFunction().get_redis_conn(1).delete(user_instance.role_id)
+            privilegeFunction().get_redis_conn(3).delete(user_instance.role_id)
             self.flush_user_privilege_to_redis(user_instance)
 
     def set_user_to_redis(self, user_instance, ip):
