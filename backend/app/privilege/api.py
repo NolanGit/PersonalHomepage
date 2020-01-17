@@ -17,7 +17,8 @@ cf = configparser.ConfigParser()
 cf.read('app/homepage.config')
 KEY = cf.get('config', 'KEY')
 
-pool = redis.ConnectionPool(host='localhost', port=6379, decode_responses=True)
+pool0 = redis.ConnectionPool(host='localhost', port=6379, decode_responses=True, db=0)
+pool1 = redis.ConnectionPool(host='localhost', port=6379, decode_responses=True, db=1)
 
 
 def permission_required(privilege):
@@ -25,7 +26,7 @@ def permission_required(privilege):
         @wraps(f)
         def decorated_function(*args, **kwargs):
             user_key = request.cookies.get('user_key')
-            redis_conn = privilegeFunction().get_redis_conn(0)
+            redis_conn = privilegeFunction().get_redis_conn0()
 
             user_id = redis_conn.get(user_key)
 
@@ -67,24 +68,28 @@ class privilegeFunction(object):
     def __init__(self):
         pass
 
-    def get_redis_conn(self, db):
+    def get_redis_conn0(self):
         #获取redis连接
-        return redis.Redis(connection_pool=pool, db=db)
+        return redis.Redis(connection_pool=pool0)
+
+    def get_redis_conn1(self):
+        #获取redis连接
+        return redis.Redis(connection_pool=pool1)
 
     def flush_user_privilege_to_redis(self, user_instance):
         '''
             存用户的权限列表到redis
             args : user_instance(User)
         '''
-        temp = privilegeFunction().get_redis_conn(3).exists(user_instance.role_id)
+        temp = privilegeFunction().get_redis_conn1().exists(user_instance.role_id)
         print(temp)
         if temp == 0:
             privilege_role_query = privilege_role.select().where(privilege_role.role_id == user_instance.role_id).dicts()
             for single_privilege_role_query in privilege_role_query:
                 print(privilege_model.get(privilege_model.id == single_privilege_role_query['privilege_id']).mark)
-                self.get_redis_conn(3).rpush(user_instance.role_id, privilege_model.get(privilege_model.id == single_privilege_role_query['privilege_id']).mark)
+                self.get_redis_conn1().rpush(user_instance.role_id, privilege_model.get(privilege_model.id == single_privilege_role_query['privilege_id']).mark)
         else:
-            privilegeFunction().get_redis_conn(3).delete(user_instance.role_id)
+            privilegeFunction().get_redis_conn1().delete(user_instance.role_id)
             self.flush_user_privilege_to_redis(user_instance)
 
     def set_user_to_redis(self, user_instance, ip):
@@ -95,9 +100,9 @@ class privilegeFunction(object):
         '''
         random_str = CommonFunc().random_str(40)
         user_key = CommonFunc().md5_it(random_str + user_instance.password)
-        self.get_redis_conn(0).set(user_key, user_instance.id, 36000)
+        self.get_redis_conn0().set(user_key, user_instance.id, 36000)
         dict = {'password': user_instance.password, 'ip': ip, 'random_str': random_str, 'role_id': user_instance.role_id}
-        self.get_redis_conn(0).hmset(user_instance.id, dict)
+        self.get_redis_conn0().hmset(user_instance.id, dict)
         return user_key
 
     def del_user_to_redis(self, db, user_key):
