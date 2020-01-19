@@ -25,6 +25,9 @@
         <div v-if="activeComponent=='ConsoleScript'">
           <ConsoleScript />
         </div>
+        <div v-if="activeComponent=='ConsolePrivilege'">
+          <ConsolePrivilege />
+        </div>
       </div>
     </el-drawer>
   </div>
@@ -33,12 +36,14 @@
 import axios from "axios";
 import Router from "vue-router";
 import ConsoleScript from "./console/ConsoleScript.vue";
+import ConsolePrivilege from "./console/ConsolePrivilege.vue";
 import { consoleGet } from "../api/console";
 
 export default {
   name: "Console",
   components: {
-    ConsoleScript
+    ConsoleScript,
+    ConsolePrivilege
   },
   data() {
     return {
