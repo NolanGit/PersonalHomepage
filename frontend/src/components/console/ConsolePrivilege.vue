@@ -5,10 +5,10 @@
         <el-card class="left-side-box-card">
           <el-collapse v-model="activeSystem" @change="handleChange" accordion>
             <el-collapse-item title="用户设置" name="用户设置">
-              <div class="collapse-div" v-show="singleSystem.scriptText!=''">包括用户密码、角色的修改</div>
+              <div class="collapse-div">包括用户密码、角色的修改</div>
             </el-collapse-item>
             <el-collapse-item title="权限设置" name="权限设置">
-              <div class="collapse-div" v-show="singleSystem.scriptText!=''">包括角色对应权限的设置</div>
+              <div class="collapse-div">包括角色对应权限的设置</div>
             </el-collapse-item>
           </el-collapse>
         </el-card>
@@ -104,7 +104,7 @@ export default {
     }
   },
   mounted() {
-    userGetFront();
+    this.userGetFront();
   }
 };
 </script>
