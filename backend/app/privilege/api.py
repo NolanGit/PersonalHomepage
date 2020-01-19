@@ -158,7 +158,7 @@ def get():
         return jsonify(response)
 
 
-@privilege.route('/userGet', methods=['GET'])
+@privilege.route('/userGet', methods=['POST'])
 @cross_origin()
 def userGet():
 
