@@ -56,7 +56,7 @@
           </el-table>
         </div>
       </el-col>
-      <el-drawer
+      <!-- <el-drawer
         :title="edit.dialogTitle"
         :visible.sync="edit.visible"
         :close-on-click-modal="false"
@@ -68,7 +68,7 @@
             <el-checkbox v-for="asd in dad" :key="asd" :label="asd"></el-checkbox>
           </el-checkbox-group>
         </div>
-      </el-drawer>
+      </el-drawer> -->
     </el-row>
   </section>
 </template>
