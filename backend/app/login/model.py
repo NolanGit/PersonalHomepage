@@ -24,6 +24,7 @@ class user(BaseModel):
     salt = CharField()
     salt_expire_time = DateTimeField()
     role_id = IntegerField()
+    is_valid = IntegerField()
     create_time = DateTimeField()
     update_time = DateTimeField()
 
