@@ -33,3 +33,7 @@ export const consoleScriptScheduleEdit = params => { return axios.post(`${base}/
 export const consoleScriptScheduleDelete = params => { return axios.post(`${base}/console/consoleScriptScheduleDelete`, params).then(res => res.data) }
 
 export const consoleScriptExtraButtonScriptRun = params => { return axios.post(`${base}/console/consoleScriptExtraButtonScriptRun`, params).then(res => res.data) }
+
+export const userGet = params => { return axios.get(`${base}/privilege/userGet`, params).then(res => res.data) }
+
+export const roleGet = params => { return axios.get(`${base}/privilege/roleGet`, params).then(res => res.data) }

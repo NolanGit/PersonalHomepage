@@ -13,9 +13,6 @@ from .model import role, privilege_role
 from .model import privilege as privilege_model
 from ..common_func import CommonFunc
 from ..login.model import user
-cf = configparser.ConfigParser()
-cf.read('app/homepage.config')
-KEY = cf.get('config', 'KEY')
 
 pool0 = redis.ConnectionPool(host='localhost', port=6379, decode_responses=True, db=0)
 pool1 = redis.ConnectionPool(host='localhost', port=6379, decode_responses=True, db=1)
@@ -56,6 +53,31 @@ def permission_required(privilege):
         return decorated_function
 
     return decorator
+
+
+def role_list_get():
+    result = []
+    role_query = role.select().where(role.is_valid == 1).order_by(role.id).dicts()
+    for row in role_query:
+        result.append({
+            'id': row['id'],
+            'name': row['name'],
+            'remark': row['remark'],
+        })
+    return result
+
+
+def user_list_get():
+    result = []
+    user_query = user.select().where(user.is_valid == 1).order_by(user.id).dicts()
+    for row in user_query:
+        result.append({
+            'id': row['id'],
+            'name': row['name'],
+            'role_id': row['role_id'],
+            'create_time': row['create_time'],
+        })
+    return result
 
 
 class privilegeFunction(object):
@@ -141,14 +163,21 @@ def get():
 def userGet():
 
     try:
+        user_name = request.get_json()['user']
         result = []
-        user_query = user.select().where(user.is_valid == 1).dicts()
-        for row in user_query:
-            result.append({
-                'id': row['id'],
-                'name': row['name'],
-                'role_id': row['role_id'],
-            })
+        role_list = role_list_get()
+        user_list = user_list_get()
+        current_role_id = CommonFunc().dict_list_get_element(user_list, 'name', user_name, 'role_id')
+        current_user_role = CommonFunc().dict_list_get_element(role_list, 'id', current_role_id, 'name', current_role_id - 1)
+        if current_user_role == '管理员':
+            for single_user in user_list:
+                single_user['is_edit'] = 1
+        else:
+            for single_user in user_list:
+                if single_user['name'] == user_name:
+                    single_user['is_edit'] = 1
+                else:
+                    single_user['is_edit'] = 0
         return jsonify({'code': 200, 'msg': '成功！', 'data': result})
     except Exception as e:
         traceback.print_exc()
@@ -161,15 +190,7 @@ def userGet():
 def roleGet():
 
     try:
-        result = []
-        role_query = role.select().where(role.is_valid == 1).dicts()
-        for row in role_query:
-            result.append({
-                'id': row['id'],
-                'name': row['name'],
-                'remark': row['remark'],
-            })
-        return jsonify({'code': 200, 'msg': '成功！', 'data': result})
+        return jsonify({'code': 200, 'msg': '成功！', 'data': role_list_get()})
     except Exception as e:
         traceback.print_exc()
         response = {'code': 500, 'msg': '失败！错误信息：' + str(e) + '，请联系管理员。', 'data': []}
