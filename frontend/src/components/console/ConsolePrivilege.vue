@@ -112,7 +112,7 @@ export default {
       });
     },
     roleGetFront() {
-      roleGet(para).then(data => {
+      roleGet().then(data => {
         if (data["code"] !== 200) {
           this.$message({
             message: data["msg"],
