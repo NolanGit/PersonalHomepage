@@ -81,7 +81,7 @@ export default {
   name: "ConsolePrivilege",
   data() {
     return {
-      activeNames: ["1"],
+      activeSystem: "",
       userData: [],
       roleData: [],
       edit:{
