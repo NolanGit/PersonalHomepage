@@ -57,29 +57,15 @@
           </div>
         </el-card>
       </el-col>
-<<<<<<< HEAD
-      <!-- <el-drawer
-        :title="edit.dialogTitle"
-=======
       <el-drawer
         :title="edit.title"
->>>>>>> 195f56a3d750afd0bdcd9436a563c2a1f3a224f2
         :visible.sync="edit.visible"
         :close-on-click-modal="false"
         size="60%"
         @closed="editFormClosed"
       >
-<<<<<<< HEAD
-        <div>
-          <el-checkbox-group v-model="checkList">
-            <el-checkbox v-for="asd in dad" :key="asd" :label="asd"></el-checkbox>
-          </el-checkbox-group>
-        </div>
-      </el-drawer> -->
-=======
         <div></div>
       </el-drawer>
->>>>>>> 195f56a3d750afd0bdcd9436a563c2a1f3a224f2
     </el-row>
   </section>
 </template>
