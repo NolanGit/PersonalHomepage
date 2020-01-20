@@ -71,7 +71,7 @@ def role_list_get():
             'name': row['name'],
             'is_valid': row['is_valid'],
             'remark': row['remark'],
-            'update_time': row['update_time'].strftime("%Y-%m-%d  %H:%M:%S"),
+            'update_time': row['update_time'],
         })
     return result
 
@@ -84,8 +84,8 @@ def user_list_get():
             'id': row['id'],
             'name': row['name'],
             'role_id': row['role_id'],
-            'create_time': row['create_time'].strftime("%Y-%m-%d  %H:%M:%S"),
-            'update_time': row['update_time'].strftime("%Y-%m-%d  %H:%M:%S"),
+            'create_time': row['create_time'],
+            'update_time': row['update_time'],
         })
     return result
 
@@ -100,7 +100,7 @@ def privilege_list_get():
             'mark': row['mark'],
             'remark': row['remark'],
             'is_valid': row['is_valid'],
-            'update_time': row['update_time'].strftime("%Y-%m-%d  %H:%M:%S"),
+            'update_time': row['update_time'],
         })
     return result
 
