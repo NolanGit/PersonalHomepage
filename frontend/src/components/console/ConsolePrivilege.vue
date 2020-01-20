@@ -150,22 +150,22 @@ export default {
           for (let x = 0; x < data.data.length; x++) {
             this.checkedPrivilege.push(data.data[x].privilege_id);
           }
-        }
-      });
-      privilegeGet().then(data => {
-        if (data["code"] !== 200) {
-          this.$message({
-            message: data["msg"],
-            type: "error"
+          privilegeGet().then(data => {
+            if (data["code"] !== 200) {
+              this.$message({
+                message: data["msg"],
+                type: "error"
+              });
+            } else {
+              this.privilege = [];
+              for (let x = 0; x < data.data.length; x++) {
+                this.privilege.push({
+                  id: data.data[x].id,
+                  label: data.data[x].name
+                });
+              }
+            }
           });
-        } else {
-          this.privilege = [];
-          for (let x = 0; x < data.data.length; x++) {
-            this.privilege.push({
-              id: data.data[x].id,
-              label: data.data[x].name
-            });
-          }
         }
       });
     },
