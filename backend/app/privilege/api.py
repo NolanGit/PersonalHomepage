@@ -167,6 +167,7 @@ def userGet():
         result = []
         role_list = role_list_get()
         user_list = user_list_get()
+        print(user_list)
         current_role_id = CommonFunc().dict_list_get_element(user_list, 'name', user_name, 'role_id')
         current_user_role = CommonFunc().dict_list_get_element(role_list, 'id', current_role_id, 'name', current_role_id - 1)
         if current_user_role == '管理员':
@@ -178,7 +179,7 @@ def userGet():
                     single_user['is_edit'] = 1
                 else:
                     single_user['is_edit'] = 0
-        return jsonify({'code': 200, 'msg': '成功！', 'data': result})
+        return jsonify({'code': 200, 'msg': '成功！', 'data': user_list})
     except Exception as e:
         traceback.print_exc()
         response = {'code': 500, 'msg': '失败！错误信息：' + str(e) + '，请联系管理员。', 'data': []}
