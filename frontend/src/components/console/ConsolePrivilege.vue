@@ -36,7 +36,7 @@
           </el-table>
         </div>
         <div v-if="activeSystem==['2']">
-          <el-table :data="roleData" stripe style="width: 100%">
+          <el-table :data="userData" stripe style="width: 100%">
             <el-table-column prop="id" label="ID" width="180"></el-table-column>
             <el-table-column prop="name" label="名称" width="180"></el-table-column>
             <el-table-column prop="role" label="角色" width="180"></el-table-column>
@@ -49,7 +49,7 @@
                   plain
                   type="primary"
                   icon="el-icon-setting"
-                  @click="setting(scope.row.output)"
+                  @click="setting(scope.row.id)"
                 >配置对应权限</el-button>
               </template>
             </el-table-column>
@@ -57,16 +57,16 @@
         </div>
       </el-col>
       <el-drawer
-        :title="edit.dialogTitle"
+        :title="edit.title"
         :visible.sync="edit.visible"
         :close-on-click-modal="false"
         size="60%"
         @closed="editFormClosed"
       >
         <div>
-          <el-checkbox-group v-model="checkList">
+          <!-- <el-checkbox-group v-model="checkList">
             <el-checkbox v-for="asd in dad" :key="asd" :label="asd"></el-checkbox>
-          </el-checkbox-group>
+          </el-checkbox-group> -->
         </div>
       </el-drawer>
     </el-row>
@@ -83,7 +83,11 @@ export default {
     return {
       activeNames: ["1"],
       userData: [],
-      roleData: []
+      roleData: [],
+      edit:{
+        title:'编辑',
+        visible:false,
+      }
     };
   },
   methods: {
