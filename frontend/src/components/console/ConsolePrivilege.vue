@@ -14,7 +14,7 @@
         </el-card>
       </el-col>
       <el-col :span="19" class="right-side-bar">
-        <div v-if="activeSystem==['1']">
+        <div v-if="activeSystem=='1'">
           <el-table :data="userData" stripe style="width: 100%">
             <el-table-column prop="id" label="ID" width="180"></el-table-column>
             <el-table-column prop="name" label="姓名" width="180"></el-table-column>
@@ -35,7 +35,7 @@
             </el-table-column>
           </el-table>
         </div>
-        <div v-if="activeSystem==['2']">
+        <div v-if="activeSystem=='2'">
           <el-table :data="userData" stripe style="width: 100%">
             <el-table-column prop="id" label="ID" width="180"></el-table-column>
             <el-table-column prop="name" label="名称" width="180"></el-table-column>
