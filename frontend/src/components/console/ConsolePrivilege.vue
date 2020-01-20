@@ -14,79 +14,107 @@
         </el-card>
       </el-col>
       <el-col :span="19" class="right-side-bar">
-        <div v-if="activeSystem==['1']">
-          <el-table :data="userData" stripe style="width: 100%">
-            <el-table-column prop="id" label="ID" width="180"></el-table-column>
-            <el-table-column prop="name" label="姓名" width="180"></el-table-column>
-            <el-table-column prop="role" label="角色" width="180"></el-table-column>
-            <el-table-column prop="create_time" label="创建时间"></el-table-column>
-            <el-table-column label="操作">
-              <template slot-scope="scope">
-                <el-button
-                  v-if="scope.row.is_edit==1"
-                  class="noMargin"
-                  size="mini"
-                  plain
-                  type="primary"
-                  icon="el-icon-setting"
-                  @click="setting(scope.row.id)"
-                >修改</el-button>
-              </template>
-            </el-table-column>
-          </el-table>
-        </div>
-        <div v-if="activeSystem==['2']">
-          <el-table :data="roleData" stripe style="width: 100%">
-            <el-table-column prop="id" label="ID" width="180"></el-table-column>
-            <el-table-column prop="name" label="名称" width="180"></el-table-column>
-            <el-table-column prop="role" label="角色" width="180"></el-table-column>
-            <el-table-column prop="create_time" label="创建时间"></el-table-column>
-            <el-table-column label="操作">
-              <template slot-scope="scope">
-                <el-button
-                  class="noMargin"
-                  size="mini"
-                  plain
-                  type="primary"
-                  icon="el-icon-setting"
-                  @click="setting(scope.row.output)"
-                >配置对应权限</el-button>
-              </template>
-            </el-table-column>
-          </el-table>
-        </div>
+        <el-card class="left-side-box-card">
+          <div v-if="activeSystem=='用户设置'">
+            <el-table :data="userData" stripe style="width: 100%">
+              <el-table-column prop="id" label="ID" width="180"></el-table-column>
+              <el-table-column prop="name" label="姓名" width="180"></el-table-column>
+              <el-table-column prop="role_name" label="角色" width="180"></el-table-column>
+              <el-table-column prop="update_time" label="修改时间"></el-table-column>
+              <el-table-column label="操作">
+                <template slot-scope="scope">
+                  <el-button
+                    v-if="scope.row.is_edit==1"
+                    class="noMargin"
+                    size="mini"
+                    plain
+                    type="primary"
+                    @click="userSetting(scope.row.id)"
+                  >修改</el-button>
+                </template>
+              </el-table-column>
+            </el-table>
+          </div>
+          <div v-if="activeSystem=='权限设置'">
+            <el-table :data="roleData" stripe style="width: 100%">
+              <el-table-column prop="id" label="ID" width="180"></el-table-column>
+              <el-table-column prop="name" label="名称" width="180"></el-table-column>
+              <el-table-column prop="remark" label="备注" width="180"></el-table-column>
+              <el-table-column prop="is_valid_text" label="是否禁用" width="180"></el-table-column>
+              <el-table-column prop="create_time" label="修改时间"></el-table-column>
+              <el-table-column label="操作">
+                <template slot-scope="scope">
+                  <el-button
+                    class="noMargin"
+                    size="mini"
+                    plain
+                    type="primary"
+                    @click="roleSetting(scope.row.id)"
+                  >配置对应权限</el-button>
+                </template>
+              </el-table-column>
+            </el-table>
+          </div>
+        </el-card>
       </el-col>
+<<<<<<< HEAD
       <!-- <el-drawer
         :title="edit.dialogTitle"
+=======
+      <el-drawer
+        :title="edit.title"
+>>>>>>> 195f56a3d750afd0bdcd9436a563c2a1f3a224f2
         :visible.sync="edit.visible"
         :close-on-click-modal="false"
         size="60%"
         @closed="editFormClosed"
       >
+<<<<<<< HEAD
         <div>
           <el-checkbox-group v-model="checkList">
             <el-checkbox v-for="asd in dad" :key="asd" :label="asd"></el-checkbox>
           </el-checkbox-group>
         </div>
       </el-drawer> -->
+=======
+        <div></div>
+      </el-drawer>
+>>>>>>> 195f56a3d750afd0bdcd9436a563c2a1f3a224f2
     </el-row>
   </section>
 </template>
 
 <script>
 import axios from "axios";
-import BScroll from "better-scroll";
-import { userGet, roleGet } from "../../api/console";
+import {
+  userGet,
+  roleGet,
+  privilegeGet,
+  rolePrivilegeGet
+} from "../../api/console";
 export default {
   name: "ConsolePrivilege",
   data() {
     return {
-      activeNames: ["1"],
+      activeSystem: "用户设置",
       userData: [],
-      roleData: []
+      roleData: [],
+      privilege: [],
+      checkedPrivilege: [],
+      edit: {
+        title: "编辑",
+        visible: false
+      }
     };
   },
   methods: {
+    handleChange() {
+      if (this.activeSystem == "用户设置") {
+        this.userGetFront();
+      } else if (this.activeSystem == "权限设置") {
+        this.roleGetFront();
+      }
+    },
     userGetFront() {
       var para = {
         user: sessionStorage.getItem("user").replace(/\"/g, "")
@@ -101,6 +129,62 @@ export default {
           this.userData = data.data;
         }
       });
+    },
+    roleGetFront() {
+      roleGet().then(data => {
+        if (data["code"] !== 200) {
+          this.$message({
+            message: data["msg"],
+            type: "error"
+          });
+        } else {
+          for (let x = 0; x < data.data.length; x++) {
+            if (data.data[x].is_valid == 1) {
+              data.data[x].is_valid_text = "否";
+            } else if (data.data[x].is_valid == 0) {
+              data.data[x].is_valid_text = "是";
+            }
+          }
+          this.roleData = data.data;
+        }
+      });
+    },
+    roleSetting(role_id) {
+      var para = {
+        role_id: role_id
+      };
+      rolePrivilegeGet(para).then(data => {
+        if (data["code"] !== 200) {
+          this.$message({
+            message: data["msg"],
+            type: "error"
+          });
+        } else {
+          this.checkedPrivilege = [];
+          for (let x = 0; x < data.data.length; x++) {
+            this.checkedPrivilege.push(data.data[x].privilege_id);
+          }
+          privilegeGet().then(data => {
+            if (data["code"] !== 200) {
+              this.$message({
+                message: data["msg"],
+                type: "error"
+              });
+            } else {
+              this.privilege = [];
+              for (let x = 0; x < data.data.length; x++) {
+                this.privilege.push({
+                  id: data.data[x].id,
+                  label: data.data[x].name
+                });
+              }
+            }
+          });
+        }
+      });
+    },
+    userSetting(user_id) {
+      console.log(user_id);
     }
   },
   mounted() {

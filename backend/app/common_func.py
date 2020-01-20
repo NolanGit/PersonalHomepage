@@ -4,6 +4,7 @@ import hashlib
 
 
 class CommonFunc(object):
+
     def random_str(self, num):
         H = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
 
@@ -27,7 +28,12 @@ class CommonFunc(object):
                     return None
         # 知道index情况下加速结果返回速度
         else:
-            if list[index][key] == value:
+            temp = True
+            try:
+                temp = list[index][key] == value
+            except:
+                temp = False
+            if temp:
                 return list[index][target_key]
             else:
                 for single_element in list:

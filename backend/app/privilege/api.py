@@ -16,10 +16,13 @@ from ..login.model import user
 
 pool0 = redis.ConnectionPool(host='localhost', port=6379, decode_responses=True, db=0)
 pool1 = redis.ConnectionPool(host='localhost', port=6379, decode_responses=True, db=1)
+cf = CommonFunc()
 
 
 def permission_required(privilege):
+
     def decorator(f):
+
         @wraps(f)
         def decorated_function(*args, **kwargs):
             user_key = request.cookies.get('user_key')
@@ -27,6 +30,7 @@ def permission_required(privilege):
 
             #是否存在cookie
             if user_key == None or redis_conn.exists(user_key) == 0:
+                print('[%s权限校验失败]不存在cookie', user_key)
                 abort(403)
                 return
             user_id = redis_conn.get(user_key)
@@ -34,18 +38,21 @@ def permission_required(privilege):
 
             #ip是否一致
             if ip != request.remote_addr:
+                print('[%s权限校验失败]ip不一致，现ip：%s，存储的ip：%s', (user_key, str(ip), str(request.remote_addr)))
                 abort(403)
                 return
-            user_key_in_redis = CommonFunc().md5_it(random_str + password)
+            user_key_in_redis = cf.md5_it(random_str + password)
 
             #cookie是否相同
             if user_key != user_key_in_redis:
+                print('[%s权限校验失败]重新加密后的user_key不相同', user_key)
                 abort(403)
                 return
 
             #是否存在相应权限
             privilege_list = privilegeFunction().get_redis_conn1().lrange(role_id, 0, -1)
             if privilege not in privilege_list:
+                print('[%s权限校验失败]不具有权限，请求的权限是：%s，用户具有的权限有：%s', (user_key, privilege, str(privilege_list)))
                 abort(403)
             else:
                 return f(*args, **kwargs)
@@ -62,7 +69,9 @@ def role_list_get():
         result.append({
             'id': row['id'],
             'name': row['name'],
+            'is_valid': row['is_valid'],
             'remark': row['remark'],
+            'update_time': row['update_time'],
         })
     return result
 
@@ -76,16 +85,34 @@ def user_list_get():
             'name': row['name'],
             'role_id': row['role_id'],
             'create_time': row['create_time'],
+            'update_time': row['update_time'],
+        })
+    return result
+
+
+def privilege_list_get():
+    result = []
+    privilege_query = privilege_model.select().order_by(privilege_model.id).dicts()
+    for row in privilege_query:
+        result.append({
+            'id': row['id'],
+            'name': row['name'],
+            'mark': row['mark'],
+            'remark': row['remark'],
+            'is_valid': row['is_valid'],
+            'update_time': row['update_time'],
         })
     return result
 
 
 class privilegeFunction(object):
+
     '''
         加密：使用随机字符串+登录用户的密码加密，生成cookie，redis保存cookie、加密后的密码、随机字符串、对应用户id、ip、过期时间，cookie发给客户端后，客户端请求接口要带上cookie
         解密：后端收到cookie后，校验过期时间，如有效则校验ip，如有效则取出cookie对应的加密后的密码、加密时使用的随机字符串，按照加密规则加密后和cookie对比，如果一致，进一步判断权限
         注意：用户修改密码后，应同步处理redis，以使修改密码后cookie失效
     '''
+
     def __init__(self):
         pass
 
@@ -119,8 +146,8 @@ class privilegeFunction(object):
             args : user_instance(User), ip(String)
             return : user_key(String)
         '''
-        random_str = CommonFunc().random_str(40)
-        user_key = CommonFunc().md5_it(random_str + user_instance.password)
+        random_str = cf.random_str(40)
+        user_key = cf.md5_it(random_str + user_instance.password)
         self.get_redis_conn0().set(user_key, user_instance.id, 36000)
         dict = {'password': user_instance.password, 'ip': ip, 'random_str': random_str, 'role_id': user_instance.role_id}
         self.get_redis_conn0().hmset(user_instance.id, dict)
@@ -139,19 +166,8 @@ class privilegeFunction(object):
 @privilege.route('/privilegeGet', methods=['GET'])
 @cross_origin()
 def get():
-
     try:
-        result = []
-        privilege_model_query = privilege_model.select().where(privilege_model.is_valid == 1).dicts()
-        for row in privilege_model_query:
-            result.append({
-                'id': row['id'],
-                'name': row['name'],
-                'mark': row['mark'],
-                'remark': row['remark'],
-                'update_time': row['update_time'],
-            })
-        return jsonify({'code': 200, 'msg': '成功！', 'data': result})
+        return jsonify({'code': 200, 'msg': '成功！', 'data': privilege_list_get()})
     except Exception as e:
         traceback.print_exc()
         response = {'code': 500, 'msg': '失败！错误信息：' + str(e) + '，请联系管理员。', 'data': []}
@@ -167,18 +183,20 @@ def userGet():
         result = []
         role_list = role_list_get()
         user_list = user_list_get()
-        current_role_id = CommonFunc().dict_list_get_element(user_list, 'name', user_name, 'role_id')
-        current_user_role = CommonFunc().dict_list_get_element(role_list, 'id', current_role_id, 'name', current_role_id - 1)
+        print(user_list)
+        current_role_id = cf.dict_list_get_element(user_list, 'name', user_name, 'role_id')
+        current_user_role = cf.dict_list_get_element(role_list, 'id', current_role_id, 'name', current_role_id - 1)
         if current_user_role == '管理员':
             for single_user in user_list:
                 single_user['is_edit'] = 1
+                single_user['role_name'] = cf.dict_list_get_element(role_list, 'id', single_user['role_id'], 'name', single_user['role_id'] - 1)
         else:
             for single_user in user_list:
                 if single_user['name'] == user_name:
                     single_user['is_edit'] = 1
                 else:
                     single_user['is_edit'] = 0
-        return jsonify({'code': 200, 'msg': '成功！', 'data': result})
+        return jsonify({'code': 200, 'msg': '成功！', 'data': user_list})
     except Exception as e:
         traceback.print_exc()
         response = {'code': 500, 'msg': '失败！错误信息：' + str(e) + '，请联系管理员。', 'data': []}
@@ -191,6 +209,26 @@ def roleGet():
 
     try:
         return jsonify({'code': 200, 'msg': '成功！', 'data': role_list_get()})
+    except Exception as e:
+        traceback.print_exc()
+        response = {'code': 500, 'msg': '失败！错误信息：' + str(e) + '，请联系管理员。', 'data': []}
+        return jsonify(response)
+
+
+@privilege.route('/rolePrivilegeGet', methods=['POST'])
+@cross_origin()
+def rolePrivilegeGet():
+    try:
+        role_id = request.get_json()['role_id']
+        result = []
+        # privilege_list = privilege_list_get()
+        privilege_role_query = privilege_role.select().where(privilege_role.role_id == role_id).order_by(privilege_role.id).dicts()
+        for row in privilege_role_query:
+            result.append({
+                'privilege_id': row['privilege_id'],
+                # 'privilege_name': cf.dict_list_get_element(privilege_list, 'id', row['privilege_id'], 'mark', row['privilege_id'] - 1),
+            })
+        return jsonify({'code': 200, 'msg': '成功！', 'data': result})
     except Exception as e:
         traceback.print_exc()
         response = {'code': 500, 'msg': '失败！错误信息：' + str(e) + '，请联系管理员。', 'data': []}
