@@ -166,7 +166,6 @@ class privilegeFunction(object):
 @privilege.route('/privilegeGet', methods=['GET'])
 @cross_origin()
 def get():
-
     try:
         return jsonify({'code': 200, 'msg': '成功！', 'data': privilege_list_get()})
     except Exception as e:
@@ -228,7 +227,7 @@ def rolePrivilegeGet():
             result.append({
                 'privilege_id': row['privilege_id'],
                 'privilege_name': cf.dict_list_get_element(privilege_list, 'id', row['privilege_id'], 'mark', row['privilege_id'] - 1),
-                'remark': row['remark'],
+                'mark': row['mark'],
             })
         return jsonify({'code': 200, 'msg': '成功！', 'data': role_list_get()})
     except Exception as e:

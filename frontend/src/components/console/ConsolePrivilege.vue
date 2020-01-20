@@ -29,7 +29,6 @@
                     size="mini"
                     plain
                     type="primary"
-                    icon="el-icon-setting"
                     @click="userSetting(scope.row.id)"
                   >修改</el-button>
                 </template>
@@ -50,7 +49,6 @@
                     size="mini"
                     plain
                     type="primary"
-                    icon="el-icon-setting"
                     @click="roleSetting(scope.row.id)"
                   >配置对应权限</el-button>
                 </template>
@@ -74,14 +72,21 @@
 
 <script>
 import axios from "axios";
-import { userGet, roleGet } from "../../api/console";
+import {
+  userGet,
+  roleGet,
+  privilegeGet,
+  rolePrivilegeGet
+} from "../../api/console";
 export default {
   name: "ConsolePrivilege",
   data() {
     return {
-      activeSystem: "",
+      activeSystem: "用户设置",
       userData: [],
       roleData: [],
+      privilege: [],
+      checkedPrivilege: [],
       edit: {
         title: "编辑",
         visible: false
@@ -131,7 +136,38 @@ export default {
       });
     },
     roleSetting(role_id) {
-      console.log(role_id);
+      var para = {
+        role_id: role_id
+      };
+      rolePrivilegeGet(para).then(data => {
+        if (data["code"] !== 200) {
+          this.$message({
+            message: data["msg"],
+            type: "error"
+          });
+        } else {
+          for (let x = 0; x < data.data.length; x++) {
+            this.checkedPrivilege.push(data.data[x].privilege_id);
+          }
+        }
+      });
+      console.log(this.checkedPrivilege);
+      privilegeGet().then(data => {
+        if (data["code"] !== 200) {
+          this.$message({
+            message: data["msg"],
+            type: "error"
+          });
+        } else {
+          for (let x = 0; x < data.data.length; x++) {
+            this.privilege.push({
+              id: data.data[x].id,
+              label: data.data[x].name
+            });
+          }
+        }
+      });
+      console.log(this.privilege);
     },
     userSetting(user_id) {
       console.log(user_id);
