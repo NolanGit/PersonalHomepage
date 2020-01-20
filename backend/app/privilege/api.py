@@ -16,10 +16,13 @@ from ..login.model import user
 
 pool0 = redis.ConnectionPool(host='localhost', port=6379, decode_responses=True, db=0)
 pool1 = redis.ConnectionPool(host='localhost', port=6379, decode_responses=True, db=1)
+cf = CommonFunc()
 
 
 def permission_required(privilege):
+
     def decorator(f):
+
         @wraps(f)
         def decorated_function(*args, **kwargs):
             user_key = request.cookies.get('user_key')
@@ -36,7 +39,7 @@ def permission_required(privilege):
             if ip != request.remote_addr:
                 abort(403)
                 return
-            user_key_in_redis = CommonFunc().md5_it(random_str + password)
+            user_key_in_redis = cf.md5_it(random_str + password)
 
             #cookie是否相同
             if user_key != user_key_in_redis:
@@ -81,11 +84,13 @@ def user_list_get():
 
 
 class privilegeFunction(object):
+
     '''
         加密：使用随机字符串+登录用户的密码加密，生成cookie，redis保存cookie、加密后的密码、随机字符串、对应用户id、ip、过期时间，cookie发给客户端后，客户端请求接口要带上cookie
         解密：后端收到cookie后，校验过期时间，如有效则校验ip，如有效则取出cookie对应的加密后的密码、加密时使用的随机字符串，按照加密规则加密后和cookie对比，如果一致，进一步判断权限
         注意：用户修改密码后，应同步处理redis，以使修改密码后cookie失效
     '''
+
     def __init__(self):
         pass
 
@@ -119,8 +124,8 @@ class privilegeFunction(object):
             args : user_instance(User), ip(String)
             return : user_key(String)
         '''
-        random_str = CommonFunc().random_str(40)
-        user_key = CommonFunc().md5_it(random_str + user_instance.password)
+        random_str = cf.random_str(40)
+        user_key = cf.md5_it(random_str + user_instance.password)
         self.get_redis_conn0().set(user_key, user_instance.id, 36000)
         dict = {'password': user_instance.password, 'ip': ip, 'random_str': random_str, 'role_id': user_instance.role_id}
         self.get_redis_conn0().hmset(user_instance.id, dict)
@@ -168,11 +173,12 @@ def userGet():
         role_list = role_list_get()
         user_list = user_list_get()
         print(user_list)
-        current_role_id = CommonFunc().dict_list_get_element(user_list, 'name', user_name, 'role_id')
-        current_user_role = CommonFunc().dict_list_get_element(role_list, 'id', current_role_id, 'name', current_role_id - 1)
+        current_role_id = cf.dict_list_get_element(user_list, 'name', user_name, 'role_id')
+        current_user_role = cf.dict_list_get_element(role_list, 'id', current_role_id, 'name', current_role_id - 1)
         if current_user_role == '管理员':
             for single_user in user_list:
                 single_user['is_edit'] = 1
+                single_user['role_name'] = cf.dict_list_get_element(role_list, 'id', single_user['role_id'], 'name', single_user['role_id'])
         else:
             for single_user in user_list:
                 if single_user['name'] == user_name:

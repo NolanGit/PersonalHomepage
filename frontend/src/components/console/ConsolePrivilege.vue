@@ -14,47 +14,49 @@
         </el-card>
       </el-col>
       <el-col :span="19" class="right-side-bar">
-        <div v-if="activeSystem=='用户设置'">
-          <el-table :data="userData" stripe style="width: 100%">
-            <el-table-column prop="id" label="ID" width="180"></el-table-column>
-            <el-table-column prop="name" label="姓名" width="180"></el-table-column>
-            <el-table-column prop="role" label="角色" width="180"></el-table-column>
-            <el-table-column prop="create_time" label="创建时间"></el-table-column>
-            <el-table-column label="操作">
-              <template slot-scope="scope">
-                <el-button
-                  v-if="scope.row.is_edit==1"
-                  class="noMargin"
-                  size="mini"
-                  plain
-                  type="primary"
-                  icon="el-icon-setting"
-                  @click="setting(scope.row.id)"
-                >修改</el-button>
-              </template>
-            </el-table-column>
-          </el-table>
-        </div>
-        <div v-if="activeSystem=='权限设置'">
-          <el-table :data="userData" stripe style="width: 100%">
-            <el-table-column prop="id" label="ID" width="180"></el-table-column>
-            <el-table-column prop="name" label="名称" width="180"></el-table-column>
-            <el-table-column prop="role" label="角色" width="180"></el-table-column>
-            <el-table-column prop="create_time" label="创建时间"></el-table-column>
-            <el-table-column label="操作">
-              <template slot-scope="scope">
-                <el-button
-                  class="noMargin"
-                  size="mini"
-                  plain
-                  type="primary"
-                  icon="el-icon-setting"
-                  @click="setting(scope.row.id)"
-                >配置对应权限</el-button>
-              </template>
-            </el-table-column>
-          </el-table>
-        </div>
+        <el-card class="left-side-box-card">
+          <div v-if="activeSystem=='用户设置'">
+            <el-table :data="userData" stripe style="width: 100%">
+              <el-table-column prop="id" label="ID" width="180"></el-table-column>
+              <el-table-column prop="name" label="姓名" width="180"></el-table-column>
+              <el-table-column prop="role_name" label="角色" width="180"></el-table-column>
+              <el-table-column prop="create_time" label="创建时间"></el-table-column>
+              <el-table-column label="操作">
+                <template slot-scope="scope">
+                  <el-button
+                    v-if="scope.row.is_edit==1"
+                    class="noMargin"
+                    size="mini"
+                    plain
+                    type="primary"
+                    icon="el-icon-setting"
+                    @click="setting(scope.row.id)"
+                  >修改</el-button>
+                </template>
+              </el-table-column>
+            </el-table>
+          </div>
+          <div v-if="activeSystem=='权限设置'">
+            <el-table :data="userData" stripe style="width: 100%">
+              <el-table-column prop="id" label="ID" width="180"></el-table-column>
+              <el-table-column prop="name" label="名称" width="180"></el-table-column>
+              <el-table-column prop="role" label="角色" width="180"></el-table-column>
+              <el-table-column prop="create_time" label="创建时间"></el-table-column>
+              <el-table-column label="操作">
+                <template slot-scope="scope">
+                  <el-button
+                    class="noMargin"
+                    size="mini"
+                    plain
+                    type="primary"
+                    icon="el-icon-setting"
+                    @click="setting(scope.row.id)"
+                  >配置对应权限</el-button>
+                </template>
+              </el-table-column>
+            </el-table>
+          </div>
+        </el-card>
       </el-col>
       <el-drawer
         :title="edit.title"
@@ -66,7 +68,7 @@
         <div>
           <!-- <el-checkbox-group v-model="checkList">
             <el-checkbox v-for="asd in dad" :key="asd" :label="asd"></el-checkbox>
-          </el-checkbox-group> -->
+          </el-checkbox-group>-->
         </div>
       </el-drawer>
     </el-row>
@@ -84,9 +86,9 @@ export default {
       activeSystem: "",
       userData: [],
       roleData: [],
-      edit:{
-        title:'编辑',
-        visible:false,
+      edit: {
+        title: "编辑",
+        visible: false
       }
     };
   },
@@ -105,7 +107,7 @@ export default {
           this.userData = data.data;
         }
       });
-    },
+    }
   },
   mounted() {
     this.userGetFront();
