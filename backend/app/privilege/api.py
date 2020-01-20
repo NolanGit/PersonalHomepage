@@ -178,7 +178,7 @@ def userGet():
         if current_user_role == '管理员':
             for single_user in user_list:
                 single_user['is_edit'] = 1
-                single_user['role_name'] = cf.dict_list_get_element(role_list, 'id', single_user['role_id'], 'name', single_user['role_id'])
+                single_user['role_name'] = cf.dict_list_get_element(role_list, 'id', single_user['role_id'], 'name', single_user['role_id'] - 1)
         else:
             for single_user in user_list:
                 if single_user['name'] == user_name:
