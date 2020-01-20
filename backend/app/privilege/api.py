@@ -222,14 +222,14 @@ def rolePrivilegeGet():
         role_id = request.get_json()['role_id']
         result = []
         privilege_list = privilege_list_get()
-        privilege_role_query = privilege_role.select().where(privilege_role.role_id == role_id).order_by(privilege_model.id).dicts()
+        privilege_role_query = privilege_role.select().where(privilege_role.role_id == role_id).order_by(privilege_role.id).dicts()
         for row in privilege_role_query:
             result.append({
                 'privilege_id': row['privilege_id'],
                 'privilege_name': cf.dict_list_get_element(privilege_list, 'id', row['privilege_id'], 'mark', row['privilege_id'] - 1),
                 'mark': row['mark'],
             })
-        return jsonify({'code': 200, 'msg': '成功！', 'data': role_list_get()})
+        return jsonify({'code': 200, 'msg': '成功！', 'data': result})
     except Exception as e:
         traceback.print_exc()
         response = {'code': 500, 'msg': '失败！错误信息：' + str(e) + '，请联系管理员。', 'data': []}
