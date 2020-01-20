@@ -1,101 +1,24 @@
 <template>
   <section>
     <el-row class="main-row" :gutter="20">
-      <el-col :span="5" class="lift-side-bar">
-        <el-card class="left-side-box-card">
-          <el-collapse v-model="activeSystem" @change="handleChange" accordion>
-            <el-collapse-item title="用户设置" name="用户设置">
-              <div class="collapse-div">包括用户密码、角色的修改</div>
-            </el-collapse-item>
-            <el-collapse-item title="权限设置" name="权限设置">
-              <div class="collapse-div">包括角色对应权限的设置</div>
-            </el-collapse-item>
-          </el-collapse>
-        </el-card>
-      </el-col>
-      <el-col :span="19" class="right-side-bar">
-        <el-card class="left-side-box-card">
-          <div v-if="activeSystem=='用户设置'">
-            <el-table :data="userData" stripe style="width: 100%">
-              <el-table-column prop="id" label="ID" width="180"></el-table-column>
-              <el-table-column prop="name" label="姓名" width="180"></el-table-column>
-              <el-table-column prop="role_name" label="角色" width="180"></el-table-column>
-              <el-table-column prop="create_time" label="创建时间"></el-table-column>
-              <el-table-column label="操作">
-                <template slot-scope="scope">
-                  <el-button
-                    v-if="scope.row.is_edit==1"
-                    class="noMargin"
-                    size="mini"
-                    plain
-                    type="primary"
-                    icon="el-icon-setting"
-                    @click="userSetting(scope.row.id)"
-                  >修改</el-button>
-                </template>
-              </el-table-column>
-            </el-table>
-          </div>
-          <div v-if="activeSystem=='权限设置'">
-            <el-table :data="roleData" stripe style="width: 100%">
-              <el-table-column prop="id" label="ID" width="180"></el-table-column>
-              <el-table-column prop="name" label="名称" width="180"></el-table-column>
-              <el-table-column prop="remark" label="备注" width="180"></el-table-column>
-              <el-table-column prop="is_valid" label="是否禁用" width="180"></el-table-column>
-              <el-table-column prop="create_time" label="创建时间"></el-table-column>
-              <el-table-column label="操作">
-                <template slot-scope="scope">
-                  <el-button
-                    class="noMargin"
-                    size="mini"
-                    plain
-                    type="primary"
-                    icon="el-icon-setting"
-                    @click="roleSetting(scope.row.id)"
-                  >配置对应权限</el-button>
-                </template>
-              </el-table-column>
-            </el-table>
-          </div>
-        </el-card>
-      </el-col>
-      <el-drawer
-        :title="edit.title"
-        :visible.sync="edit.visible"
-        :close-on-click-modal="false"
-        size="60%"
-        @closed="editFormClosed"
-      >
-        <div></div>
-      </el-drawer>
+      <el-checkbox-group v-model="checkedList">
+        <el-checkbox v-for="asd in checkList" :key="asd" :label="asd"></el-checkbox>
+      </el-checkbox-group>
     </el-row>
   </section>
 </template>
 
 <script>
 import axios from "axios";
-import { userGet, roleGet } from "../../api/console";
+import BScroll from "better-scroll";
 export default {
-  name: "ConsolePrivilege",
+  name: "ConsolePrivilegeRole",
   data() {
     return {
-      activeSystem: "",
-      userData: [],
       roleData: [],
-      edit: {
-        title: "编辑",
-        visible: false
-      }
     };
   },
   methods: {
-    handleChange() {
-      if (this.activeSystem == "用户设置") {
-        this.userGetFront();
-      } else if (this.activeSystem == "权限设置") {
-        this.roleGetFront();
-      }
-    },
     userGetFront() {
       var para = {
         user: sessionStorage.getItem("user").replace(/\"/g, "")
@@ -110,24 +33,6 @@ export default {
           this.userData = data.data;
         }
       });
-    },
-    roleGetFront() {
-      roleGet(para).then(data => {
-        if (data["code"] !== 200) {
-          this.$message({
-            message: data["msg"],
-            type: "error"
-          });
-        } else {
-          this.roleData = data.data;
-        }
-      });
-    },
-    roleSetting(role_id) {
-      console.log(role_id);
-    },
-    userSetting(user_id) {
-      console.log(user_id);
     }
   },
   mounted() {

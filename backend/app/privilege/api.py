@@ -83,6 +83,21 @@ def user_list_get():
     return result
 
 
+def privilege_list_get():
+    result = []
+    privilege_query = privilege_model.select().order_by(privilege_model.id).dicts()
+    for row in privilege_query:
+        result.append({
+            'id': row['id'],
+            'name': row['name'],
+            'mark': row['mark'],
+            'remark': row['remark'],
+            'is_valid': row['is_valid'],
+            'update_time': row['update_time'],
+        })
+    return result
+
+
 class privilegeFunction(object):
 
     '''
@@ -146,17 +161,7 @@ class privilegeFunction(object):
 def get():
 
     try:
-        result = []
-        privilege_model_query = privilege_model.select().where(privilege_model.is_valid == 1).dicts()
-        for row in privilege_model_query:
-            result.append({
-                'id': row['id'],
-                'name': row['name'],
-                'mark': row['mark'],
-                'remark': row['remark'],
-                'update_time': row['update_time'],
-            })
-        return jsonify({'code': 200, 'msg': '成功！', 'data': result})
+        return jsonify({'code': 200, 'msg': '成功！', 'data': privilege_list_get()})
     except Exception as e:
         traceback.print_exc()
         response = {'code': 500, 'msg': '失败！错误信息：' + str(e) + '，请联系管理员。', 'data': []}
@@ -197,6 +202,27 @@ def userGet():
 def roleGet():
 
     try:
+        return jsonify({'code': 200, 'msg': '成功！', 'data': role_list_get()})
+    except Exception as e:
+        traceback.print_exc()
+        response = {'code': 500, 'msg': '失败！错误信息：' + str(e) + '，请联系管理员。', 'data': []}
+        return jsonify(response)
+
+
+@privilege.route('/rolePrivilegeGet', methods=['POST'])
+@cross_origin()
+def rolePrivilegeGet():
+    try:
+        role_id = request.get_json()['role_id']
+        result = []
+        privilege_list = privilege_list_get()
+        privilege_model_query = privilege_model.select().where(privilege_model.role_id == role_id).order_by(privilege_model.id).dicts()
+        for row in privilege_model_query:
+            result.append({
+                'privilege_id': row['privilege_id'],
+                'privilege_name': cf.dict_list_get_element(privilege_list, 'id', row['privilege_id'], 'mark', row['privilege_id'] - 1),
+                'remark': row['remark'],
+            })
         return jsonify({'code': 200, 'msg': '成功！', 'data': role_list_get()})
     except Exception as e:
         traceback.print_exc()

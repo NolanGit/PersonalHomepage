@@ -30,18 +30,17 @@
                     plain
                     type="primary"
                     icon="el-icon-setting"
-                    @click="userSetting(scope.row.id)"
+                    @click="setting(scope.row.id)"
                   >修改</el-button>
                 </template>
               </el-table-column>
             </el-table>
           </div>
           <div v-if="activeSystem=='权限设置'">
-            <el-table :data="roleData" stripe style="width: 100%">
+            <el-table :data="userData" stripe style="width: 100%">
               <el-table-column prop="id" label="ID" width="180"></el-table-column>
               <el-table-column prop="name" label="名称" width="180"></el-table-column>
-              <el-table-column prop="remark" label="备注" width="180"></el-table-column>
-              <el-table-column prop="is_valid" label="是否禁用" width="180"></el-table-column>
+              <el-table-column prop="role" label="角色" width="180"></el-table-column>
               <el-table-column prop="create_time" label="创建时间"></el-table-column>
               <el-table-column label="操作">
                 <template slot-scope="scope">
@@ -51,7 +50,7 @@
                     plain
                     type="primary"
                     icon="el-icon-setting"
-                    @click="roleSetting(scope.row.id)"
+                    @click="setting(scope.row.id)"
                   >配置对应权限</el-button>
                 </template>
               </el-table-column>
@@ -66,7 +65,11 @@
         size="60%"
         @closed="editFormClosed"
       >
-        <div></div>
+        <div>
+          <!-- <el-checkbox-group v-model="checkList">
+            <el-checkbox v-for="asd in dad" :key="asd" :label="asd"></el-checkbox>
+          </el-checkbox-group>-->
+        </div>
       </el-drawer>
     </el-row>
   </section>
@@ -74,6 +77,7 @@
 
 <script>
 import axios from "axios";
+import BScroll from "better-scroll";
 import { userGet, roleGet } from "../../api/console";
 export default {
   name: "ConsolePrivilege",
@@ -89,13 +93,6 @@ export default {
     };
   },
   methods: {
-    handleChange() {
-      if (this.activeSystem == "用户设置") {
-        this.userGetFront();
-      } else if (this.activeSystem == "权限设置") {
-        this.roleGetFront();
-      }
-    },
     userGetFront() {
       var para = {
         user: sessionStorage.getItem("user").replace(/\"/g, "")
@@ -110,24 +107,6 @@ export default {
           this.userData = data.data;
         }
       });
-    },
-    roleGetFront() {
-      roleGet(para).then(data => {
-        if (data["code"] !== 200) {
-          this.$message({
-            message: data["msg"],
-            type: "error"
-          });
-        } else {
-          this.roleData = data.data;
-        }
-      });
-    },
-    roleSetting(role_id) {
-      console.log(role_id);
-    },
-    userSetting(user_id) {
-      console.log(user_id);
     }
   },
   mounted() {
