@@ -146,12 +146,12 @@ export default {
             type: "error"
           });
         } else {
+          this.checkedPrivilege = [];
           for (let x = 0; x < data.data.length; x++) {
             this.checkedPrivilege.push(data.data[x].privilege_id);
           }
         }
       });
-      console.log(this.checkedPrivilege);
       privilegeGet().then(data => {
         if (data["code"] !== 200) {
           this.$message({
@@ -159,6 +159,7 @@ export default {
             type: "error"
           });
         } else {
+          this.privilege = [];
           for (let x = 0; x < data.data.length; x++) {
             this.privilege.push({
               id: data.data[x].id,
@@ -167,7 +168,6 @@ export default {
           }
         }
       });
-      console.log(this.privilege);
     },
     userSetting(user_id) {
       console.log(user_id);
