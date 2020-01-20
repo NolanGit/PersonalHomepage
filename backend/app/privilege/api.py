@@ -30,7 +30,7 @@ def permission_required(privilege):
 
             #是否存在cookie
             if user_key == None or redis_conn.exists(user_key) == 0:
-                print('不存在cookie')
+                print('[%s权限校验失败]不存在cookie', user_key)
                 abort(403)
                 return
             user_id = redis_conn.get(user_key)
@@ -38,21 +38,21 @@ def permission_required(privilege):
 
             #ip是否一致
             if ip != request.remote_addr:
-                print('ip不一致，现ip：%s，存储的ip：%s', (str(ip), str(request.remote_addr)))
+                print('[%s权限校验失败]ip不一致，现ip：%s，存储的ip：%s', (user_key, str(ip), str(request.remote_addr)))
                 abort(403)
                 return
             user_key_in_redis = cf.md5_it(random_str + password)
 
             #cookie是否相同
             if user_key != user_key_in_redis:
-                print('重新加密后的user_key不相同')
+                print('[%s权限校验失败]重新加密后的user_key不相同', user_key)
                 abort(403)
                 return
 
             #是否存在相应权限
             privilege_list = privilegeFunction().get_redis_conn1().lrange(role_id, 0, -1)
             if privilege not in privilege_list:
-                print('不具有权限，请求的权限是：%s，用户具有的权限有：%s',(privilege,str(privilege_list)))
+                print('[%s权限校验失败]不具有权限，请求的权限是：%s，用户具有的权限有：%s', (user_key, privilege, str(privilege_list)))
                 abort(403)
             else:
                 return f(*args, **kwargs)
@@ -69,7 +69,9 @@ def role_list_get():
         result.append({
             'id': row['id'],
             'name': row['name'],
+            'is_valid': row['is_valid'],
             'remark': row['remark'],
+            'update_time': row['update_time'].strftime("%Y-%m-%d  %H:%M:%S"),
         })
     return result
 
@@ -82,7 +84,8 @@ def user_list_get():
             'id': row['id'],
             'name': row['name'],
             'role_id': row['role_id'],
-            'create_time': row['create_time'],
+            'create_time': row['create_time'].strftime("%Y-%m-%d  %H:%M:%S"),
+            'update_time': row['update_time'].strftime("%Y-%m-%d  %H:%M:%S"),
         })
     return result
 
@@ -97,7 +100,7 @@ def privilege_list_get():
             'mark': row['mark'],
             'remark': row['remark'],
             'is_valid': row['is_valid'],
-            'update_time': row['update_time'],
+            'update_time': row['update_time'].strftime("%Y-%m-%d  %H:%M:%S"),
         })
     return result
 

@@ -20,7 +20,7 @@
               <el-table-column prop="id" label="ID" width="180"></el-table-column>
               <el-table-column prop="name" label="姓名" width="180"></el-table-column>
               <el-table-column prop="role_name" label="角色" width="180"></el-table-column>
-              <el-table-column prop="create_time" label="创建时间"></el-table-column>
+              <el-table-column prop="update_time" label="修改时间"></el-table-column>
               <el-table-column label="操作">
                 <template slot-scope="scope">
                   <el-button
@@ -41,8 +41,8 @@
               <el-table-column prop="id" label="ID" width="180"></el-table-column>
               <el-table-column prop="name" label="名称" width="180"></el-table-column>
               <el-table-column prop="remark" label="备注" width="180"></el-table-column>
-              <el-table-column prop="is_valid" label="是否禁用" width="180"></el-table-column>
-              <el-table-column prop="create_time" label="创建时间"></el-table-column>
+              <el-table-column prop="is_valid_text" label="是否禁用" width="180"></el-table-column>
+              <el-table-column prop="create_time" label="修改时间"></el-table-column>
               <el-table-column label="操作">
                 <template slot-scope="scope">
                   <el-button
@@ -119,6 +119,13 @@ export default {
             type: "error"
           });
         } else {
+          for (let x = 0; x < data.data.length; x++) {
+            if (data.data[x].is_valid == 1) {
+              data.data[x].is_valid_text = "否";
+            } else if (data.data[x].is_valid == 0) {
+              data.data[x].is_valid_text = "是";
+            }
+          }
           this.roleData = data.data;
         }
       });
