@@ -131,11 +131,9 @@ class privilegeFunction(object):
             args : user_instance(User)
         '''
         temp = privilegeFunction().get_redis_conn1().exists(user_instance.role_id)
-        print(temp)
         if temp == 0:
             privilege_role_query = privilege_role.select().where(privilege_role.role_id == user_instance.role_id).dicts()
             for single_privilege_role_query in privilege_role_query:
-                print(privilege_model.get(privilege_model.id == single_privilege_role_query['privilege_id']).mark)
                 self.get_redis_conn1().rpush(user_instance.role_id, privilege_model.get(privilege_model.id == single_privilege_role_query['privilege_id']).mark)
         else:
             privilegeFunction().get_redis_conn1().delete(user_instance.role_id)
@@ -184,7 +182,6 @@ def userGet():
         result = []
         role_list = role_list_get()
         user_list = user_list_get()
-        print(user_list)
         current_role_id = cf.dict_list_get_element(user_list, 'name', user_name, 'role_id')
         current_user_role = cf.dict_list_get_element(role_list, 'id', current_role_id, 'name', current_role_id - 1)
         if current_user_role == '管理员':
