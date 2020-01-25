@@ -51,8 +51,10 @@ def weatherData():
             response['tomorrow_tmp_max'] = r.json()['HeWeather6'][0]['daily_forecast'][1]['tmp_max']
             response['tomorrow_tmp_min'] = r.json()['HeWeather6'][0]['daily_forecast'][1]['tmp_min']
             r = requests.get('https://free-api.heweather.net/s6/air/now', params=payload)
-            response['aqi'] = r.json()['HeWeather6'][0]['air_now_city']['aqi']
-
+            try:
+                response['aqi'] = r.json()['HeWeather6'][0]['air_now_city']['aqi']
+            except:
+                response = '无'
             result.append(response)
 
         return jsonify({'code': 200, 'msg': '成功！', 'data': result})
@@ -68,7 +70,7 @@ def weatherPersonalizedSave():
     try:
         user_name = request.get_json()['user']
         user = User(user_name)
-        user_id=user.user_id
+        user_id = user.user_id
         location = request.get_json()['location']
         weather_personalized.create(location=location, user_id=user_id, is_valid=1, update_time=datetime.datetime.now())
         return jsonify({'code': 200, 'msg': '成功！', 'data': []})
