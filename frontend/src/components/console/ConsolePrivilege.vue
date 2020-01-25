@@ -18,6 +18,7 @@
           <div v-if="activeSystem=='用户设置'">
             <el-table :data="userData" stripe style="width: 100%">
               <el-table-column prop="id" label="ID" width="180"></el-table-column>
+              <el-table-column prop="login_name" label="登录名" width="180"></el-table-column>
               <el-table-column prop="name" label="姓名" width="180"></el-table-column>
               <el-table-column prop="role_name" label="角色" width="180"></el-table-column>
               <el-table-column prop="update_time" label="修改时间"></el-table-column>
@@ -65,8 +66,8 @@
         @closed="editFormClosed"
         direction="btt"
       >
-        <div>
-
+        <div v-if="edit.type=='user'">
+          <ConsolePrivilegeEditUser />
         </div>
       </el-drawer>
     </el-row>
@@ -81,10 +82,14 @@ import {
   privilegeGet,
   rolePrivilegeGet
 } from "../../api/console";
-import ConsolePrivilegeEditPrivilege from "./ConsolePrivilegeEditPrivilege"
-import ConsolePrivilegeEditUser from "./ConsolePrivilegeEditUser"
+import ConsolePrivilegeEditPrivilege from "./ConsolePrivilegeEditPrivilege";
+import ConsolePrivilegeEditUser from "./ConsolePrivilegeEditUser";
 export default {
   name: "ConsolePrivilege",
+  components: {
+    ConsolePrivilegeEditUser,
+    ConsolePrivilegeEditPrivilege
+  },
   data() {
     return {
       activeSystem: "用户设置",
@@ -177,7 +182,7 @@ export default {
       });
     },
     userSetting(user_id) {
-      this.edit.title = "用户设置";
+      this.edit.title = "修改用户密码和角色";
       this.edit.visible = true;
       this.edit.type = "user";
       this.edit.message = user_id;

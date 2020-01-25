@@ -83,6 +83,7 @@ def user_list_get():
         result.append({
             'id': row['id'],
             'name': row['name'],
+            'login_name': row['login_name'],
             'role_id': row['role_id'],
             'create_time': row['create_time'],
             'update_time': row['update_time'],
