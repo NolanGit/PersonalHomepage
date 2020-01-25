@@ -63,7 +63,7 @@
         :close-on-click-modal="false"
         size="60%"
         @closed="editFormClosed"
-        :direction="btt"
+        direction="btt"
       >
         <div>
 

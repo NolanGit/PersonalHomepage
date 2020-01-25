@@ -28,7 +28,7 @@
       <el-button type="text" slot="reference">登录</el-button>
     </el-popover>
     <el-dropdown class="user-popover" trigger="hover" v-show="user!=''">
-      <span class="el-dropdown-link userinfo-inner">{{user}}</span>                                             
+      <span class="el-dropdown-link userinfo-inner">{{user}}</span>
       <el-dropdown-menu slot="dropdown">
         <el-dropdown-item @click.native="consoleSettingClicked">控制台</el-dropdown-item>
         <el-dropdown-item divided @click.native="logout">退出登录</el-dropdown-item>
@@ -106,7 +106,8 @@ export default {
                 this.md5It(this.md5It(this.password) + data.data.stable_salt) +
                   data.data.salt
               ),
-              timestamp: Math.round(new Date() / 1000)
+              timestamp: Math.round(new Date() / 1000),
+              is_generate_cookie: true
             };
             userLogin(para).then(data2 => {
               if (data2["code"] !== 200) {

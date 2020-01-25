@@ -68,43 +68,14 @@ def userLogin():
     login_name = request.get_json()['login_name']
     password = request.get_json()['password']
     timestamp = request.get_json()['timestamp']
+    is_generate_cookie = request.get_json()['is_generate_cookie']
     login_status, login_response = check_pass(login_name, password, timestamp)
+    if not is_generate_cookie:
+        return jsonify(login_response)
     if login_status:
         user_key = privilegeFunction().init_user_and_privilege(login_response['user_id'], request.remote_addr)
     login_response['user_key'] = user_key
     return jsonify(login_response)
-    # ip = request.remote_addr
-    # print('Login name:' + login_name + ' IP:' + str(ip))
-    # user_query = user.select().where(user.login_name == login_name).dicts()
-    # if len(user_query) == 0:
-    #     response = {
-    #         'code': 403,
-    #         'msg': '用户名或密码错误！',
-    #     }
-    #     return jsonify(response)
-    # else:
-    #     for row in user_query:
-    #         password_without_salt = row['password']
-    #         salt_expire_time = row['salt_expire_time']
-    #         salt = row['salt']
-    #         if timestamp < salt_expire_time:
-    #             password2compare = CommonFunc().md5_it(password_without_salt + salt)
-    #             if password == password2compare:
-    #                 user_key = privilegeFunction().init_user_and_privilege(row['id'], request.remote_addr)
-    #                 response = {'code': 200, 'msg': '登录成功！', 'user': row['name'], 'user_key': user_key}
-    #                 return jsonify(response)
-    #             else:
-    #                 response = {
-    #                     'code': 403,
-    #                     'msg': '用户名或密码错误！',
-    #                 }
-    #                 return jsonify(response)
-    #         else:
-    #             response = {
-    #                 'code': 403,
-    #                 'msg': '时间戳已过期，请刷新页面！',
-    #             }
-    #             return jsonify(response)
 
 
 @login.route('/userLoginGetSalt', methods=['POST'])

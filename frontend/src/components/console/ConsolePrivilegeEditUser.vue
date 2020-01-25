@@ -1,7 +1,28 @@
 <template>
   <section>
     <el-row class="main-row" :gutter="20">
-      
+      <div>
+        <div>请输入原密码：</div>
+        <el-input v-model="password" size="small" placeholder="请输入"></el-input>
+        <el-button type="primary" size="small" plain>验证</el-button>
+      </div>
+      <div>
+        <div>请输入新密码：</div>
+        <el-input v-model="password_new" size="small" placeholder="请输入"></el-input>
+        <el-button type="primary" size="small" plain>提交</el-button>
+      </div>
+      <div>
+        <div>请选择角色：</div>
+        <el-select v-model="role" placeholder="请选择">
+          <el-option
+            v-for="item in roleData"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          ></el-option>
+        </el-select>
+        <el-button type="primary" size="small" plain>提交</el-button>
+      </div>
     </el-row>
   </section>
 </template>
@@ -13,13 +34,10 @@ export default {
   name: "ConsolePrivilegeEditUser",
   data() {
     return {
-      activeSystem: "",
-      userData: [],
+      password:"",
+      password_new:"",
+      role:"",
       roleData: [],
-      edit: {
-        title: "编辑",
-        visible: false
-      }
     };
   },
   methods: {
