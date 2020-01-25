@@ -81,7 +81,8 @@ import {
   privilegeGet,
   rolePrivilegeGet
 } from "../../api/console";
-import ConsolePrivilegeEditPrivilege from "ConsolePrivilegeEditPrivilege"
+import ConsolePrivilegeEditPrivilege from "./ConsolePrivilegeEditPrivilege"
+import ConsolePrivilegeEditUser from "./ConsolePrivilegeEditUser"
 export default {
   name: "ConsolePrivilege",
   data() {

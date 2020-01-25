@@ -8,10 +8,9 @@
 
 <script>
 import axios from "axios";
-import BScroll from "better-scroll";
 import { userGet, roleGet } from "../../api/console";
 export default {
-  name: "ConsolePrivilege",
+  name: "ConsolePrivilegeEditUser",
   data() {
     return {
       activeSystem: "",
