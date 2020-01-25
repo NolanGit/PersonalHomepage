@@ -1,6 +1,6 @@
 <template>
   <section>
-    <el-row class="main-row" :gutter="20">
+    <el-row class="main-row margin_bottom-medium" :gutter="20">
       <el-col :span="5" class="lift-side-bar">
         <el-card class="left-side-box-card">
           <el-collapse v-model="activeSystem" @change="handleChange" accordion>
@@ -63,8 +63,11 @@
         :close-on-click-modal="false"
         size="60%"
         @closed="editFormClosed"
+        :direction="btt"
       >
-        <div></div>
+        <div>
+
+        </div>
       </el-drawer>
     </el-row>
   </section>
@@ -78,6 +81,7 @@ import {
   privilegeGet,
   rolePrivilegeGet
 } from "../../api/console";
+import ConsolePrivilegeEditPrivilege from "ConsolePrivilegeEditPrivilege"
 export default {
   name: "ConsolePrivilege",
   data() {
@@ -89,7 +93,9 @@ export default {
       checkedPrivilege: [],
       edit: {
         title: "编辑",
-        visible: false
+        visible: false,
+        type: "",
+        message: ""
       }
     };
   },
@@ -170,6 +176,10 @@ export default {
       });
     },
     userSetting(user_id) {
+      this.edit.title = "用户设置";
+      this.edit.visible = true;
+      this.edit.type = "user";
+      this.edit.message = user_id;
       console.log(user_id);
     }
   },

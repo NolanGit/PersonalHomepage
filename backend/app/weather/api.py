@@ -54,7 +54,7 @@ def weatherData():
             try:
                 response['aqi'] = r.json()['HeWeather6'][0]['air_now_city']['aqi']
             except:
-                response = '无'
+                response['aqi'] = '无'
             result.append(response)
 
         return jsonify({'code': 200, 'msg': '成功！', 'data': result})

@@ -30,21 +30,14 @@ class User(object):
             self.update_time = row['update_time']
 
 
-@login.route('/userLogin', methods=['POST'])
-@cross_origin()
-def userLogin():
-    login_name = request.get_json()['login_name']
-    password = request.get_json()['password']
-    timestamp = request.get_json()['timestamp']
-    ip = request.remote_addr
-    # print('Login name:' + login_name + ' IP:' + str(ip))
+def check_pass(login_name, password, timestamp):
     user_query = user.select().where(user.login_name == login_name).dicts()
     if len(user_query) == 0:
         response = {
             'code': 403,
             'msg': '用户名或密码错误！',
         }
-        return jsonify(response)
+        return (False, response)
     else:
         for row in user_query:
             password_without_salt = row['password']
@@ -53,21 +46,65 @@ def userLogin():
             if timestamp < salt_expire_time:
                 password2compare = CommonFunc().md5_it(password_without_salt + salt)
                 if password == password2compare:
-                    user_key = privilegeFunction().init_user_and_privilege(row['id'], request.remote_addr)
-                    response = {'code': 200, 'msg': '登录成功！', 'user': row['name'], 'user_key': user_key}
-                    return jsonify(response)
+                    response = {'code': 200, 'msg': '登录成功！', 'user': row['name'], 'user_id': row['id']}
+                    return (True, response)
                 else:
                     response = {
                         'code': 403,
                         'msg': '用户名或密码错误！',
                     }
-                    return jsonify(response)
+                    return (False, response)
             else:
                 response = {
                     'code': 403,
                     'msg': '时间戳已过期，请刷新页面！',
                 }
-                return jsonify(response)
+                return (False, response)
+
+
+@login.route('/userLogin', methods=['POST'])
+@cross_origin()
+def userLogin():
+    login_name = request.get_json()['login_name']
+    password = request.get_json()['password']
+    timestamp = request.get_json()['timestamp']
+    login_status, login_response = check_pass(login_name, password, timestamp)
+    if login_status:
+        user_key = privilegeFunction().init_user_and_privilege(login_response['user_id'], request.remote_addr)
+    login_response['user_key'] = user_key
+    return jsonify(login_response)
+    # ip = request.remote_addr
+    # print('Login name:' + login_name + ' IP:' + str(ip))
+    # user_query = user.select().where(user.login_name == login_name).dicts()
+    # if len(user_query) == 0:
+    #     response = {
+    #         'code': 403,
+    #         'msg': '用户名或密码错误！',
+    #     }
+    #     return jsonify(response)
+    # else:
+    #     for row in user_query:
+    #         password_without_salt = row['password']
+    #         salt_expire_time = row['salt_expire_time']
+    #         salt = row['salt']
+    #         if timestamp < salt_expire_time:
+    #             password2compare = CommonFunc().md5_it(password_without_salt + salt)
+    #             if password == password2compare:
+    #                 user_key = privilegeFunction().init_user_and_privilege(row['id'], request.remote_addr)
+    #                 response = {'code': 200, 'msg': '登录成功！', 'user': row['name'], 'user_key': user_key}
+    #                 return jsonify(response)
+    #             else:
+    #                 response = {
+    #                     'code': 403,
+    #                     'msg': '用户名或密码错误！',
+    #                 }
+    #                 return jsonify(response)
+    #         else:
+    #             response = {
+    #                 'code': 403,
+    #                 'msg': '时间戳已过期，请刷新页面！',
+    #             }
+    #             return jsonify(response)
 
 
 @login.route('/userLoginGetSalt', methods=['POST'])

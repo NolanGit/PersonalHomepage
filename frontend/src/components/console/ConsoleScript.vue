@@ -1,6 +1,6 @@
 <template>
   <section>
-    <el-row class="main-row" :gutter="20">
+    <el-row class="main-row margin_bottom-medium" :gutter="20">
       <el-col :span="5" class="lift-side-bar">
         <el-card class="left-side-box-card">
           <el-collapse v-model="activeSystem" @change="handleChange" accordion>

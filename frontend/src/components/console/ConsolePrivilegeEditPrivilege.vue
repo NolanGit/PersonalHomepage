@@ -1,18 +1,15 @@
 <template>
   <section>
     <el-row class="main-row" :gutter="20">
-      <el-checkbox-group v-model="checkedList">
-        <el-checkbox v-for="asd in checkList" :key="asd" :label="asd"></el-checkbox>
-      </el-checkbox-group>
+
     </el-row>
   </section>
 </template>
 
 <script>
 import axios from "axios";
-import BScroll from "better-scroll";
 export default {
-  name: "ConsolePrivilegeRole",
+  name: "ConsolePrivilegeEditPrivilege",
   data() {
     return {
       roleData: [],
@@ -36,7 +33,6 @@ export default {
     }
   },
   mounted() {
-    this.userGetFront();
   }
 };
 </script>
