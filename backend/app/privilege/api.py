@@ -227,3 +227,32 @@ def rolePrivilegeGet():
         traceback.print_exc()
         response = {'code': 500, 'msg': '失败！错误信息：' + str(e) + '，请联系管理员。', 'data': []}
         return jsonify(response)
+
+
+@privilege.route('/userRoleChange', methods=['POST'])
+@cross_origin()
+def userRoleChange():
+    ALLOWED_TIME_SPAN = 100  # 盐过期X秒内允许修改，否则需要重新登录
+    try:
+        login_name = request.get_json()['login_name']
+        user_query = user.select().where(user.login_name == login_name).dicts()
+        if len(user_query) == 0:
+            response = {
+                'code': 403,
+                'msg': '用户名或密码错误！',
+            }
+            return (False, response)
+        else:
+            for row in user_query:
+                salt_expire_time = row['salt_expire_time']
+                server_timestamp = int(time.mktime(datetime.datetime.now().timetuple()))
+                if server_timestamp < salt_expire_time + ALLOWED_TIME_SPAN:
+                    role_id = request.get_json()['role_id']
+                    user.update(role_id=role_id, update_time=datetime.datetime.now()).where(user.login_name == login_name).execute()
+                    response = {'code': 200, 'msg': '成功'}
+                else:
+                    response = {'code': 403, 'msg': '登录状态已过期，请返回并重新验证密码'}
+        return jsonify(response)
+    except Exception as e:
+        response = {'code': 500, 'msg': e, 'data': {}}
+        return jsonify(response)

@@ -41,3 +41,5 @@ export const roleGet = params => { return axios.get(`${base}/privilege/roleGet`,
 export const privilegeGet = params => { return axios.get(`${base}/privilege/privilegeGet`, params).then(res => res.data) }
 
 export const rolePrivilegeGet = params => { return axios.post(`${base}/privilege/rolePrivilegeGet`, params).then(res => res.data) }
+
+export const userRoleChange = params => { return axios.post(`${base}/privilege/userRoleChange`, params).then(res => res.data) }

@@ -47,7 +47,7 @@
 <script>
 import md5 from "js-md5";
 import axios from "axios";
-import { userGet, roleGet } from "../../api/console";
+import { userGet, roleGet, userRoleChange } from "../../api/console";
 import {
   userLogin,
   userLoginGetSalt,
@@ -187,11 +187,29 @@ export default {
       });
     },
     changeRole() {
-      console.log(this.role_id);
+      var para = {
+        role_id: this.role_id,
+        login_name: this.login_name
+      };
+      userRoleChange(para).then(data => {
+        if (data["code"] !== 200) {
+          this.$message({
+            message: data["msg"],
+            type: "error"
+          });
+        } else {
+          this.$message({
+            message: data["msg"],
+            type: "success"
+          });
+          this.passwordNew = "";
+        }
+      });
     }
   },
   mounted() {
     this.isCheckedPass = false;
+    this.roleGetFront();
   }
 };
 </script>
