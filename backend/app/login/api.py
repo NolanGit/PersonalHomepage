@@ -43,10 +43,11 @@ def check_pass(login_name, password, timestamp):
             password_without_salt = row['password']
             salt_expire_time = row['salt_expire_time']
             salt = row['salt']
-            if timestamp < salt_expire_time:
+            server_timestamp = int(time.mktime(datetime.datetime.now().timetuple()))
+            if server_timestamp < salt_expire_time:
                 password2compare = CommonFunc().md5_it(password_without_salt + salt)
                 if password == password2compare:
-                    response = {'code': 200, 'msg': '登录成功！', 'user': row['name'], 'user_id': row['id']}
+                    response = {'code': 200, 'msg': '成功！', 'user': row['name'], 'user_id': row['id']}
                     return (True, response)
                 else:
                     response = {
@@ -87,8 +88,35 @@ def userLoginGetSalt():
         user_query = user.select().where(user.login_name == login_name).dicts()
         for row in user_query:
             stable_salt = row['stable_salt']
-        user.update(salt=salt, salt_expire_time=(int(time.mktime((datetime.datetime.now() + datetime.timedelta(minutes=1)).timetuple())))).where(user.login_name == login_name).execute()
+        user.update(salt=salt, salt_expire_time=int(time.mktime((datetime.datetime.now() + datetime.timedelta(minutes=1)).timetuple()))).where(user.login_name == login_name).execute()
         response = {'code': 200, 'msg': '成功！', 'data': {'salt': salt, 'stable_salt': stable_salt}}
+        return jsonify(response)
+    except Exception as e:
+        response = {'code': 500, 'msg': e, 'data': {}}
+        return jsonify(response)
+
+
+@login.route('/userChangePassword', methods=['POST'])
+@cross_origin()
+def userChangePassword():
+    ALLOWED_TIME_SPAN = 100  # 盐过期X秒内允许修改密码，否则需要重新登录
+    try:
+        login_name = request.get_json()['login_name']
+        user_query = user.select().where(user.login_name == login_name).dicts()
+        if len(user_query) == 0:
+            response = {
+                'code': 403,
+                'msg': '用户名或密码错误！',
+            }
+            return (False, response)
+        else:
+            for row in user_query:
+                password_without_salt = row['password']
+                salt_expire_time = row['salt_expire_time']
+                salt = row['salt']
+                server_timestamp = int(time.mktime(datetime.datetime.now().timetuple()))
+                if server_timestamp < salt_expire_time + ALLOWED_TIME_SPAN:
+                    print('允许修改')
         return jsonify(response)
     except Exception as e:
         response = {'code': 500, 'msg': e, 'data': {}}

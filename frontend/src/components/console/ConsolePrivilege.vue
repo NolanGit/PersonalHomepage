@@ -187,7 +187,6 @@ export default {
       this.edit.visible = true;
       this.edit.type = "user";
       this.edit.login_name = login_name;
-      console.log(user_id);
     }
   },
   mounted() {
