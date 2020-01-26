@@ -105,7 +105,7 @@ export default {
             });
           } else {
             var para = {
-              login_name: this.username,
+              login_name: this.login_name,
               password: this.md5It(
                 this.md5It(this.md5It(this.password) + data.data.stable_salt) +
                   data.data.salt
