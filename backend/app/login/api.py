@@ -83,7 +83,7 @@ def userLogin():
         return jsonify(login_response)
     if login_status:
         user_key = privilegeFunction().init_user_and_privilege(login_response['user_id'], request.remote_addr)
-    login_response['user_key'] = user_key
+        login_response['user_key'] = user_key
     return jsonify(login_response)
 
 
