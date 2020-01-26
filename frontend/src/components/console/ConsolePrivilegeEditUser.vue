@@ -3,17 +3,17 @@
     <el-row class="main-row" :gutter="20">
       <div class="div-flex">
         <div class="td__p--label">请输入原密码：</div>
-        <el-input v-model="password" size="small" placeholder="请输入"></el-input>
-        <el-button type="primary" size="mini" plain @click="checkPass">验证</el-button>
+        <el-input class="width--medium" v-model="password" size="small" placeholder="请输入"></el-input>
+        <el-button type="primary" size="mini" plain @click="checkPass()">验证</el-button>
       </div>
-      <div class="div-flex" v-if="isCheckPass">
+      <div class="div-flex" v-if="isCheckedPass">
         <div class="td__p--label">请输入新密码：</div>
-        <el-input v-model="passwordNew" size="small" placeholder="请输入"></el-input>
+        <el-input class="width--medium" v-model="passwordNew" size="small" placeholder="请输入"></el-input>
         <el-button type="primary" size="mini" plain>提交</el-button>
       </div>
-      <div class="div-flex" v-if="isCheckPass">
+      <div class="div-flex" v-if="isCheckedPass">
         <div class="td__p--label">请选择角色：</div>
-        <el-select v-model="role" size="small" placeholder="请选择">
+        <el-select class="width--medium" v-model="role" size="small" placeholder="请选择">
           <el-option
             v-for="item in roleData"
             :key="item.value"
@@ -81,13 +81,13 @@ export default {
 .main_input--tiny {
   width: 100px;
 }
-.main_select--large {
+.width--large {
   width: 350px;
 }
-.main_select--medium {
+.width--medium {
   width: 200px;
 }
-.main_select--small {
+.width--small {
   width: 100px;
 }
 .inline_margin--small {
