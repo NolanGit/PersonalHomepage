@@ -48,14 +48,14 @@
 import md5 from "js-md5";
 import axios from "axios";
 import Router from "vue-router";
-const Console = ()=>import("./Console");
+const Console = () => import("./Console");
 //import Console from "./Console.vue";
 import { userLogin, userLoginGetSalt } from "../api/login";
 
 export default {
   name: "login",
   components: {
-    Console
+    Console: Console
   },
   data() {
     return {
