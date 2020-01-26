@@ -12,33 +12,35 @@
         ></el-input>
         <el-button type="primary" size="mini" plain @click="checkPass()">验证</el-button>
       </div>
-      <div class="div-flex margin_bottom-medium margin_left-large" v-show="isCheckedPass">
-        <div class="td__p--label td--label">请输入新密码：</div>
-        <el-input
-          class="width--medium margin_right-small"
-          show-password
-          v-model="passwordNew"
-          size="small"
-          placeholder="请输入"
-        ></el-input>
-        <el-button type="primary" size="mini" plain @click="changePass()">提交</el-button>
-      </div>
-      <div class="div-flex margin_bottom-medium margin_left-large" v-show="isCheckedPass">
-        <div class="td__p--label td--label">请选择角色：</div>
-        <el-select
-          class="width--medium margin_right-small"
-          v-model="role_id"
-          size="small"
-          placeholder="请选择"
-        >
-          <el-option
-            v-for="item in roleData"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          ></el-option>
-        </el-select>
-        <el-button type="primary" size="mini" plain @click="changeRole()">提交</el-button>
+      <div v-if="isCheckedPass">
+        <div class="div-flex margin_bottom-medium margin_left-large">
+          <div class="td__p--label td--label">请输入新密码：</div>
+          <el-input
+            class="width--medium margin_right-small"
+            show-password
+            v-model="passwordNew"
+            size="small"
+            placeholder="请输入"
+          ></el-input>
+          <el-button type="primary" size="mini" plain @click="changePass()">提交</el-button>
+        </div>
+        <div class="div-flex margin_bottom-medium margin_left-large">
+          <div class="td__p--label td--label">请选择角色：</div>
+          <el-select
+            class="width--medium margin_right-small"
+            v-model="role_id"
+            size="small"
+            placeholder="请选择"
+          >
+            <el-option
+              v-for="item in roleData"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            ></el-option>
+          </el-select>
+          <el-button type="primary" size="mini" plain @click="changeRole()">提交</el-button>
+        </div>
       </div>
     </el-row>
   </section>
@@ -165,13 +167,6 @@ export default {
       }
     },
     changePass() {
-      if (!isCheckedPass) {
-        this.$notify.error({
-          message: "请先校验密码",
-          type: "error"
-        });
-        return;
-      }
       var stable_salt = this.randomString(40);
       var para = {
         login_name: this.login_name,
@@ -194,13 +189,6 @@ export default {
       });
     },
     changeRole() {
-      if (!isCheckedPass) {
-        this.$notify.error({
-          message: "请先校验密码",
-          type: "error"
-        });
-        return;
-      }
       var para = {
         role_id: this.role_id,
         login_name: this.login_name
