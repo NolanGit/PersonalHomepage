@@ -21,7 +21,7 @@
           size="small"
           placeholder="请输入"
         ></el-input>
-        <el-button type="primary" size="mini" plain>提交</el-button>
+        <el-button type="primary" size="mini" plain @click="changePass()">提交</el-button>
       </div>
       <div class="div-flex margin_bottom-medium margin_left-large" v-if="isCheckedPass">
         <div class="td__p--label td--label">请选择角色：</div>
@@ -38,7 +38,7 @@
             :value="item.value"
           ></el-option>
         </el-select>
-        <el-button type="primary" size="mini" plain>提交</el-button>
+        <el-button type="primary" size="mini" plain @click="changeRole()">提交</el-button>
       </div>
     </el-row>
   </section>
@@ -48,7 +48,11 @@
 import md5 from "js-md5";
 import axios from "axios";
 import { userGet, roleGet } from "../../api/console";
-import { userLogin, userLoginGetSalt } from "../../api/login";
+import {
+  userLogin,
+  userLoginGetSalt,
+  userChangePassword
+} from "../../api/login";
 export default {
   name: "ConsolePrivilegeEditUser",
   props: {
@@ -130,6 +134,24 @@ export default {
           }
         });
       }
+    },
+    changePass() {
+      var para = {
+        login_name: this.login_name
+      };
+      userChangePassword(para).then(data => {
+        if (data["code"] !== 200) {
+          this.$message({
+            message: data["msg"],
+            type: "error"
+          });
+        } else {
+          this.$message({
+            message: data["msg"],
+            type: "success"
+          });
+        }
+      });
     }
   },
   mounted() {}
