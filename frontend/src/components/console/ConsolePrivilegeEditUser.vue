@@ -2,18 +2,18 @@
   <section>
     <el-row class="main-row" :gutter="20">
       <div class="div-flex">
-        <div>请输入原密码：</div>
+        <div class="td__p--label">请输入原密码：</div>
         <el-input v-model="password" size="small" placeholder="请输入"></el-input>
-        <el-button type="primary" size="small" plain>验证</el-button>
+        <el-button type="primary" size="mini" plain @click="checkPass">验证</el-button>
       </div>
-      <div class="div-flex">
-        <div>请输入新密码：</div>
-        <el-input v-model="password_new" size="small" placeholder="请输入"></el-input>
-        <el-button type="primary" size="small" plain>提交</el-button>
+      <div class="div-flex" v-if="isCheckPass">
+        <div class="td__p--label">请输入新密码：</div>
+        <el-input v-model="passwordNew" size="small" placeholder="请输入"></el-input>
+        <el-button type="primary" size="mini" plain>提交</el-button>
       </div>
-      <div class="div-flex">
-        <div>请选择角色：</div>
-        <el-select v-model="role" placeholder="请选择">
+      <div class="div-flex" v-if="isCheckPass">
+        <div class="td__p--label">请选择角色：</div>
+        <el-select v-model="role" size="small" placeholder="请选择">
           <el-option
             v-for="item in roleData"
             :key="item.value"
@@ -21,7 +21,7 @@
             :value="item.value"
           ></el-option>
         </el-select>
-        <el-button type="primary" size="small" plain>提交</el-button>
+        <el-button type="primary" size="mini" plain>提交</el-button>
       </div>
     </el-row>
   </section>
@@ -35,12 +35,16 @@ export default {
   data() {
     return {
       password: "",
-      password_new: "",
+      passwordNew: "",
+      isCheckedPass: false,
       role: "",
       roleData: []
     };
   },
   methods: {
+    checkPass() {
+      this.isCheckedPass = true;
+    },
     userGetFront() {
       var para = {
         user: sessionStorage.getItem("user").replace(/\"/g, "")
@@ -57,9 +61,7 @@ export default {
       });
     }
   },
-  mounted() {
-    this.userGetFront();
-  }
+  mounted() {}
 };
 </script>
 
@@ -130,15 +132,6 @@ export default {
   font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB,
     Microsoft YaHei, SimSun, sans-serif;
 }
-.output-html {
-  font-family: PingFang SC;
-}
-.output-div {
-  height: 45vh;
-  width: 100%;
-  overflow-x: hidden;
-  overflow-y: hidden;
-}
 .info-text {
   color: rgb(96, 98, 102);
   font-size: 30px;
@@ -176,27 +169,6 @@ export default {
   display: flex;
   line-height: 34px;
   color: rgb(96, 98, 102);
-}
-.edit-form-card {
-  padding-bottom: 10px;
-}
-.singleDataOptionDialogValue {
-  padding-left: 30px;
-}
-.singleDataOptionDialogDeleted {
-  padding-left: 8px;
-}
-.editFormRightButtons {
-  padding-left: 20px;
-}
-.editFormRightButton {
-  font-size: 25px;
-}
-.editFormMoveUp {
-  padding-right: 8px;
-}
-.editFormMoveDown {
-  padding-right: 8px;
 }
 .dialog-type-tooltip {
   padding-left: 3px;
