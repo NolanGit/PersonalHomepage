@@ -41,7 +41,7 @@
               <el-table-column prop="id" label="ID" width="180"></el-table-column>
               <el-table-column prop="name" label="名称" width="180"></el-table-column>
               <el-table-column prop="remark" label="备注" width="180"></el-table-column>
-              <el-table-column prop="is_valid_text" label="是否禁用" width="180"></el-table-column>
+              <el-table-column prop="is_disabled" label="是否禁用" width="180"></el-table-column>
               <el-table-column prop="create_time" label="修改时间"></el-table-column>
               <el-table-column label="操作">
                 <template slot-scope="scope">
@@ -139,9 +139,9 @@ export default {
         } else {
           for (let x = 0; x < data.data.length; x++) {
             if (data.data[x].is_valid == 1) {
-              data.data[x].is_valid_text = "否";
+              data.data[x].is_disabled = "否";
             } else if (data.data[x].is_valid == 0) {
-              data.data[x].is_valid_text = "是";
+              data.data[x].is_disabled = "是";
             }
           }
           this.roleData = data.data;

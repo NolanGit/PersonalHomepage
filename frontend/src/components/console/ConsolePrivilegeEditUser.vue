@@ -27,7 +27,7 @@
         <div class="td__p--label td--label">请选择角色：</div>
         <el-select
           class="width--medium margin_right-small"
-          v-model="role"
+          v-model="role_id"
           size="small"
           placeholder="请选择"
         >
@@ -63,7 +63,7 @@ export default {
       password: "",
       passwordNew: "",
       isCheckedPass: false,
-      role: "",
+      role_id: 0,
       roleData: []
     };
   },
@@ -95,6 +95,25 @@ export default {
           });
         } else {
           this.userData = data.data;
+        }
+      });
+    },
+    roleGetFront() {
+      roleGet().then(data => {
+        if (data["code"] !== 200) {
+          this.$message({
+            message: data["msg"],
+            type: "error"
+          });
+        } else {
+          for (let x = 0; x < data.data.length; x++) {
+            if (data.data[x].is_valid == 1) {
+              this.roleData.push({
+                label: data.data[x].name,
+                value: data.data[x].id
+              });
+            }
+          }
         }
       });
     },
@@ -163,11 +182,17 @@ export default {
             message: data["msg"],
             type: "success"
           });
+          this.passwordNew = "";
         }
       });
+    },
+    changeRole() {
+      console.log(this.role_id);
     }
   },
-  mounted() {}
+  mounted() {
+    this.isCheckedPass = false;
+  }
 };
 </script>
 
