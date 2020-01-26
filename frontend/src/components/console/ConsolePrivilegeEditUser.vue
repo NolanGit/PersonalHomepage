@@ -72,6 +72,17 @@ export default {
       str = md5(str);
       return str;
     },
+    randomString(len) {
+      len = len || 32;
+      var $chars =
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+      var maxPos = $chars.length;
+      var pwd = "";
+      for (i = 0; i < len; i++) {
+        pwd += $chars.charAt(Math.floor(Math.random() * maxPos));
+      }
+      return pwd;
+    },
     userGetFront() {
       var para = {
         user: sessionStorage.getItem("user").replace(/\"/g, "")
@@ -114,7 +125,6 @@ export default {
                 this.md5It(this.md5It(this.password) + data.data.stable_salt) +
                   data.data.salt
               ),
-              timestamp: Math.round(new Date() / 1000),
               is_generate_cookie: false
             };
             userLogin(para).then(data2 => {
@@ -136,8 +146,11 @@ export default {
       }
     },
     changePass() {
+      var stable_salt = this.randomString(40);
       var para = {
-        login_name: this.login_name
+        login_name: this.login_name,
+        stable_salt: stable_salt,
+        password: this.md5It(this.md5It(this.passwordNew) + stable_salt)
       };
       userChangePassword(para).then(data => {
         if (data["code"] !== 200) {

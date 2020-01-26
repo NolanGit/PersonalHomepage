@@ -106,7 +106,6 @@ export default {
                 this.md5It(this.md5It(this.password) + data.data.stable_salt) +
                   data.data.salt
               ),
-              timestamp: Math.round(new Date() / 1000),
               is_generate_cookie: true
             };
             userLogin(para).then(data2 => {

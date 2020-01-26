@@ -30,7 +30,7 @@ class User(object):
             self.update_time = row['update_time']
 
 
-def check_pass(login_name, password, timestamp):
+def check_pass(login_name, password):
     user_query = user.select().where(user.login_name == login_name).dicts()
     if len(user_query) == 0:
         response = {
@@ -66,11 +66,19 @@ def check_pass(login_name, password, timestamp):
 @login.route('/userLogin', methods=['POST'])
 @cross_origin()
 def userLogin():
+    '''
+        用户登录逻辑：
+            用户表里相关字段有四个：用户密码、固定盐、随机盐、随机盐过期时间
+            用户密码存储的是明文密码被MD5加密一次后，再加上固定盐，再MD5加密后的字段
+            用户首先调用userLoginGetSalt接口获取固定盐和一个有过期时间的随机盐，随机盐会被存到后端数据库中，有效时间一分钟
+            用户前端填写的密码将会MD5加密一次后，加上固定盐再MD5加密一次，再加上随机盐再加密一次，即：md5(md5(md5(password)+stable_salt)+random_salt)
+            这样保证了传输过程中是加密的，且每一次传输的都是不一样的字符串
+            后端收到用户发来的加密三次的密码后，会使用库里加了固定盐的密码和随机盐相加后MD5，与用户传来的密码相比较，一致则通过
+    '''
     login_name = request.get_json()['login_name']
     password = request.get_json()['password']
-    timestamp = request.get_json()['timestamp']
     is_generate_cookie = request.get_json()['is_generate_cookie']
-    login_status, login_response = check_pass(login_name, password, timestamp)
+    login_status, login_response = check_pass(login_name, password)
     if not is_generate_cookie:
         return jsonify(login_response)
     if login_status:
@@ -111,12 +119,15 @@ def userChangePassword():
             return (False, response)
         else:
             for row in user_query:
-                password_without_salt = row['password']
                 salt_expire_time = row['salt_expire_time']
-                salt = row['salt']
                 server_timestamp = int(time.mktime(datetime.datetime.now().timetuple()))
                 if server_timestamp < salt_expire_time + ALLOWED_TIME_SPAN:
-                    print('允许修改')
+                    stable_salt = request.get_json()['stable_salt']
+                    password = request.get_json()['password']
+                    user.update(stable_salt=stable_salt, password=password, update_time=datetime.datetime.now()).where(user.login_name == login_name).excute()
+                    response = {'code': 200, 'msg': '成功'}
+                else:
+                    response = {'code': 403, 'msg': '登录状态已过期，请返回并重新验证密码'}
         return jsonify(response)
     except Exception as e:
         response = {'code': 500, 'msg': e, 'data': {}}
