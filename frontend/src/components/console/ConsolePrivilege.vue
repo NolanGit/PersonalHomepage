@@ -101,7 +101,7 @@ export default {
         title: "编辑",
         visible: false,
         type: "",
-        username="",
+        username: "",
         message: ""
       }
     };
@@ -186,7 +186,7 @@ export default {
       this.edit.title = "修改用户密码和角色";
       this.edit.visible = true;
       this.edit.type = "user";
-      this.edit.login_name= login_name
+      this.edit.login_name = login_name;
       console.log(user_id);
     }
   },
