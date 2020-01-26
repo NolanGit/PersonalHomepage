@@ -1,17 +1,17 @@
 <template>
   <section>
     <el-row class="main-row" :gutter="20">
-      <div>
+      <div class="div-flex">
         <div>请输入原密码：</div>
         <el-input v-model="password" size="small" placeholder="请输入"></el-input>
         <el-button type="primary" size="small" plain>验证</el-button>
       </div>
-      <div>
+      <div class="div-flex">
         <div>请输入新密码：</div>
         <el-input v-model="password_new" size="small" placeholder="请输入"></el-input>
         <el-button type="primary" size="small" plain>提交</el-button>
       </div>
-      <div>
+      <div class="div-flex">
         <div>请选择角色：</div>
         <el-select v-model="role" placeholder="请选择">
           <el-option
@@ -34,10 +34,10 @@ export default {
   name: "ConsolePrivilegeEditUser",
   data() {
     return {
-      password:"",
-      password_new:"",
-      role:"",
-      roleData: [],
+      password: "",
+      password_new: "",
+      role: "",
+      roleData: []
     };
   },
   methods: {
@@ -64,6 +64,9 @@ export default {
 </script>
 
 <style scoped>
+.div-flex {
+  display: flex;
+}
 .main_input--large {
   width: 350px;
 }

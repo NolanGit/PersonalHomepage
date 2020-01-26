@@ -196,6 +196,9 @@ export default {
 </script>
 
 <style scoped>
+.div-flex {
+  display: flex;
+}
 .main_input--large {
   width: 350px;
 }
