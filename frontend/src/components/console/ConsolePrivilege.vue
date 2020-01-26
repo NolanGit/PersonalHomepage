@@ -30,7 +30,7 @@
                     size="mini"
                     plain
                     type="primary"
-                    @click="userSetting(scope.row.id)"
+                    @click="userSetting(scope.row.login_name)"
                   >修改</el-button>
                 </template>
               </el-table-column>
@@ -67,7 +67,7 @@
         direction="btt"
       >
         <div v-if="edit.type=='user'">
-          <ConsolePrivilegeEditUser />
+          <ConsolePrivilegeEditUser :login_name="edit.login_name" />
         </div>
       </el-drawer>
     </el-row>
@@ -101,6 +101,7 @@ export default {
         title: "编辑",
         visible: false,
         type: "",
+        username="",
         message: ""
       }
     };
@@ -181,11 +182,11 @@ export default {
         }
       });
     },
-    userSetting(user_id) {
+    userSetting(login_name) {
       this.edit.title = "修改用户密码和角色";
       this.edit.visible = true;
       this.edit.type = "user";
-      this.edit.message = user_id;
+      this.edit.login_name= login_name
       console.log(user_id);
     }
   },

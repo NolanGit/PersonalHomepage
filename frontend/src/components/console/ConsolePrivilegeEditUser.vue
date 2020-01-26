@@ -1,19 +1,36 @@
 <template>
   <section>
     <el-row class="main-row" :gutter="20">
-      <div class="div-flex margin_bottom-medium margin_left-large">
-        <div class="td__p--label td--label--medium">请输入原密码：</div>
-        <el-input class="width--medium margin_right-small" v-model="password" size="small" placeholder="请输入"></el-input>
+      <div class="div-flex margin_bottom-medium margin_left-large" v-if="!isCheckedPass">
+        <div class="td__p--label td--label">请输入原密码：</div>
+        <el-input
+          class="width--medium margin_right-small"
+          show-password
+          v-model="password"
+          size="small"
+          placeholder="请输入"
+        ></el-input>
         <el-button type="primary" size="mini" plain @click="checkPass()">验证</el-button>
       </div>
       <div class="div-flex margin_bottom-medium margin_left-large" v-if="isCheckedPass">
-        <div class="td__p--label td--label--medium">请输入新密码：</div>
-        <el-input class="width--medium margin_right-small" v-model="passwordNew" size="small" placeholder="请输入"></el-input>
+        <div class="td__p--label td--label">请输入新密码：</div>
+        <el-input
+          class="width--medium margin_right-small"
+          show-password
+          v-model="passwordNew"
+          size="small"
+          placeholder="请输入"
+        ></el-input>
         <el-button type="primary" size="mini" plain>提交</el-button>
       </div>
       <div class="div-flex margin_bottom-medium margin_left-large" v-if="isCheckedPass">
-        <div class="td__p--label td--label--medium">请选择角色：</div>
-        <el-select class="width--medium margin_right-small" v-model="role" size="small" placeholder="请选择">
+        <div class="td__p--label td--label">请选择角色：</div>
+        <el-select
+          class="width--medium margin_right-small"
+          v-model="role"
+          size="small"
+          placeholder="请选择"
+        >
           <el-option
             v-for="item in roleData"
             :key="item.value"
@@ -28,10 +45,15 @@
 </template>
 
 <script>
+import md5 from "js-md5";
 import axios from "axios";
 import { userGet, roleGet } from "../../api/console";
+import { userLogin, userLoginGetSalt } from "../../api/login";
 export default {
   name: "ConsolePrivilegeEditUser",
+  props: {
+    login_name: String
+  },
   data() {
     return {
       password: "",
@@ -42,8 +64,9 @@ export default {
     };
   },
   methods: {
-    checkPass() {
-      this.isCheckedPass = true;
+    md5It(str) {
+      str = md5(str);
+      return str;
     },
     userGetFront() {
       var para = {
@@ -59,6 +82,54 @@ export default {
           this.userData = data.data;
         }
       });
+    },
+    checkPass() {
+      if (
+        this.password === "" ||
+        this.password === undefined ||
+        this.password.length == 0
+      ) {
+        this.$notify.error({
+          message: "请填写密码",
+          type: "error"
+        });
+      } else {
+        var para = {
+          login_name: this.login_name
+        };
+        userLoginGetSalt(para).then(data => {
+          if (data["code"] !== 200) {
+            this.$message({
+              message: data["msg"],
+              type: "error"
+            });
+          } else {
+            var para = {
+              login_name: this.username,
+              password: this.md5It(
+                this.md5It(this.md5It(this.password) + data.data.stable_salt) +
+                  data.data.salt
+              ),
+              timestamp: Math.round(new Date() / 1000),
+              is_generate_cookie: false
+            };
+            userLogin(para).then(data2 => {
+              if (data2["code"] !== 200) {
+                this.$message({
+                  message: data2.msg,
+                  type: "error"
+                });
+              } else {
+                this.$message({
+                  message: data2.msg,
+                  type: "success"
+                });
+                this.isCheckedPass = true;
+              }
+            });
+          }
+        });
+      }
     }
   },
   mounted() {}
