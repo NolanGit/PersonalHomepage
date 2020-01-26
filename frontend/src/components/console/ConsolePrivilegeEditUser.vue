@@ -1,19 +1,19 @@
 <template>
   <section>
     <el-row class="main-row" :gutter="20">
-      <div class="div-flex">
-        <div class="td__p--label">请输入原密码：</div>
-        <el-input class="width--medium" v-model="password" size="small" placeholder="请输入"></el-input>
+      <div class="div-flex margin_bottom-medium margin_left-large">
+        <div class="td__p--label td--label--medium">请输入原密码：</div>
+        <el-input class="width--medium margin_right-small" v-model="password" size="small" placeholder="请输入"></el-input>
         <el-button type="primary" size="mini" plain @click="checkPass()">验证</el-button>
       </div>
-      <div class="div-flex" v-if="isCheckedPass">
-        <div class="td__p--label">请输入新密码：</div>
-        <el-input class="width--medium" v-model="passwordNew" size="small" placeholder="请输入"></el-input>
+      <div class="div-flex margin_bottom-medium margin_left-large" v-if="isCheckedPass">
+        <div class="td__p--label td--label--medium">请输入新密码：</div>
+        <el-input class="width--medium margin_right-small" v-model="passwordNew" size="small" placeholder="请输入"></el-input>
         <el-button type="primary" size="mini" plain>提交</el-button>
       </div>
-      <div class="div-flex" v-if="isCheckedPass">
-        <div class="td__p--label">请选择角色：</div>
-        <el-select class="width--medium" v-model="role" size="small" placeholder="请选择">
+      <div class="div-flex margin_bottom-medium margin_left-large" v-if="isCheckedPass">
+        <div class="td__p--label td--label--medium">请选择角色：</div>
+        <el-select class="width--medium margin_right-small" v-model="role" size="small" placeholder="请选择">
           <el-option
             v-for="item in roleData"
             :key="item.value"
@@ -219,6 +219,9 @@ export default {
 }
 .margin_bottom-large {
   margin-bottom: 40px;
+}
+.margin_left-large {
+  margin-left: 40px;
 }
 .margin_left-medium {
   margin-left: 20px;
