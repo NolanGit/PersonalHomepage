@@ -124,7 +124,7 @@ def userChangePassword():
                 if server_timestamp < salt_expire_time + ALLOWED_TIME_SPAN:
                     stable_salt = request.get_json()['stable_salt']
                     password = request.get_json()['password']
-                    user.update(stable_salt=stable_salt, password=password, update_time=datetime.datetime.now()).where(user.login_name == login_name).excute()
+                    user.update(stable_salt=stable_salt, password=password, update_time=datetime.datetime.now()).where(user.login_name == login_name).execute()
                     response = {'code': 200, 'msg': '成功'}
                 else:
                     response = {'code': 403, 'msg': '登录状态已过期，请返回并重新验证密码'}
