@@ -12,7 +12,7 @@
         ></el-input>
         <el-button type="primary" size="mini" plain @click="checkPass()">验证</el-button>
       </div>
-      <div class="div-flex margin_bottom-medium margin_left-large" v-if="isCheckedPass">
+      <div class="div-flex margin_bottom-medium margin_left-large" v-show="isCheckedPass">
         <div class="td__p--label td--label">请输入新密码：</div>
         <el-input
           class="width--medium margin_right-small"
@@ -23,7 +23,7 @@
         ></el-input>
         <el-button type="primary" size="mini" plain @click="changePass()">提交</el-button>
       </div>
-      <div class="div-flex margin_bottom-medium margin_left-large" v-if="isCheckedPass">
+      <div class="div-flex margin_bottom-medium margin_left-large" v-show="isCheckedPass">
         <div class="td__p--label td--label">请选择角色：</div>
         <el-select
           class="width--medium margin_right-small"
@@ -63,7 +63,7 @@ export default {
       password: "",
       passwordNew: "",
       isCheckedPass: false,
-      role_id: 0,
+      role_id: "",
       roleData: []
     };
   },
@@ -165,6 +165,13 @@ export default {
       }
     },
     changePass() {
+      if (!isCheckedPass) {
+        this.$notify.error({
+          message: "请先校验密码",
+          type: "error"
+        });
+        return;
+      }
       var stable_salt = this.randomString(40);
       var para = {
         login_name: this.login_name,
@@ -187,6 +194,13 @@ export default {
       });
     },
     changeRole() {
+      if (!isCheckedPass) {
+        this.$notify.error({
+          message: "请先校验密码",
+          type: "error"
+        });
+        return;
+      }
       var para = {
         role_id: this.role_id,
         login_name: this.login_name
