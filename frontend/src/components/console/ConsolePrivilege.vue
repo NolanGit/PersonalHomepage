@@ -7,8 +7,11 @@
             <el-collapse-item title="用户设置" name="用户设置">
               <div class="collapse-div">包括用户密码、角色的修改</div>
             </el-collapse-item>
+            <el-collapse-item title="角色对应权限设置" name="权限设置">
+              <div class="collapse-div">包括角色的新增、角色对应权限的设置</div>
+            </el-collapse-item>
             <el-collapse-item title="权限设置" name="权限设置">
-              <div class="collapse-div">包括角色对应权限的设置</div>
+              <div class="collapse-div">包括权限的新增、修改和删除</div>
             </el-collapse-item>
           </el-collapse>
         </el-card>
@@ -36,7 +39,7 @@
               </el-table-column>
             </el-table>
           </div>
-          <div v-if="activeSystem=='权限设置'">
+          <div v-if="activeSystem=='角色对应权限设置'">
             <el-table :data="roleData" stripe style="width: 100%">
               <el-table-column prop="id" label="ID" width="180"></el-table-column>
               <el-table-column prop="name" label="名称" width="180"></el-table-column>
@@ -56,6 +59,41 @@
               </el-table-column>
             </el-table>
           </div>
+          <div v-if="activeSystem=='权限设置'">
+            <el-table :data="privilegeData" stripe style="width: 100%">
+              <el-table-column prop="id" label="ID" width="180"></el-table-column>
+              <el-table-column prop="name" label="名称" width="180"></el-table-column>
+              <el-table-column prop="mark" label="标识" width="180"></el-table-column>
+              <el-table-column prop="remark" label="备注" width="180"></el-table-column>
+              <el-table-column prop="is_disabled" label="是否禁用" width="180"></el-table-column>
+              <el-table-column prop="update_time" label="修改时间"></el-table-column>
+              <el-table-column label="操作">
+                <template slot-scope="scope">
+                  <el-button
+                    class="noMargin"
+                    size="mini"
+                    plain
+                    type="primary"
+                    @click="privilegeEdit(scope.row.id)"
+                  >修改</el-button>
+                  <el-button
+                    class="noMargin"
+                    size="mini"
+                    plain
+                    type="primary"
+                    @click="privilegeDisable(scope.row.id)"
+                  >禁用</el-button>
+                  <el-button
+                    class="noMargin"
+                    size="mini"
+                    plain
+                    type="primary"
+                    @click="privilegeDelete(scope.row.id)"
+                  >删除</el-button>
+                </template>
+              </el-table-column>
+            </el-table>
+          </div>
         </el-card>
       </el-col>
       <el-drawer
@@ -66,7 +104,7 @@
         @closed="editFormClosed"
         direction="btt"
       >
-        <div v-if="edit.type=='user'">
+        <div v-if="edit.type=='user' & edit.visible">
           <ConsolePrivilegeEditUser :login_name="edit.login_name" />
         </div>
       </el-drawer>
