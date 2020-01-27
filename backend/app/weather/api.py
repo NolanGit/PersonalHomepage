@@ -26,6 +26,7 @@ def weatherData():
             locations = locations + request.get_json()['locations']
         except:
             pass
+        print(locations)
         url = 'https://free-api.heweather.net/s6/weather'
         result = []
 
