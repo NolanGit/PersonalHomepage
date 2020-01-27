@@ -68,7 +68,7 @@
               <el-table-column prop="name" label="名称" width="180"></el-table-column>
               <el-table-column prop="mark" label="标识" width="180"></el-table-column>
               <el-table-column prop="remark" label="备注" width="180"></el-table-column>
-              <el-table-column prop="is_disabled" label="是否禁用" width="180"></el-table-column>
+              <el-table-column prop="is_disabled" label="是否禁用" width="80"></el-table-column>
               <el-table-column prop="update_time" label="修改时间"></el-table-column>
               <el-table-column label="操作">
                 <template slot-scope="scope">
@@ -211,9 +211,9 @@ export default {
               update_time: data.data[x].update_time
             });
             if (data.data[x].is_valid == 1) {
-              data.data[x].is_disabled = "否";
+              this.privilegeData[x + 1].is_disabled = "否";
             } else if (data.data[x].is_valid == 0) {
-              data.data[x].is_disabled = "是";
+              this.privilegeData[x + 1].is_disabled = "是";
             }
           }
         }
@@ -245,8 +245,18 @@ export default {
               for (let x = 0; x < data.data.length; x++) {
                 this.privilegeData.push({
                   id: data.data[x].id,
-                  label: data.data[x].name
+                  label: data.data[x].name,
+                  name: data.data[x].name,
+                  mark: data.data[x].mark,
+                  remark: data.data[x].remark,
+                  is_valid: data.data[x].is_valid,
+                  update_time: data.data[x].update_time
                 });
+                if (data.data[x].is_valid == 1) {
+                  this.privilegeData[x + 1].is_disabled = "否";
+                } else if (data.data[x].is_valid == 0) {
+                  this.privilegeData[x + 1].is_disabled = "是";
+                }
               }
             }
           });
