@@ -230,28 +230,7 @@ export default {
           for (let x = 0; x < data.data.length; x++) {
             this.checkedPrivilege.push(data.data[x].privilege_id);
           }
-          privilegeGet().then(data => {
-            if (data["code"] !== 200) {
-              this.$message({
-                message: data["msg"],
-                type: "error"
-              });
-            } else {
-              this.privilegeData = [];
-              for (let x = 0; x < data.data.length; x++) {
-                this.privilegeData.push({
-                  id: data.data[x].id,
-                  label: data.data[x].name,
-                  name: data.data[x].name,
-                  mark: data.data[x].mark,
-                  remark: data.data[x].remark,
-                  is_valid: data.data[x].is_valid,
-                  update_time: data.data[x].update_time,
-                  is_disabled: data.data[x].is_valid == 1 ? "否" : "是"
-                });
-              }
-            }
-          });
+          this.privilegeGetFront()
         }
       });
     },

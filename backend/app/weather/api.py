@@ -36,7 +36,10 @@ def weatherData():
             r = requests.post(url, params=payload)
             response['location'] = single_location
             response['id'] = locations.index(single_location)
-            response['fl'] = r.json()['HeWeather6'][0]['now']['fl']
+            try:
+                response['fl'] = r.json()['HeWeather6'][0]['now']['fl']
+            except:
+                response['fl'] = '暂无数据'
             response['tmp'] = r.json()['HeWeather6'][0]['now']['tmp']
             response['wind'] = r.json()['HeWeather6'][0]['now']['wind_dir'] + str(r.json()['HeWeather6'][0]['now']['wind_sc']) + '级'
             response['cond_code_d'] = r.json()['HeWeather6'][0]['daily_forecast'][0]['cond_code_d']
