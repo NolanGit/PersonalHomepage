@@ -148,6 +148,8 @@ export default {
     handleChange() {
       if (this.activeSystem == "用户设置") {
         this.userGetFront();
+      } else if (this.activeSystem == "角色对应权限设置") {
+        this.roleGetFront();
       } else if (this.activeSystem == "权限设置") {
         this.roleGetFront();
       }
@@ -198,8 +200,17 @@ export default {
           for (let x = 0; x < data.data.length; x++) {
             this.privilegeData.push({
               id: data.data[x].id,
-              label: data.data[x].name
+              label: data.data[x].name,
+              mark: data.data[x].mark,
+              remark: data.data[x].remark,
+              is_valid: data.data[x].is_valid,
+              update_time: data.data[x].update_time
             });
+            if (data.data[x].is_valid == 1) {
+              data.data[x].is_disabled = "否";
+            } else if (data.data[x].is_valid == 0) {
+              data.data[x].is_disabled = "是";
+            }
           }
         }
       });
@@ -230,17 +241,8 @@ export default {
               for (let x = 0; x < data.data.length; x++) {
                 this.privilegeData.push({
                   id: data.data[x].id,
-                  label: data.data[x].name,
-                  mark: data.data[x].mark,
-                  remark: data.data[x].remark,
-                  is_valid: data.data[x].is_valid,
-                  update_time: data.data[x].update_time
+                  label: data.data[x].name
                 });
-                if (data.data[x].is_valid == 1) {
-                  data.data[x].is_disabled = "否";
-                } else if (data.data[x].is_valid == 0) {
-                  data.data[x].is_disabled = "是";
-                }
               }
             }
           });
