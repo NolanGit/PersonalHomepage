@@ -19,7 +19,7 @@
       <el-col :span="19" class="right-side-bar">
         <el-card class="left-side-box-card">
           <div v-if="activeSystem=='用户设置'">
-            <el-button size="mini" plain type="primary" @click="userAdd()">新增</el-button>
+            <el-button size="small" type="primary" @click="userAdd()">新增</el-button>
             <el-table :data="userData" stripe style="width: 100%">
               <el-table-column prop="id" label="ID" width="180"></el-table-column>
               <el-table-column prop="login_name" label="登录名" width="180"></el-table-column>
@@ -41,7 +41,7 @@
             </el-table>
           </div>
           <div v-if="activeSystem=='角色对应权限设置'">
-            <el-button size="mini" plain type="primary" @click="roleAdd()">新增</el-button>
+            <el-button size="small" type="primary" @click="roleAdd()">新增</el-button>
             <el-table :data="roleData" stripe style="width: 100%">
               <el-table-column prop="id" label="ID" width="180"></el-table-column>
               <el-table-column prop="name" label="名称" width="180"></el-table-column>
@@ -62,7 +62,7 @@
             </el-table>
           </div>
           <div v-if="activeSystem=='权限设置'">
-            <el-button size="mini" plain type="primary" @click="privilegeAdd()">新增</el-button>
+            <el-button size="small" type="primary" @click="privilegeAdd()">新增</el-button>
             <el-table :data="privilegeData" stripe style="width: 100%">
               <el-table-column prop="id" label="ID" width="80"></el-table-column>
               <el-table-column prop="name" label="名称" width="180"></el-table-column>
@@ -204,6 +204,7 @@ export default {
             this.privilegeData.push({
               id: data.data[x].id,
               label: data.data[x].name,
+              name: data.data[x].name,
               mark: data.data[x].mark,
               remark: data.data[x].remark,
               is_valid: data.data[x].is_valid,
