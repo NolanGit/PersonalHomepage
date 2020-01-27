@@ -208,13 +208,9 @@ export default {
               mark: data.data[x].mark,
               remark: data.data[x].remark,
               is_valid: data.data[x].is_valid,
-              update_time: data.data[x].update_time
+              update_time: data.data[x].update_time,
+              is_disabled: data.data[x].is_valid == 1 ? "否" : "是"
             });
-            if (data.data[x].is_valid == 1) {
-              this.privilegeData[x + 1].is_disabled = "否";
-            } else if (data.data[x].is_valid == 0) {
-              this.privilegeData[x + 1].is_disabled = "是";
-            }
           }
         }
       });
@@ -250,13 +246,9 @@ export default {
                   mark: data.data[x].mark,
                   remark: data.data[x].remark,
                   is_valid: data.data[x].is_valid,
-                  update_time: data.data[x].update_time
+                  update_time: data.data[x].update_time,
+                  is_disabled: data.data[x].is_valid == 1 ? "否" : "是"
                 });
-                if (data.data[x].is_valid == 1) {
-                  this.privilegeData[x + 1].is_disabled = "否";
-                } else if (data.data[x].is_valid == 0) {
-                  this.privilegeData[x + 1].is_disabled = "是";
-                }
               }
             }
           });
