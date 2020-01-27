@@ -7,7 +7,7 @@
             <el-collapse-item title="用户设置" name="用户设置">
               <div class="collapse-div">包括用户密码、角色的修改</div>
             </el-collapse-item>
-            <el-collapse-item title="角色对应权限设置" name="权限设置">
+            <el-collapse-item title="角色对应权限设置" name="角色对应权限设置">
               <div class="collapse-div">包括角色的新增、角色对应权限的设置</div>
             </el-collapse-item>
             <el-collapse-item title="权限设置" name="权限设置">
@@ -133,7 +133,7 @@ export default {
       activeSystem: "用户设置",
       userData: [],
       roleData: [],
-      privilege: [],
+      privilegeData: [],
       checkedPrivilege: [],
       edit: {
         title: "编辑",
@@ -186,6 +186,24 @@ export default {
         }
       });
     },
+    privilegeGetFront() {
+      privilegeGet().then(data => {
+        if (data["code"] !== 200) {
+          this.$message({
+            message: data["msg"],
+            type: "error"
+          });
+        } else {
+          this.privilegeData = [];
+          for (let x = 0; x < data.data.length; x++) {
+            this.privilegeData.push({
+              id: data.data[x].id,
+              label: data.data[x].name
+            });
+          }
+        }
+      });
+    },
     roleSetting(role_id) {
       var para = {
         role_id: role_id
@@ -208,12 +226,21 @@ export default {
                 type: "error"
               });
             } else {
-              this.privilege = [];
+              this.privilegeData = [];
               for (let x = 0; x < data.data.length; x++) {
-                this.privilege.push({
+                this.privilegeData.push({
                   id: data.data[x].id,
-                  label: data.data[x].name
+                  label: data.data[x].name,
+                  mark: data.data[x].mark,
+                  remark: data.data[x].remark,
+                  is_valid: data.data[x].is_valid,
+                  update_time: data.data[x].update_time
                 });
+                if (data.data[x].is_valid == 1) {
+                  data.data[x].is_disabled = "否";
+                } else if (data.data[x].is_valid == 0) {
+                  data.data[x].is_disabled = "是";
+                }
               }
             }
           });
