@@ -1,7 +1,23 @@
 <template>
   <section>
     <el-row class="main-row" :gutter="20">
-
+      <div>
+        <el-checkbox-group v-model="checkList">
+          <el-checkbox
+            v-for="singlePrivilegeData in privilegeData"
+            :key="singlePrivilegeData"
+            :label="singlePrivilegeData.label"
+            :value="singlePrivilegeData.id"
+          ></el-checkbox>
+        </el-checkbox-group>
+        <el-button
+          class="noMargin"
+          size="mini"
+          plain
+          type="primary"
+          @click="submit()"
+        >确定</el-button>
+      </div>
     </el-row>
   </section>
 </template>
@@ -9,10 +25,13 @@
 <script>
 import axios from "axios";
 export default {
-  name: "ConsolePrivilegeEditPrivilege",
+  name: "ConsolePrivilegeEditRolePrivilege",
+  props: {
+    privilegeData: Array,
+    checkedPrivilege:Array
+  },
   data() {
     return {
-      roleData: [],
     };
   },
   methods: {
@@ -32,8 +51,7 @@ export default {
       });
     }
   },
-  mounted() {
-  }
+  mounted() {}
 };
 </script>
 

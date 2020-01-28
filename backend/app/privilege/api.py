@@ -28,30 +28,40 @@ def permission_required(privilege):
 
             #是否存在cookie
             if user_key == None or redis_conn.exists(user_key) == 0:
-                print('[使用cookie"%s"访问%s权限校验失败]不存在cookie' % (user_key, privilege))
+                msg = ('[使用cookie"%s"访问%s权限校验失败]不存在cookie' % (user_key, privilege))
+                print(msg)
                 abort(403)
-                return
+                response = {'code': 403, 'msg': msg}
+                return jsonify(response)
+
             user_id = redis_conn.get(user_key)
             password, ip, random_str, role_id = redis_conn.hmget(user_id, 'password', 'ip', 'random_str', 'role_id')
 
             #ip是否一致
             if ip != request.remote_addr:
-                print('[使用cookie"%s"访问%s权限校验失败]ip不一致，现ip：%s，存储的ip：%s' % (user_key, privilege, str(ip), str(request.remote_addr)))
+                msg = ('[使用cookie"%s"访问%s权限校验失败]ip不一致，现ip：%s，允许的ip：%s' % (user_key, privilege, str(ip), str(request.remote_addr)))
+                print(msg)
                 abort(403)
-                return
+                response = {'code': 403, 'msg': msg}
+                return jsonify(response)
             user_key_in_redis = cf.md5_it(random_str + password)
 
             #cookie是否相同
             if user_key != user_key_in_redis:
-                print('[使用cookie"%s"访问%s权限校验失败]重新加密后的user_key不相同' % (user_key, privilege))
+                msg = ('[使用cookie"%s"访问%s权限校验失败]重新加密后的user_key不相同' % (user_key, privilege))
+                print(msg)
                 abort(403)
-                return
+                response = {'code': 403, 'msg': msg}
+                return jsonify(response)
 
             #是否存在相应权限
             privilege_list = privilegeFunction().get_redis_conn1().lrange(role_id, 0, -1)
             if privilege not in privilege_list:
-                print('[使用cookie"%s"访问%s权限校验失败]不具有权限，用户具有的权限有：%s' % (user_key, privilege, str(privilege_list)))
+                msg = ('[使用cookie"%s"访问%s权限校验失败]不具有权限，用户具有的权限有：%s' % (user_key, privilege, str(privilege_list)))
+                print(msg)
                 abort(403)
+                response = {'code': 403, 'msg': msg}
+                return jsonify(response)
             else:
                 return f(*args, **kwargs)
 

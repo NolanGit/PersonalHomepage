@@ -19,7 +19,7 @@
       <el-col :span="19" class="right-side-bar">
         <el-card class="left-side-box-card">
           <div v-if="activeSystem=='用户设置'">
-            <el-button size="small" type="primary" @click="userAdd()">新增</el-button>
+            <el-button size="small" type="primary" @click="userAdd()">新增用户</el-button>
             <el-table :data="userData" stripe style="width: 100%">
               <el-table-column prop="id" label="ID" width="180"></el-table-column>
               <el-table-column prop="login_name" label="登录名" width="180"></el-table-column>
@@ -41,7 +41,7 @@
             </el-table>
           </div>
           <div v-if="activeSystem=='角色对应权限设置'">
-            <el-button size="small" type="primary" @click="roleAdd()">新增</el-button>
+            <el-button size="small" type="primary" @click="roleAdd()">新增角色</el-button>
             <el-table :data="roleData" stripe style="width: 100%">
               <el-table-column prop="id" label="ID" width="180"></el-table-column>
               <el-table-column prop="name" label="名称" width="180"></el-table-column>
@@ -62,12 +62,12 @@
             </el-table>
           </div>
           <div v-if="activeSystem=='权限设置'">
-            <el-button size="small" type="primary" @click="privilegeAdd()">新增</el-button>
+            <el-button size="small" type="primary" @click="privilegeAdd()">新增权限</el-button>
             <el-table :data="privilegeData" stripe style="width: 100%">
               <el-table-column prop="id" label="ID" width="80"></el-table-column>
-              <el-table-column prop="name" label="名称" width="180"></el-table-column>
-              <el-table-column prop="mark" label="标识" width="180"></el-table-column>
-              <el-table-column prop="remark" label="备注" width="180"></el-table-column>
+              <el-table-column prop="name" label="名称" width="200"></el-table-column>
+              <el-table-column prop="mark" label="标识" width="230"></el-table-column>
+              <el-table-column prop="remark" label="备注" width="200"></el-table-column>
               <el-table-column prop="is_disabled" label="是否禁用" width="80"></el-table-column>
               <el-table-column label="操作">
                 <template slot-scope="scope">
@@ -109,6 +109,18 @@
         <div v-if="edit.type=='user' & edit.visible">
           <ConsolePrivilegeEditUser :login_name="edit.login_name" />
         </div>
+        <div v-if="edit.type=='rolePrivilege' & edit.visible">
+          <ConsolePrivilegeEditRolePrivilege
+            :checkedPrivilege="edit.checkedPrivilege"
+            :privilegeData="edit.privilegeData"
+          />
+        </div>
+        <div v-if="edit.type=='privilege' & edit.visible">
+          <ConsolePrivilegeEditRolePrivilege
+            :checkedPrivilege="edit.checkedPrivilege"
+            :privilegeData="edit.privilegeData"
+          />
+        </div>
       </el-drawer>
     </el-row>
   </section>
@@ -122,7 +134,7 @@ import {
   privilegeGet,
   rolePrivilegeGet
 } from "../../api/console";
-import ConsolePrivilegeEditPrivilege from "./ConsolePrivilegeEditPrivilege";
+import ConsolePrivilegeEditRolePrivilege from "./ConsolePrivilegeEditRolePrivilege";
 import ConsolePrivilegeEditUser from "./ConsolePrivilegeEditUser";
 export default {
   name: "ConsolePrivilege",
@@ -136,13 +148,10 @@ export default {
       userData: [],
       roleData: [],
       privilegeData: [],
-      checkedPrivilege: [],
       edit: {
         title: "编辑",
         visible: false,
-        type: "",
-        username: "",
-        message: ""
+        type: ""
       }
     };
   },
@@ -225,18 +234,22 @@ export default {
             type: "error"
           });
         } else {
-          this.checkedPrivilege = [];
+          this.edit.checkedPrivilege = [];
           for (let x = 0; x < data.data.length; x++) {
-            this.checkedPrivilege.push(data.data[x].privilege_id);
+            this.edit.checkedPrivilege.push(data.data[x].privilege_id);
           }
-          this.privilegeGetFront()
+          this.privilegeGetFront();
+          this.edit.title = "修改角色对应权限";
+          this.edit.visible = true;
+          this.edit.type = "user";
+          this.edit.privilegeData = this.privilegeData;
         }
       });
     },
     userSetting(login_name) {
       this.edit.title = "修改用户密码和角色";
       this.edit.visible = true;
-      this.edit.type = "user";
+      this.edit.type = "rolePrivilege";
       this.edit.login_name = login_name;
     }
   },
