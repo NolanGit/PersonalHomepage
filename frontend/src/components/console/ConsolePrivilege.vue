@@ -220,6 +220,7 @@ export default {
               is_disabled: data.data[x].is_valid == 1 ? "否" : "是"
             });
           }
+          return this.privilegeData;
         }
       });
     },
@@ -238,11 +239,10 @@ export default {
           for (let x = 0; x < data.data.length; x++) {
             this.edit.checkedPrivilege.push(data.data[x].privilege_id);
           }
-          this.privilegeGetFront();
           this.edit.title = "修改角色对应权限";
           this.edit.visible = true;
           this.edit.type = "rolePrivilege";
-          this.edit.privilegeData = this.privilegeData;
+          this.edit.privilegeData = this.privilegeGetFront();
         }
       });
     },

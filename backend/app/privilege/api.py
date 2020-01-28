@@ -30,7 +30,7 @@ def permission_required(privilege):
             if user_key == None or redis_conn.exists(user_key) == 0:
                 msg = ('[权限校验失败]cookie:%s,URL:%s,原因:不存在cookie' % (user_key, privilege))
                 print(msg)
-                response = {'code': 403, 'message': msg, 'msg': '权限校验失败。'}
+                response = {'code': 403, 'message': msg}
                 return jsonify(response), 403
 
             user_id = redis_conn.get(user_key)
@@ -40,7 +40,7 @@ def permission_required(privilege):
             if ip != request.remote_addr:
                 msg = ('[权限校验失败]cookie:%s,URL:%s,原因:ip不一致，现ip：%s，允许的ip：%s' % (user_key, privilege, str(ip), str(request.remote_addr)))
                 print(msg)
-                response = {'code': 403, 'message': msg, 'msg': '权限校验失败。'}
+                response = {'code': 403, 'message': msg}
                 return jsonify(response), 403
             user_key_in_redis = cf.md5_it(random_str + password)
 
@@ -48,7 +48,7 @@ def permission_required(privilege):
             if user_key != user_key_in_redis:
                 msg = ('[权限校验失败]cookie:%s,URL:%s,原因:重新加密后的user_key不相同' % (user_key, privilege))
                 print(msg)
-                response = {'code': 403, 'message': msg, 'msg': '权限校验失败。'}
+                response = {'code': 403, 'message': msg}
                 return jsonify(response), 403
 
             #是否存在相应权限
@@ -56,7 +56,7 @@ def permission_required(privilege):
             if privilege not in privilege_list:
                 msg = ('[权限校验失败]cookie:%s,URL:%s,原因:不具有权限，用户具有的权限有：%s' % (user_key, privilege, str(privilege_list)))
                 print(msg)
-                response = {'code': 403, 'message': msg, 'msg': '权限校验失败。'}
+                response = {'code': 403, 'message': msg}
                 return jsonify(response), 403
             else:
                 return f(*args, **kwargs)
