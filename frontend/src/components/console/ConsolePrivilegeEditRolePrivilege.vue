@@ -63,10 +63,6 @@ export default {
             type: "error"
           });
         } else {
-          this.$message({
-            message: data["msg"],
-            type: "success"
-          });
         }
       });
     }
