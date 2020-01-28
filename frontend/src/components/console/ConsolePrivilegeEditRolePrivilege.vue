@@ -54,7 +54,7 @@ export default {
       }
       var para = {
         role_id: this.roleId,
-        checked_privilege_id=this.checkedPrivilegeId
+        checked_privilege_id: this.checkedPrivilegeId
       };
       rolePrivilegeEdit(para).then(data => {
         if (data["code"] !== 200) {
@@ -69,7 +69,6 @@ export default {
           });
         }
       });
-
     }
   },
   mounted() {}
