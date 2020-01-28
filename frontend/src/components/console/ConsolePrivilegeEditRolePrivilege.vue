@@ -33,9 +33,11 @@ export default {
   watch: {
     privilegeData(newVal, oldVal) {
       this.privilegeData = newVal;
+      console.log(newVal)
     },
     checkedPrivilege(newVal, oldVal) {
       this.checkedPrivilege = newVal;
+      console.log(newVal
     },
   },
   data() {
