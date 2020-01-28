@@ -127,19 +127,19 @@ class privilegeFunction(object):
         #获取redis连接
         return redis.Redis(connection_pool=pool1)
 
-    def flush_user_privilege_to_redis(self, user_instance):
+    def flush_user_privilege_to_redis(self, role_id):
         '''
             存用户的权限列表到redis
-            args : user_instance(User)
+            args : role_id(Int)
         '''
-        temp = privilegeFunction().get_redis_conn1().exists(user_instance.role_id)
+        temp = privilegeFunction().get_redis_conn1().exists(role_id)
         if temp == 0:
-            privilege_role_query = privilege_role.select().where(privilege_role.role_id == user_instance.role_id).dicts()
+            privilege_role_query = privilege_role.select().where((privilege_role.role_id == role_id) & (privilege_role.is_valid == 1)).dicts()
             for single_privilege_role_query in privilege_role_query:
-                self.get_redis_conn1().rpush(user_instance.role_id, privilege_model.get(privilege_model.id == single_privilege_role_query['privilege_id']).mark)
+                self.get_redis_conn1().rpush(role_id, privilege_model.get(privilege_model.id == single_privilege_role_query['privilege_id']).mark)
         else:
-            privilegeFunction().get_redis_conn1().delete(user_instance.role_id)
-            self.flush_user_privilege_to_redis(user_instance)
+            privilegeFunction().get_redis_conn1().delete(role_id)
+            self.flush_user_privilege_to_redis(role_id)
 
     def set_user_to_redis(self, user_instance, ip):
         '''
@@ -160,7 +160,7 @@ class privilegeFunction(object):
     def init_user_and_privilege(self, user_id, ip):
         user_instance = user.get(user.id == user_id)
         user_key = self.set_user_to_redis(user_instance, ip)
-        self.flush_user_privilege_to_redis(user_instance)
+        self.flush_user_privilege_to_redis(user_instance.role_id)
         return user_key
 
 
@@ -222,7 +222,7 @@ def rolePrivilegeGet():
         role_id = request.get_json()['role_id']
         result = []
         privilege_list = privilege_list_get()
-        privilege_role_query = privilege_role.select().where(privilege_role.role_id == role_id).order_by(privilege_role.id).dicts()
+        privilege_role_query = privilege_role.select().where((privilege_role.role_id == role_id) & (privilege_role.is_valid == 1)).order_by(privilege_role.id).dicts()
         for row in privilege_role_query:
             result.append({
                 'privilege_id': row['privilege_id'],
@@ -258,6 +258,27 @@ def userRoleChange():
                     response = {'code': 200, 'msg': '成功'}
                 else:
                     response = {'code': 403, 'msg': '登录状态已过期，请返回并重新验证密码'}
+        return jsonify(response)
+    except Exception as e:
+        response = {'code': 500, 'msg': e, 'data': {}}
+        return jsonify(response)
+
+
+# 角色对应权限修改
+@privilege.route('/rolePrivilegeEdit', methods=['POST'])
+@cross_origin()
+def rolePrivilegeEdit():
+    try:
+        role_id = request.get_json()['role_id']
+        checked_privilege_id = request.get_json()['role_id']
+        privilege_role.update(is_valid=0).where(privilege_role.role_id == role_id).execute()
+        data_source = []
+        for single_checked_privilege_id in checked_privilege_id:
+            data_source.append((single_checked_privilege_id, role_id, 1))
+        field = [privilege_role.privilege_id, privilege_role.role_id, privilege_role.is_valid]
+        privilege_role.insert_many(data_source, field).execute()
+        privilegeFunction().flush_user_privilege_to_redis(role_id)
+        response = {'code': 200, 'msg': '成功'}
         return jsonify(response)
     except Exception as e:
         response = {'code': 500, 'msg': e, 'data': {}}

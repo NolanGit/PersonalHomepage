@@ -119,6 +119,7 @@
           <ConsolePrivilegeEditRolePrivilege
             :checkedPrivilege="edit.checkedPrivilege"
             :privilegeData="edit.privilegeData"
+            :roleId="edit.rolePrivilegeEditRoleId"
           />
         </div>
       </el-drawer>
@@ -252,6 +253,7 @@ export default {
                   label: data.data[x].name
                 });
               }
+              this.edit.rolePrivilegeEditRoleId=role_id
               this.edit.title = "修改角色对应权限";
               this.edit.visible = true;
               this.edit.type = "rolePrivilege";

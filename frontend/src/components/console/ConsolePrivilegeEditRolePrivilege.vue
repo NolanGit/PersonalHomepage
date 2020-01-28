@@ -18,9 +18,11 @@
 
 <script>
 import axios from "axios";
+import rolePrivilegeEdit from "../../api/console";
 export default {
   name: "ConsolePrivilegeEditRolePrivilege",
   props: {
+    roleId: Number,
     privilegeData: Array,
     checkedPrivilege: Array
   },
@@ -41,6 +43,7 @@ export default {
   },
   methods: {
     submit() {
+      this.checkedPrivilegeId = [];
       for (let x = 0; x < this.privilegeData.length; x++) {
         for (let y = 0; y < this.checkedPrivilege.length; y++) {
           if (this.privilegeData[x].label == this.checkedPrivilege[y]) {
