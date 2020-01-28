@@ -2,7 +2,7 @@
   <section>
     <el-row class="main-row" :gutter="20">
       <div>
-        <el-checkbox-group v-model="checkList">
+        <el-checkbox-group v-model="checkedPrivilege">
           <el-checkbox
             v-for="singlePrivilegeData in privilegeData"
             :key="singlePrivilegeData"
