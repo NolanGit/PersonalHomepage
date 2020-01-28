@@ -1,7 +1,7 @@
 <template>
   <section>
     <el-row class="main-row" :gutter="20">
-      <div class="margin_left-medium">
+      <div class="margin_left-large">
         <el-checkbox-group class="margin_bottom-large" v-model="checkedPrivilege">
           <el-checkbox
             v-for="singlePrivilegeData in privilegeData"
@@ -35,18 +35,24 @@ export default {
     }
   },
   data() {
-    return {};
+    return {
+      checkedPrivilegeId: []
+    };
   },
   methods: {
     submit() {
-      console.log(this.privilegeData);
-      console.log(this.checkedPrivilege);
+      for (let x = 0; x < this.privilegeData.length; x++) {
+        for (let y = 0; y < this.checkedPrivilege.length; y++) {
+          if (this.privilegeData[x].label == this.checkedPrivilege[y]) {
+            this.checkedPrivilegeId.push(this.privilegeData[x].id);
+            continue;
+          }
+        }
+      }
+      console.log(this.checkedPrivilegeId);
     }
   },
-  mounted() {
-    console.log(this.privilegeData);
-    console.log(this.checkedPrivilege);
-  }
+  mounted() {}
 };
 </script>
 
@@ -234,6 +240,9 @@ export default {
 }
 .margin_left-medium {
   margin-left: 20px;
+}
+.margin_left-large {
+  margin-left: 40px;
 }
 .margin_right-small {
   margin-right: 10px;

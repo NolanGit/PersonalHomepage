@@ -226,7 +226,7 @@ def rolePrivilegeGet():
         for row in privilege_role_query:
             result.append({
                 'privilege_id': row['privilege_id'],
-                'privilege_name': cf.dict_list_get_element(privilege_list, 'id', row['privilege_id'], 'mark', row['privilege_id'] - 1),
+                'privilege_name': cf.dict_list_get_element(privilege_list, 'id', row['privilege_id'], 'name', row['privilege_id'] - 1),
             })
         return jsonify({'code': 200, 'msg': '成功！', 'data': result})
     except Exception as e:
