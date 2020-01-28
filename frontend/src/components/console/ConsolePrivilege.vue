@@ -241,7 +241,7 @@ export default {
           this.privilegeGetFront();
           this.edit.title = "修改角色对应权限";
           this.edit.visible = true;
-          this.edit.type = "user";
+          this.edit.type = "rolePrivilege";
           this.edit.privilegeData = this.privilegeData;
         }
       });
@@ -249,7 +249,7 @@ export default {
     userSetting(login_name) {
       this.edit.title = "修改用户密码和角色";
       this.edit.visible = true;
-      this.edit.type = "rolePrivilege";
+      this.edit.type = "user";
       this.edit.login_name = login_name;
     }
   },
