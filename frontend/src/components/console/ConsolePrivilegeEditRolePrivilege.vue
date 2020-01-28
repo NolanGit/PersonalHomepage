@@ -52,7 +52,24 @@ export default {
           }
         }
       }
-      console.log(this.checkedPrivilegeId);
+      var para = {
+        role_id: this.roleId,
+        checked_privilege_id=this.checkedPrivilegeId
+      };
+      rolePrivilegeEdit(para).then(data => {
+        if (data["code"] !== 200) {
+          this.$message({
+            message: data["msg"],
+            type: "error"
+          });
+        } else {
+          this.$message({
+            message: data["msg"],
+            type: "success"
+          });
+        }
+      });
+
     }
   },
   mounted() {}
