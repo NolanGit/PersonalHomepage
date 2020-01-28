@@ -156,6 +156,11 @@ export default {
     };
   },
   methods: {
+    deepClone(obj) {
+      var _obj = JSON.stringify(obj),
+        objClone = JSON.parse(_obj);
+      return objClone;
+    },
     handleChange() {
       if (this.activeSystem == "用户设置") {
         this.userGetFront();
@@ -220,7 +225,7 @@ export default {
               is_disabled: data.data[x].is_valid == 1 ? "否" : "是"
             });
           }
-          return this.privilegeData;
+          return this.deepClone(this.privilegeData);
         }
       });
     },
