@@ -30,6 +30,14 @@ export default {
     privilegeData: Array,
     checkedPrivilege:Array
   },
+  watch: {
+    privilegeData(newVal, oldVal) {
+      this.privilegeData = newVal;
+    },
+    checkedPrivilege(newVal, oldVal) {
+      this.checkedPrivilege = newVal;
+    },
+  },
   data() {
     return {
     };
