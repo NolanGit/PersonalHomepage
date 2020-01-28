@@ -220,7 +220,6 @@ export default {
               is_disabled: data.data[x].is_valid == 1 ? "否" : "是"
             });
           }
-          console.log(this.privilegeData)
         }
       });
     },
@@ -244,8 +243,6 @@ export default {
           this.edit.visible = true;
           this.edit.type = "rolePrivilege";
           this.edit.privilegeData = this.privilegeData;
-          console.log(this.edit.checkedPrivilege)
-          console.log(this.edit.privilegeData)
         }
       });
     },

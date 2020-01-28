@@ -10,13 +10,7 @@
             :value="singlePrivilegeData.id"
           ></el-checkbox>
         </el-checkbox-group>
-        <el-button
-          class="noMargin"
-          size="mini"
-          plain
-          type="primary"
-          @click="submit()"
-        >确定</el-button>
+        <el-button class="noMargin" size="mini" plain type="primary" @click="submit()">确定</el-button>
       </div>
     </el-row>
   </section>
@@ -28,37 +22,25 @@ export default {
   name: "ConsolePrivilegeEditRolePrivilege",
   props: {
     privilegeData: Array,
-    checkedPrivilege:Array
+    checkedPrivilege: Array
   },
   watch: {
     privilegeData(newVal, oldVal) {
       this.privilegeData = newVal;
-      console.log(newVal)
+      console.log(newVal);
     },
     checkedPrivilege(newVal, oldVal) {
       this.checkedPrivilege = newVal;
-      console.log(newVal
-    },
+      console.log(newVal);
+    }
   },
   data() {
-    return {
-    };
+    return {};
   },
   methods: {
-    userGetFront() {
-      var para = {
-        user: sessionStorage.getItem("user").replace(/\"/g, "")
-      };
-      userGet(para).then(data => {
-        if (data["code"] !== 200) {
-          this.$message({
-            message: data["msg"],
-            type: "error"
-          });
-        } else {
-          this.userData = data.data;
-        }
-      });
+    submit() {
+      console.log(this.privilegeData);
+      console.log(this.checkedPrivilege);
     }
   },
   mounted() {}
