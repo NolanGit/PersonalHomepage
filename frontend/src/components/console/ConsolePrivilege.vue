@@ -140,7 +140,7 @@ export default {
   name: "ConsolePrivilege",
   components: {
     ConsolePrivilegeEditUser,
-    ConsolePrivilegeEditPrivilege
+    ConsolePrivilegeEditRolePrivilege
   },
   data() {
     return {
