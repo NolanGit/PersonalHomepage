@@ -156,11 +156,6 @@ export default {
     };
   },
   methods: {
-    deepClone(obj) {
-      var _obj = JSON.stringify(obj),
-        objClone = JSON.parse(_obj);
-      return objClone;
-    },
     handleChange() {
       if (this.activeSystem == "用户设置") {
         this.userGetFront();
@@ -225,7 +220,6 @@ export default {
               is_disabled: data.data[x].is_valid == 1 ? "否" : "是"
             });
           }
-          return this.deepClone(this.privilegeData);
         }
       });
     },
@@ -244,11 +238,25 @@ export default {
           for (let x = 0; x < data.data.length; x++) {
             this.edit.checkedPrivilege.push(data.data[x].privilege_id);
           }
-          this.edit.title = "修改角色对应权限";
-          this.edit.visible = true;
-          this.edit.type = "rolePrivilege";
-          this.edit.privilegeData = this.privilegeGetFront();
-          console.log(this.edit.privilegeData);
+          privilegeGet().then(data => {
+            if (data["code"] !== 200) {
+              this.$message({
+                message: data["msg"],
+                type: "error"
+              });
+            } else {
+              this.edit.privilegeData = [];
+              for (let x = 0; x < data.data.length; x++) {
+                this.privilegeData.push({
+                  id: data.data[x].id,
+                  label: data.data[x].name
+                });
+              }
+              this.edit.title = "修改角色对应权限";
+              this.edit.visible = true;
+              this.edit.type = "rolePrivilege";
+            }
+          });
         }
       });
     },
