@@ -247,7 +247,7 @@ export default {
             } else {
               this.edit.privilegeData = [];
               for (let x = 0; x < data.data.length; x++) {
-                this.privilegeData.push({
+                this.edit.privilegeData.push({
                   id: data.data[x].id,
                   label: data.data[x].name
                 });
