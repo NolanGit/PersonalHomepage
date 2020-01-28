@@ -1,8 +1,8 @@
 <template>
   <section>
     <el-row class="main-row" :gutter="20">
-      <div>
-        <el-checkbox-group v-model="checkedPrivilege">
+      <div class="margin_left-medium">
+        <el-checkbox-group class="margin_bottom-large" v-model="checkedPrivilege">
           <el-checkbox
             v-for="singlePrivilegeData in privilegeData"
             :key="singlePrivilegeData"
