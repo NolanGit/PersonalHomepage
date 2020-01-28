@@ -236,7 +236,7 @@ export default {
         } else {
           this.edit.checkedPrivilege = [];
           for (let x = 0; x < data.data.length; x++) {
-            this.edit.checkedPrivilege.push(data.data[x].privilege_id);
+            this.edit.checkedPrivilege.push(data.data[x].privilege_name);
           }
           privilegeGet().then(data => {
             if (data["code"] !== 200) {
