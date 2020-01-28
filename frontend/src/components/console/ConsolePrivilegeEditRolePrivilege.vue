@@ -43,7 +43,10 @@ export default {
       console.log(this.checkedPrivilege);
     }
   },
-  mounted() {}
+  mounted() {
+    console.log(this.privilegeData);
+    console.log(this.checkedPrivilege);
+  }
 };
 </script>
 
