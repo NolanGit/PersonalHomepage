@@ -243,6 +243,7 @@ export default {
           this.edit.visible = true;
           this.edit.type = "rolePrivilege";
           this.edit.privilegeData = this.privilegeGetFront();
+          console.log(this.edit.privilegeData);
         }
       });
     },
