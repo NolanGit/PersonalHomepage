@@ -220,6 +220,7 @@ export default {
               is_disabled: data.data[x].is_valid == 1 ? "否" : "是"
             });
           }
+          console.log(this.privilegeData)
         }
       });
     },
