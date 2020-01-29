@@ -21,10 +21,10 @@
           <div v-if="activeSystem=='用户设置'">
             <el-button size="small" type="primary" @click="userAdd()">新增用户</el-button>
             <el-table :data="userData" stripe style="width: 100%">
-              <el-table-column prop="id" label="ID" width="180"></el-table-column>
+              <el-table-column prop="id" label="ID" width="80"></el-table-column>
               <el-table-column prop="login_name" label="登录名" width="180"></el-table-column>
-              <el-table-column prop="name" label="姓名" width="180"></el-table-column>
-              <el-table-column prop="role_name" label="角色" width="180"></el-table-column>
+              <el-table-column prop="name" label="姓名" width="120"></el-table-column>
+              <el-table-column prop="role_name" label="角色" width="120"></el-table-column>
               <el-table-column prop="update_time" label="修改时间"></el-table-column>
               <el-table-column label="操作">
                 <template slot-scope="scope">
@@ -43,10 +43,10 @@
           <div v-if="activeSystem=='角色对应权限设置'">
             <el-button size="small" type="primary" @click="roleAdd()">新增角色</el-button>
             <el-table :data="roleData" stripe style="width: 100%">
-              <el-table-column prop="id" label="ID" width="180"></el-table-column>
+              <el-table-column prop="id" label="ID" width="80"></el-table-column>
               <el-table-column prop="name" label="名称" width="180"></el-table-column>
               <el-table-column prop="remark" label="备注" width="180"></el-table-column>
-              <el-table-column prop="is_disabled" label="是否禁用" width="180"></el-table-column>
+              <el-table-column prop="is_disabled" label="是否禁用" width="80"></el-table-column>
               <el-table-column prop="update_time" label="修改时间"></el-table-column>
               <el-table-column label="操作">
                 <template slot-scope="scope">
@@ -301,6 +301,7 @@ export default {
             message: data["msg"],
             type: "success"
           });
+          this.roleGetFront()
         }
       });
     },
@@ -319,6 +320,7 @@ export default {
             message: data["msg"],
             type: "success"
           });
+          this.roleGetFront()
         }
       });
     },
@@ -337,6 +339,7 @@ export default {
             message: data["msg"],
             type: "success"
           });
+          this.roleGetFront()
         }
       });
     },
