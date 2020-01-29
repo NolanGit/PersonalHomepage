@@ -113,6 +113,7 @@
           <ConsolePrivilegeEditRolePrivilege
             :checkedPrivilege="edit.checkedPrivilege"
             :privilegeData="edit.privilegeData"
+            :roleId="edit.rolePrivilegeEditRoleId"
           />
         </div>
         <div v-if="edit.type=='privilege' & edit.visible">
@@ -254,7 +255,6 @@ export default {
                 });
               }
               this.edit.rolePrivilegeEditRoleId = role_id;
-              console.log(this.edit.rolePrivilegeEditRoleId);
               this.edit.title = "修改角色对应权限";
               this.edit.visible = true;
               this.edit.type = "rolePrivilege";

@@ -29,15 +29,12 @@ export default {
   watch: {
     privilegeData(newVal, oldVal) {
       this.privilegeData = newVal;
-      console.log(newVal);
     },
     checkedPrivilege(newVal, oldVal) {
       this.checkedPrivilege = newVal;
-      console.log(newVal);
     },
     roleId(newVal, oldVal) {
       this.roleId = newVal;
-      console.log(newVal);
     }
   },
   data() {
@@ -48,8 +45,6 @@ export default {
   },
   methods: {
     submit() {
-      console.log(this.roleId);
-      console.log(this.privilegeData);
       this.checkedPrivilegeId = [];
       for (let x = 0; x < this.privilegeData.length; x++) {
         for (let y = 0; y < this.checkedPrivilege.length; y++) {
@@ -63,7 +58,6 @@ export default {
         role_id: this.roleId,
         checked_privilege_id: this.checkedPrivilegeId
       };
-      //报错void 0 is not a function
       rolePrivilegeEdit(para).then(data => {
         if (data["code"] !== 200) {
           this.$message({
@@ -71,6 +65,10 @@ export default {
             type: "error"
           });
         } else {
+          this.$message({
+            message: data["msg"],
+            type: "success"
+          });
         }
       });
     }
