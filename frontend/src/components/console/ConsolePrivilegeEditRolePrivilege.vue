@@ -49,6 +49,7 @@ export default {
   methods: {
     submit() {
       console.log(this.roleId);
+      console.log(this.privilegeData);
       this.checkedPrivilegeId = [];
       for (let x = 0; x < this.privilegeData.length; x++) {
         for (let y = 0; y < this.checkedPrivilege.length; y++) {
