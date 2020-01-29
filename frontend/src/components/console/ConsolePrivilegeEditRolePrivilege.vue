@@ -13,7 +13,7 @@
           </el-checkbox-group>
         </div>
         <div v-if="action=='new'">
-          <div class="div-flex margin_bottom-medium margin_left-large">
+          <div class="div-flex margin_bottom-medium">
             <div class="td__p--label td--label">请输入角色名称：</div>
             <el-input
               class="width--medium margin_right-small"
@@ -22,7 +22,7 @@
               placeholder="请输入"
             ></el-input>
           </div>
-          <div class="div-flex margin_bottom-medium margin_left-large">
+          <div class="div-flex margin_bottom-medium">
             <div class="td__p--label td--label">请输入备注：</div>
             <el-input
               class="width--medium margin_right-small"
