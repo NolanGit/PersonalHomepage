@@ -169,7 +169,7 @@ def role_list_get():
 # 获取未被删除的权限
 def privilege_list_get():
     result = []
-    privilege_query = privilege_model.select().where(role.is_valid != -1).order_by(privilege_model.id).dicts()
+    privilege_query = privilege_model.select().where(privilege_model.is_valid != -1).order_by(privilege_model.id).dicts()
     for row in privilege_query:
         result.append({
             'id': row['id'],
