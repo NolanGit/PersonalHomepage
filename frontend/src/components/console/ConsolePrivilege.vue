@@ -253,7 +253,7 @@ export default {
                   label: data.data[x].name
                 });
               }
-              this.edit.rolePrivilegeEditRoleId = para.role_id;
+              this.edit.rolePrivilegeEditRoleId = role_id;
               this.edit.title = "修改角色对应权限";
               this.edit.visible = true;
               this.edit.type = "rolePrivilege";
