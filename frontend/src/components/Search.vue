@@ -120,7 +120,7 @@ export default {
       ) {
         try {
           cb([]);
-        } catch {}
+        } catch (e) {}
       } else {
         var lastWord = sessionStorage.getItem("lastWord");
         if (lastWord == queryString) {
