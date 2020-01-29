@@ -110,7 +110,7 @@ export default {
         }
       });
       this.word = "";
-      this.autoComplete("")
+      this.autoComplete("");
     },
     autoComplete(queryString, cb) {
       if (
@@ -118,7 +118,7 @@ export default {
         queryString === [] ||
         queryString === undefined
       ) {
-        cb([]);
+        return;
       } else {
         var lastWord = sessionStorage.getItem("lastWord");
         if (lastWord == queryString) {

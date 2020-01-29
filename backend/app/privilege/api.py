@@ -291,7 +291,7 @@ def roleAdd():
     try:
         name = request.get_json()['name']
         remark = request.get_json()['remark']
-        role.create(name=name, remark=remark, update_time=datetime.datetime.now())
+        role.create(name=name, remark=remark, is_valid=1, update_time=datetime.datetime.now())
         return jsonify({'code': 200, 'msg': '成功！'})
     except Exception as e:
         traceback.print_exc()

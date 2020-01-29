@@ -267,6 +267,7 @@ export default {
       this.edit.type = "rolePrivilege";
     },
     rolePrivilegeClose() {
+      console.log('emit')
       this.edit.visible == false;
     },
     userSetting(login_name) {

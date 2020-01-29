@@ -13,20 +13,24 @@
           </el-checkbox-group>
         </div>
         <div v-if="action=='new'">
-          <div class="td__p--label td--label">请输入角色名称：</div>
-          <el-input
-            class="width--medium margin_right-small"
-            v-model="name"
-            size="small"
-            placeholder="请输入"
-          ></el-input>
-          <div class="td__p--label td--label">请输入备注：</div>
-          <el-input
-            class="width--medium margin_right-small"
-            v-model="remark"
-            size="small"
-            placeholder="请输入"
-          ></el-input>
+          <div class="div-flex margin_bottom-medium margin_left-large">
+            <div class="td__p--label td--label">请输入角色名称：</div>
+            <el-input
+              class="width--medium margin_right-small"
+              v-model="name"
+              size="small"
+              placeholder="请输入"
+            ></el-input>
+          </div>
+          <div class="div-flex margin_bottom-medium margin_left-large">
+            <div class="td__p--label td--label">请输入备注：</div>
+            <el-input
+              class="width--medium margin_right-small"
+              v-model="remark"
+              size="small"
+              placeholder="请输入"
+            ></el-input>
+          </div>
         </div>
         <el-button class="noMargin" size="mini" plain type="primary" @click="submit()">确定</el-button>
       </div>
@@ -121,6 +125,9 @@ export default {
 </script>
 
 <style scoped>
+.width--medium {
+  width: 200px;
+}
 .main_input--large {
   width: 350px;
 }
