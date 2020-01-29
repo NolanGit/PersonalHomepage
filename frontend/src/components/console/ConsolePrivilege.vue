@@ -47,9 +47,16 @@
               <el-table-column prop="name" label="名称" width="180"></el-table-column>
               <el-table-column prop="remark" label="备注" width="180"></el-table-column>
               <el-table-column prop="is_disabled" label="是否禁用" width="180"></el-table-column>
-              <el-table-column prop="create_time" label="修改时间"></el-table-column>
+              <el-table-column prop="update_time" label="修改时间"></el-table-column>
               <el-table-column label="操作">
                 <template slot-scope="scope">
+                  <el-button
+                    class="noMargin"
+                    size="mini"
+                    plain
+                    type="primary"
+                    @click="roleForbidFront(scope.row.id)"
+                  >禁用</el-button>
                   <el-button
                     class="noMargin"
                     size="mini"
@@ -130,7 +137,8 @@ import {
   userGet,
   roleGet,
   privilegeGet,
-  rolePrivilegeGet
+  rolePrivilegeGet,
+  roleForbid
 } from "../../api/privilege";
 import ConsolePrivilegeEditRolePrivilege from "./ConsolePrivilegeEditRolePrivilege";
 import ConsolePrivilegeEditUser from "./ConsolePrivilegeEditUser";
@@ -186,13 +194,6 @@ export default {
             type: "error"
           });
         } else {
-          for (let x = 0; x < data.data.length; x++) {
-            if (data.data[x].is_valid == 1) {
-              data.data[x].is_disabled = "否";
-            } else if (data.data[x].is_valid == 0) {
-              data.data[x].is_disabled = "是";
-            }
-          }
           this.roleData = data.data;
         }
       });
@@ -260,6 +261,24 @@ export default {
         }
       });
     },
+    roleForbidFront(role_id) {
+      var para = {
+        role_id: role_id
+      };
+      roleForbid(para).then(data => {
+        if (data["code"] !== 200) {
+          this.$message({
+            message: data["msg"],
+            type: "error"
+          });
+        } else {
+          this.$message({
+            message: data["msg"],
+            type: "success"
+          });
+        }
+      });
+    },
     roleAdd() {
       this.edit.rolePrivilegeEditAction = "new";
       this.edit.title = "新增角色";
@@ -268,7 +287,7 @@ export default {
     },
     rolePrivilegeClose() {
       this.edit.visible = false;
-      this.roleGetFront()
+      this.roleGetFront();
     },
     userSetting(login_name) {
       this.edit.title = "修改用户密码和角色";

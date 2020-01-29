@@ -51,6 +51,13 @@ def permission_required(privilege):
                 response = {'code': 403, 'message': msg}
                 return jsonify(response), 403
 
+            #是否存在角色
+            if privilegeFunction().get_redis_conn1().exists(role_id) == 0:
+                msg = ('[权限校验失败]cookie:%s,URL:%s,原因:用户所属角色被删除或禁用' % (user_key, privilege))
+                print(msg)
+                response = {'code': 403, 'message': msg}
+                return jsonify(response), 403
+
             #是否存在相应权限
             privilege_list = privilegeFunction().get_redis_conn1().lrange(role_id, 0, -1)
             if privilege not in privilege_list:
@@ -68,7 +75,7 @@ def permission_required(privilege):
 
 def role_list_get():
     result = []
-    role_query = role.select().where(role.is_valid == 1).order_by(role.id).dicts()
+    role_query = role.select().where(role.is_valid != -1).order_by(role.id).dicts()
     for row in role_query:
         result.append({
             'id': row['id'],
@@ -132,6 +139,9 @@ class privilegeFunction(object):
             存用户的权限列表到redis
             args : role_id(Int)
         '''
+        is_valid = role.get(role.id == role_id).is_valid
+        if is_valid == 0:
+            return
         temp = privilegeFunction().get_redis_conn1().exists(role_id)
         if temp == 0:
             privilege_role_query = privilege_role.select().where((privilege_role.role_id == role_id) & (privilege_role.is_valid == 1)).dicts()
@@ -154,8 +164,11 @@ class privilegeFunction(object):
         self.get_redis_conn0().hmset(user_instance.id, dict)
         return user_key
 
-    def del_user_to_redis(self, db, user_key):
+    def del_user_to_redis(self, user_key):
         self.get_redis_conn0().delete(user_key)
+
+    def del_role_to_redis(self, role_id):
+        self.get_redis_conn1().delete(role_id)
 
     def init_user_and_privilege(self, user_id, ip):
         user_instance = user.get(user.id == user_id)
@@ -285,13 +298,31 @@ def rolePrivilegeEdit():
         return jsonify(response)
 
 
-@privilege.route('/roleAdd', methods=['POST'])
+@privilege.route('/roleEdit', methods=['POST'])
 @cross_origin()
-def roleAdd():
+def roleEdit():
     try:
+        role_id = request.get_json()['role_id']
         name = request.get_json()['name']
         remark = request.get_json()['remark']
-        role.create(name=name, remark=remark, is_valid=1, update_time=datetime.datetime.now())
+        if id == 0:
+            role.create(name=name, remark=remark, is_valid=1, update_time=datetime.datetime.now())
+        else:
+            role.update(name=name, remark=remark, is_valid=1, update_time=datetime.datetime.now()).where(role.id == role_id).execute()
+        return jsonify({'code': 200, 'msg': '成功！'})
+    except Exception as e:
+        traceback.print_exc()
+        response = {'code': 500, 'msg': '失败！错误信息：' + str(e) + '，请联系管理员。', 'data': []}
+        return jsonify(response)
+
+
+@privilege.route('/roleForbid', methods=['POST'])
+@cross_origin()
+def roleForbid():
+    try:
+        role_id = request.get_json()['role_id']
+        role.update(is_valid=0, update_time=datetime.datetime.now()).where(role.id == role_id).execute()
+        privilegeFunction().del_role_to_redis(role_id)
         return jsonify({'code': 200, 'msg': '成功！'})
     except Exception as e:
         traceback.print_exc()

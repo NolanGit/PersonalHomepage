@@ -40,7 +40,7 @@
 
 <script>
 import axios from "axios";
-import { rolePrivilegeEdit, roleAdd } from "../../api/privilege";
+import { rolePrivilegeEdit, roleEdit } from "../../api/privilege";
 export default {
   name: "ConsolePrivilegeEditRolePrivilege",
   props: {
@@ -100,10 +100,11 @@ export default {
         });
       } else if (this.action == "new") {
         var para = {
+          role_id: 0,
           name: this.name,
           remark: this.remark
         };
-        roleAdd(para).then(data => {
+        roleEdit(para).then(data => {
           if (data["code"] !== 200) {
             this.$message({
               message: data["msg"],
