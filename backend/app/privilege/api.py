@@ -316,12 +316,43 @@ def roleEdit():
         return jsonify(response)
 
 
-@privilege.route('/roleForbid', methods=['POST'])
+# 角色禁用
+@privilege.route('/roleDisable', methods=['POST'])
 @cross_origin()
-def roleForbid():
+def roleDisable():
     try:
         role_id = request.get_json()['role_id']
         role.update(is_valid=0, update_time=datetime.datetime.now()).where(role.id == role_id).execute()
+        privilegeFunction().del_role_to_redis(role_id)
+        return jsonify({'code': 200, 'msg': '成功！'})
+    except Exception as e:
+        traceback.print_exc()
+        response = {'code': 500, 'msg': '失败！错误信息：' + str(e) + '，请联系管理员。', 'data': []}
+        return jsonify(response)
+
+
+# 角色启用
+@privilege.route('/roleAble', methods=['POST'])
+@cross_origin()
+def roleAble():
+    try:
+        role_id = request.get_json()['role_id']
+        role.update(is_valid=1, update_time=datetime.datetime.now()).where(role.id == role_id).execute()
+        privilegeFunction().flush_user_privilege_to_redis(role_id)
+        return jsonify({'code': 200, 'msg': '成功！'})
+    except Exception as e:
+        traceback.print_exc()
+        response = {'code': 500, 'msg': '失败！错误信息：' + str(e) + '，请联系管理员。', 'data': []}
+        return jsonify(response)
+
+
+# 角色删除
+@privilege.route('/roleDelete', methods=['POST'])
+@cross_origin()
+def roleDelete():
+    try:
+        role_id = request.get_json()['role_id']
+        role.update(is_valid=-1, update_time=datetime.datetime.now()).where(role.id == role_id).execute()
         privilegeFunction().del_role_to_redis(role_id)
         return jsonify({'code': 200, 'msg': '成功！'})
     except Exception as e:

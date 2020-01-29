@@ -51,12 +51,21 @@
               <el-table-column label="操作">
                 <template slot-scope="scope">
                   <el-button
+                    v-show="scope.row.is_valid==1"
+                    class="noMargin"
+                    size="mini"
+                    plain
+                    type="danger"
+                    @click="roleDisableFront(scope.row.id)"
+                  >禁用</el-button>
+                  <el-button
+                    v-show="scope.row.is_valid==0"
                     class="noMargin"
                     size="mini"
                     plain
                     type="primary"
-                    @click="roleForbidFront(scope.row.id)"
-                  >禁用</el-button>
+                    @click="roleAbleFront(scope.row.id)"
+                  >启用</el-button>
                   <el-button
                     class="noMargin"
                     size="mini"
@@ -64,6 +73,13 @@
                     type="primary"
                     @click="roleSetting(scope.row.id)"
                   >配置对应权限</el-button>
+                  <el-button
+                    v-show="scope.row.is_valid==0"
+                    class="noMargin"
+                    size="mini"
+                    type="danger"
+                    @click="roleDeleteFront(scope.row.id)"
+                  >删除</el-button>
                 </template>
               </el-table-column>
             </el-table>
@@ -138,7 +154,9 @@ import {
   roleGet,
   privilegeGet,
   rolePrivilegeGet,
-  roleForbid
+  roleDisable,
+  roleAble,
+  roleDelete
 } from "../../api/privilege";
 import ConsolePrivilegeEditRolePrivilege from "./ConsolePrivilegeEditRolePrivilege";
 import ConsolePrivilegeEditUser from "./ConsolePrivilegeEditUser";
@@ -194,6 +212,13 @@ export default {
             type: "error"
           });
         } else {
+          for (let x = 0; x < data.data.length; x++) {
+            if (data.data[x].is_valid == 1) {
+              data.data[x].is_disabled = "否";
+            } else if (data.data[x].is_valid == 0) {
+              data.data[x].is_disabled = "是";
+            }
+          }
           this.roleData = data.data;
         }
       });
@@ -261,11 +286,47 @@ export default {
         }
       });
     },
-    roleForbidFront(role_id) {
+    roleDisableFront(role_id) {
       var para = {
         role_id: role_id
       };
-      roleForbid(para).then(data => {
+      roleDisable(para).then(data => {
+        if (data["code"] !== 200) {
+          this.$message({
+            message: data["msg"],
+            type: "error"
+          });
+        } else {
+          this.$message({
+            message: data["msg"],
+            type: "success"
+          });
+        }
+      });
+    },
+    roleAbleFront(role_id) {
+      var para = {
+        role_id: role_id
+      };
+      roleAble(para).then(data => {
+        if (data["code"] !== 200) {
+          this.$message({
+            message: data["msg"],
+            type: "error"
+          });
+        } else {
+          this.$message({
+            message: data["msg"],
+            type: "success"
+          });
+        }
+      });
+    },
+    roleDeleteFront(role_id) {
+      var para = {
+        role_id: role_id
+      };
+      roleDelete(para).then(data => {
         if (data["code"] !== 200) {
           this.$message({
             message: data["msg"],

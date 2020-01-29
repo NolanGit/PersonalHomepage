@@ -16,4 +16,8 @@ export const rolePrivilegeEdit = params => { return axios.post(`${base}/privileg
 
 export const roleEdit = params => { return axios.post(`${base}/privilege/roleEdit`, params).then(res => res.data) }
 
-export const roleForbid = params => { return axios.post(`${base}/privilege/roleForbid`, params).then(res => res.data) }
+export const roleDisable = params => { return axios.post(`${base}/privilege/roleDisable`, params).then(res => res.data) }
+
+export const roleAble = params => { return axios.post(`${base}/privilege/roleAble`, params).then(res => res.data) }
+
+export const roleDelete = params => { return axios.post(`${base}/privilege/roleDisable`, params).then(res => res.data) }
