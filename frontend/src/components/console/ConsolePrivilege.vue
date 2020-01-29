@@ -387,7 +387,7 @@ export default {
     },
     //权限新增
     privilegeAdd() {
-      this.privilegeEditAction = "new";
+      this.edit.privilegeEditAction = "new";
       this.edit.title = "新增权限";
       this.edit.visible = true;
       this.edit.type = "privilege";
