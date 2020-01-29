@@ -19,6 +19,7 @@ pool1 = redis.ConnectionPool(host='localhost', port=6379, decode_responses=True,
 cf = CommonFunc()
 
 
+# 权限装饰器
 def permission_required(privilege):
     def decorator(f):
         @wraps(f)
@@ -73,50 +74,7 @@ def permission_required(privilege):
     return decorator
 
 
-def role_list_get():
-    result = []
-    role_query = role.select().where(role.is_valid != -1).order_by(role.id).dicts()
-    for row in role_query:
-        result.append({
-            'id': row['id'],
-            'name': row['name'],
-            'is_valid': row['is_valid'],
-            'remark': row['remark'],
-            'update_time': row['update_time'],
-        })
-    return result
-
-
-def user_list_get():
-    result = []
-    user_query = user.select().where(user.is_valid == 1).order_by(user.id).dicts()
-    for row in user_query:
-        result.append({
-            'id': row['id'],
-            'name': row['name'],
-            'login_name': row['login_name'],
-            'role_id': row['role_id'],
-            'create_time': row['create_time'],
-            'update_time': row['update_time'],
-        })
-    return result
-
-
-def privilege_list_get():
-    result = []
-    privilege_query = privilege_model.select().order_by(privilege_model.id).dicts()
-    for row in privilege_query:
-        result.append({
-            'id': row['id'],
-            'name': row['name'],
-            'mark': row['mark'],
-            'remark': row['remark'],
-            'is_valid': row['is_valid'],
-            'update_time': row['update_time'],
-        })
-    return result
-
-
+# 权限相关方法
 class privilegeFunction(object):
     '''
         加密：使用随机字符串+登录用户的密码加密，生成cookie，redis保存cookie、加密后的密码、随机字符串、对应用户id、ip、过期时间，cookie发给客户端后，客户端请求接口要带上cookie
@@ -177,17 +135,54 @@ class privilegeFunction(object):
         return user_key
 
 
-@privilege.route('/privilegeGet', methods=['GET'])
-@cross_origin()
-def get():
-    try:
-        return jsonify({'code': 200, 'msg': '成功！', 'data': privilege_list_get()})
-    except Exception as e:
-        traceback.print_exc()
-        response = {'code': 500, 'msg': '失败！错误信息：' + str(e) + '，请联系管理员。', 'data': []}
-        return jsonify(response)
+# 获取生效中的用户列表
+def user_list_get():
+    result = []
+    user_query = user.select().where(user.is_valid == 1).order_by(user.id).dicts()
+    for row in user_query:
+        result.append({
+            'id': row['id'],
+            'name': row['name'],
+            'login_name': row['login_name'],
+            'role_id': row['role_id'],
+            'create_time': row['create_time'],
+            'update_time': row['update_time'],
+        })
+    return result
 
 
+# 获取未被删除的角色
+def role_list_get():
+    result = []
+    role_query = role.select().where(role.is_valid != -1).order_by(role.id).dicts()
+    for row in role_query:
+        result.append({
+            'id': row['id'],
+            'name': row['name'],
+            'is_valid': row['is_valid'],
+            'remark': row['remark'],
+            'update_time': row['update_time'],
+        })
+    return result
+
+
+# 获取未被删除的权限
+def privilege_list_get():
+    result = []
+    privilege_query = privilege_model.select().where(role.is_valid != -1).order_by(privilege_model.id).dicts()
+    for row in privilege_query:
+        result.append({
+            'id': row['id'],
+            'name': row['name'],
+            'mark': row['mark'],
+            'remark': row['remark'],
+            'is_valid': row['is_valid'],
+            'update_time': row['update_time'],
+        })
+    return result
+
+
+# 用户列表获取（带有用户的角色信息）
 @privilege.route('/userGet', methods=['POST'])
 @cross_origin()
 def userGet():
@@ -216,38 +211,7 @@ def userGet():
         return jsonify(response)
 
 
-@privilege.route('/roleGet', methods=['GET'])
-@cross_origin()
-def roleGet():
-
-    try:
-        return jsonify({'code': 200, 'msg': '成功！', 'data': role_list_get()})
-    except Exception as e:
-        traceback.print_exc()
-        response = {'code': 500, 'msg': '失败！错误信息：' + str(e) + '，请联系管理员。', 'data': []}
-        return jsonify(response)
-
-
-@privilege.route('/rolePrivilegeGet', methods=['POST'])
-@cross_origin()
-def rolePrivilegeGet():
-    try:
-        role_id = request.get_json()['role_id']
-        result = []
-        privilege_list = privilege_list_get()
-        privilege_role_query = privilege_role.select().where((privilege_role.role_id == role_id) & (privilege_role.is_valid == 1)).order_by(privilege_role.id).dicts()
-        for row in privilege_role_query:
-            result.append({
-                'privilege_id': row['privilege_id'],
-                'privilege_name': cf.dict_list_get_element(privilege_list, 'id', row['privilege_id'], 'name', row['privilege_id'] - 1),
-            })
-        return jsonify({'code': 200, 'msg': '成功！', 'data': result})
-    except Exception as e:
-        traceback.print_exc()
-        response = {'code': 500, 'msg': '失败！错误信息：' + str(e) + '，请联系管理员。', 'data': []}
-        return jsonify(response)
-
-
+# 用户信息修改
 @privilege.route('/userRoleChange', methods=['POST'])
 @cross_origin()
 def userRoleChange():
@@ -277,6 +241,39 @@ def userRoleChange():
         return jsonify(response)
 
 
+# 角色列表获取
+@privilege.route('/roleGet', methods=['GET'])
+@cross_origin()
+def roleGet():
+    try:
+        return jsonify({'code': 200, 'msg': '成功！', 'data': role_list_get()})
+    except Exception as e:
+        traceback.print_exc()
+        response = {'code': 500, 'msg': '失败！错误信息：' + str(e) + '，请联系管理员。', 'data': []}
+        return jsonify(response)
+
+
+# 角色具有的权限列表获取
+@privilege.route('/rolePrivilegeGet', methods=['POST'])
+@cross_origin()
+def rolePrivilegeGet():
+    try:
+        role_id = request.get_json()['role_id']
+        result = []
+        privilege_list = privilege_list_get()
+        privilege_role_query = privilege_role.select().where((privilege_role.role_id == role_id) & (privilege_role.is_valid == 1)).order_by(privilege_role.id).dicts()
+        for row in privilege_role_query:
+            result.append({
+                'privilege_id': row['privilege_id'],
+                'privilege_name': cf.dict_list_get_element(privilege_list, 'id', row['privilege_id'], 'name', row['privilege_id'] - 1),
+            })
+        return jsonify({'code': 200, 'msg': '成功！', 'data': result})
+    except Exception as e:
+        traceback.print_exc()
+        response = {'code': 500, 'msg': '失败！错误信息：' + str(e) + '，请联系管理员。', 'data': []}
+        return jsonify(response)
+
+
 # 角色对应权限修改
 @privilege.route('/rolePrivilegeEdit', methods=['POST'])
 @cross_origin()
@@ -298,6 +295,7 @@ def rolePrivilegeEdit():
         return jsonify(response)
 
 
+# 角色信息新增和修改
 @privilege.route('/roleEdit', methods=['POST'])
 @cross_origin()
 def roleEdit():
@@ -305,7 +303,7 @@ def roleEdit():
         role_id = request.get_json()['role_id']
         name = request.get_json()['name']
         remark = request.get_json()['remark']
-        if id == 0:
+        if role_id == 0:
             role.create(name=name, remark=remark, is_valid=1, update_time=datetime.datetime.now())
         else:
             role.update(name=name, remark=remark, is_valid=1, update_time=datetime.datetime.now()).where(role.id == role_id).execute()
@@ -354,6 +352,38 @@ def roleDelete():
         role_id = request.get_json()['role_id']
         role.update(is_valid=-1, update_time=datetime.datetime.now()).where(role.id == role_id).execute()
         privilegeFunction().del_role_to_redis(role_id)
+        return jsonify({'code': 200, 'msg': '成功！'})
+    except Exception as e:
+        traceback.print_exc()
+        response = {'code': 500, 'msg': '失败！错误信息：' + str(e) + '，请联系管理员。', 'data': []}
+        return jsonify(response)
+
+
+#权限列表获取
+@privilege.route('/privilegeGet', methods=['GET'])
+@cross_origin()
+def privilegeGet():
+    try:
+        return jsonify({'code': 200, 'msg': '成功！', 'data': privilege_list_get()})
+    except Exception as e:
+        traceback.print_exc()
+        response = {'code': 500, 'msg': '失败！错误信息：' + str(e) + '，请联系管理员。', 'data': []}
+        return jsonify(response)
+
+
+#权限新增和修改
+@privilege.route('/privilegeEdit', methods=['POST'])
+@cross_origin()
+def privilegeEdit():
+    try:
+        privilege_id = request.get_json()['privilege_id']
+        name = request.get_json()['name']
+        mark = request.get_json()['mark']
+        remark = request.get_json()['remark']
+        if privilege_id == 0:
+            privilege_model.create(name=name, mark=mark, remark=remark, is_valid=1, update_time=datetime.datetime.now())
+        else:
+            privilege_model.update(name=name, mark=mark, remark=remark, is_valid=1, update_time=datetime.datetime.now()).where(privilege_model.id == privilege_id).execute()
         return jsonify({'code': 200, 'msg': '成功！'})
     except Exception as e:
         traceback.print_exc()

@@ -21,7 +21,7 @@
           <div v-if="activeSystem=='用户设置'">
             <el-button size="small" type="primary" @click="userAdd()">新增用户</el-button>
             <el-table :data="userData" stripe style="width: 100%">
-              <el-table-column prop="id" label="ID" width="80"></el-table-column>
+              <!-- <el-table-column prop="id" label="ID" width="80"></el-table-column> -->
               <el-table-column prop="login_name" label="登录名" width="180"></el-table-column>
               <el-table-column prop="name" label="姓名" width="120"></el-table-column>
               <el-table-column prop="role_name" label="角色" width="120"></el-table-column>
@@ -43,7 +43,7 @@
           <div v-if="activeSystem=='角色对应权限设置'">
             <el-button size="small" type="primary" @click="roleAdd()">新增角色</el-button>
             <el-table :data="roleData" stripe style="width: 100%">
-              <el-table-column prop="id" label="ID" width="80"></el-table-column>
+              <!-- <el-table-column prop="id" label="ID" width="80"></el-table-column> -->
               <el-table-column prop="name" label="名称" width="180"></el-table-column>
               <el-table-column prop="remark" label="备注" width="180"></el-table-column>
               <el-table-column prop="is_disabled" label="是否禁用" width="80"></el-table-column>
@@ -87,7 +87,7 @@
           <div v-if="activeSystem=='权限设置'">
             <el-button size="small" type="primary" @click="privilegeAdd()">新增权限</el-button>
             <el-table :data="privilegeData" stripe style="width: 100%">
-              <el-table-column prop="id" label="ID" width="80"></el-table-column>
+              <!-- <el-table-column prop="id" label="ID" width="80"></el-table-column> -->
               <el-table-column prop="name" label="名称" width="200"></el-table-column>
               <el-table-column prop="mark" label="标识" width="230"></el-table-column>
               <el-table-column prop="remark" label="备注" width="200"></el-table-column>
@@ -132,16 +132,18 @@
         <div v-if="edit.type=='user' & edit.visible">
           <ConsolePrivilegeEditUser :login_name="edit.login_name" />
         </div>
-        <div v-if="edit.type=='rolePrivilege' & edit.visible">
-          <ConsolePrivilegeEditRolePrivilege
+        <div v-if="edit.type=='role' & edit.visible">
+          <ConsolePrivilegeEditRole
             :checkedPrivilege="edit.checkedPrivilege"
             :privilegeData="edit.privilegeData"
-            :roleId="edit.rolePrivilegeEditRoleId"
-            :action="edit.rolePrivilegeEditAction"
-            @close="rolePrivilegeClose()"
+            :roleId="edit.roleEditRoleId"
+            :action="edit.roleEditAction"
+            @close="close()"
           />
         </div>
-        <div v-if="edit.type=='privilege' & edit.visible"></div>
+        <div v-if="edit.type=='privilege' & edit.visible">
+          <ConsolePrivilegeEditPrivilege :action="edit.privilegeEditAction" @close="close()" />
+        </div>
       </el-drawer>
     </el-row>
   </section>
@@ -158,13 +160,15 @@ import {
   roleAble,
   roleDelete
 } from "../../api/privilege";
-import ConsolePrivilegeEditRolePrivilege from "./ConsolePrivilegeEditRolePrivilege";
 import ConsolePrivilegeEditUser from "./ConsolePrivilegeEditUser";
+import ConsolePrivilegeEditRole from "./ConsolePrivilegeEditRole";
+import ConsolePrivilegeEditPrivilege from "./ConsolePrivilegeEditPrivilege";
 export default {
   name: "ConsolePrivilege",
   components: {
     ConsolePrivilegeEditUser,
-    ConsolePrivilegeEditRolePrivilege
+    ConsolePrivilegeEditRole,
+    ConsolePrivilegeEditPrivilege
   },
   data() {
     return {
@@ -180,6 +184,7 @@ export default {
     };
   },
   methods: {
+    //切换handle
     handleChange() {
       if (this.activeSystem == "用户设置") {
         this.userGetFront();
@@ -189,6 +194,19 @@ export default {
         this.privilegeGetFront();
       }
     },
+    //各组件编辑窗口关闭后回调
+    close() {
+      this.edit.visible = false;
+      if (this.edit.type == "role") {
+        this.roleGetFront();
+      }
+      if (this.edit.type == "privilege") {
+        this.privilegeGetFront();
+      }
+    },
+
+    // 【以下为用户相关方法】
+    //获取数据
     userGetFront() {
       var para = {
         user: sessionStorage.getItem("user").replace(/\"/g, "")
@@ -204,6 +222,16 @@ export default {
         }
       });
     },
+    //修改用户信息
+    userSetting(login_name) {
+      this.edit.title = "修改用户密码和角色";
+      this.edit.visible = true;
+      this.edit.type = "user";
+      this.edit.login_name = login_name;
+    },
+
+    // 【以下为角色相关方法】
+    //获取数据
     roleGetFront() {
       roleGet().then(data => {
         if (data["code"] !== 200) {
@@ -223,30 +251,14 @@ export default {
         }
       });
     },
-    privilegeGetFront() {
-      privilegeGet().then(data => {
-        if (data["code"] !== 200) {
-          this.$message({
-            message: data["msg"],
-            type: "error"
-          });
-        } else {
-          this.privilegeData = [];
-          for (let x = 0; x < data.data.length; x++) {
-            this.privilegeData.push({
-              id: data.data[x].id,
-              label: data.data[x].name,
-              name: data.data[x].name,
-              mark: data.data[x].mark,
-              remark: data.data[x].remark,
-              is_valid: data.data[x].is_valid,
-              update_time: data.data[x].update_time,
-              is_disabled: data.data[x].is_valid == 1 ? "否" : "是"
-            });
-          }
-        }
-      });
+    //新增角色
+    roleAdd() {
+      this.edit.roleEditAction = "new";
+      this.edit.title = "新增角色";
+      this.edit.visible = true;
+      this.edit.type = "role";
     },
+    //修改角色对应权限
     roleSetting(role_id) {
       var para = {
         role_id: role_id
@@ -276,16 +288,17 @@ export default {
                   label: data.data[x].name
                 });
               }
-              this.edit.rolePrivilegeEditRoleId = role_id;
-              this.edit.rolePrivilegeEditAction = "edit";
+              this.edit.roleEditRoleId = role_id;
+              this.edit.roleEditAction = "edit";
               this.edit.title = "修改角色对应权限";
               this.edit.visible = true;
-              this.edit.type = "rolePrivilege";
+              this.edit.type = "role";
             }
           });
         }
       });
     },
+    //禁用
     roleDisableFront(role_id) {
       var para = {
         role_id: role_id
@@ -301,10 +314,11 @@ export default {
             message: data["msg"],
             type: "success"
           });
-          this.roleGetFront()
+          this.roleGetFront();
         }
       });
     },
+    //启用
     roleAbleFront(role_id) {
       var para = {
         role_id: role_id
@@ -320,10 +334,11 @@ export default {
             message: data["msg"],
             type: "success"
           });
-          this.roleGetFront()
+          this.roleGetFront();
         }
       });
     },
+    //删除
     roleDeleteFront(role_id) {
       var para = {
         role_id: role_id
@@ -339,25 +354,43 @@ export default {
             message: data["msg"],
             type: "success"
           });
-          this.roleGetFront()
+          this.roleGetFront();
         }
       });
     },
-    roleAdd() {
-      this.edit.rolePrivilegeEditAction = "new";
-      this.edit.title = "新增角色";
-      this.edit.visible = true;
-      this.edit.type = "rolePrivilege";
+
+    // 【以下为权限相关方法】
+    //获取数据
+    privilegeGetFront() {
+      privilegeGet().then(data => {
+        if (data["code"] !== 200) {
+          this.$message({
+            message: data["msg"],
+            type: "error"
+          });
+        } else {
+          this.privilegeData = [];
+          for (let x = 0; x < data.data.length; x++) {
+            this.privilegeData.push({
+              id: data.data[x].id,
+              label: data.data[x].name,
+              name: data.data[x].name,
+              mark: data.data[x].mark,
+              remark: data.data[x].remark,
+              is_valid: data.data[x].is_valid,
+              update_time: data.data[x].update_time,
+              is_disabled: data.data[x].is_valid == 1 ? "否" : "是"
+            });
+          }
+        }
+      });
     },
-    rolePrivilegeClose() {
-      this.edit.visible = false;
-      this.roleGetFront();
-    },
-    userSetting(login_name) {
-      this.edit.title = "修改用户密码和角色";
+    //权限新增
+    privilegeAdd() {
+      this.privilegeEditAction = "new";
+      this.edit.title = "新增权限";
       this.edit.visible = true;
-      this.edit.type = "user";
-      this.edit.login_name = login_name;
+      this.edit.type = "privilege";
     }
   },
   mounted() {

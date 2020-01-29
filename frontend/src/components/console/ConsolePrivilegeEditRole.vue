@@ -42,7 +42,7 @@
 import axios from "axios";
 import { rolePrivilegeEdit, roleEdit } from "../../api/privilege";
 export default {
-  name: "ConsolePrivilegeEditRolePrivilege",
+  name: "ConsolePrivilegeEditRole",
   props: {
     action: String, // action=='edit':加载编辑角色和权限对应关系页面; action=='new':新增角色页面
     roleId: Number,
