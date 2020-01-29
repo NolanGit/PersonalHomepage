@@ -118,7 +118,9 @@ export default {
         queryString === [] ||
         queryString === undefined
       ) {
-        return;
+        try {
+          cb([]);
+        } catch {}
       } else {
         var lastWord = sessionStorage.getItem("lastWord");
         if (lastWord == queryString) {

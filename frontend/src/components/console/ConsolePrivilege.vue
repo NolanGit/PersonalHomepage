@@ -267,8 +267,8 @@ export default {
       this.edit.type = "rolePrivilege";
     },
     rolePrivilegeClose() {
-      console.log('emit')
-      this.edit.visible == false;
+      this.edit.visible = false;
+      this.roleGetFront()
     },
     userSetting(login_name) {
       this.edit.title = "修改用户密码和角色";
