@@ -34,15 +34,21 @@ export default {
     checkedPrivilege(newVal, oldVal) {
       this.checkedPrivilege = newVal;
       console.log(newVal);
+    },
+    roleId(newVal, oldVal) {
+      this.roleId = newVal;
+      console.log(newVal);
     }
   },
   data() {
     return {
-      checkedPrivilegeId: []
+      checkedPrivilegeId: [],
+      roleId: 0
     };
   },
   methods: {
     submit() {
+      console.log(this.roleId);
       this.checkedPrivilegeId = [];
       for (let x = 0; x < this.privilegeData.length; x++) {
         for (let y = 0; y < this.checkedPrivilege.length; y++) {
@@ -53,7 +59,7 @@ export default {
         }
       }
       var para = {
-        role_id: roleId,
+        role_id: this.roleId,
         checked_privilege_id: this.checkedPrivilegeId
       };
       //报错void 0 is not a function
