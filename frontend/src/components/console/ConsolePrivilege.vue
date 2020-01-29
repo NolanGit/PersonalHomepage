@@ -114,15 +114,11 @@
             :checkedPrivilege="edit.checkedPrivilege"
             :privilegeData="edit.privilegeData"
             :roleId="edit.rolePrivilegeEditRoleId"
+            :action="edit.rolePrivilegeEditAction"
+            @close="rolePrivilegeClose()"
           />
         </div>
-        <div v-if="edit.type=='privilege' & edit.visible">
-          <ConsolePrivilegeEditRolePrivilege
-            :checkedPrivilege="edit.checkedPrivilege"
-            :privilegeData="edit.privilegeData"
-            :roleId="edit.rolePrivilegeEditRoleId"
-          />
-        </div>
+        <div v-if="edit.type=='privilege' & edit.visible"></div>
       </el-drawer>
     </el-row>
   </section>
@@ -135,7 +131,7 @@ import {
   roleGet,
   privilegeGet,
   rolePrivilegeGet
-} from "../../api/console";
+} from "../../api/privilege";
 import ConsolePrivilegeEditRolePrivilege from "./ConsolePrivilegeEditRolePrivilege";
 import ConsolePrivilegeEditUser from "./ConsolePrivilegeEditUser";
 export default {
@@ -255,6 +251,7 @@ export default {
                 });
               }
               this.edit.rolePrivilegeEditRoleId = role_id;
+              this.edit.rolePrivilegeEditAction = "edit";
               this.edit.title = "修改角色对应权限";
               this.edit.visible = true;
               this.edit.type = "rolePrivilege";
@@ -262,6 +259,15 @@ export default {
           });
         }
       });
+    },
+    roleAdd() {
+      this.edit.rolePrivilegeEditAction = "new";
+      this.edit.title = "新增角色";
+      this.edit.visible = true;
+      this.edit.type = "rolePrivilege";
+    },
+    rolePrivilegeClose() {
+      this.edit.visible == false;
     },
     userSetting(login_name) {
       this.edit.title = "修改用户密码和角色";

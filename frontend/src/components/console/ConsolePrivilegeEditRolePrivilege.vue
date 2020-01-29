@@ -2,14 +2,32 @@
   <section>
     <el-row class="main-row" :gutter="20">
       <div class="margin_left-large">
-        <el-checkbox-group class="margin_bottom-large" v-model="checkedPrivilege">
-          <el-checkbox
-            v-for="singlePrivilegeData in privilegeData"
-            :key="singlePrivilegeData"
-            :label="singlePrivilegeData.label"
-            :value="singlePrivilegeData.id"
-          ></el-checkbox>
-        </el-checkbox-group>
+        <div v-if="action=='edit'">
+          <el-checkbox-group class="margin_bottom-large" v-model="checkedPrivilege">
+            <el-checkbox
+              v-for="singlePrivilegeData in privilegeData"
+              :key="singlePrivilegeData"
+              :label="singlePrivilegeData.label"
+              :value="singlePrivilegeData.id"
+            ></el-checkbox>
+          </el-checkbox-group>
+        </div>
+        <div v-if="action=='new'">
+          <div class="td__p--label td--label">请输入角色名称：</div>
+          <el-input
+            class="width--medium margin_right-small"
+            v-model="name"
+            size="small"
+            placeholder="请输入"
+          ></el-input>
+          <div class="td__p--label td--label">请输入备注：</div>
+          <el-input
+            class="width--medium margin_right-small"
+            v-model="remark"
+            size="small"
+            placeholder="请输入"
+          ></el-input>
+        </div>
         <el-button class="noMargin" size="mini" plain type="primary" @click="submit()">确定</el-button>
       </div>
     </el-row>
@@ -18,10 +36,11 @@
 
 <script>
 import axios from "axios";
-import { rolePrivilegeEdit } from "../../api/console";
+import { rolePrivilegeEdit, roleAdd } from "../../api/privilege";
 export default {
   name: "ConsolePrivilegeEditRolePrivilege",
   props: {
+    action: String, // action=='edit':加载编辑角色和权限对应关系页面; action=='new':新增角色页面
     roleId: Number,
     privilegeData: Array,
     checkedPrivilege: Array
@@ -40,37 +59,61 @@ export default {
   data() {
     return {
       checkedPrivilegeId: [],
-      roleId: 0
+      roleId: 0,
+      name: "",
+      remark: ""
     };
   },
   methods: {
     submit() {
-      this.checkedPrivilegeId = [];
-      for (let x = 0; x < this.privilegeData.length; x++) {
-        for (let y = 0; y < this.checkedPrivilege.length; y++) {
-          if (this.privilegeData[x].label == this.checkedPrivilege[y]) {
-            this.checkedPrivilegeId.push(this.privilegeData[x].id);
-            continue;
+      if (this.action == "edit") {
+        this.checkedPrivilegeId = [];
+        for (let x = 0; x < this.privilegeData.length; x++) {
+          for (let y = 0; y < this.checkedPrivilege.length; y++) {
+            if (this.privilegeData[x].label == this.checkedPrivilege[y]) {
+              this.checkedPrivilegeId.push(this.privilegeData[x].id);
+              continue;
+            }
           }
         }
+        var para = {
+          role_id: this.roleId,
+          checked_privilege_id: this.checkedPrivilegeId
+        };
+        rolePrivilegeEdit(para).then(data => {
+          if (data["code"] !== 200) {
+            this.$message({
+              message: data["msg"],
+              type: "error"
+            });
+          } else {
+            this.$message({
+              message: data["msg"],
+              type: "success"
+            });
+            this.$emit("close");
+          }
+        });
+      } else if (this.action == "new") {
+        var para = {
+          name: this.name,
+          remark: this.remark
+        };
+        roleAdd(para).then(data => {
+          if (data["code"] !== 200) {
+            this.$message({
+              message: data["msg"],
+              type: "error"
+            });
+          } else {
+            this.$message({
+              message: data["msg"],
+              type: "success"
+            });
+            this.$emit("close");
+          }
+        });
       }
-      var para = {
-        role_id: this.roleId,
-        checked_privilege_id: this.checkedPrivilegeId
-      };
-      rolePrivilegeEdit(para).then(data => {
-        if (data["code"] !== 200) {
-          this.$message({
-            message: data["msg"],
-            type: "error"
-          });
-        } else {
-          this.$message({
-            message: data["msg"],
-            type: "success"
-          });
-        }
-      });
     }
   },
   mounted() {}

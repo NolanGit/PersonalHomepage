@@ -49,7 +49,7 @@
 <script>
 import md5 from "js-md5";
 import axios from "axios";
-import { userGet, roleGet, userRoleChange } from "../../api/console";
+import { userGet, roleGet, userRoleChange } from "../../api/privilege";
 import {
   userLogin,
   userLoginGetSalt,

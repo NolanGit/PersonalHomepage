@@ -283,3 +283,17 @@ def rolePrivilegeEdit():
     except Exception as e:
         response = {'code': 500, 'msg': e, 'data': {}}
         return jsonify(response)
+
+
+@privilege.route('/roleAdd', methods=['POST'])
+@cross_origin()
+def roleAdd():
+    try:
+        name = request.get_json()['name']
+        remark = request.get_json()['remark']
+        role.create(name=name, remark=remark, update_time=datetime.datetime.now())
+        return jsonify({'code': 200, 'msg': '成功！'})
+    except Exception as e:
+        traceback.print_exc()
+        response = {'code': 500, 'msg': '失败！错误信息：' + str(e) + '，请联系管理员。', 'data': []}
+        return jsonify(response)
