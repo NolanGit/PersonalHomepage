@@ -125,6 +125,9 @@ export default {
 </script>
 
 <style scoped>
+.div-flex {
+  display: flex;
+}
 .width--medium {
   width: 200px;
 }
