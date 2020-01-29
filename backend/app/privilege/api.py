@@ -270,7 +270,7 @@ def userRoleChange():
 def rolePrivilegeEdit():
     try:
         role_id = request.get_json()['role_id']
-        checked_privilege_id = request.get_json()['role_id']
+        checked_privilege_id = request.get_json()['checked_privilege_id']
         privilege_role.update(is_valid=0).where(privilege_role.role_id == role_id).execute()
         data_source = []
         for single_checked_privilege_id in checked_privilege_id:
