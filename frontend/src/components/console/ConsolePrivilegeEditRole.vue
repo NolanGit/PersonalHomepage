@@ -49,7 +49,7 @@ export default {
     roleName: String,
     roleRemark: String,
     privilegeData: Array,
-    checkedPrivilege: Array,
+    checkedPrivilege: Array
   },
   watch: {
     privilegeData(newVal, oldVal) {
@@ -66,15 +66,10 @@ export default {
     },
     roleRemark(newVal, oldVal) {
       this.roleRemark = newVal;
-    },
+    }
   },
   data() {
-    return {
-      checkedPrivilegeId: [],
-      roleId: 0,
-      roleName: "",
-      roleRemark: ""
-    };
+    return {};
   },
   methods: {
     submit() {
