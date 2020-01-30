@@ -9,9 +9,14 @@ from flask_cors import cross_origin
 from flask import render_template, session, redirect, url_for, current_app, flash, Response, request, jsonify
 from .model import search_engines, search_engines_log
 from ..common_func import CommonFunc
+from ..privilege.api import permission_required
+
+URL_PREFIX = 'search'
+
 
 
 @search.route('/searchEnginesData', methods=['GET'])
+@permission_required(URL_PREFIX + '/searchEnginesData')
 @cross_origin()
 def searchEnginesData():
     result = []
@@ -27,6 +32,7 @@ def searchEnginesData():
 
 
 @search.route('/searchEnginesAutoComplete', methods=['POST'])
+@permission_required(URL_PREFIX + '/searchEnginesAutoComplete')
 @cross_origin()
 def searchEnginesAutoComplete():
     try:
@@ -38,6 +44,7 @@ def searchEnginesAutoComplete():
 
 
 @search.route('/searchEnginesSearch', methods=['POST'])
+@permission_required(URL_PREFIX + '/searchEnginesSearch')
 @cross_origin()
 def searchEnginesSearch():
     try:
@@ -50,6 +57,7 @@ def searchEnginesSearch():
 
 
 @search.route('/searchLog', methods=['POST'])
+@permission_required(URL_PREFIX + '/searchLog')
 @cross_origin()
 def searchLog():
     try:
