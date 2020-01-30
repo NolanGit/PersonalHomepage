@@ -11,7 +11,6 @@ from ..common_func import CommonFunc
 from flask_cors import cross_origin
 from flask import render_template, session, redirect, url_for, current_app, flash, Response, request, jsonify
 from ..model.login_model import user
-from ..privilege.model import privilege, privilege_role
 from ..privilege.api import privilegeFunction
 
 
