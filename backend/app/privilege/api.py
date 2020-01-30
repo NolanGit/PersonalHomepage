@@ -1,3 +1,5 @@
+import sys
+sys.path.append('../../')
 import time
 import json
 import redis
@@ -9,14 +11,15 @@ from . import privilege
 from functools import wraps
 from flask_cors import cross_origin
 from flask import session, redirect, url_for, current_app, flash, Response, request, jsonify, abort
-from .model import role, privilege_role
-from .model import privilege as privilege_model
+from .model.privilege_model import role, privilege_role
+from .model.privilege_model import privilege as privilege_model
 from ..common_func import CommonFunc
 from ..login.model import user
 
 pool0 = redis.ConnectionPool(host='localhost', port=6379, decode_responses=True, db=0)
 pool1 = redis.ConnectionPool(host='localhost', port=6379, decode_responses=True, db=1)
 cf = CommonFunc()
+URL_PREFIX = 'privilege'
 
 
 # 权限装饰器
@@ -184,6 +187,7 @@ def privilege_list_get():
 
 # 用户列表获取（带有用户的角色信息）
 @privilege.route('/userGet', methods=['POST'])
+@permission_required(URL_PREFIX + '/userGet')
 @cross_origin()
 def userGet():
 
@@ -213,6 +217,7 @@ def userGet():
 
 # 用户信息修改
 @privilege.route('/userRoleChange', methods=['POST'])
+@permission_required(URL_PREFIX + '/userRoleChange')
 @cross_origin()
 def userRoleChange():
     ALLOWED_TIME_SPAN = 100  # 盐过期X秒内允许修改，否则需要重新登录
@@ -243,6 +248,7 @@ def userRoleChange():
 
 # 角色列表获取
 @privilege.route('/roleGet', methods=['GET'])
+@permission_required(URL_PREFIX + '/roleGet')
 @cross_origin()
 def roleGet():
     try:
@@ -255,6 +261,7 @@ def roleGet():
 
 # 角色具有的权限列表获取
 @privilege.route('/rolePrivilegeGet', methods=['POST'])
+@permission_required(URL_PREFIX + '/rolePrivilegeGet')
 @cross_origin()
 def rolePrivilegeGet():
     try:
@@ -276,6 +283,7 @@ def rolePrivilegeGet():
 
 # 角色对应权限修改
 @privilege.route('/rolePrivilegeEdit', methods=['POST'])
+@permission_required(URL_PREFIX + '/rolePrivilegeEdit')
 @cross_origin()
 def rolePrivilegeEdit():
     try:
@@ -297,12 +305,16 @@ def rolePrivilegeEdit():
 
 # 角色信息新增和修改
 @privilege.route('/roleEdit', methods=['POST'])
+@permission_required(URL_PREFIX + '/roleEdit')
 @cross_origin()
 def roleEdit():
     try:
         role_id = request.get_json()['role_id']
         name = request.get_json()['name']
-        remark = request.get_json()['remark']
+        try:
+            remark = request.get_json()['remark']
+        except:
+            remark = ''
         if role_id == 0:
             role.create(name=name, remark=remark, is_valid=1, update_time=datetime.datetime.now())
         else:
@@ -316,6 +328,7 @@ def roleEdit():
 
 # 角色禁用
 @privilege.route('/roleDisable', methods=['POST'])
+@permission_required(URL_PREFIX + '/roleDisable')
 @cross_origin()
 def roleDisable():
     try:
@@ -331,6 +344,7 @@ def roleDisable():
 
 # 角色启用
 @privilege.route('/roleAble', methods=['POST'])
+@permission_required(URL_PREFIX + '/roleAble')
 @cross_origin()
 def roleAble():
     try:
@@ -346,6 +360,7 @@ def roleAble():
 
 # 角色删除
 @privilege.route('/roleDelete', methods=['POST'])
+@permission_required(URL_PREFIX + '/roleDelete')
 @cross_origin()
 def roleDelete():
     try:
@@ -361,6 +376,7 @@ def roleDelete():
 
 #权限列表获取
 @privilege.route('/privilegeGet', methods=['GET'])
+@permission_required(URL_PREFIX + '/privilegeGet')
 @cross_origin()
 def privilegeGet():
     try:
@@ -373,13 +389,17 @@ def privilegeGet():
 
 #权限新增和修改
 @privilege.route('/privilegeEdit', methods=['POST'])
+@permission_required(URL_PREFIX + '/privilegeEdit')
 @cross_origin()
 def privilegeEdit():
     try:
         privilege_id = request.get_json()['privilege_id']
         name = request.get_json()['name']
         mark = request.get_json()['mark']
-        remark = request.get_json()['remark']
+        try:
+            remark = request.get_json()['remark']
+        except:
+            remark = ''
         if privilege_id == 0:
             privilege_model.create(name=name, mark=mark, remark=remark, is_valid=1, update_time=datetime.datetime.now())
         else:
