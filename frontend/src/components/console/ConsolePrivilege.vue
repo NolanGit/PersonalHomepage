@@ -64,7 +64,7 @@
                     size="mini"
                     plain
                     type="primary"
-                    @click="roleAbleFront(scope.row.id)"
+                    @click="roleEnableFront(scope.row.id)"
                   >启用</el-button>
                   <el-button
                     v-show="scope.row.is_valid==0"
@@ -116,7 +116,7 @@
                     size="mini"
                     plain
                     type="primary"
-                    @click="privilegeAbleFront(scope.row.id)"
+                    @click="privilegeEnableFront(scope.row.id)"
                   >启用</el-button>
                   <el-button
                     v-show="scope.row.is_valid==0"
@@ -182,11 +182,14 @@ import axios from "axios";
 import {
   userGet,
   roleGet,
-  privilegeGet,
   rolePrivilegeGet,
   roleDisable,
-  roleAble,
-  roleDelete
+  roleEnable,
+  roleDelete,
+  privilegeGet,
+  privilegeDisable,
+  privilegeEnable,
+  privilegeDelete
 } from "../../api/privilege";
 import ConsolePrivilegeEditUser from "./ConsolePrivilegeEditUser";
 import ConsolePrivilegeEditRole from "./ConsolePrivilegeEditRole";
@@ -259,7 +262,7 @@ export default {
     },
 
     // 【以下为角色相关方法】
-    //获取数据
+    //角色获取数据
     roleGetFront() {
       roleGet().then(data => {
         if (data["code"] !== 200) {
@@ -279,7 +282,7 @@ export default {
         }
       });
     },
-    //新增角色
+    //角色新增
     roleAdd() {
       this.edit.roleId = 0;
       this.edit.roleEditAction = "new";
@@ -287,7 +290,7 @@ export default {
       this.edit.visible = true;
       this.edit.type = "role";
     },
-    //修改角色对应权限
+    //角色修改对应权限
     roleSetting(role_id) {
       var para = {
         role_id: role_id
@@ -327,7 +330,7 @@ export default {
         }
       });
     },
-    //禁用
+    //角色禁用
     roleDisableFront(role_id) {
       var para = {
         role_id: role_id
@@ -347,12 +350,12 @@ export default {
         }
       });
     },
-    //启用
-    roleAbleFront(role_id) {
+    //角色启用
+    roleEnableFront(role_id) {
       var para = {
         role_id: role_id
       };
-      roleAble(para).then(data => {
+      roleEnable(para).then(data => {
         if (data["code"] !== 200) {
           this.$message({
             message: data["msg"],
@@ -367,6 +370,7 @@ export default {
         }
       });
     },
+    //角色编辑
     roleEditFront(role_id, role_name, role_remark) {
       this.edit.roleEditAction = "new";
       this.edit.roleEditRoleId = role_id;
@@ -376,7 +380,7 @@ export default {
       this.edit.visible = true;
       this.edit.type = "role";
     },
-    //删除
+    //角色删除
     roleDeleteFront(role_id) {
       this.$confirm("确认停止并删除定时任务吗?", "提示", {}).then(() => {
         var para = {
@@ -400,7 +404,7 @@ export default {
     },
 
     // 【以下为权限相关方法】
-    //获取数据
+    //权限获取数据
     privilegeGetFront() {
       privilegeGet().then(data => {
         if (data["code"] !== 200) {
@@ -448,6 +452,46 @@ export default {
       this.edit.title = "修改权限";
       this.edit.visible = true;
       this.edit.type = "privilege";
+    },
+    //权限禁用
+    privilegeDisableFront(privilege_id) {
+      var para = {
+        privilege_id: privilege_id
+      };
+      privilegeDisable(para).then(data => {
+        if (data["code"] !== 200) {
+          this.$message({
+            message: data["msg"],
+            type: "error"
+          });
+        } else {
+          this.$message({
+            message: data["msg"],
+            type: "success"
+          });
+          this.privilegeGetFront();
+        }
+      });
+    },
+    //权限启用
+    privilegeEnableFront(privilege_id) {
+      var para = {
+        privilege_id: privilege_id
+      };
+      privilegeEnable(para).then(data => {
+        if (data["code"] !== 200) {
+          this.$message({
+            message: data["msg"],
+            type: "error"
+          });
+        } else {
+          this.$message({
+            message: data["msg"],
+            type: "success"
+          });
+          this.privilegeGetFront();
+        }
+      });
     }
   },
   mounted() {
