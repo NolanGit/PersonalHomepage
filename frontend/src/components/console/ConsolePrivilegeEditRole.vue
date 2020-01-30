@@ -47,7 +47,9 @@ export default {
     action: String, // action=='edit':加载编辑角色和权限对应关系页面; action=='new':新增角色页面
     roleId: Number,
     privilegeData: Array,
-    checkedPrivilege: Array
+    checkedPrivilege: Array,
+    roleName: String,
+    roleRemark: String
   },
   watch: {
     privilegeData(newVal, oldVal) {

@@ -67,6 +67,14 @@
                     @click="roleAbleFront(scope.row.id)"
                   >启用</el-button>
                   <el-button
+                    v-show="scope.row.is_valid==0"
+                    class="noMargin"
+                    size="mini"
+                    plain
+                    type="primary"
+                    @click="roleEditFront(scope.row.id,scope.row.name,scope.row.remark)"
+                  >修改</el-button>
+                  <el-button
                     class="noMargin"
                     size="mini"
                     plain
@@ -90,7 +98,7 @@
               <!-- <el-table-column prop="id" label="ID" width="80"></el-table-column> -->
               <el-table-column prop="name" label="名称" width="200"></el-table-column>
               <el-table-column prop="mark" label="标识" width="230"></el-table-column>
-              <el-table-column prop="remark" label="备注" width="200"></el-table-column>
+              <el-table-column prop="remark" label="备注" width="300"></el-table-column>
               <el-table-column prop="is_disabled" label="是否禁用" width="80"></el-table-column>
               <el-table-column label="操作">
                 <template slot-scope="scope">
@@ -138,6 +146,8 @@
             :privilegeData="edit.privilegeData"
             :roleId="edit.roleEditRoleId"
             :action="edit.roleEditAction"
+            :roleName="edit.roleEditName"
+            :roleRemark="edit.roleEditRemark"
             @close="close()"
           />
         </div>
@@ -253,6 +263,7 @@ export default {
     },
     //新增角色
     roleAdd() {
+      this.edit.roleId = 0;
       this.edit.roleEditAction = "new";
       this.edit.title = "新增角色";
       this.edit.visible = true;
@@ -338,24 +349,35 @@ export default {
         }
       });
     },
+    roleEditFront(role_id, role_name, role_remark) {
+      this.edit.roleEditAction = "new";
+      this.edit.roleEditId = role_id;
+      this.edit.roleEditName = role_name;
+      this.edit.roleEditRemark = role_remark;
+      this.edit.title = "修改角色";
+      this.edit.visible = true;
+      this.edit.type = "role";
+    },
     //删除
     roleDeleteFront(role_id) {
-      var para = {
-        role_id: role_id
-      };
-      roleDelete(para).then(data => {
-        if (data["code"] !== 200) {
-          this.$message({
-            message: data["msg"],
-            type: "error"
-          });
-        } else {
-          this.$message({
-            message: data["msg"],
-            type: "success"
-          });
-          this.roleGetFront();
-        }
+      this.$confirm("确认停止并删除定时任务吗?", "提示", {}).then(() => {
+        var para = {
+          role_id: role_id
+        };
+        roleDelete(para).then(data => {
+          if (data["code"] !== 200) {
+            this.$message({
+              message: data["msg"],
+              type: "error"
+            });
+          } else {
+            this.$message({
+              message: data["msg"],
+              type: "success"
+            });
+            this.roleGetFront();
+          }
+        });
       });
     },
 
