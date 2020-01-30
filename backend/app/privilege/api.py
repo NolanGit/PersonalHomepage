@@ -189,7 +189,7 @@ def roleEdit():
         if role_id == 0:
             role.create(name=name, remark=remark, is_valid=1, update_time=datetime.datetime.now())
         else:
-            role.update(name=name, remark=remark, is_valid=1, update_time=datetime.datetime.now()).where(role.id == role_id).execute()
+            role.update(name=name, remark=remark, update_time=datetime.datetime.now()).where(role.id == role_id).execute()
         return jsonify({'code': 200, 'msg': '成功！'})
     except Exception as e:
         traceback.print_exc()

@@ -103,25 +103,36 @@
               <el-table-column label="操作">
                 <template slot-scope="scope">
                   <el-button
+                    v-show="scope.row.is_valid==1"
                     class="noMargin"
                     size="mini"
                     plain
                     type="primary"
-                    @click="privilegeEdit(scope.row.id)"
-                  >修改</el-button>
-                  <el-button
-                    class="noMargin"
-                    size="mini"
-                    plain
-                    type="primary"
-                    @click="privilegeDisable(scope.row.id)"
+                    @click="privilegeDisableFront(scope.row.id)"
                   >禁用</el-button>
                   <el-button
+                    v-show="scope.row.is_valid==0"
                     class="noMargin"
                     size="mini"
                     plain
                     type="primary"
-                    @click="privilegeDelete(scope.row.id)"
+                    @click="privilegeAbleFront(scope.row.id)"
+                  >启用</el-button>
+                  <el-button
+                    v-show="scope.row.is_valid==0"
+                    class="noMargin"
+                    size="mini"
+                    plain
+                    type="primary"
+                    @click="privilegeEditFront(scope.row.id,scope.row.name,scope.row.mark,scope.row.remark)"
+                  >修改</el-button>
+                  <el-button
+                    v-show="scope.row.is_valid==0"
+                    class="noMargin"
+                    size="mini"
+                    plain
+                    type="primary"
+                    @click="privilegeDeleteFront(scope.row.id)"
                   >删除</el-button>
                 </template>
               </el-table-column>
@@ -142,17 +153,24 @@
         </div>
         <div v-if="edit.type=='role' & edit.visible">
           <ConsolePrivilegeEditRole
+            :action="edit.roleEditAction"
             :checkedPrivilege="edit.checkedPrivilege"
             :privilegeData="edit.privilegeData"
             :roleId="edit.roleEditRoleId"
-            :action="edit.roleEditAction"
             :roleName="edit.roleEditName"
             :roleRemark="edit.roleEditRemark"
             @close="close()"
           />
         </div>
         <div v-if="edit.type=='privilege' & edit.visible">
-          <ConsolePrivilegeEditPrivilege :action="edit.privilegeEditAction" @close="close()" />
+          <ConsolePrivilegeEditPrivilege
+            :action="edit.privilegeEditAction"
+            :privilegeId="edit.privilegeEditPrivilegeId"
+            :privilegeName="edit.privilegeEditPrivilegeName"
+            :privilegeMark="edit.privilegeEditPrivilegeMark"
+            :privilegeRemark="edit.privilegeEditPrivilegeRemark"
+            @close="close()"
+          />
         </div>
       </el-drawer>
     </el-row>
@@ -410,7 +428,24 @@ export default {
     //权限新增
     privilegeAdd() {
       this.edit.privilegeEditAction = "new";
+      this.edit.privilegeEditPrivilegeId = 0;
       this.edit.title = "新增权限";
+      this.edit.visible = true;
+      this.edit.type = "privilege";
+    },
+    //权限修改
+    privilegeEditFront(
+      privilegeId,
+      privilegeName,
+      privilegeMark,
+      privilegeRemark
+    ) {
+      this.edit.privilegeEditAction = "new";
+      this.edit.privilegeEditPrivilegeId = privilegeId;
+      this.edit.privilegeEditPrivilegeName = privilegeName;
+      this.edit.privilegeEditPrivilegeMark = privilegeMark;
+      this.edit.privilegeEditPrivilegeRemark = privilegeRemark;
+      this.edit.title = "修改权限";
       this.edit.visible = true;
       this.edit.type = "privilege";
     }

@@ -45,9 +45,9 @@ export default {
   props: {
     action: String, // action=='new':新增角色页面
     privilegeId: Number,
-    name: String,
-    mark: String,
-    remark: String
+    privilegeName: String,
+    privilegeMark: String,
+    privilegeRemark: String
   },
   watch: {
     privilegeId(newVal, oldVal) {
@@ -55,46 +55,13 @@ export default {
     }
   },
   data() {
-    return {
-      privilegeId: 0,
-      name: "",
-      mark: "",
-      remark: ""
-    };
+    return {};
   },
   methods: {
     submit() {
-      if (this.action == "edit") {
-        this.checkedPrivilegeId = [];
-        for (let x = 0; x < this.privilegeData.length; x++) {
-          for (let y = 0; y < this.checkedPrivilege.length; y++) {
-            if (this.privilegeData[x].label == this.checkedPrivilege[y]) {
-              this.checkedPrivilegeId.push(this.privilegeData[x].id);
-              continue;
-            }
-          }
-        }
+      if (this.action == "new") {
         var para = {
-          role_id: this.roleId,
-          checked_privilege_id: this.checkedPrivilegeId
-        };
-        rolePrivilegeEdit(para).then(data => {
-          if (data["code"] !== 200) {
-            this.$message({
-              message: data["msg"],
-              type: "error"
-            });
-          } else {
-            this.$message({
-              message: data["msg"],
-              type: "success"
-            });
-            this.$emit("close");
-          }
-        });
-      } else if (this.action == "new") {
-        var para = {
-          privilege_id: 0,
+          privilege_id: this.privilegeId,
           name: this.name,
           mark: this.mark,
           remark: this.remark
