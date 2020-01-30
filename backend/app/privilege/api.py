@@ -9,10 +9,11 @@ from . import privilege
 from functools import wraps
 from flask_cors import cross_origin
 from flask import session, redirect, url_for, current_app, flash, Response, request, jsonify, abort
+from ..model.login_model import user
 from ..model.privilege_model import role, privilege_role
 from ..model.privilege_model import privilege as privilege_model
 from ..common_func import CommonFunc
-from ..model.login_model import user
+from .privilege_control import privilegeFunction
 
 pool0 = redis.ConnectionPool(host='localhost', port=6379, decode_responses=True, db=0)
 pool1 = redis.ConnectionPool(host='localhost', port=6379, decode_responses=True, db=1)

@@ -12,7 +12,7 @@ from ..weather.model import weather_personalized
 from ..bookmarks.model import bookmarks as bookmarks_table
 from ..bookmarks.model import icon as icon_table
 from ..login.api import User
-from ..privilege.api import permission_required
+from ..privilege.privilege_control import permission_required
 
 URL_PREFIX = ''
 

@@ -5,19 +5,18 @@ import datetime
 import requests
 import traceback
 import configparser
-from . import privilege
 from functools import wraps
 from flask_cors import cross_origin
 from flask import session, redirect, url_for, current_app, flash, Response, request, jsonify, abort
-from .model import role, privilege_role
-from .model import privilege as privilege_model
+from ..model.login_model import user
+from ..model.privilege_model import role, privilege_role
+from ..model.privilege_model import privilege as privilege_model
 from ..common_func import CommonFunc
-from ..login.model import user
 
 pool0 = redis.ConnectionPool(host='localhost', port=6379, decode_responses=True, db=0)
 pool1 = redis.ConnectionPool(host='localhost', port=6379, decode_responses=True, db=1)
 cf = CommonFunc()
-URL_PREFIX = 'privilege'
+
 
 # 权限装饰器
 def permission_required(privilege):
@@ -72,6 +71,7 @@ def permission_required(privilege):
         return decorated_function
 
     return decorator
+
 
 # 权限相关方法
 class privilegeFunction(object):
