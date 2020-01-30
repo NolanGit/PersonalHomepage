@@ -22,8 +22,8 @@
             <el-button size="small" type="primary" @click="userAdd()">新增用户</el-button>
             <el-table :data="userData" stripe style="width: 100%">
               <!-- <el-table-column prop="id" label="ID" width="80"></el-table-column> -->
-              <el-table-column prop="login_name" label="登录名" width="180"></el-table-column>
               <el-table-column prop="name" label="姓名" width="120"></el-table-column>
+              <el-table-column prop="login_name" label="登录名" width="180"></el-table-column>
               <el-table-column prop="role_name" label="角色" width="120"></el-table-column>
               <el-table-column prop="update_time" label="修改时间"></el-table-column>
               <el-table-column label="操作">
