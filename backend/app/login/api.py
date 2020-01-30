@@ -1,5 +1,3 @@
-import sys
-sys.path.append('../../')
 import time
 import json
 import redis
