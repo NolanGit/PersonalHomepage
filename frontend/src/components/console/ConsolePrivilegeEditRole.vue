@@ -109,8 +109,8 @@ export default {
       } else if (this.action == "new") {
         var para = {
           role_id: 0,
-          name: this.name,
-          remark: this.remark
+          name: this.roleName,
+          remark: this.roleName
         };
         roleEdit(para).then(data => {
           if (data["code"] !== 200) {
