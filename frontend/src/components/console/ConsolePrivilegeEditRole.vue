@@ -17,7 +17,7 @@
             <div class="td__p--label td--label">请输入角色名称：</div>
             <el-input
               class="width--medium margin_right-small"
-              v-model="name"
+              v-model="roleName"
               size="small"
               placeholder="请输入"
             ></el-input>
@@ -26,7 +26,7 @@
             <div class="td__p--label td--label">请输入备注：</div>
             <el-input
               class="width--medium margin_right-small"
-              v-model="remark"
+              v-model="roleRemark"
               size="small"
               placeholder="请输入"
             ></el-input>
@@ -46,10 +46,10 @@ export default {
   props: {
     action: String, // action=='edit':加载编辑角色和权限对应关系页面; action=='new':新增角色页面
     roleId: Number,
+    roleName: String,
+    roleRemark: String,
     privilegeData: Array,
     checkedPrivilege: Array,
-    roleName: String,
-    roleRemark: String
   },
   watch: {
     privilegeData(newVal, oldVal) {
@@ -60,14 +60,20 @@ export default {
     },
     roleId(newVal, oldVal) {
       this.roleId = newVal;
-    }
+    },
+    roleName(newVal, oldVal) {
+      this.roleName = newVal;
+    },
+    roleRemark(newVal, oldVal) {
+      this.roleRemark = newVal;
+    },
   },
   data() {
     return {
       checkedPrivilegeId: [],
       roleId: 0,
-      name: "",
-      remark: ""
+      roleName: "",
+      roleRemark: ""
     };
   },
   methods: {
