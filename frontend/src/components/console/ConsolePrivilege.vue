@@ -351,7 +351,7 @@ export default {
     },
     roleEditFront(role_id, role_name, role_remark) {
       this.edit.roleEditAction = "new";
-      this.edit.roleEditId = role_id;
+      this.edit.roleEditRoleId = role_id;
       this.edit.roleEditName = role_name;
       this.edit.roleEditRemark = role_remark;
       this.edit.title = "修改角色";
