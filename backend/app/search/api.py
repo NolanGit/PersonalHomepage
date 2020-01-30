@@ -7,7 +7,7 @@ import urllib.request
 from . import search
 from flask_cors import cross_origin
 from flask import render_template, session, redirect, url_for, current_app, flash, Response, request, jsonify
-from .model import search_engines, search_engines_log
+from ..model.search_model import search_engines, search_engines_log
 from ..common_func import CommonFunc
 
 

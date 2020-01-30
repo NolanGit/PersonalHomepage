@@ -7,7 +7,7 @@ import configparser
 from . import weather
 from flask_cors import cross_origin
 from flask import render_template, session, redirect, url_for, current_app, flash, Response, request, jsonify
-from .model import weather_personalized
+from ..model.weather_model import weather_personalized
 from ..login.api import User
 
 cf = configparser.ConfigParser()

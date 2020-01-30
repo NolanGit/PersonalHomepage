@@ -7,8 +7,8 @@ import urllib.request
 from . import appstore
 from flask_cors import cross_origin
 from flask import render_template, session, redirect, url_for, current_app, flash, Response, request, jsonify
-from .model import icon
-from .model import appstore as appstore_table
+from ..model.bookemarks_model import icon
+from ..model.appstore_model import appstore as appstore_table
 from ..common_func import User
 
 
