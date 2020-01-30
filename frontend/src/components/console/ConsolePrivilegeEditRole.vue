@@ -103,7 +103,7 @@ export default {
         });
       } else if (this.action == "new") {
         var para = {
-          role_id: 0,
+          role_id: this.roleId,
           name: this.roleName,
           remark: this.roleName
         };
