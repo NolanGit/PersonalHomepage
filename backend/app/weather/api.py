@@ -9,10 +9,6 @@ from flask_cors import cross_origin
 from flask import render_template, session, redirect, url_for, current_app, flash, Response, request, jsonify
 from .model import weather_personalized
 from ..login.api import User
-from ..privilege.api import permission_required
-
-URL_PREFIX = 'weather'
-
 
 cf = configparser.ConfigParser()
 cf.read('app/homepage.config')
@@ -20,7 +16,6 @@ KEY = cf.get('config', 'KEY')
 
 
 @weather.route('/weatherData', methods=['POST'])
-@permission_required(URL_PREFIX + '/weatherData')
 @cross_origin()
 def weatherData():
 
@@ -73,7 +68,6 @@ def weatherData():
 
 
 @weather.route('/weatherPersonalizedSave', methods=['POST'])
-@permission_required(URL_PREFIX + '/weatherPersonalizedSave')
 @cross_origin()
 def weatherPersonalizedSave():
     try:
