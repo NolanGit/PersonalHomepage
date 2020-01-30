@@ -9,8 +9,8 @@ from . import privilege
 from functools import wraps
 from flask_cors import cross_origin
 from flask import session, redirect, url_for, current_app, flash, Response, request, jsonify, abort
-from .model import role, privilege_role
-from .model import privilege as privilege_model
+from ..model.privilege_model import role, privilege_role
+from ..model.privilege_model import privilege as privilege_model
 from ..common_func import CommonFunc
 from ..model.login_model import user
 
