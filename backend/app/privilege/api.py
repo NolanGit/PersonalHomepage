@@ -12,7 +12,7 @@ from flask import session, redirect, url_for, current_app, flash, Response, requ
 from .model import role, privilege_role
 from .model import privilege as privilege_model
 from ..common_func import CommonFunc
-from ..login.model import user
+from ..model.login_model import user
 
 pool0 = redis.ConnectionPool(host='localhost', port=6379, decode_responses=True, db=0)
 pool1 = redis.ConnectionPool(host='localhost', port=6379, decode_responses=True, db=1)
