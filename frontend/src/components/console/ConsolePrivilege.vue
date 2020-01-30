@@ -283,7 +283,9 @@ export default {
     },
     //角色新增
     roleAdd() {
-      this.edit.roleId = 0;
+      this.edit.roleEditRoleId = 0;
+      this.edit.roleEditName = "";
+      this.edit.roleEditRemark = "";
       this.edit.roleEditAction = "new";
       this.edit.title = "新增角色";
       this.edit.visible = true;
