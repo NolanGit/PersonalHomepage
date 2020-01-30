@@ -7,7 +7,7 @@
             <div class="td__p--label td--label">请输入权限名称：</div>
             <el-input
               class="width--medium margin_right-small"
-              v-model="name"
+              v-model="privilegeName"
               size="small"
               placeholder="请输入"
             ></el-input>
@@ -16,7 +16,7 @@
             <div class="td__p--label td--label">请输入权限标识：</div>
             <el-input
               class="width--medium margin_right-small"
-              v-model="mark"
+              v-model="privilegeMark"
               size="small"
               placeholder="请输入"
             ></el-input>
@@ -25,7 +25,7 @@
             <div class="td__p--label td--label">请输入备注：</div>
             <el-input
               class="width--medium margin_right-small"
-              v-model="remark"
+              v-model="privilegeRemark"
               size="small"
               placeholder="请输入"
             ></el-input>
@@ -62,9 +62,9 @@ export default {
       if (this.action == "new") {
         var para = {
           privilege_id: this.privilegeId,
-          name: this.name,
-          mark: this.mark,
-          remark: this.remark
+          name: this.privilegeName,
+          mark: this.privilegeMark,
+          remark: this.privilegeRemark
         };
         privilegeEdit(para).then(data => {
           if (data["code"] !== 200) {

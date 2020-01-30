@@ -107,7 +107,7 @@
                     class="noMargin"
                     size="mini"
                     plain
-                    type="primary"
+                    type="danger"
                     @click="privilegeDisableFront(scope.row.id)"
                   >禁用</el-button>
                   <el-button
@@ -130,8 +130,7 @@
                     v-show="scope.row.is_valid==0"
                     class="noMargin"
                     size="mini"
-                    plain
-                    type="primary"
+                    type="danger"
                     @click="privilegeDeleteFront(scope.row.id)"
                   >删除</el-button>
                 </template>
@@ -382,7 +381,7 @@ export default {
     },
     //角色删除
     roleDeleteFront(role_id) {
-      this.$confirm("确认停止并删除定时任务吗?", "提示", {}).then(() => {
+      this.$confirm("确认删除吗?", "提示", {}).then(() => {
         var para = {
           role_id: role_id
         };
@@ -492,7 +491,29 @@ export default {
           this.privilegeGetFront();
         }
       });
-    }
+    },
+    //权限删除
+    privilegeDeleteFront(privilege_id) {
+      this.$confirm("确认删除吗?", "提示", {}).then(() => {
+        var para = {
+          privilege_id: privilege_id
+        };
+        privilegeDelete(para).then(data => {
+          if (data["code"] !== 200) {
+            this.$message({
+              message: data["msg"],
+              type: "error"
+            });
+          } else {
+            this.$message({
+              message: data["msg"],
+              type: "success"
+            });
+            this.privilegeGetFront();
+          }
+        });
+      });
+    },
   },
   mounted() {
     this.userGetFront();
