@@ -434,6 +434,9 @@ export default {
     privilegeAdd() {
       this.edit.privilegeEditAction = "new";
       this.edit.privilegeEditPrivilegeId = 0;
+      this.edit.privilegeEditPrivilegeName = "";
+      this.edit.privilegeEditPrivilegeMark = "";
+      this.edit.privilegeEditPrivilegeRemark = "";
       this.edit.title = "新增权限";
       this.edit.visible = true;
       this.edit.type = "privilege";
