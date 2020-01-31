@@ -20,7 +20,7 @@
         <el-card class="left-side-box-card">
           <div v-if="activeSystem=='用户设置'">
             <el-button size="small" type="primary" @click="userAdd()">新增用户</el-button>
-            <el-table :data="userData" stripe style="width: 100%">
+            <el-table size="mini" height="400" sortable :data="userData" stripe style="width: 100%">
               <!-- <el-table-column prop="id" label="ID" width="80"></el-table-column> -->
               <el-table-column prop="name" label="姓名" width="120"></el-table-column>
               <el-table-column prop="login_name" label="登录名" width="180"></el-table-column>
@@ -42,7 +42,7 @@
           </div>
           <div v-if="activeSystem=='角色对应权限设置'">
             <el-button size="small" type="primary" @click="roleAdd()">新增角色</el-button>
-            <el-table :data="roleData" stripe style="width: 100%">
+            <el-table size="mini" height="400" sortable :data="roleData" stripe style="width: 100%">
               <!-- <el-table-column prop="id" label="ID" width="80"></el-table-column> -->
               <el-table-column prop="name" label="名称" width="180"></el-table-column>
               <el-table-column prop="remark" label="备注" width="180"></el-table-column>
@@ -94,7 +94,7 @@
           </div>
           <div v-if="activeSystem=='权限设置'">
             <el-button size="small" type="primary" @click="privilegeAdd()">新增权限</el-button>
-            <el-table :data="privilegeData" stripe style="width: 100%">
+            <el-table size="mini" height="400" sortable :data="privilegeData" stripe style="width: 100%">
               <!-- <el-table-column prop="id" label="ID" width="80"></el-table-column> -->
               <el-table-column prop="name" label="名称" width="200"></el-table-column>
               <el-table-column prop="mark" label="标识" width="230"></el-table-column>
@@ -518,7 +518,7 @@ export default {
           }
         });
       });
-    },
+    }
   },
   mounted() {
     this.userGetFront();

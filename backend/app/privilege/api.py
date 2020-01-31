@@ -15,12 +15,15 @@ from ..model.privilege_model import privilege as privilege_model
 from ..common_func import CommonFunc
 from .privilege_control import privilegeFunction
 from ..privilege.privilege_control import user_list_get, role_list_get, privilege_list_get, privilege_role_list_get
+from ..privilege.privilege_control import permission_required
 
+URL_PREFIX = '/privilege'
 cf = CommonFunc()
 
 
 # 用户列表获取（带有用户的角色信息）
 @privilege.route('/userGet', methods=['POST'])
+@permission_required(URL_PREFIX + '/userGet')
 @cross_origin()
 def userGet():
 
@@ -50,6 +53,7 @@ def userGet():
 
 # 用户信息修改
 @privilege.route('/userRoleChange', methods=['POST'])
+@permission_required(URL_PREFIX + '/userRoleChange')
 @cross_origin()
 def userRoleChange():
     ALLOWED_TIME_SPAN = 100  # 盐过期X秒内允许修改，否则需要重新登录
@@ -80,6 +84,7 @@ def userRoleChange():
 
 # 角色列表获取
 @privilege.route('/roleGet', methods=['GET'])
+@permission_required(URL_PREFIX + '/roleGet')
 @cross_origin()
 def roleGet():
     try:
@@ -92,6 +97,7 @@ def roleGet():
 
 # 角色具有的权限列表获取
 @privilege.route('/rolePrivilegeGet', methods=['POST'])
+@permission_required(URL_PREFIX + '/rolePrivilegeGet')
 @cross_origin()
 def rolePrivilegeGet():
     try:
@@ -113,6 +119,7 @@ def rolePrivilegeGet():
 
 # 角色对应权限修改
 @privilege.route('/rolePrivilegeEdit', methods=['POST'])
+@permission_required(URL_PREFIX + '/rolePrivilegeEdit')
 @cross_origin()
 def rolePrivilegeEdit():
     try:
@@ -134,6 +141,7 @@ def rolePrivilegeEdit():
 
 # 角色信息新增和修改
 @privilege.route('/roleEdit', methods=['POST'])
+@permission_required(URL_PREFIX + '/roleEdit')
 @cross_origin()
 def roleEdit():
     try:
@@ -153,6 +161,7 @@ def roleEdit():
 
 # 角色禁用
 @privilege.route('/roleDisable', methods=['POST'])
+@permission_required(URL_PREFIX + '/roleDisable')
 @cross_origin()
 def roleDisable():
     try:
@@ -168,6 +177,7 @@ def roleDisable():
 
 # 角色启用
 @privilege.route('/roleEnable', methods=['POST'])
+@permission_required(URL_PREFIX + '/roleEnable')
 @cross_origin()
 def roleEnable():
     try:
@@ -183,6 +193,7 @@ def roleEnable():
 
 # 角色删除
 @privilege.route('/roleDelete', methods=['POST'])
+@permission_required(URL_PREFIX + '/roleDelete')
 @cross_origin()
 def roleDelete():
     try:
@@ -202,6 +213,7 @@ def roleDelete():
 
 #权限列表获取
 @privilege.route('/privilegeGet', methods=['GET'])
+@permission_required(URL_PREFIX + '/privilegeGet')
 @cross_origin()
 def privilegeGet():
     try:
@@ -214,6 +226,7 @@ def privilegeGet():
 
 #权限新增和修改
 @privilege.route('/privilegeEdit', methods=['POST'])
+@permission_required(URL_PREFIX + '/privilegeEdit')
 @cross_origin()
 def privilegeEdit():
     try:
@@ -234,6 +247,7 @@ def privilegeEdit():
 
 # 权限禁用
 @privilege.route('/privilegeDisable', methods=['POST'])
+@permission_required(URL_PREFIX + '/privilegeDisable')
 @cross_origin()
 def privilegeDisable():
     try:
@@ -249,6 +263,7 @@ def privilegeDisable():
 
 # 权限启用
 @privilege.route('/privilegeEnable', methods=['POST'])
+@permission_required(URL_PREFIX + '/privilegeEnable')
 @cross_origin()
 def privilegeEnable():
     try:
@@ -264,6 +279,7 @@ def privilegeEnable():
 
 # 权限删除
 @privilege.route('/privilegeDelete', methods=['POST'])
+@permission_required(URL_PREFIX + '/privilegeDelete')
 @cross_origin()
 def privilegeDelete():
     try:

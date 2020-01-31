@@ -156,6 +156,7 @@ class privilegeFunction(object):
             更新角色的权限列表到redis
             args : role_id(Int)
         '''
+        print('刷新角色id为[%s]具有的的权限列表' % role_id)
         is_valid = role.get(role.id == role_id).is_valid
         if is_valid == 0:
             return
@@ -175,7 +176,7 @@ class privilegeFunction(object):
         '''
         privilege_role_list = privilege_role_list_get()
         affected_role_id_set = set(cf.dict_list_get_all_element(privilege_role_list, 'privilege_id', privilege_id, 'role_id'))
-        print('修改权限%s被影响的角色id有%s' % (privilege_id, str(affected_role_id_set)))
+        print('修改权限id[%s]被影响的角色id有%s' % (privilege_id, str(affected_role_id_set)))
         for affected_role_id in affected_role_id_set:
             self.flush_role_privilege_to_redis(affected_role_id)
 
