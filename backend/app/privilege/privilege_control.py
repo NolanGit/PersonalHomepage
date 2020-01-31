@@ -73,6 +73,66 @@ def permission_required(privilege):
     return decorator
 
 
+# 获取生效中的用户列表
+def user_list_get():
+    result = []
+    user_query = user.select().where(user.is_valid != -1).order_by(user.id).dicts()
+    for row in user_query:
+        result.append({
+            'id': row['id'],
+            'name': row['name'],
+            'login_name': row['login_name'],
+            'role_id': row['role_id'],
+            'create_time': row['create_time'],
+            'update_time': row['update_time'],
+        })
+    return result
+
+
+# 获取未被删除的角色
+def role_list_get():
+    result = []
+    role_query = role.select().where(role.is_valid != -1).order_by(role.id).dicts()
+    for row in role_query:
+        result.append({
+            'id': row['id'],
+            'name': row['name'],
+            'is_valid': row['is_valid'],
+            'remark': row['remark'],
+            'update_time': row['update_time'],
+        })
+    return result
+
+
+# 获取未被删除的权限
+def privilege_list_get():
+    result = []
+    privilege_query = privilege_model.select().where(privilege_model.is_valid != -1).order_by(privilege_model.id).dicts()
+    for row in privilege_query:
+        result.append({
+            'id': row['id'],
+            'name': row['name'],
+            'mark': row['mark'],
+            'remark': row['remark'],
+            'is_valid': row['is_valid'],
+            'update_time': row['update_time'],
+        })
+    return result
+
+
+# 获取有效的角色权限对应关系
+def privilege_role_list_get():
+    result = []
+    privilege_role_query = privilege_role.select().where(privilege_role.is_valid == 1).order_by(privilege_role.id).dicts()
+    for row in privilege_role_query:
+        result.append({
+            'id': row['id'],
+            'privilege_id': row['privilege_id'],
+            'role_id': row['role_id'],
+        })
+    return result
+
+
 # 权限相关方法
 class privilegeFunction(object):
     '''
@@ -91,9 +151,9 @@ class privilegeFunction(object):
         #获取redis连接
         return redis.Redis(connection_pool=pool1)
 
-    def flush_user_privilege_to_redis(self, role_id):
+    def flush_role_privilege_to_redis(self, role_id):
         '''
-            存用户的权限列表到redis
+            更新角色的权限列表到redis
             args : role_id(Int)
         '''
         is_valid = role.get(role.id == role_id).is_valid
@@ -106,7 +166,18 @@ class privilegeFunction(object):
                 self.get_redis_conn1().rpush(role_id, privilege_model.get(privilege_model.id == single_privilege_role_query['privilege_id']).mark)
         else:
             privilegeFunction().get_redis_conn1().delete(role_id)
-            self.flush_user_privilege_to_redis(role_id)
+            self.flush_role_privilege_to_redis(role_id)
+
+    def flush_privilege_which_belongs_to_role_with_target_privilege_to_redis(self, privilege_id):
+        '''
+            接受一个权限id，刷新所有具有此权限的角色的拥有的权限列表到redis
+            args : privilege_id(Int)
+        '''
+        privilege_role_list = privilege_role_list_get()
+        affected_role_id_set = set(cf.dict_list_get_all_element(privilege_role_list, 'privilege_id', privilege_id, 'role_id'))
+        print('修改权限%s被影响的角色id有%s' % (privilege_id, str(affected_role_id_set)))
+        for affected_role_id in affected_role_id_set:
+            self.flush_role_privilege_to_redis(affected_role_id)
 
     def set_user_to_redis(self, user_instance, ip):
         '''
@@ -130,5 +201,5 @@ class privilegeFunction(object):
     def init_user_and_privilege(self, user_id, ip):
         user_instance = user.get(user.id == user_id)
         user_key = self.set_user_to_redis(user_instance, ip)
-        self.flush_user_privilege_to_redis(user_instance.role_id)
+        self.flush_role_privilege_to_redis(user_instance.role_id)
         return user_key
