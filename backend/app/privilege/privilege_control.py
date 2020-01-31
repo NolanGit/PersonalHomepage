@@ -156,7 +156,7 @@ class privilegeFunction(object):
             更新角色的权限列表到redis
             args : role_id(Int)
         '''
-        print('刷新角色id为[%s]具有的的权限列表' % role_id)
+        print('刷新角色id为[%s]具有的权限列表' % role_id)
         is_valid = role.get(role.id == role_id).is_valid
         if is_valid == 0:
             return
@@ -166,6 +166,7 @@ class privilegeFunction(object):
             for single_privilege_role_query in privilege_role_query:
                 self.get_redis_conn1().rpush(role_id, privilege_model.get(privilege_model.id == single_privilege_role_query['privilege_id']).mark)
         else:
+            print('检测到存在角色id为[%s]的缓存，即将删除' % role_id)
             privilegeFunction().get_redis_conn1().delete(role_id)
             self.flush_role_privilege_to_redis(role_id)
 
