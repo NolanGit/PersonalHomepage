@@ -19,6 +19,7 @@ from ..privilege.privilege_control import permission_required
 
 URL_PREFIX = '/privilege'
 cf = CommonFunc()
+pf = privilegeFunction()
 
 
 # 用户列表获取（带有用户的角色信息）
@@ -45,6 +46,37 @@ def userGet():
                 else:
                     single_user['is_edit'] = 0
         return jsonify({'code': 200, 'msg': '成功！', 'data': user_list})
+    except Exception as e:
+        traceback.print_exc()
+        response = {'code': 500, 'msg': '失败！错误信息：' + str(e) + '，请联系管理员。', 'data': []}
+        return jsonify(response)
+
+
+# 用户禁用
+@privilege.route('/userDisable', methods=['POST'])
+@permission_required(URL_PREFIX + '/userDisable')
+@cross_origin()
+def userDisable():
+    try:
+        user_id = request.get_json()['user_id']
+        user.update(is_valid=0, update_time=datetime.datetime.now()).where(user.id == user_id).execute()
+        pf.del_user_id_to_redis(user_id)
+        return jsonify({'code': 200, 'msg': '成功！'})
+    except Exception as e:
+        traceback.print_exc()
+        response = {'code': 500, 'msg': '失败！错误信息：' + str(e) + '，请联系管理员。', 'data': []}
+        return jsonify(response)
+
+
+# 用户启用
+@privilege.route('/userEnable', methods=['POST'])
+@permission_required(URL_PREFIX + '/userEnable')
+@cross_origin()
+def userEnable():
+    try:
+        user_id = request.get_json()['user_id']
+        user.update(is_valid=1, update_time=datetime.datetime.now()).where(user.id == user_id).execute()
+        return jsonify({'code': 200, 'msg': '成功！'})
     except Exception as e:
         traceback.print_exc()
         response = {'code': 500, 'msg': '失败！错误信息：' + str(e) + '，请联系管理员。', 'data': []}
@@ -79,6 +111,26 @@ def userRoleChange():
         return jsonify(response)
     except Exception as e:
         response = {'code': 500, 'msg': e, 'data': {}}
+        return jsonify(response)
+
+
+# 角色删除
+@privilege.route('/userDelete', methods=['POST'])
+@permission_required(URL_PREFIX + '/userDelete')
+@cross_origin()
+def userDelete():
+    try:
+        user_id = request.get_json()['user_id']
+        user_status = user.get(user.id == user_id).is_valid
+        if user_status == 0:
+            user.update(is_valid=-1, update_time=datetime.datetime.now()).where(user.id == user_id).execute()
+            pf.del_user_id_to_redis(user_id)
+            return jsonify({'code': 200, 'msg': '成功！'})
+        else:
+            return jsonify({'code': 500, 'msg': '失败！删除前请先禁用角色'})
+    except Exception as e:
+        traceback.print_exc()
+        response = {'code': 500, 'msg': '失败！错误信息：' + str(e) + '，请联系管理员。', 'data': []}
         return jsonify(response)
 
 
@@ -131,7 +183,7 @@ def rolePrivilegeEdit():
             data_source.append((single_checked_privilege_id, role_id, 1))
         field = [privilege_role.privilege_id, privilege_role.role_id, privilege_role.is_valid]
         privilege_role.insert_many(data_source, field).execute()
-        privilegeFunction().flush_role_privilege_to_redis(role_id)
+        pf.flush_role_privilege_to_redis(role_id)
         response = {'code': 200, 'msg': '成功'}
         return jsonify(response)
     except Exception as e:
@@ -167,7 +219,7 @@ def roleDisable():
     try:
         role_id = request.get_json()['role_id']
         role.update(is_valid=0, update_time=datetime.datetime.now()).where(role.id == role_id).execute()
-        privilegeFunction().del_role_to_redis(role_id)
+        pf.del_role_to_redis(role_id)
         return jsonify({'code': 200, 'msg': '成功！'})
     except Exception as e:
         traceback.print_exc()
@@ -183,7 +235,7 @@ def roleEnable():
     try:
         role_id = request.get_json()['role_id']
         role.update(is_valid=1, update_time=datetime.datetime.now()).where(role.id == role_id).execute()
-        privilegeFunction().flush_role_privilege_to_redis(role_id)
+        pf.flush_role_privilege_to_redis(role_id)
         return jsonify({'code': 200, 'msg': '成功！'})
     except Exception as e:
         traceback.print_exc()
@@ -201,7 +253,7 @@ def roleDelete():
         role_status = role.get(role.id == role_id).is_valid
         if role_status == 0:
             role.update(is_valid=-1, update_time=datetime.datetime.now()).where(role.id == role_id).execute()
-            privilegeFunction().del_role_to_redis(role_id)
+            pf.del_role_to_redis(role_id)
             return jsonify({'code': 200, 'msg': '成功！'})
         else:
             return jsonify({'code': 500, 'msg': '失败！删除前请先禁用角色'})
@@ -259,7 +311,7 @@ def privilegeDisable():
     try:
         privilege_id = request.get_json()['privilege_id']
         privilege_model.update(is_valid=0, update_time=datetime.datetime.now()).where(privilege_model.id == privilege_id).execute()
-        privilegeFunction().flush_privilege_which_belongs_to_role_with_target_privilege_to_redis(privilege_id)
+        pf.flush_privilege_which_belongs_to_role_with_target_privilege_to_redis(privilege_id)
         return jsonify({'code': 200, 'msg': '成功！'})
     except Exception as e:
         traceback.print_exc()
@@ -275,7 +327,7 @@ def privilegeEnable():
     try:
         privilege_id = request.get_json()['privilege_id']
         privilege_model.update(is_valid=1, update_time=datetime.datetime.now()).where(privilege_model.id == privilege_id).execute()
-        privilegeFunction().flush_privilege_which_belongs_to_role_with_target_privilege_to_redis(privilege_id)
+        pf.flush_privilege_which_belongs_to_role_with_target_privilege_to_redis(privilege_id)
         return jsonify({'code': 200, 'msg': '成功！'})
     except Exception as e:
         traceback.print_exc()
@@ -293,7 +345,7 @@ def privilegeDelete():
         privilege_status = privilege_model.get(privilege_model.id == privilege_id).is_valid
         if privilege_status == 0:
             privilege_model.update(is_valid=-1, update_time=datetime.datetime.now()).where(privilege_model.id == privilege_id).execute()
-            privilegeFunction().flush_privilege_which_belongs_to_role_with_target_privilege_to_redis(privilege_id)
+            pf.flush_privilege_which_belongs_to_role_with_target_privilege_to_redis(privilege_id)
             return jsonify({'code': 200, 'msg': '成功！'})
         else:
             return jsonify({'code': 500, 'msg': '失败！删除前请先禁用权限'})

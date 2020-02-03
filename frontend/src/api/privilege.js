@@ -6,6 +6,13 @@ export const userGet = params => { return axios.post(`${base}/privilege/userGet`
 
 export const userRoleChange = params => { return axios.post(`${base}/privilege/userRoleChange`, params).then(res => res.data) }
 
+export const userDisable = params => { return axios.post(`${base}/privilege/userDisable`, params).then(res => res.data) }
+
+export const userEnable = params => { return axios.post(`${base}/privilege/userEnable`, params).then(res => res.data) }
+
+export const userDelete = params => { return axios.post(`${base}/privilege/userDelete`, params).then(res => res.data) }
+
+
 
 export const roleGet = params => { return axios.get(`${base}/privilege/roleGet`, params).then(res => res.data) }
 

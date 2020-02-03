@@ -73,7 +73,7 @@ def permission_required(privilege):
     return decorator
 
 
-# 获取生效中的用户列表
+# 获取未被删除的用户列表
 def user_list_get():
     result = []
     user_query = user.select().where(user.is_valid != -1).order_by(user.id).dicts()
@@ -107,7 +107,7 @@ def role_list_get():
 # 获取未被删除的权限
 def privilege_list_get():
     result = []
-    privilege_query = privilege_model.select().where(privilege_model.is_valid != -1).order_by(privilege_model.id).dicts()
+    privilege_query = privilege_model.select().where(privilege_model.is_valid != -1).order_by(-privilege_model.id).dicts()
     for row in privilege_query:
         result.append({
             'id': row['id'],
@@ -190,12 +190,15 @@ class privilegeFunction(object):
         random_str = cf.random_str(40)
         user_key = cf.md5_it(random_str + user_instance.password)
         self.get_redis_conn0().set(user_key, user_instance.id, 36000)
-        dict = {'password': user_instance.password, 'ip': ip, 'random_str': random_str, 'role_id': user_instance.role_id}
+        dict = {'password': user_instance.password, 'ip': ip, 'random_str': random_str, 'role_id': user_instance.role_id, 'login_time': datetime.datetime.now()}
         self.get_redis_conn0().hmset(user_instance.id, dict)
         return user_key
 
-    def del_user_to_redis(self, user_key):
+    def del_user_key_to_redis(self, user_key):
         self.get_redis_conn0().delete(user_key)
+
+    def del_user_id_to_redis(self, user_id):
+        self.get_redis_conn0().delete(user_id)
 
     def del_role_to_redis(self, role_id):
         self.get_redis_conn1().delete(role_id)

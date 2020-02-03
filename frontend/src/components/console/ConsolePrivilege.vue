@@ -34,6 +34,22 @@
               <el-table-column label="操作">
                 <template slot-scope="scope">
                   <el-button
+                    v-show="scope.row.is_valid==1"
+                    class="noMargin"
+                    size="mini"
+                    plain
+                    type="danger"
+                    @click="userDisableFront(scope.row.id)"
+                  >禁用</el-button>
+                  <el-button
+                    v-show="scope.row.is_valid==0"
+                    class="noMargin"
+                    size="mini"
+                    plain
+                    type="primary"
+                    @click="userEnableFront(scope.row.id)"
+                  >启用</el-button>
+                  <el-button
                     v-if="scope.row.is_edit==1"
                     class="noMargin"
                     size="mini"
@@ -41,6 +57,13 @@
                     type="primary"
                     @click="userSetting(scope.row.login_name)"
                   >修改</el-button>
+                  <el-button
+                    v-show="scope.row.is_valid==0"
+                    class="noMargin"
+                    size="mini"
+                    type="danger"
+                    @click="userDeleteFront(scope.row.id)"
+                  >删除</el-button>
                 </template>
               </el-table-column>
             </el-table>
@@ -112,7 +135,7 @@
             <el-table size="mini" height="400" :data="privilegeData" stripe style="width: 100%">
               <!-- <el-table-column prop="id" label="ID" width="80"></el-table-column> -->
               <el-table-column prop="name" sortable label="名称" width="200"></el-table-column>
-              <el-table-column prop="mark" label="标识" width="230"></el-table-column>
+              <el-table-column prop="mark" sortable label="标识" width="230"></el-table-column>
               <el-table-column prop="remark" label="备注" width="300"></el-table-column>
               <el-table-column prop="is_disabled" label="是否禁用" width="80"></el-table-column>
               <el-table-column label="操作">
@@ -199,6 +222,9 @@
 import axios from "axios";
 import {
   userGet,
+  userDisable,
+  userEnable,
+  userDelete,
   roleGet,
   rolePrivilegeGet,
   roleDisable,
@@ -287,6 +313,68 @@ export default {
       this.edit.type = "user";
       this.edit.login_name = login_name;
       this.edit.userEditAction = "edit";
+    },
+    //用户禁用
+    userDisableFront(user_id) {
+      var para = {
+        user_id: user_id
+      };
+      userDisable(para).then(data => {
+        if (data["code"] !== 200) {
+          this.$message({
+            message: data["msg"],
+            type: "error"
+          });
+        } else {
+          this.$message({
+            message: data["msg"],
+            type: "success"
+          });
+          this.userGetFront();
+        }
+      });
+    },
+    //用户启用
+    userEnableFront(user_id) {
+      var para = {
+        user_id: user_id
+      };
+      userEnable(para).then(data => {
+        if (data["code"] !== 200) {
+          this.$message({
+            message: data["msg"],
+            type: "error"
+          });
+        } else {
+          this.$message({
+            message: data["msg"],
+            type: "success"
+          });
+          this.userGetFront();
+        }
+      });
+    },
+    //用户删除
+    userDeleteFront(user_id) {
+      this.$confirm("确认删除吗?", "提示", {}).then(() => {
+        var para = {
+          user_id: user_id
+        };
+        userDelete(para).then(data => {
+          if (data["code"] !== 200) {
+            this.$message({
+              message: data["msg"],
+              type: "error"
+            });
+          } else {
+            this.$message({
+              message: data["msg"],
+              type: "success"
+            });
+            this.userGetFront();
+          }
+        });
+      });
     },
 
     // 【以下为角色相关方法】
