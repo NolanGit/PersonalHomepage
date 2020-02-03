@@ -163,7 +163,11 @@
         direction="btt"
       >
         <div v-if="edit.type=='user' & edit.visible">
-          <ConsolePrivilegeEditUser :login_name="edit.login_name" :action="edit.userEditAction" />
+          <ConsolePrivilegeEditUser
+            :login_name="edit.login_name"
+            :action="edit.userEditAction"
+            @close="close()"
+          />
         </div>
         <div v-if="edit.type=='role' & edit.visible">
           <ConsolePrivilegeEditRole
@@ -242,6 +246,9 @@ export default {
     //各组件编辑窗口关闭后回调
     close() {
       this.edit.visible = false;
+      if (this.edit.type == "user") {
+        this.userGetFront();
+      }
       if (this.edit.type == "role") {
         this.roleGetFront();
       }
@@ -252,11 +259,11 @@ export default {
 
     // 【以下为用户相关方法】
     //获取数据
-    userAdd(){
+    userAdd() {
       this.edit.title = "新增用户";
       this.edit.visible = true;
       this.edit.type = "user";
-      this.edit.userEditAction = 'new';
+      this.edit.userEditAction = "new";
     },
     userGetFront() {
       var para = {
@@ -279,7 +286,7 @@ export default {
       this.edit.visible = true;
       this.edit.type = "user";
       this.edit.login_name = login_name;
-      this.edit.userEditAction = 'edit';
+      this.edit.userEditAction = "edit";
     },
 
     // 【以下为角色相关方法】

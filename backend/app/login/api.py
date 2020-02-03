@@ -49,7 +49,7 @@ def check_pass(login_name, password):
             if server_timestamp < salt_expire_time:
                 password2compare = cf.md5_it(password_without_salt + salt)
                 if password == password2compare:
-                    response = {'code': 200, 'msg': '成功！', 'user': row['name'], 'user_id': row['id']}
+                    response = {'code': 200, 'msg': '验证成功！', 'user': row['name'], 'user_id': row['id']}
                     return (True, response)
                 else:
                     response = {

@@ -177,7 +177,7 @@ export default {
         this.password === undefined ||
         this.password.length == 0
       ) {
-        this.$notify.error({
+        this.$message({
           message: "请填写密码",
           type: "error"
         });
@@ -270,7 +270,7 @@ export default {
         this.passwordNew.length == 0 ||
         this.role_id == ""
       ) {
-        this.$notify.error({
+        this.$message({
           message: "请将表单填写完整后提交",
           type: "error"
         });
@@ -294,7 +294,7 @@ export default {
               message: data["msg"],
               type: "success"
             });
-            this.passwordNew = "";
+            this.$emit("close");
           }
         });
       }
