@@ -83,6 +83,7 @@ def user_list_get():
             'name': row['name'],
             'login_name': row['login_name'],
             'role_id': row['role_id'],
+            'is_valid': row['is_valid'],
             'create_time': row['create_time'],
             'update_time': row['update_time'],
         })
