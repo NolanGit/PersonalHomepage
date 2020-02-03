@@ -13,6 +13,9 @@ from flask import render_template, session, redirect, url_for, current_app, flas
 from ..model.login_model import user
 from ..privilege.api import privilegeFunction
 
+cf = CommonFunc()
+ALLOWED_TIME_SPAN = 100  # 盐过期X秒内允许修改密码，否则需要重新登录
+
 
 class User(object):
 
@@ -44,7 +47,7 @@ def check_pass(login_name, password):
             salt = row['salt']
             server_timestamp = int(time.mktime(datetime.datetime.now().timetuple()))
             if server_timestamp < salt_expire_time:
-                password2compare = CommonFunc().md5_it(password_without_salt + salt)
+                password2compare = cf.md5_it(password_without_salt + salt)
                 if password == password2compare:
                     response = {'code': 200, 'msg': '成功！', 'user': row['name'], 'user_id': row['id']}
                     return (True, response)
@@ -91,7 +94,7 @@ def userLogin():
 def userLoginGetSalt():
     try:
         login_name = request.get_json()['login_name']
-        salt = CommonFunc().random_str(40)
+        salt = cf.random_str(40)
         user_query = user.select().where(user.login_name == login_name).dicts()
         for row in user_query:
             stable_salt = row['stable_salt']
@@ -106,7 +109,6 @@ def userLoginGetSalt():
 @login.route('/userChangePassword', methods=['POST'])
 @cross_origin()
 def userChangePassword():
-    ALLOWED_TIME_SPAN = 100  # 盐过期X秒内允许修改密码，否则需要重新登录
     try:
         login_name = request.get_json()['login_name']
         user_query = user.select().where(user.login_name == login_name).dicts()
@@ -132,38 +134,25 @@ def userChangePassword():
         response = {'code': 500, 'msg': e, 'data': {}}
         return jsonify(response)
 
-        
+
 @login.route('/userAdd', methods=['POST'])
 @cross_origin()
 def userAdd():
-    ALLOWED_TIME_SPAN = 100  # 盐过期X秒内允许修改密码，否则需要重新登录
     try:
         login_name = request.get_json()['login_name']
         name = request.get_json()['name']
         role_id = request.get_json()['role_id']
         password = request.get_json()['password']
         stable_salt = request.get_json()['stable_salt']
-        user_key=request.cookies.get('user_key')
-
-        user_query = user.select().where(user.login_name == login_name).dicts()
-        if len(user_query) == 0:
-            response = {
-                'code': 403,
-                'msg': '用户名或密码错误！',
-            }
-            return (False, response)
+        is_login_name_exist = cf.is_data_existed_in_db(user, user.login_name, login_name)
+        if is_login_name_exist:
+            response = {'code': 406, 'msg': '已经存在此登录名的用户，请修改您的登录名'}
+            return jsonify(response)
         else:
-            for row in user_query:
-                salt_expire_time = row['salt_expire_time']
-                server_timestamp = int(time.mktime(datetime.datetime.now().timetuple()))
-                if server_timestamp < salt_expire_time + ALLOWED_TIME_SPAN:
-                    stable_salt = request.get_json()['stable_salt']
-                    password = request.get_json()['password']
-                    user.update(stable_salt=stable_salt, password=password, update_time=datetime.datetime.now()).where(user.login_name == login_name).execute()
-                    response = {'code': 200, 'msg': '成功'}
-                else:
-                    response = {'code': 403, 'msg': '登录状态已过期，请返回并重新验证密码'}
-        return jsonify(response)
+            user.create(
+                name=name, login_name=login_name, role_id=role_id, stable_salt=stable_salt, password=password, is_valid=1, create_time=datetime.datetime.now(), update_time=datetime.datetime.now())
+            response = {'code': 200, 'msg': '成功'}
     except Exception as e:
         response = {'code': 500, 'msg': e, 'data': {}}
+    finally:
         return jsonify(response)

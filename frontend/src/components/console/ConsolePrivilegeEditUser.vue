@@ -44,12 +44,21 @@
           </div>
         </div>
       </div>
-      <div v-if="action=='new'">
+      <div class="margin_left-large" v-if="action=='new'">
         <div class="div-flex margin_bottom-medium">
           <div class="td__p--label td--label">请输入用户名称：</div>
           <el-input
             class="width--medium margin_right-small"
             v-model="userNameNew"
+            size="small"
+            placeholder="请输入"
+          ></el-input>
+        </div>
+        <div class="div-flex margin_bottom-medium">
+          <div class="td__p--label td--label">请输入用户登录名：</div>
+          <el-input
+            class="width--medium margin_right-small"
+            v-model="loginNameNew"
             size="small"
             placeholder="请输入"
           ></el-input>
@@ -64,7 +73,7 @@
             placeholder="请输入"
           ></el-input>
         </div>
-        <div class="div-flex margin_bottom-medium margin_left-large">
+        <div class="div-flex margin_bottom-medium">
           <div class="td__p--label td--label">请选择角色：</div>
           <el-select
             class="width--medium margin_right-small"
@@ -80,7 +89,7 @@
             ></el-option>
           </el-select>
         </div>
-        <el-button type="primary" size="mini" plain @click="addUser()">提交</el-button>
+        <el-button type="primary" size="mini" plain @click="userAddFront()">提交</el-button>
       </div>
     </el-row>
   </section>
@@ -93,7 +102,8 @@ import { userGet, roleGet, userRoleChange } from "../../api/privilege";
 import {
   userLogin,
   userLoginGetSalt,
-  userChangePassword
+  userChangePassword,
+  userAdd
 } from "../../api/login";
 export default {
   name: "ConsolePrivilegeEditUser",
@@ -103,7 +113,8 @@ export default {
   },
   data() {
     return {
-      userNameNew:"",
+      userNameNew: "",
+      loginNameNew: "",
       password: "",
       passwordNew: "",
       isCheckedPass: false,
@@ -249,6 +260,45 @@ export default {
           this.passwordNew = "";
         }
       });
+    },
+    userAddFront() {
+      if (
+        this.userNameNew === "" ||
+        this.userNameNew === undefined ||
+        this.userNameNew.length == 0 ||
+        this.passwordNew === "" ||
+        this.passwordNew === undefined ||
+        this.passwordNew.length == 0 ||
+        this.role_id == ""
+      ) {
+        this.$notify.error({
+          message: "请将表单填写完整后提交",
+          type: "error"
+        });
+      } else {
+        var stable_salt = this.randomString(40);
+        var para = {
+          name: this.userNameNew,
+          role_id: this.role_id,
+          login_name: this.login_name,
+          stable_salt: stable_salt,
+          password: this.md5It(this.md5It(this.passwordNew) + stable_salt)
+        };
+        userAdd(para).then(data => {
+          if (data["code"] !== 200) {
+            this.$message({
+              message: data["msg"],
+              type: "error"
+            });
+          } else {
+            this.$message({
+              message: data["msg"],
+              type: "success"
+            });
+            this.passwordNew = "";
+          }
+        });
+      }
     }
   },
   mounted() {
