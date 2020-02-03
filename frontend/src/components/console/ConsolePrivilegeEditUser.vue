@@ -49,7 +49,7 @@
           <div class="td__p--label td--label">请输入用户名称：</div>
           <el-input
             class="width--medium margin_right-small"
-            v-model="userNameNew"
+            v-model="username"
             size="small"
             placeholder="请输入"
           ></el-input>
@@ -58,7 +58,7 @@
           <div class="td__p--label td--label">请输入用户登录名：</div>
           <el-input
             class="width--medium margin_right-small"
-            v-model="loginNameNew"
+            v-model="login_name"
             size="small"
             placeholder="请输入"
           ></el-input>
@@ -113,8 +113,7 @@ export default {
   },
   data() {
     return {
-      userNameNew: "",
-      loginNameNew: "",
+      username: "",
       password: "",
       passwordNew: "",
       isCheckedPass: false,
@@ -263,9 +262,9 @@ export default {
     },
     userAddFront() {
       if (
-        this.userNameNew === "" ||
-        this.userNameNew === undefined ||
-        this.userNameNew.length == 0 ||
+        this.username === "" ||
+        this.username === undefined ||
+        this.username.length == 0 ||
         this.passwordNew === "" ||
         this.passwordNew === undefined ||
         this.passwordNew.length == 0 ||
@@ -278,7 +277,7 @@ export default {
       } else {
         var stable_salt = this.randomString(40);
         var para = {
-          name: this.userNameNew,
+          name: this.username,
           role_id: this.role_id,
           login_name: this.login_name,
           stable_salt: stable_salt,
