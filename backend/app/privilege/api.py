@@ -235,13 +235,19 @@ def privilegeEdit():
         mark = request.get_json()['mark']
         remark = request.get_json()['remark']
         if privilege_id == 0:
-            privilege_model.create(name=name, mark=mark, remark=remark, is_valid=1, update_time=datetime.datetime.now())
+            if cf.is_data_existed_in_db(privilege_model, privilege_model.name, name):
+                response = {'code': 406, 'msg': '已经存在相同名称的权限'}
+            elif cf.is_data_existed_in_db(privilege_model, privilege_model.mark, mark):
+                response = {'code': 406, 'msg': '已经存在相同标识的权限'}
+            else:
+                privilege_model.create(name=name, mark=mark, remark=remark, is_valid=1, update_time=datetime.datetime.now())
         else:
             privilege_model.update(name=name, mark=mark, remark=remark, update_time=datetime.datetime.now()).where(privilege_model.id == privilege_id).execute()
-        return jsonify({'code': 200, 'msg': '成功！'})
+        response = {'code': 200, 'msg': '成功！'}
     except Exception as e:
         traceback.print_exc()
         response = {'code': 500, 'msg': '失败！错误信息：' + str(e) + '，请联系管理员。', 'data': []}
+    finally:
         return jsonify(response)
 
 

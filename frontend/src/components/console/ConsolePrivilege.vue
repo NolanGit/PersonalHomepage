@@ -19,7 +19,12 @@
       <el-col :span="19" class="right-side-bar">
         <el-card class="left-side-box-card">
           <div v-if="activeSystem=='用户设置'">
-            <el-button size="mini" class="margin_bottom-small" type="primary" @click="userAdd()">新增用户</el-button>
+            <el-button
+              size="mini"
+              class="margin_bottom-small"
+              type="primary"
+              @click="userAdd()"
+            >新增用户</el-button>
             <el-table size="mini" height="400" :data="userData" stripe style="width: 100%">
               <!-- <el-table-column prop="id" label="ID" width="80"></el-table-column> -->
               <el-table-column prop="name" label="姓名" width="120"></el-table-column>
@@ -41,7 +46,12 @@
             </el-table>
           </div>
           <div v-if="activeSystem=='角色对应权限设置'">
-            <el-button size="mini" class="margin_bottom-small" type="primary" @click="roleAdd()">新增角色</el-button>
+            <el-button
+              size="mini"
+              class="margin_bottom-small"
+              type="primary"
+              @click="roleAdd()"
+            >新增角色</el-button>
             <el-table size="mini" height="400" :data="roleData" stripe style="width: 100%">
               <!-- <el-table-column prop="id" label="ID" width="80"></el-table-column> -->
               <el-table-column prop="name" label="名称" width="180"></el-table-column>
@@ -93,7 +103,12 @@
             </el-table>
           </div>
           <div v-if="activeSystem=='权限设置'">
-            <el-button size="mini" class="margin_bottom-small" type="primary" @click="privilegeAdd()">新增权限</el-button>
+            <el-button
+              size="mini"
+              class="margin_bottom-small"
+              type="primary"
+              @click="privilegeAdd()"
+            >新增权限</el-button>
             <el-table size="mini" height="400" :data="privilegeData" stripe style="width: 100%">
               <!-- <el-table-column prop="id" label="ID" width="80"></el-table-column> -->
               <el-table-column prop="name" sortable label="名称" width="200"></el-table-column>
@@ -148,7 +163,7 @@
         direction="btt"
       >
         <div v-if="edit.type=='user' & edit.visible">
-          <ConsolePrivilegeEditUser :login_name="edit.login_name" />
+          <ConsolePrivilegeEditUser :login_name="edit.login_name" :action="edit.userEditAction" />
         </div>
         <div v-if="edit.type=='role' & edit.visible">
           <ConsolePrivilegeEditRole
@@ -237,6 +252,12 @@ export default {
 
     // 【以下为用户相关方法】
     //获取数据
+    userAdd(){
+      this.edit.title = "新增用户";
+      this.edit.visible = true;
+      this.edit.type = "user";
+      this.edit.userEditAction = 'new';
+    },
     userGetFront() {
       var para = {
         user: sessionStorage.getItem("user").replace(/\"/g, "")
@@ -258,6 +279,7 @@ export default {
       this.edit.visible = true;
       this.edit.type = "user";
       this.edit.login_name = login_name;
+      this.edit.userEditAction = 'edit';
     },
 
     // 【以下为角色相关方法】

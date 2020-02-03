@@ -21,7 +21,7 @@
       :direction="drawer.direction"
       :size="drawer.size"
     >
-      <div class="margin-medium">
+      <div class="margin-medium" v-if="drawer.visible">
         <div v-if="activeComponent=='ConsoleScript'">
           <ConsoleScript />
         </div>

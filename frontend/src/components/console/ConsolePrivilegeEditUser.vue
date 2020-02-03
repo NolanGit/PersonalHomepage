@@ -1,28 +1,68 @@
 <template>
   <section>
     <el-row class="main-row" :gutter="20">
-      <div class="div-flex margin_bottom-medium margin_left-large" v-if="!isCheckedPass">
-        <div class="td__p--label td--label">请输入原密码：</div>
-        <el-input
-          class="width--medium margin_right-small"
-          show-password
-          v-model="password"
-          size="small"
-          placeholder="请输入"
-        ></el-input>
-        <el-button type="primary" size="mini" plain @click="checkPass()">验证</el-button>
-      </div>
-      <div v-if="isCheckedPass">
-        <div class="div-flex margin_bottom-medium margin_left-large">
-          <div class="td__p--label td--label">请输入新密码：</div>
+      <div v-if="action=='edit'">
+        <div class="div-flex margin_bottom-medium margin_left-large" v-if="!isCheckedPass">
+          <div class="td__p--label td--label">请输入原密码：</div>
           <el-input
             class="width--medium margin_right-small"
             show-password
-            v-model="passwordNew"
+            v-model="password"
             size="small"
             placeholder="请输入"
           ></el-input>
-          <el-button type="primary" size="mini" plain @click="changePass()">提交</el-button>
+          <el-button type="primary" size="mini" plain @click="checkPass()">验证</el-button>
+        </div>
+        <div v-if="isCheckedPass">
+          <div class="div-flex margin_bottom-medium margin_left-large">
+            <div class="td__p--label td--label">请输入新密码：</div>
+            <el-input
+              class="width--medium margin_right-small"
+              show-password
+              v-model="passwordNew"
+              size="small"
+              placeholder="请输入"
+            ></el-input>
+            <el-button type="primary" size="mini" plain @click="changePass()">提交</el-button>
+          </div>
+          <div class="div-flex margin_bottom-medium margin_left-large">
+            <div class="td__p--label td--label">请选择角色：</div>
+            <el-select
+              class="width--medium margin_right-small"
+              v-model="role_id"
+              size="small"
+              placeholder="请选择"
+            >
+              <el-option
+                v-for="item in roleData"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              ></el-option>
+            </el-select>
+            <el-button type="primary" size="mini" plain @click="changeRole()">提交</el-button>
+          </div>
+        </div>
+      </div>
+      <div v-if="action=='new'">
+        <div class="div-flex margin_bottom-medium">
+          <div class="td__p--label td--label">请输入用户名称：</div>
+          <el-input
+            class="width--medium margin_right-small"
+            v-model="userNameNew"
+            size="small"
+            placeholder="请输入"
+          ></el-input>
+        </div>
+        <div class="div-flex margin_bottom-medium">
+          <div class="td__p--label td--label">请输入用户密码：</div>
+          <el-input
+            class="width--medium margin_right-small"
+            v-model="passwordNew"
+            show-password
+            size="small"
+            placeholder="请输入"
+          ></el-input>
         </div>
         <div class="div-flex margin_bottom-medium margin_left-large">
           <div class="td__p--label td--label">请选择角色：</div>
@@ -39,8 +79,8 @@
               :value="item.value"
             ></el-option>
           </el-select>
-          <el-button type="primary" size="mini" plain @click="changeRole()">提交</el-button>
         </div>
+        <el-button type="primary" size="mini" plain @click="addUser()">提交</el-button>
       </div>
     </el-row>
   </section>
@@ -58,10 +98,12 @@ import {
 export default {
   name: "ConsolePrivilegeEditUser",
   props: {
-    login_name: String
+    login_name: String,
+    action: String
   },
   data() {
     return {
+      userNameNew:"",
       password: "",
       passwordNew: "",
       isCheckedPass: false,

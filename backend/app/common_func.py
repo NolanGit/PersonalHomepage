@@ -4,6 +4,7 @@ import hashlib
 
 
 class CommonFunc(object):
+
     def random_str(self, num):
         H = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
 
@@ -46,7 +47,7 @@ class CommonFunc(object):
 
     def dict_list_get_all_element(self, list, key, value, target_key):
         '''
-            获取字典列表中第一个key==value的target_key的值，index的传入可以加速
+            获取字典列表中全部的key==value的target_key的值，返回一个列表
         '''
         result = []
         for single_element in list:
@@ -55,3 +56,7 @@ class CommonFunc(object):
             else:
                 pass
         return result
+
+    def is_data_existed_in_db(self, db_class, key, target):
+        status = db_class.select().where(key == target).dicts()
+        return True if status != 0 else False
