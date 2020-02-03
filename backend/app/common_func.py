@@ -59,4 +59,4 @@ class CommonFunc(object):
 
     def is_data_existed_in_db(self, db_class, key, target):
         status = db_class.select().where(key == target).dicts()
-        return True if status != 0 else False
+        return True if len(status) != 0 else False
