@@ -45,31 +45,33 @@ export default {
       bookmarksData: [],
       show: {
         weather: false
-      },
+      }
     };
   },
   methods: {
-    userInfoFront() {
+    async userInfoFront() {
       try {
         var user = sessionStorage.getItem("user").replace(/\"/g, "");
       } catch (error) {
         var user = undefined;
       }
       this.user = user;
-      var para = {
-        user: user
-      };
-      userInfo(para).then(data => {
-        if (data["code"] !== 200) {
+      try {
+        const { data: res } = await axios.post("/userInfo", {
+          user: user
+        });
+        this.locations = res.data["locations"];
+        this.bookmarksData = res.data["bookmarks"];
+      } catch (e) {
+        if (e.response.status == 401) {
+          sessionStorage.removeItem("user");
+        } else {
           this.$message({
-            message: data["msg"],
+            message: e.response.data.msg,
             type: "error"
           });
-        } else {
-          this.locations = data.data["locations"];
-          this.bookmarksData = data.data["bookmarks"];
         }
-      });
+      }
     },
     userLoginedOrLogout(user) {
       if (user != "") {
@@ -80,7 +82,7 @@ export default {
     },
     weatherLoaded() {
       this.show.weather = true;
-    },
+    }
   },
   created() {
     this.userInfoFront();
