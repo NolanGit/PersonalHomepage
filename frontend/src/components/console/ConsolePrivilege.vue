@@ -25,6 +25,7 @@
               type="primary"
               @click="userAdd()"
             >新增用户</el-button>
+            <!-- 如果不加:key，vue会试图复用原有的组件，会产生问题 详情参见vue中:key的作用 -->
             <el-table
               :key="Math.random()"
               size="mini"
