@@ -24,6 +24,7 @@
 </template>
 
 <script>
+import axios from "axios";
 import search from "./components/Search.vue";
 import login from "./components/Login.vue";
 import weather from "./components/Weather.vue";
