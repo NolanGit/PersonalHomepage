@@ -18,7 +18,7 @@
       </el-col>
       <el-col :span="19" class="right-side-bar">
         <el-card class="left-side-box-card">
-          <div v-if="activeDiv=='用户设置'">
+          <div v-if="activeSystem=='用户设置'">
             <el-button
               size="mini"
               class="margin_bottom-small"
@@ -69,7 +69,7 @@
               </el-table-column>
             </el-table>
           </div>
-          <div v-if="activeDiv=='角色对应权限设置'">
+          <div v-if="activeSystem=='角色对应权限设置'">
             <el-button
               size="mini"
               class="margin_bottom-small"
@@ -126,7 +126,7 @@
               </el-table-column>
             </el-table>
           </div>
-          <div v-if="activeDiv=='权限设置'">
+          <div v-if="activeSystem=='权限设置'">
             <el-button
               size="mini"
               class="margin_bottom-small"
@@ -139,7 +139,6 @@
               <el-table-column prop="mark" sortable label="标识" width="230"></el-table-column>
               <el-table-column prop="remark" label="备注" width="300"></el-table-column>
               <el-table-column prop="is_disabled" label="是否禁用" width="80"></el-table-column>
-              <el-table-column prop="update_time" label="修改时间"></el-table-column>
               <el-table-column label="操作">
                 <template slot-scope="scope">
                   <el-button
@@ -249,7 +248,7 @@ export default {
   },
   data() {
     return {
-      activeSystem: "用户设置",
+      activeSystem: "",
       activeDiv:"",
       userData: [],
       roleData: [],
