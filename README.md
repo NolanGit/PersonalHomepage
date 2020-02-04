@@ -87,7 +87,13 @@
 
 
 ## 目录结构和初始化
+### 目录结构：
 
-后端代码位于/backend，后端入口文件位于/backend/run.py，前端代码位于/frontend，前端编译的产物位于/dist，clone项目后，首先在/frontend目录执行"npm i"以安装前端环境，然后使用"npm run build"编译前端项目并生成压缩后代码到dist文件夹，但由于本项目未将dist加入gitignore，所以直接运行应该也没有问题
-后端数据库为sqlite文件（PersonalHomepage\backend\data.sqlite），表和期初数已经处理完，建表语句为后端各个模块目录的model.py文件
-配置文件：两个配置文件"PersonalHomepage\backend\app\homepage.config"和"PersonalHomepage\backend\app\config.py"（todo：待补充）
+  后端代码位于/backend，后端入口文件位于/backend/run.py，前端代码位于/frontend，前端编译的产物位于/dist，clone项目后，首先在/frontend目录执行"npm i"来初始化前端环境，然后使用"npm run build"编译前端项目并生成压缩后代码到dist文件夹，但由于本项目未将dist加入gitignore，所以直接运行应该也没有问题
+  后端数据库为sqlite文件（PersonalHomepage\backend\data.sqlite），表和期初数已经处理完，建表语句为/backend/app/model下的各个文件
+### 配置文件：
+  项目顺利运行需要两个配置文件，"PersonalHomepage\backend\app\homepage.config"和"PersonalHomepage\backend\app\config.py"，已经上传了两个配置文件的demo，需要手动将“_demo”字样去掉即可，其中：
+    
+    KEY         天气api提供的key
+    SENDER      邮件发件的邮箱
+    PASSWORD    邮件发件邮箱的key
