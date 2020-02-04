@@ -23,27 +23,27 @@ class CommonFunc(object):
             获取字典列表中第一个key==value的target_key的值，index的传入可以加速
         '''
         # 不知道index情况下遍历
+        result=None
         if index == 0:
             for single_element in list:
                 if single_element[key] == value:
-                    return single_element[target_key]
-                else:
-                    return None
+                    result= single_element[target_key]
+                    break
         # 知道index情况下加速结果返回速度
         else:
             temp = True
             try:
                 temp = list[index][key] == value
-            except:
+            except Exception as e:
                 temp = False
             if temp:
-                return list[index][target_key]
+                result=list[index][target_key]
             else:
                 for single_element in list:
                     if single_element[key] == value:
-                        return single_element[target_key]
-                    else:
-                        return None
+                        result=single_element[target_key]
+                        break
+        return result
 
     def dict_list_get_all_element(self, list, key, value, target_key):
         '''
