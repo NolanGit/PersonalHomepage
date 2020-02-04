@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <el-row class="loginRow">
-      <login @user="userLoginedOrLogout" />
+      <login v-if="loginSwitch" @user="userLoginedOrLogout" />
     </el-row>
     <el-row class="searchRow">
       <search />
@@ -46,7 +46,8 @@ export default {
       bookmarksData: [],
       show: {
         weather: false
-      }
+      },
+      loginSwitch: true
     };
   },
   methods: {
@@ -66,7 +67,10 @@ export default {
       } catch (e) {
         if (e.response.status == 401) {
           sessionStorage.removeItem("user");
-          location.reload();
+          this.loginSwitch = false;
+          this.$nextTick(() => {
+            this.loginSwitch = true;
+          });
         } else {
           this.$message({
             message: e.response.data.msg,
