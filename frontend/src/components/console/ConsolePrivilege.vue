@@ -249,7 +249,7 @@ export default {
   },
   data() {
     return {
-      activeSystem: "",
+      activeSystem: "用户设置",
       userData: [],
       roleData: [],
       privilegeData: [],
