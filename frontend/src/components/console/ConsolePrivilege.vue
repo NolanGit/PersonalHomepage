@@ -360,7 +360,9 @@ export default {
         });
         this.userGetFront();
       } catch (e) {
-        console.log(res)
+        console.log(e.response)
+        console.log(e.response.data)
+        console.log(e.response.status)
         this.$message({
           message: e.data["msg"],
           type: "error"
