@@ -49,7 +49,7 @@ export default {
     };
   },
   methods: {
-    async userInfoFront() {
+    userInfoFront() {
       try {
         var user = sessionStorage.getItem("user").replace(/\"/g, "");
       } catch (error) {
@@ -57,7 +57,7 @@ export default {
       }
       this.user = user;
       try {
-        const { data: res } = await axios.post("/userInfo", {
+        const { data: res } = axios.post("/userInfo", {
           user: user
         });
         this.locations = res.data["locations"];
