@@ -361,7 +361,7 @@ export default {
         this.userGetFront();
       } catch (e) {
         this.$message({
-          message: e.response.data,msg,
+          message: e.response.data.msg,
           type: "error"
         });
       }
