@@ -355,7 +355,7 @@ export default {
         });
         console.log(res);
         this.$message({
-          message: data["msg"],
+          message: res["msg"],
           type: "success"
         });
         this.userGetFront();
