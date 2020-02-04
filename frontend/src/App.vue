@@ -66,6 +66,7 @@ export default {
       } catch (e) {
         if (e.response.status == 401) {
           sessionStorage.removeItem("user");
+          location.reload();
         } else {
           this.$message({
             message: e.response.data.msg,
