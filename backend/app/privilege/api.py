@@ -49,7 +49,7 @@ def userGet():
     except Exception as e:
         traceback.print_exc()
         response = {'code': 500, 'msg': '失败！错误信息：' + str(e) + '，请联系管理员。', 'data': []}
-        return jsonify(response)
+        return jsonify(response), 500
 
 
 # 用户禁用
@@ -65,7 +65,7 @@ def userDisable():
     except Exception as e:
         traceback.print_exc()
         response = {'code': 500, 'msg': '失败！错误信息：' + str(e) + '，请联系管理员。', 'data': []}
-        return jsonify(response)
+        return jsonify(response), 500
 
 
 # 用户启用
@@ -80,7 +80,7 @@ def userEnable():
     except Exception as e:
         traceback.print_exc()
         response = {'code': 500, 'msg': '失败！错误信息：' + str(e) + '，请联系管理员。', 'data': []}
-        return jsonify(response)
+        return jsonify(response), 500
 
 
 # 用户信息修改
@@ -111,7 +111,7 @@ def userRoleChange():
         return jsonify(response)
     except Exception as e:
         response = {'code': 500, 'msg': e, 'data': {}}
-        return jsonify(response)
+        return jsonify(response), 500
 
 
 # 角色删除
@@ -131,7 +131,7 @@ def userDelete():
     except Exception as e:
         traceback.print_exc()
         response = {'code': 500, 'msg': '失败！错误信息：' + str(e) + '，请联系管理员。', 'data': []}
-        return jsonify(response)
+        return jsonify(response), 500
 
 
 # 角色列表获取
@@ -144,7 +144,7 @@ def roleGet():
     except Exception as e:
         traceback.print_exc()
         response = {'code': 500, 'msg': '失败！错误信息：' + str(e) + '，请联系管理员。', 'data': []}
-        return jsonify(response)
+        return jsonify(response), 500
 
 
 # 角色具有的权限列表获取
@@ -166,7 +166,7 @@ def rolePrivilegeGet():
     except Exception as e:
         traceback.print_exc()
         response = {'code': 500, 'msg': '失败！错误信息：' + str(e) + '，请联系管理员。', 'data': []}
-        return jsonify(response)
+        return jsonify(response), 500
 
 
 # 角色对应权限修改
@@ -188,7 +188,7 @@ def rolePrivilegeEdit():
         return jsonify(response)
     except Exception as e:
         response = {'code': 500, 'msg': e, 'data': {}}
-        return jsonify(response)
+        return jsonify(response), 500
 
 
 # 角色信息新增和修改
@@ -208,7 +208,7 @@ def roleEdit():
     except Exception as e:
         traceback.print_exc()
         response = {'code': 500, 'msg': '失败！错误信息：' + str(e) + '，请联系管理员。', 'data': []}
-        return jsonify(response)
+        return jsonify(response), 500
 
 
 # 角色禁用
@@ -224,7 +224,7 @@ def roleDisable():
     except Exception as e:
         traceback.print_exc()
         response = {'code': 500, 'msg': '失败！错误信息：' + str(e) + '，请联系管理员。', 'data': []}
-        return jsonify(response)
+        return jsonify(response), 500
 
 
 # 角色启用
@@ -240,7 +240,7 @@ def roleEnable():
     except Exception as e:
         traceback.print_exc()
         response = {'code': 500, 'msg': '失败！错误信息：' + str(e) + '，请联系管理员。', 'data': []}
-        return jsonify(response)
+        return jsonify(response), 500
 
 
 # 角色删除
@@ -260,7 +260,7 @@ def roleDelete():
     except Exception as e:
         traceback.print_exc()
         response = {'code': 500, 'msg': '失败！错误信息：' + str(e) + '，请联系管理员。', 'data': []}
-        return jsonify(response)
+        return jsonify(response), 500
 
 
 #权限列表获取
@@ -273,7 +273,7 @@ def privilegeGet():
     except Exception as e:
         traceback.print_exc()
         response = {'code': 500, 'msg': '失败！错误信息：' + str(e) + '，请联系管理员。', 'data': []}
-        return jsonify(response)
+        return jsonify(response), 500
 
 
 #权限新增和修改
@@ -296,11 +296,11 @@ def privilegeEdit():
         else:
             privilege_model.update(name=name, mark=mark, remark=remark, update_time=datetime.datetime.now()).where(privilege_model.id == privilege_id).execute()
         response = {'code': 200, 'msg': '成功！'}
+        return jsonify(response)
     except Exception as e:
         traceback.print_exc()
         response = {'code': 500, 'msg': '失败！错误信息：' + str(e) + '，请联系管理员。', 'data': []}
-    finally:
-        return jsonify(response)
+        return jsonify(response), 500
 
 
 # 权限禁用
@@ -316,7 +316,7 @@ def privilegeDisable():
     except Exception as e:
         traceback.print_exc()
         response = {'code': 500, 'msg': '失败！错误信息：' + str(e) + '，请联系管理员。', 'data': []}
-        return jsonify(response)
+        return jsonify(response), 500
 
 
 # 权限启用
@@ -332,7 +332,7 @@ def privilegeEnable():
     except Exception as e:
         traceback.print_exc()
         response = {'code': 500, 'msg': '失败！错误信息：' + str(e) + '，请联系管理员。', 'data': []}
-        return jsonify(response)
+        return jsonify(response), 500
 
 
 # 权限删除
@@ -352,4 +352,4 @@ def privilegeDelete():
     except Exception as e:
         traceback.print_exc()
         response = {'code': 500, 'msg': '失败！错误信息：' + str(e) + '，请联系管理员。', 'data': []}
-        return jsonify(response)
+        return jsonify(response), 500
