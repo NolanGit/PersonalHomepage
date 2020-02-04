@@ -349,18 +349,20 @@ export default {
     },
     //用户禁用
     async userDisableFront(user_id) {
-      var para = {
-        user_id: user_id
-      };
       try {
-        await axios.post("/privilege/userDisable", para);
+        await axios.post("/privilege/userDisable", {
+          user_id: user_id
+        });
         this.$message({
           message: data["msg"],
           type: "success"
         });
         this.userGetFront();
       } catch (e) {
-        console.log(e);
+        this.$message({
+          message: e.data["msg"],
+          type: "error"
+        });
       }
     },
     //用户启用
