@@ -26,13 +26,13 @@
               @click="userAdd()"
             >新增用户</el-button>
             <el-table size="mini" height="400" :data="userData" stripe style="width: 100%" ref="userTable">
-              <!-- <el-table-column prop="id" label="ID" width="80"></el-table-column> -->
-              <el-table-column prop="name" label="姓名" width="120"></el-table-column>
-              <el-table-column prop="login_name" label="登录名" width="180"></el-table-column>
-              <el-table-column prop="role_name" label="角色" width="120"></el-table-column>
-              <el-table-column prop="is_disabled" label="是否禁用" width="80"></el-table-column>
-              <el-table-column prop="update_time" label="修改时间"></el-table-column>
-              <el-table-column label="操作">
+              <!-- <el-table-column :key="Math.random()" prop="id" label="ID" width="80"></el-table-column> -->
+              <el-table-column :key="Math.random()" prop="name" label="姓名" width="120"></el-table-column>
+              <el-table-column :key="Math.random()" prop="login_name" label="登录名" width="180"></el-table-column>
+              <el-table-column :key="Math.random()" prop="role_name" label="角色" width="120"></el-table-column>
+              <el-table-column :key="Math.random()" prop="is_disabled" label="是否禁用" width="80"></el-table-column>
+              <el-table-column :key="Math.random()" prop="update_time" label="修改时间"></el-table-column>
+              <el-table-column :key="Math.random()" label="操作">
                 <template slot-scope="scope">
                   <el-button
                     v-show="scope.row.is_valid==1"
@@ -77,12 +77,12 @@
               @click="roleAdd()"
             >新增角色</el-button>
             <el-table size="mini" height="400" :data="roleData" stripe style="width: 100%" ref="roleTable">
-              <!-- <el-table-column prop="id" label="ID" width="80"></el-table-column> -->
-              <el-table-column prop="name" label="名称" width="180"></el-table-column>
-              <el-table-column prop="remark" label="备注" width="180"></el-table-column>
-              <el-table-column prop="is_disabled" label="是否禁用" width="80"></el-table-column>
-              <el-table-column prop="update_time" label="修改时间"></el-table-column>
-              <el-table-column label="操作">
+              <!-- <el-table-column :key="Math.random()" prop="id" label="ID" width="80"></el-table-column> -->
+              <el-table-column :key="Math.random()" prop="name" label="名称" width="180"></el-table-column>
+              <el-table-column :key="Math.random()" prop="remark" label="备注" width="180"></el-table-column>
+              <el-table-column :key="Math.random()" prop="is_disabled" label="是否禁用" width="80"></el-table-column>
+              <el-table-column :key="Math.random()" prop="update_time" label="修改时间"></el-table-column>
+              <el-table-column :key="Math.random()" label="操作">
                 <template slot-scope="scope">
                   <el-button
                     v-show="scope.row.is_valid==1"
@@ -134,12 +134,12 @@
               @click="privilegeAdd()"
             >新增权限</el-button>
             <el-table size="mini" height="400" :data="privilegeData" stripe style="width: 100%" ref="privilegeTable">
-              <!-- <el-table-column prop="id" label="ID" width="80"></el-table-column> -->
-              <el-table-column prop="name" sortable label="名称" width="200"></el-table-column>
-              <el-table-column prop="mark" sortable label="标识" width="230"></el-table-column>
-              <el-table-column prop="remark" label="备注" width="300"></el-table-column>
-              <el-table-column prop="is_disabled" label="是否禁用" width="80"></el-table-column>
-              <el-table-column label="操作">
+              <!-- <el-table-column :key="Math.random()" prop="id" label="ID" width="80"></el-table-column> -->
+              <el-table-column :key="Math.random()" prop="name" sortable label="名称" width="200"></el-table-column>
+              <el-table-column :key="Math.random()" prop="mark" sortable label="标识" width="230"></el-table-column>
+              <el-table-column :key="Math.random()" prop="remark" label="备注" width="300"></el-table-column>
+              <el-table-column :key="Math.random()" prop="is_disabled" label="是否禁用" width="80"></el-table-column>
+              <el-table-column :key="Math.random()" label="操作">
                 <template slot-scope="scope">
                   <el-button
                     v-show="scope.row.is_valid==1"
