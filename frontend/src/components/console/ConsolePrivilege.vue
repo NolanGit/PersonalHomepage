@@ -350,15 +350,17 @@ export default {
     //用户禁用
     async userDisableFront(user_id) {
       try {
-        await axios.post("/privilege/userDisable", {
+        const { data: res } = await axios.post("/privilege/userDisable", {
           user_id: user_id
         });
+        console.log(res);
         this.$message({
           message: data["msg"],
           type: "success"
         });
         this.userGetFront();
       } catch (e) {
+        console.log(res)
         this.$message({
           message: e.data["msg"],
           type: "error"
