@@ -353,20 +353,12 @@ export default {
         user_id: user_id
       };
       try {
-        userDisable(para).then(data => {
-          if (data["code"] !== 200) {
-            this.$message({
-              message: data["msg"],
-              type: "error"
-            });
-          } else {
-            this.$message({
-              message: data["msg"],
-              type: "success"
-            });
-            this.userGetFront();
-          }
+        await axios.post('/privilege/userDisable',{user_id: user_id})
+        this.$message({
+          message: data["msg"],
+          type: "success"
         });
+        this.userGetFront();
       } catch (e) {
         console.log(e);
       }
