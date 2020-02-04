@@ -267,17 +267,17 @@ export default {
         this.activeDiv=""
         this.activeDiv="用户设置"
         this.userGetFront();
-        this.$refs['userTable'].doLayout()
+        this.$refs.userTable.doLayout()
       } else if (this.activeSystem == "角色对应权限设置") {
         this.activeDiv=""
         this.activeDiv="角色对应权限设置"
         this.roleGetFront();
-        this.$refs['roleTable'].doLayout()
+        this.$refs.roleTable.doLayout()
       } else if (this.activeSystem == "权限设置") {
         this.activeDiv=""
         this.activeDiv="权限设置"
         this.privilegeGetFront();
-        this.$refs['privilegeTable'].doLayout()
+        this.$refs.privilegeTable.doLayout()
       }
     },
     //各组件编辑窗口关闭后回调
