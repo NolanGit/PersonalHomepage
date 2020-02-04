@@ -353,7 +353,6 @@ export default {
         const { data: res } = await axios.post("/privilege/userDisable", {
           user_id: user_id
         });
-        console.log(res);
         this.$message({
           message: res["msg"],
           type: "success"

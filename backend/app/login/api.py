@@ -44,25 +44,33 @@ def check_pass(login_name, password):
         for row in user_query:
             password_without_salt = row['password']
             salt_expire_time = row['salt_expire_time']
+            is_valid = row['is_valid']
             salt = row['salt']
             server_timestamp = int(time.mktime(datetime.datetime.now().timetuple()))
-            if server_timestamp < salt_expire_time:
-                password2compare = cf.md5_it(password_without_salt + salt)
-                if password == password2compare:
-                    response = {'code': 200, 'msg': '验证成功！', 'user': row['name'], 'user_id': row['id']}
-                    return (True, response)
+            if is_valid != 1:
+                response = {
+                    'code': 403,
+                    'msg': '用户非生效中状态，禁止登录，请联系管理员',
+                }
+                return (False, response)
+            else:
+                if server_timestamp < salt_expire_time:
+                    password2compare = cf.md5_it(password_without_salt + salt)
+                    if password == password2compare:
+                        response = {'code': 200, 'msg': '验证成功！', 'user': row['name'], 'user_id': row['id']}
+                        return (True, response)
+                    else:
+                        response = {
+                            'code': 403,
+                            'msg': '用户名或密码错误！',
+                        }
+                        return (False, response)
                 else:
                     response = {
                         'code': 403,
-                        'msg': '用户名或密码错误！',
+                        'msg': '时间戳已过期，请刷新页面！',
                     }
                     return (False, response)
-            else:
-                response = {
-                    'code': 403,
-                    'msg': '时间戳已过期，请刷新页面！',
-                }
-                return (False, response)
 
 
 @login.route('/userLogin', methods=['POST'])
