@@ -124,7 +124,9 @@ export default {
       }
     }
   },
-  mounted() {}
+  mounted() {
+    console.log(this.checkedPrivilege)
+  }
 };
 </script>
 

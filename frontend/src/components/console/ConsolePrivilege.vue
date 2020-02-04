@@ -456,8 +456,8 @@ export default {
               this.edit.roleEditRoleId = role_id;
               this.edit.roleEditAction = "edit";
               this.edit.title = "修改角色对应权限";
-              this.edit.visible = true;
               this.edit.type = "role";
+              this.edit.visible = true;
             }
           });
         }
