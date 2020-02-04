@@ -25,7 +25,7 @@
               type="primary"
               @click="userAdd()"
             >新增用户</el-button>
-            <el-table size="mini" height="400" :data="userData" stripe style="width: 100%">
+            <el-table size="mini" height="400" :data="userData" stripe style="width: 100%" ref="userTable">
               <!-- <el-table-column prop="id" label="ID" width="80"></el-table-column> -->
               <el-table-column prop="name" label="姓名" width="120"></el-table-column>
               <el-table-column prop="login_name" label="登录名" width="180"></el-table-column>
@@ -76,7 +76,7 @@
               type="primary"
               @click="roleAdd()"
             >新增角色</el-button>
-            <el-table size="mini" height="400" :data="roleData" stripe style="width: 100%">
+            <el-table size="mini" height="400" :data="roleData" stripe style="width: 100%" ref="roleTable">
               <!-- <el-table-column prop="id" label="ID" width="80"></el-table-column> -->
               <el-table-column prop="name" label="名称" width="180"></el-table-column>
               <el-table-column prop="remark" label="备注" width="180"></el-table-column>
@@ -133,7 +133,7 @@
               type="primary"
               @click="privilegeAdd()"
             >新增权限</el-button>
-            <el-table size="mini" height="400" :data="privilegeData" stripe style="width: 100%">
+            <el-table size="mini" height="400" :data="privilegeData" stripe style="width: 100%" ref="privilegeTable">
               <!-- <el-table-column prop="id" label="ID" width="80"></el-table-column> -->
               <el-table-column prop="name" sortable label="名称" width="200"></el-table-column>
               <el-table-column prop="mark" sortable label="标识" width="230"></el-table-column>
@@ -267,14 +267,17 @@ export default {
         this.activeDiv=""
         this.activeDiv="用户设置"
         this.userGetFront();
+        this.$refs['userTable'].doLayout()
       } else if (this.activeSystem == "角色对应权限设置") {
         this.activeDiv=""
         this.activeDiv="角色对应权限设置"
         this.roleGetFront();
+        this.$refs['roleTable'].doLayout()
       } else if (this.activeSystem == "权限设置") {
         this.activeDiv=""
         this.activeDiv="权限设置"
         this.privilegeGetFront();
+        this.$refs['privilegeTable'].doLayout()
       }
     },
     //各组件编辑窗口关闭后回调
