@@ -20,7 +20,9 @@ cf = CommonFunc()
 
 # 权限装饰器
 def permission_required(privilege):
+
     def decorator(f):
+
         @wraps(f)
         def decorated_function(*args, **kwargs):
             user_key = request.cookies.get('user_key')
@@ -29,9 +31,10 @@ def permission_required(privilege):
             #是否存在cookie
             if user_key == None or redis_conn.exists(user_key) == 0:
                 msg = ('[权限校验失败]cookie:%s,URL:%s,原因:不存在cookie' % (user_key, privilege))
+                short_msg = '[权限校验失败]登录状态已失效，请刷新页面'
                 print(msg)
-                response = {'code': 403, 'msg': msg}
-                return jsonify(response), 403
+                response = {'code': 401, msg: short_msg, 'message': msg}
+                return jsonify(response), 401
 
             user_id = redis_conn.get(user_key)
             password, ip, random_str, role_id = redis_conn.hmget(user_id, 'password', 'ip', 'random_str', 'role_id')
@@ -39,31 +42,35 @@ def permission_required(privilege):
             #ip是否一致
             if ip != request.remote_addr:
                 msg = ('[权限校验失败]cookie:%s,URL:%s,原因:ip不一致，现ip：%s，允许的ip：%s' % (user_key, privilege, str(ip), str(request.remote_addr)))
+                short_msg = '[权限校验失败]登录状态已失效，请刷新页面'
                 print(msg)
-                response = {'code': 403, 'msg': msg}
-                return jsonify(response), 403
+                response = {'code': 401, msg: short_msg, 'message': msg}
+                return jsonify(response), 401
             user_key_in_redis = cf.md5_it(random_str + password)
 
             #cookie是否相同
             if user_key != user_key_in_redis:
                 msg = ('[权限校验失败]cookie:%s,URL:%s,原因:重新加密后的user_key不相同' % (user_key, privilege))
+                short_msg = '[权限校验失败]登录状态已失效，请刷新页面'
                 print(msg)
-                response = {'code': 403, 'msg': msg}
-                return jsonify(response), 403
+                response = {'code': 401, msg: short_msg, 'message': msg}
+                return jsonify(response), 401
 
             #是否存在角色
             if privilegeFunction().get_redis_conn1().exists(role_id) == 0:
                 msg = ('[权限校验失败]cookie:%s,URL:%s,原因:用户所属角色被删除或禁用' % (user_key, privilege))
+                short_msg = '[权限校验失败]用户所属角色被删除或禁用'
                 print(msg)
-                response = {'code': 403, 'msg': msg}
+                response = {'code': 403, msg: short_msg, 'message': msg}
                 return jsonify(response), 403
 
             #是否存在相应权限
             privilege_list = privilegeFunction().get_redis_conn1().lrange(role_id, 0, -1)
             if privilege not in privilege_list:
                 msg = ('[权限校验失败]cookie:%s,URL:%s,原因:不具有权限，用户具有的权限有：%s' % (user_key, privilege, str(privilege_list)))
+                short_msg = '[权限校验失败]用户不具有此功能权限'
                 print(msg)
-                response = {'code': 403, 'msg': msg}
+                response = {'code': 403, msg: short_msg, 'message': msg}
                 return jsonify(response), 403
             else:
                 return f(*args, **kwargs)
@@ -136,11 +143,13 @@ def privilege_role_list_get():
 
 # 权限相关方法
 class privilegeFunction(object):
+
     '''
         加密：使用随机字符串+登录用户的密码加密，生成cookie，redis保存cookie、加密后的密码、随机字符串、对应用户id、ip、过期时间，cookie发给客户端后，客户端请求接口要带上cookie
         解密：后端收到cookie后，校验过期时间，如有效则校验ip，如有效则取出cookie对应的加密后的密码、加密时使用的随机字符串，按照加密规则加密后和cookie对比，如果一致，进一步判断权限
         注意：用户修改密码后，应同步处理redis，以使修改密码后cookie失效
     '''
+
     def __init__(self):
         pass
 
