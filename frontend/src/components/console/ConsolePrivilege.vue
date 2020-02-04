@@ -25,7 +25,7 @@
               type="primary"
               @click="userAdd()"
             >新增用户</el-button>
-            <el-table size="mini" height="400" :data="userData" stripe style="width: 100%" ref="userTable">
+            <el-table :key="Math.random()" size="mini" height="400" :data="userData" stripe style="width: 100%" ref="userTable">
               <el-table-column :key="Math.random()" prop="id" sortable label="ID" width="80"></el-table-column>
               <el-table-column :key="Math.random()" prop="name" label="姓名" width="120"></el-table-column>
               <el-table-column :key="Math.random()" prop="login_name" label="登录名" width="180"></el-table-column>
@@ -76,7 +76,7 @@
               type="primary"
               @click="roleAdd()"
             >新增角色</el-button>
-            <el-table size="mini" height="400" :data="roleData" stripe style="width: 100%" ref="roleTable">
+            <el-table :key="Math.random()" size="mini" height="400" :data="roleData" stripe style="width: 100%" ref="roleTable">
               <el-table-column :key="Math.random()" prop="id" sortable label="ID" width="80"></el-table-column>
               <el-table-column :key="Math.random()" prop="name" label="名称" width="180"></el-table-column>
               <el-table-column :key="Math.random()" prop="remark" label="备注" width="180"></el-table-column>
@@ -133,7 +133,7 @@
               type="primary"
               @click="privilegeAdd()"
             >新增权限</el-button>
-            <el-table size="mini" height="400" :data="privilegeData" stripe style="width: 100%" ref="privilegeTable">
+            <el-table :key="Math.random()" size="mini" height="400" :data="privilegeData" stripe style="width: 100%" ref="privilegeTable">
               <el-table-column :key="Math.random()" prop="id" sortable label="ID" width="80"></el-table-column>
               <el-table-column :key="Math.random()" prop="name" sortable label="名称" width="200"></el-table-column>
               <el-table-column :key="Math.random()" prop="mark" sortable label="标识" width="230"></el-table-column>
