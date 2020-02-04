@@ -348,12 +348,12 @@ export default {
       this.edit.userEditAction = "edit";
     },
     //用户禁用
-    userDisableFront(user_id) {
+    async userDisableFront(user_id) {
       var para = {
         user_id: user_id
       };
       try {
-        await axios.post('/privilege/userDisable',{user_id: user_id})
+        await axios.post("/privilege/userDisable", para);
         this.$message({
           message: data["msg"],
           type: "success"
