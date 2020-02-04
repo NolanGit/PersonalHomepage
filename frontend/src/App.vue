@@ -49,7 +49,7 @@ export default {
     };
   },
   methods: {
-    userInfoFront() {
+    async userInfoFront() {
       try {
         var user = sessionStorage.getItem("user").replace(/\"/g, "");
       } catch (error) {
@@ -57,7 +57,7 @@ export default {
       }
       this.user = user;
       try {
-        const { data: res } = axios.post("/userInfo", {
+        const { data: res } = await axios.post("/userInfo", {
           user: user
         });
         this.locations = res.data["locations"];
@@ -84,7 +84,7 @@ export default {
       this.show.weather = true;
     }
   },
-  created() {
+  mounted() {
     this.userInfoFront();
   }
 };
