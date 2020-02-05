@@ -35,7 +35,7 @@
               style="width: 100%"
               ref="userTable"
             >
-              <el-table-column :key="Math.random()" prop="id" sortable label="ID" width="80"></el-table-column>
+              <el-table-column :key="Math.random()" prop="id" sortable label="ID" width="50"></el-table-column>
               <el-table-column :key="Math.random()" prop="name" label="姓名" width="120"></el-table-column>
               <el-table-column :key="Math.random()" prop="login_name" label="登录名" width="180"></el-table-column>
               <el-table-column :key="Math.random()" prop="role_name" label="角色" width="120"></el-table-column>
@@ -94,7 +94,7 @@
               style="width: 100%"
               ref="roleTable"
             >
-              <el-table-column :key="Math.random()" prop="id" sortable label="ID" width="80"></el-table-column>
+              <el-table-column :key="Math.random()" prop="id" sortable label="ID" width="50"></el-table-column>
               <el-table-column :key="Math.random()" prop="name" label="名称" width="180"></el-table-column>
               <el-table-column :key="Math.random()" prop="remark" label="备注" width="180"></el-table-column>
               <el-table-column :key="Math.random()" prop="is_disabled" label="是否禁用" width="80"></el-table-column>
@@ -159,12 +159,12 @@
               style="width: 100%"
               ref="privilegeTable"
             >
-              <el-table-column :key="Math.random()" prop="id" sortable label="ID" width="80"></el-table-column>
+              <el-table-column :key="Math.random()" prop="id" sortable label="ID" width="50"></el-table-column>
               <el-table-column :key="Math.random()" prop="name" sortable label="名称" width="200"></el-table-column>
               <el-table-column :key="Math.random()" prop="mark" sortable label="标识" width="230"></el-table-column>
-              <el-table-column :key="Math.random()" prop="remark" label="备注" width="300"></el-table-column>
+              <el-table-column :key="Math.random()" prop="remark" label="备注" width="250"></el-table-column>
               <el-table-column :key="Math.random()" prop="is_disabled" label="是否禁用" width="80"></el-table-column>
-              <el-table-column :key="Math.random()" prop="update_time" label="修改时间"></el-table-column>
+              <el-table-column :key="Math.random()" prop="update_time" sortable label="修改时间"></el-table-column>
               <el-table-column :key="Math.random()" label="操作">
                 <template slot-scope="scope">
                   <el-button

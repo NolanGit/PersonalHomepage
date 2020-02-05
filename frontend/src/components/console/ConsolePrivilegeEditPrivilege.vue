@@ -293,6 +293,15 @@ export default {
   margin-left: 20px;
   margin-right: 20px;
 }
+::-webkit-scrollbar {
+  width: 5px;
+  height: 1px;
+}
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+  background: rgba(83, 83, 83, 0.18);
+}
 .scrollbar-div {
   max-height: 80vh;
   width: 100%;
