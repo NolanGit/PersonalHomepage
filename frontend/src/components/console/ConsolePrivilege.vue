@@ -35,7 +35,7 @@
               style="width: 100%"
               ref="userTable"
             >
-              <el-table-column :key="Math.random()" prop="id" sortable label="ID" width="50"></el-table-column>
+              <el-table-column :key="Math.random()" prop="id" sortable label="ID" width="70"></el-table-column>
               <el-table-column :key="Math.random()" prop="name" label="姓名" width="120"></el-table-column>
               <el-table-column :key="Math.random()" prop="login_name" label="登录名" width="180"></el-table-column>
               <el-table-column :key="Math.random()" prop="role_name" label="角色" width="120"></el-table-column>
@@ -49,7 +49,7 @@
                     size="mini"
                     plain
                     type="danger"
-                    @click="userDisableFront(scope.row.id)"
+                    @click="userDisable(scope.row.id)"
                   >禁用</el-button>
                   <el-button
                     v-show="scope.row.is_valid==0"
@@ -57,7 +57,7 @@
                     size="mini"
                     plain
                     type="primary"
-                    @click="userEnableFront(scope.row.id)"
+                    @click="userEnable(scope.row.id)"
                   >启用</el-button>
                   <el-button
                     v-if="scope.row.is_edit==1"
@@ -94,7 +94,7 @@
               style="width: 100%"
               ref="roleTable"
             >
-              <el-table-column :key="Math.random()" prop="id" sortable label="ID" width="50"></el-table-column>
+              <el-table-column :key="Math.random()" prop="id" sortable label="ID" width="70"></el-table-column>
               <el-table-column :key="Math.random()" prop="name" label="名称" width="180"></el-table-column>
               <el-table-column :key="Math.random()" prop="remark" label="备注" width="180"></el-table-column>
               <el-table-column :key="Math.random()" prop="is_disabled" label="是否禁用" width="80"></el-table-column>
@@ -159,10 +159,10 @@
               style="width: 100%"
               ref="privilegeTable"
             >
-              <el-table-column :key="Math.random()" prop="id" sortable label="ID" width="50"></el-table-column>
+              <el-table-column :key="Math.random()" prop="id" sortable label="ID" width="70"></el-table-column>
               <el-table-column :key="Math.random()" prop="name" sortable label="名称" width="200"></el-table-column>
-              <el-table-column :key="Math.random()" prop="mark" sortable label="标识" width="230"></el-table-column>
-              <el-table-column :key="Math.random()" prop="remark" label="备注" width="250"></el-table-column>
+              <el-table-column :key="Math.random()" prop="mark" sortable label="标识" width="200"></el-table-column>
+              <el-table-column :key="Math.random()" prop="remark" label="备注" width="200"></el-table-column>
               <el-table-column :key="Math.random()" prop="is_disabled" label="是否禁用" width="80"></el-table-column>
               <el-table-column :key="Math.random()" prop="update_time" sortable label="修改时间"></el-table-column>
               <el-table-column :key="Math.random()" label="操作">
@@ -248,10 +248,6 @@
 <script>
 import axios from "axios";
 import {
-  userGet,
-  userDisable,
-  userEnable,
-  userDelete,
   roleGet,
   rolePrivilegeGet,
   roleDisable,
@@ -265,6 +261,21 @@ import {
 import ConsolePrivilegeEditUser from "./ConsolePrivilegeEditUser";
 import ConsolePrivilegeEditRole from "./ConsolePrivilegeEditRole";
 import ConsolePrivilegeEditPrivilege from "./ConsolePrivilegeEditPrivilege";
+const api = {
+  userGet: "/privilege/userGet",
+  userDisable: "/privilege/userDisable",
+  userEnable: "/privilege/userEnable",
+  userDelete: "/privilege/userDelete",
+  roleGet: "/privilege/roleGet",
+  rolePrivilegeGet: "/privilege/rolePrivilegeGet",
+  roleDisable: "/privilege/roleDisable",
+  roleEnable: "/privilege/roleEnable",
+  roleDelete: "/privilege/roleDelete",
+  privilegeGet: "/privilege/privilegeGet",
+  privilegeDisable: "/privilege/privilegeDisable",
+  privilegeEnable: "/privilege/privilegeEnable",
+  privilegeDelete: "/privilege/privilegeDelete"
+};
 export default {
   name: "ConsolePrivilege",
   components: {
@@ -289,7 +300,7 @@ export default {
     //切换handle
     handleChange() {
       if (this.activeSystem == "用户设置") {
-        this.userGetFront();
+        this.userGet();
       } else if (this.activeSystem == "角色对应权限设置") {
         this.roleGetFront();
       } else if (this.activeSystem == "权限设置") {
@@ -300,7 +311,7 @@ export default {
     close() {
       this.edit.visible = false;
       if (this.edit.type == "user") {
-        this.userGetFront();
+        this.userGet();
       }
       if (this.edit.type == "role") {
         this.roleGetFront();
@@ -318,27 +329,25 @@ export default {
       this.edit.type = "user";
       this.edit.userEditAction = "new";
     },
-    userGetFront() {
-      var para = {
-        user: sessionStorage.getItem("user").replace(/\"/g, "")
-      };
-      userGet(para).then(data => {
-        if (data["code"] !== 200) {
-          this.$message({
-            message: data["msg"],
-            type: "error"
-          });
-        } else {
-          for (let x = 0; x < data.data.length; x++) {
-            if (data.data[x].is_valid == 1) {
-              data.data[x].is_disabled = "否";
-            } else if (data.data[x].is_valid == 0) {
-              data.data[x].is_disabled = "是";
-            }
+    async userGet() {
+      try {
+        const { data: res } = await axios.post(api.userDisable, {
+          user: sessionStorage.getItem("user").replace(/\"/g, "")
+        });
+        for (let x = 0; x < res.data.length; x++) {
+          if (res.data[x].is_valid == 1) {
+            res.data[x].is_disabled = "否";
+          } else if (res.data[x].is_valid == 0) {
+            res.data[x].is_disabled = "是";
           }
-          this.userData = data.data;
         }
-      });
+        this.userData = res.data;
+      } catch (e) {
+        this.$message({
+          message: e.response.data.msg,
+          type: "error"
+        });
+      }
     },
     //修改用户信息
     userSetting(login_name) {
@@ -349,16 +358,16 @@ export default {
       this.edit.userEditAction = "edit";
     },
     //用户禁用
-    async userDisableFront(user_id) {
+    async userDisable(user_id) {
       try {
-        const { data: res } = await axios.post("/privilege/userDisable", {
+        const { data: res } = await axios.post(api.userDisable, {
           user_id: user_id
         });
         this.$message({
           message: res["msg"],
           type: "success"
         });
-        this.userGetFront();
+        this.userGet();
       } catch (e) {
         this.$message({
           message: e.response.data.msg,
@@ -367,45 +376,41 @@ export default {
       }
     },
     //用户启用
-    userEnableFront(user_id) {
-      var para = {
-        user_id: user_id
-      };
-      userEnable(para).then(data => {
-        if (data["code"] !== 200) {
-          this.$message({
-            message: data["msg"],
-            type: "error"
-          });
-        } else {
-          this.$message({
-            message: data["msg"],
-            type: "success"
-          });
-          this.userGetFront();
-        }
-      });
+    async userEnable(user_id) {
+      try {
+        const { data: res } = await axios.post(api.userEnable, {
+          user_id: user_id
+        });
+        this.$message({
+          message: res["msg"],
+          type: "success"
+        });
+        this.userGet();
+      } catch (e) {
+        this.$message({
+          message: e.response.data.msg,
+          type: "error"
+        });
+      }
     },
     //用户删除
     userDeleteFront(user_id) {
       this.$confirm("确认删除吗?", "提示", {}).then(() => {
-        var para = {
-          user_id: user_id
-        };
-        userDelete(para).then(data => {
-          if (data["code"] !== 200) {
-            this.$message({
-              message: data["msg"],
-              type: "error"
-            });
-          } else {
-            this.$message({
-              message: data["msg"],
-              type: "success"
-            });
-            this.userGetFront();
-          }
-        });
+        try {
+          const { data: res } = axios.post(api.userDelete, {
+            user_id: user_id
+          });
+          this.$message({
+            message: res["msg"],
+            type: "success"
+          });
+          this.userGet();
+        } catch (e) {
+          this.$message({
+            message: e.response.data.msg,
+            type: "error"
+          });
+        }
       });
     },
 
@@ -670,7 +675,7 @@ export default {
     }
   },
   mounted() {
-    this.userGetFront();
+    this.userGet();
   }
 };
 </script>
