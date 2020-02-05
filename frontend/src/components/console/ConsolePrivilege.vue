@@ -331,7 +331,7 @@ export default {
     },
     async userGet() {
       try {
-        const { data: res } = await axios.post(api.userDisable, {
+        const { data: res } = await axios.post(api.userGet, {
           user: sessionStorage.getItem("user").replace(/\"/g, "")
         });
         for (let x = 0; x < res.data.length; x++) {
