@@ -329,6 +329,14 @@ export default {
       this.edit.type = "user";
       this.edit.userEditAction = "new";
     },
+    //修改用户信息
+    userSetting(login_name) {
+      this.edit.title = "修改用户密码和角色";
+      this.edit.visible = true;
+      this.edit.type = "user";
+      this.edit.login_name = login_name;
+      this.edit.userEditAction = "edit";
+    },
     async userGet() {
       try {
         const { data: res } = await axios.post(api.userGet, {
@@ -348,14 +356,6 @@ export default {
           type: "error"
         });
       }
-    },
-    //修改用户信息
-    userSetting(login_name) {
-      this.edit.title = "修改用户密码和角色";
-      this.edit.visible = true;
-      this.edit.type = "user";
-      this.edit.login_name = login_name;
-      this.edit.userEditAction = "edit";
     },
     //用户禁用
     async userDisable(user_id) {
@@ -394,10 +394,10 @@ export default {
       }
     },
     //用户删除
-    userDeleteFront(user_id) {
-      this.$confirm("确认删除吗?", "提示", {}).then(() => {
+    async userDeleteFront(user_id) {
+      this.$confirm("确认删除吗?", "提示", {}).then(async () => {
         try {
-          const { data: res } = axios.post(api.userDelete, {
+          const { data: res } = await axios.post(api.userDelete, {
             user_id: user_id
           });
           this.$message({
