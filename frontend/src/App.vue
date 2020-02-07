@@ -71,6 +71,8 @@ export default {
           this.$nextTick(() => {
             this.loginSwitch = true;
           });
+        } else if (e.response.status == 403) {
+          console.log(e.response.data.msg);
         } else {
           this.$message({
             message: e.response.data.msg,
