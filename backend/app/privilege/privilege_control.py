@@ -183,7 +183,9 @@ class privilegeFunction(object):
         if temp == 0:
             privilege_role_query = privilege_role.select().where((privilege_role.role_id == role_id) & (privilege_role.is_valid == 1)).dicts()
             for single_privilege_role_query in privilege_role_query:
-                self.get_redis_conn1().rpush(role_id, privilege_model.get(privilege_model.id == single_privilege_role_query['privilege_id']).mark)
+                privilege_to_be_added = privilege_model.get(privilege_model.id == single_privilege_role_query['privilege_id'])
+                if privilege_to_be_added.is_valid == 1:
+                    self.get_redis_conn1().rpush(role_id, privilege_to_be_added.mark)
         else:
             print('检测到存在角色id为[%s]的缓存，即将删除' % role_id)
             privilegeFunction().get_redis_conn1().delete(role_id)
