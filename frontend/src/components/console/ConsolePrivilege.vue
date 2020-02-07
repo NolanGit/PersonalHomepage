@@ -464,12 +464,12 @@ export default {
         for (let x = 0; x < res.data.length; x++) {
           this.edit.checkedPrivilege.push(res.data[x].privilege_name);
         }
-        const { data: res } = await axios.get(api.privilegeGet);
+        const { data: res2 } = await axios.get(api.privilegeGet);
         this.edit.privilegeData = [];
-        for (let x = 0; x < res.data.length; x++) {
+        for (let x = 0; x < res2.data.length; x++) {
           this.edit.privilegeData.push({
-            id: res.data[x].id,
-            label: res.data[x].name
+            id: res2.data[x].id,
+            label: res2.data[x].name
           });
         }
         this.edit.roleEditRoleId = role_id;
