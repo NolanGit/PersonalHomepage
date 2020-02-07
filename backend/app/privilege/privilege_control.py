@@ -85,14 +85,22 @@ def user_list_get():
     result = []
     user_query = user.select().where(user.is_valid != -1).order_by(user.id).dicts()
     for row in user_query:
+        try:
+            update_time = row['update_time'].strftime("%Y-%m-%d %H:%M:%S")
+        except:
+            update_time = ''
+        try:
+            create_time = row['create_time'].strftime("%Y-%m-%d %H:%M:%S")
+        except:
+            create_time = ''
         result.append({
             'id': row['id'],
             'name': row['name'],
             'login_name': row['login_name'],
             'role_id': row['role_id'],
             'is_valid': row['is_valid'],
-            'create_time': row['create_time'].strftime("%Y-%m-%d %H:%M:%S"),
-            'update_time': row['update_time'].strftime("%Y-%m-%d %H:%M:%S"),
+            'create_time': create_time,
+            'update_time': update_time,
         })
     return result
 
@@ -102,12 +110,16 @@ def role_list_get():
     result = []
     role_query = role.select().where(role.is_valid != -1).order_by(role.id).dicts()
     for row in role_query:
+        try:
+            update_time = row['update_time'].strftime("%Y-%m-%d %H:%M:%S")
+        except:
+            update_time = ''
         result.append({
             'id': row['id'],
             'name': row['name'],
             'is_valid': row['is_valid'],
             'remark': row['remark'],
-            'update_time': row['update_time'].strftime("%Y-%m-%d %H:%M:%S"),
+            'update_time': update_time,
         })
     return result
 
@@ -117,14 +129,11 @@ def privilege_list_get():
     result = []
     privilege_query = privilege_model.select().where(privilege_model.is_valid != -1).order_by(privilege_model.id).dicts()
     for row in privilege_query:
-        result.append({
-            'id': row['id'],
-            'name': row['name'],
-            'mark': row['mark'],
-            'remark': row['remark'],
-            'is_valid': row['is_valid'],
-            'update_time': row['update_time'].strftime("%Y-%m-%d %H:%M:%S"),
-        })
+        try:
+            update_time = row['update_time'].strftime("%Y-%m-%d %H:%M:%S")
+        except:
+            update_time = ''
+        result.append({'id': row['id'], 'name': row['name'], 'mark': row['mark'], 'remark': row['remark'], 'is_valid': row['is_valid'], 'update_time': update_time})
     return result
 
 
