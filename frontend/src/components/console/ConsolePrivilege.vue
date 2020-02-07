@@ -300,10 +300,13 @@ export default {
     //切换handle
     handleChange() {
       if (this.activeSystem == "用户设置") {
+        this.userData = [];
         this.userGet();
       } else if (this.activeSystem == "角色对应权限设置") {
+        this.roleData = [];
         this.roleGet();
       } else if (this.activeSystem == "权限设置") {
+        this.privilegeData = [];
         this.privilegeGet();
       }
     },
@@ -351,7 +354,7 @@ export default {
         }
         this.userData = res.data;
       } catch (e) {
-        console.log(e)
+        console.log(e);
         this.$message({
           message: e.response.data.msg,
           type: "error"
@@ -370,7 +373,7 @@ export default {
         });
         this.userGet();
       } catch (e) {
-        console.log(e)
+        console.log(e);
         this.$message({
           message: e.response.data.msg,
           type: "error"
@@ -389,7 +392,7 @@ export default {
         });
         this.userGet();
       } catch (e) {
-        console.log(e)
+        console.log(e);
         this.$message({
           message: e.response.data.msg,
           type: "error"
@@ -409,7 +412,7 @@ export default {
           });
           this.userGet();
         } catch (e) {
-          console.log(e)
+          console.log(e);
           this.$message({
             message: e.response.data.msg,
             type: "error"
@@ -452,7 +455,7 @@ export default {
         }
         this.roleData = res.data;
       } catch (e) {
-        console.log(e)
+        console.log(e);
         this.$message({
           message: e.response.data.msg,
           type: "error"
@@ -483,7 +486,7 @@ export default {
         this.edit.type = "role";
         this.edit.visible = true;
       } catch (e) {
-        console.log(e)
+        console.log(e);
         this.$message({
           message: e.response.data.msg,
           type: "error"
@@ -502,7 +505,7 @@ export default {
         });
         this.roleGet();
       } catch (e) {
-        console.log(e)
+        console.log(e);
         this.$message({
           message: e.response.data.msg,
           type: "error"
@@ -521,7 +524,7 @@ export default {
         });
         this.roleGet();
       } catch (e) {
-        console.log(e)
+        console.log(e);
         this.$message({
           message: e.response.data.msg,
           type: "error"
@@ -541,7 +544,7 @@ export default {
           });
           this.roleGet();
         } catch (e) {
-          console.log(e)
+          console.log(e);
           this.$message({
             message: e.response.data.msg,
             type: "error"
@@ -596,7 +599,7 @@ export default {
           });
         }
       } catch (e) {
-        console.log(e)
+        console.log(e);
         this.$message({
           message: e.response.data.msg,
           type: "error"
@@ -615,7 +618,7 @@ export default {
         });
         this.privilegeGet();
       } catch (e) {
-        console.log(e)
+        console.log(e);
         this.$message({
           message: e.response.data.msg,
           type: "error"
@@ -634,7 +637,7 @@ export default {
         });
         this.privilegeGet();
       } catch (e) {
-        console.log(e)
+        console.log(e);
         this.$message({
           message: e.response.data.msg,
           type: "error"
@@ -654,7 +657,7 @@ export default {
           });
           this.privilegeGet();
         } catch (e) {
-          console.log(e)
+          console.log(e);
           this.$message({
             message: e.response.data.msg,
             type: "error"
