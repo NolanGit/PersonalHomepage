@@ -478,6 +478,7 @@ export default {
         this.edit.type = "role";
         this.edit.visible = true;
       } catch (e) {
+        console.log(e)
         this.$message({
           message: e.response.data.msg,
           type: "error"
