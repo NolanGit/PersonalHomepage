@@ -439,7 +439,7 @@ export default {
     async roleGet() {
       try {
         const { data: res } = await axios.get(api.roleGet);
-        for (let x = 0; x < res.res.length; x++) {
+        for (let x = 0; x < res.data.length; x++) {
           if (res.data[x].is_valid == 1) {
             res.data[x].is_disabled = "否";
           } else if (res.data[x].is_valid == 0) {
