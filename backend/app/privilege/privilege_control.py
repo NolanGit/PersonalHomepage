@@ -176,20 +176,32 @@ class privilegeFunction(object):
             args : role_id(Int)
         '''
         print('刷新角色id为[%s]具有的权限列表' % role_id)
-        is_valid = role.get(role.id == role_id).is_valid
-        if is_valid == 0:
-            return
-        temp = privilegeFunction().get_redis_conn1().exists(role_id)
-        if temp == 0:
-            privilege_role_query = privilege_role.select().where((privilege_role.role_id == role_id) & (privilege_role.is_valid == 1)).dicts()
-            for single_privilege_role_query in privilege_role_query:
-                privilege_to_be_added = privilege_model.get(privilege_model.id == single_privilege_role_query['privilege_id'])
-                if privilege_to_be_added.is_valid == 1:
-                    self.get_redis_conn1().rpush(role_id, privilege_to_be_added.mark)
+
+        IS_ROLE_ID_VALID = False if role.get(role.id == role_id).is_valid != 1 else True  # 权限id是否有效
+        IS_ROLE_ID_IN_REDIS = False if privilegeFunction().get_redis_conn1().exists(role_id) == 0 else True  # redis中是否有该权限id的数据
+
+        if IS_ROLE_ID_VALID:
+            if IS_ROLE_ID_IN_REDIS:
+                '''
+                    如果redis中有该权限id的数据，则需要清空后刷入新的
+                '''
+                print('检测到存在角色id为[%s]的缓存，即将删除' % role_id)
+                privilegeFunction().get_redis_conn1().delete(role_id)
+                self.flush_role_privilege_to_redis(role_id)
+            else:
+                '''
+                    如果redis中没有该权限id的数据，则刷入权限。首先取出用户的角色具有的的权限，如果该权限为有效状态，则添加
+                '''
+                privilege_role_query = privilege_role.select().where((privilege_role.role_id == role_id) & (privilege_role.is_valid == 1)).dicts()
+                for single_privilege_role_query in privilege_role_query:
+                    privilege_to_be_added = privilege_model.get(privilege_model.id == single_privilege_role_query['privilege_id'])
+                    if privilege_to_be_added.is_valid == 1:
+                        self.get_redis_conn1().rpush(role_id, privilege_to_be_added.mark)
         else:
-            print('检测到存在角色id为[%s]的缓存，即将删除' % role_id)
-            privilegeFunction().get_redis_conn1().delete(role_id)
-            self.flush_role_privilege_to_redis(role_id)
+            if IS_ROLE_ID_IN_REDIS:
+                privilegeFunction().get_redis_conn1().delete(role_id)
+            else:
+                return
 
     def flush_privilege_which_belongs_to_role_with_target_privilege_to_redis(self, privilege_id):
         '''
