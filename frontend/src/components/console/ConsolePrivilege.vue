@@ -72,7 +72,7 @@
                     class="noMargin"
                     size="mini"
                     type="danger"
-                    @click="userDeleteFront(scope.row.id)"
+                    @click="userDelete(scope.row.id)"
                   >删除</el-button>
                 </template>
               </el-table-column>
@@ -107,7 +107,7 @@
                     size="mini"
                     plain
                     type="danger"
-                    @click="roleDisableFront(scope.row.id)"
+                    @click="roleDisable(scope.row.id)"
                   >禁用</el-button>
                   <el-button
                     v-show="scope.row.is_valid==0"
@@ -115,7 +115,7 @@
                     size="mini"
                     plain
                     type="primary"
-                    @click="roleEnableFront(scope.row.id)"
+                    @click="roleEnable(scope.row.id)"
                   >启用</el-button>
                   <el-button
                     v-show="scope.row.is_valid==0"
@@ -123,7 +123,7 @@
                     size="mini"
                     plain
                     type="primary"
-                    @click="roleEditFront(scope.row.id,scope.row.name,scope.row.remark)"
+                    @click="roleEdit(scope.row.id,scope.row.name,scope.row.remark)"
                   >修改</el-button>
                   <el-button
                     class="noMargin"
@@ -137,7 +137,7 @@
                     class="noMargin"
                     size="mini"
                     type="danger"
-                    @click="roleDeleteFront(scope.row.id)"
+                    @click="roleDelete(scope.row.id)"
                   >删除</el-button>
                 </template>
               </el-table-column>
@@ -173,7 +173,7 @@
                     size="mini"
                     plain
                     type="danger"
-                    @click="privilegeDisableFront(scope.row.id)"
+                    @click="privilegeDisable(scope.row.id)"
                   >禁用</el-button>
                   <el-button
                     v-show="scope.row.is_valid==0"
@@ -181,7 +181,7 @@
                     size="mini"
                     plain
                     type="primary"
-                    @click="privilegeEnableFront(scope.row.id)"
+                    @click="privilegeEnable(scope.row.id)"
                   >启用</el-button>
                   <el-button
                     v-show="scope.row.is_valid==0"
@@ -196,7 +196,7 @@
                     class="noMargin"
                     size="mini"
                     type="danger"
-                    @click="privilegeDeleteFront(scope.row.id)"
+                    @click="privilegeDelete(scope.row.id)"
                   >删除</el-button>
                 </template>
               </el-table-column>
@@ -302,9 +302,9 @@ export default {
       if (this.activeSystem == "用户设置") {
         this.userGet();
       } else if (this.activeSystem == "角色对应权限设置") {
-        this.roleGetFront();
+        this.roleGet();
       } else if (this.activeSystem == "权限设置") {
-        this.privilegeGetFront();
+        this.privilegeGet();
       }
     },
     //各组件编辑窗口关闭后回调
@@ -314,10 +314,10 @@ export default {
         this.userGet();
       }
       if (this.edit.type == "role") {
-        this.roleGetFront();
+        this.roleGet();
       }
       if (this.edit.type == "privilege") {
-        this.privilegeGetFront();
+        this.privilegeGet();
       }
     },
 
@@ -394,7 +394,7 @@ export default {
       }
     },
     //用户删除
-    async userDeleteFront(user_id) {
+    async userDelete(user_id) {
       this.$confirm("确认删除吗?", "提示", {}).then(async () => {
         try {
           const { data: res } = await axios.post(api.userDelete, {
@@ -415,26 +415,6 @@ export default {
     },
 
     // 【以下为角色相关方法】
-    //角色获取数据
-    roleGetFront() {
-      roleGet().then(data => {
-        if (data["code"] !== 200) {
-          this.$message({
-            message: data["msg"],
-            type: "error"
-          });
-        } else {
-          for (let x = 0; x < data.data.length; x++) {
-            if (data.data[x].is_valid == 1) {
-              data.data[x].is_disabled = "否";
-            } else if (data.data[x].is_valid == 0) {
-              data.data[x].is_disabled = "是";
-            }
-          }
-          this.roleData = data.data;
-        }
-      });
-    },
     //角色新增
     roleAdd() {
       this.edit.roleEditRoleId = 0;
@@ -445,88 +425,8 @@ export default {
       this.edit.visible = true;
       this.edit.type = "role";
     },
-    //角色修改对应权限
-    roleSetting(role_id) {
-      var para = {
-        role_id: role_id
-      };
-      rolePrivilegeGet(para).then(data => {
-        if (data["code"] !== 200) {
-          this.$message({
-            message: data["msg"],
-            type: "error"
-          });
-        } else {
-          this.edit.checkedPrivilege = [];
-          for (let x = 0; x < data.data.length; x++) {
-            this.edit.checkedPrivilege.push(data.data[x].privilege_name);
-          }
-          privilegeGet().then(data => {
-            if (data["code"] !== 200) {
-              this.$message({
-                message: data["msg"],
-                type: "error"
-              });
-            } else {
-              this.edit.privilegeData = [];
-              for (let x = 0; x < data.data.length; x++) {
-                this.edit.privilegeData.push({
-                  id: data.data[x].id,
-                  label: data.data[x].name
-                });
-              }
-              this.edit.roleEditRoleId = role_id;
-              this.edit.roleEditAction = "edit";
-              this.edit.title = "修改角色对应权限";
-              this.edit.type = "role";
-              this.edit.visible = true;
-            }
-          });
-        }
-      });
-    },
-    //角色禁用
-    roleDisableFront(role_id) {
-      var para = {
-        role_id: role_id
-      };
-      roleDisable(para).then(data => {
-        if (data["code"] !== 200) {
-          this.$message({
-            message: data["msg"],
-            type: "error"
-          });
-        } else {
-          this.$message({
-            message: data["msg"],
-            type: "success"
-          });
-          this.roleGetFront();
-        }
-      });
-    },
-    //角色启用
-    roleEnableFront(role_id) {
-      var para = {
-        role_id: role_id
-      };
-      roleEnable(para).then(data => {
-        if (data["code"] !== 200) {
-          this.$message({
-            message: data["msg"],
-            type: "error"
-          });
-        } else {
-          this.$message({
-            message: data["msg"],
-            type: "success"
-          });
-          this.roleGetFront();
-        }
-      });
-    },
     //角色编辑
-    roleEditFront(role_id, role_name, role_remark) {
+    roleEdit(role_id, role_name, role_remark) {
       this.edit.roleEditAction = "new";
       this.edit.roleEditRoleId = role_id;
       this.edit.roleEditName = role_name;
@@ -535,55 +435,113 @@ export default {
       this.edit.visible = true;
       this.edit.type = "role";
     },
-    //角色删除
-    roleDeleteFront(role_id) {
-      this.$confirm("确认删除吗?", "提示", {}).then(() => {
-        var para = {
-          role_id: role_id
-        };
-        roleDelete(para).then(data => {
-          if (data["code"] !== 200) {
-            this.$message({
-              message: data["msg"],
-              type: "error"
-            });
-          } else {
-            this.$message({
-              message: data["msg"],
-              type: "success"
-            });
-            this.roleGetFront();
+    //角色获取数据
+    async roleGet() {
+      try {
+        const { data: res } = await axios.get(api.roleGet);
+        for (let x = 0; x < res.res.length; x++) {
+          if (res.data[x].is_valid == 1) {
+            res.data[x].is_disabled = "否";
+          } else if (res.data[x].is_valid == 0) {
+            res.data[x].is_disabled = "是";
           }
+        }
+        this.roleData = res.data;
+      } catch (e) {
+        this.$message({
+          message: e.response.data.msg,
+          type: "error"
         });
+      }
+    },
+    //角色修改对应权限
+    async roleSetting(role_id) {
+      try {
+        const { data: res } = await axios.post(api.rolePrivilegeGet, {
+          user_id: user_id
+        });
+        this.edit.checkedPrivilege = [];
+        for (let x = 0; x < res.data.length; x++) {
+          this.edit.checkedPrivilege.push(res.data[x].privilege_name);
+        }
+        const { data: res } = await axios.get(api.privilegeGet);
+        this.edit.privilegeData = [];
+        for (let x = 0; x < res.data.length; x++) {
+          this.edit.privilegeData.push({
+            id: res.data[x].id,
+            label: res.data[x].name
+          });
+        }
+        this.edit.roleEditRoleId = role_id;
+        this.edit.roleEditAction = "edit";
+        this.edit.title = "修改角色对应权限";
+        this.edit.type = "role";
+        this.edit.visible = true;
+      } catch (e) {
+        this.$message({
+          message: e.response.data.msg,
+          type: "error"
+        });
+      }
+    },
+    //角色禁用
+    async roleDisable(role_id) {
+      try {
+        const { data: res } = await axios.post(api.roleDisable, {
+          role_id: role_id
+        });
+        this.$message({
+          message: res["msg"],
+          type: "success"
+        });
+        this.roleGet();
+      } catch (e) {
+        this.$message({
+          message: e.response.data.msg,
+          type: "error"
+        });
+      }
+    },
+    //角色启用
+    async roleEnable(role_id) {
+      try {
+        const { data: res } = await axios.post(api.roleEnable, {
+          role_id: role_id
+        });
+        this.$message({
+          message: res["msg"],
+          type: "success"
+        });
+        this.roleGet();
+      } catch (e) {
+        this.$message({
+          message: e.response.data.msg,
+          type: "error"
+        });
+      }
+    },
+    //角色删除
+    async roleDelete(role_id) {
+      this.$confirm("确认删除吗?", "提示", {}).then(async () => {
+        try {
+          const { data: res } = await axios.post(api.userDelete, {
+            role_id: role_id
+          });
+          this.$message({
+            message: res["msg"],
+            type: "success"
+          });
+          this.roleGet();
+        } catch (e) {
+          this.$message({
+            message: e.response.data.msg,
+            type: "error"
+          });
+        }
       });
     },
 
     // 【以下为权限相关方法】
-    //权限获取数据
-    privilegeGetFront() {
-      privilegeGet().then(data => {
-        if (data["code"] !== 200) {
-          this.$message({
-            message: data["msg"],
-            type: "error"
-          });
-        } else {
-          this.privilegeData = [];
-          for (let x = 0; x < data.data.length; x++) {
-            this.privilegeData.push({
-              id: data.data[x].id,
-              label: data.data[x].name,
-              name: data.data[x].name,
-              mark: data.data[x].mark,
-              remark: data.data[x].remark,
-              is_valid: data.data[x].is_valid,
-              update_time: data.data[x].update_time,
-              is_disabled: data.data[x].is_valid == 1 ? "否" : "是"
-            });
-          }
-        }
-      });
-    },
     //权限新增
     privilegeAdd() {
       this.edit.privilegeEditAction = "new";
@@ -611,66 +569,84 @@ export default {
       this.edit.visible = true;
       this.edit.type = "privilege";
     },
-    //权限禁用
-    privilegeDisableFront(privilege_id) {
-      var para = {
-        privilege_id: privilege_id
-      };
-      privilegeDisable(para).then(data => {
-        if (data["code"] !== 200) {
-          this.$message({
-            message: data["msg"],
-            type: "error"
+    //权限获取数据
+    async privilegeGet() {
+      try {
+        const { data: res } = await axios.get(api.privilegeGet);
+        this.privilegeData = [];
+        for (let x = 0; x < res.data.length; x++) {
+          this.privilegeData.push({
+            id: res.data[x].id,
+            label: res.data[x].name,
+            name: res.data[x].name,
+            mark: res.data[x].mark,
+            remark: res.data[x].remark,
+            is_valid: res.data[x].is_valid,
+            update_time: res.data[x].update_time,
+            is_disabled: res.data[x].is_valid == 1 ? "否" : "是"
           });
-        } else {
-          this.$message({
-            message: data["msg"],
-            type: "success"
-          });
-          this.privilegeGetFront();
         }
-      });
+      } catch (e) {
+        this.$message({
+          message: e.response.data.msg,
+          type: "error"
+        });
+      }
+    },
+    //权限禁用
+    async privilegeDisable(privilege_id) {
+      try {
+        const { data: res } = await axios.post(api.privilegeDisable, {
+          privilege_id: privilege_id
+        });
+        this.$message({
+          message: res["msg"],
+          type: "success"
+        });
+        this.privilegeGet();
+      } catch (e) {
+        this.$message({
+          message: e.response.data.msg,
+          type: "error"
+        });
+      }
     },
     //权限启用
-    privilegeEnableFront(privilege_id) {
-      var para = {
-        privilege_id: privilege_id
-      };
-      privilegeEnable(para).then(data => {
-        if (data["code"] !== 200) {
-          this.$message({
-            message: data["msg"],
-            type: "error"
-          });
-        } else {
-          this.$message({
-            message: data["msg"],
-            type: "success"
-          });
-          this.privilegeGetFront();
-        }
-      });
+    async privilegeEnable(privilege_id) {
+      try {
+        const { data: res } = await axios.post(api.privilegeEnable, {
+          privilege_id: privilege_id
+        });
+        this.$message({
+          message: res["msg"],
+          type: "success"
+        });
+        this.privilegeGet();
+      } catch (e) {
+        this.$message({
+          message: e.response.data.msg,
+          type: "error"
+        });
+      }
     },
     //权限删除
-    privilegeDeleteFront(privilege_id) {
-      this.$confirm("确认删除吗?", "提示", {}).then(() => {
-        var para = {
-          privilege_id: privilege_id
-        };
-        privilegeDelete(para).then(data => {
-          if (data["code"] !== 200) {
-            this.$message({
-              message: data["msg"],
-              type: "error"
-            });
-          } else {
-            this.$message({
-              message: data["msg"],
-              type: "success"
-            });
-            this.privilegeGetFront();
-          }
-        });
+    async privilegeDelete(privilege_id) {
+      this.$confirm("确认删除吗?", "提示", {}).then(async () => {
+        try {
+          const { data: res } = await axios.post(api.privilegeDelete, {
+            privilege_id: privilege_id
+          });
+          this.$message({
+            message: res["msg"],
+            type: "success"
+          });
+          this.privilegeGet();
+        } catch (e) {
+          this.$message({
+            message: e.response.data.msg,
+            type: "error"
+          });
+        }
       });
     }
   },
