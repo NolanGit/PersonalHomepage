@@ -351,6 +351,7 @@ export default {
         }
         this.userData = res.data;
       } catch (e) {
+        console.log(e)
         this.$message({
           message: e.response.data.msg,
           type: "error"
@@ -369,6 +370,7 @@ export default {
         });
         this.userGet();
       } catch (e) {
+        console.log(e)
         this.$message({
           message: e.response.data.msg,
           type: "error"
@@ -387,6 +389,7 @@ export default {
         });
         this.userGet();
       } catch (e) {
+        console.log(e)
         this.$message({
           message: e.response.data.msg,
           type: "error"
@@ -406,6 +409,7 @@ export default {
           });
           this.userGet();
         } catch (e) {
+          console.log(e)
           this.$message({
             message: e.response.data.msg,
             type: "error"
@@ -448,6 +452,7 @@ export default {
         }
         this.roleData = res.data;
       } catch (e) {
+        console.log(e)
         this.$message({
           message: e.response.data.msg,
           type: "error"
@@ -458,7 +463,7 @@ export default {
     async roleSetting(role_id) {
       try {
         const { data: res } = await axios.post(api.rolePrivilegeGet, {
-          user_id: user_id
+          role_id: role_id
         });
         this.edit.checkedPrivilege = [];
         for (let x = 0; x < res.data.length; x++) {
@@ -497,6 +502,7 @@ export default {
         });
         this.roleGet();
       } catch (e) {
+        console.log(e)
         this.$message({
           message: e.response.data.msg,
           type: "error"
@@ -515,6 +521,7 @@ export default {
         });
         this.roleGet();
       } catch (e) {
+        console.log(e)
         this.$message({
           message: e.response.data.msg,
           type: "error"
@@ -534,6 +541,7 @@ export default {
           });
           this.roleGet();
         } catch (e) {
+          console.log(e)
           this.$message({
             message: e.response.data.msg,
             type: "error"
@@ -588,6 +596,7 @@ export default {
           });
         }
       } catch (e) {
+        console.log(e)
         this.$message({
           message: e.response.data.msg,
           type: "error"
@@ -606,6 +615,7 @@ export default {
         });
         this.privilegeGet();
       } catch (e) {
+        console.log(e)
         this.$message({
           message: e.response.data.msg,
           type: "error"
@@ -624,6 +634,7 @@ export default {
         });
         this.privilegeGet();
       } catch (e) {
+        console.log(e)
         this.$message({
           message: e.response.data.msg,
           type: "error"
@@ -643,6 +654,7 @@ export default {
           });
           this.privilegeGet();
         } catch (e) {
+          console.log(e)
           this.$message({
             message: e.response.data.msg,
             type: "error"
