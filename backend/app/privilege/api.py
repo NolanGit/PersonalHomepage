@@ -27,7 +27,6 @@ pf = privilegeFunction()
 @permission_required(URL_PREFIX + '/userGet')
 @cross_origin()
 def userGet():
-
     try:
         user_name = request.get_json()['user']
         result = []
@@ -114,7 +113,7 @@ def userRoleChange():
         return jsonify(response), 500
 
 
-# 角色删除
+# 用户删除
 @privilege.route('/userDelete', methods=['POST'])
 @permission_required(URL_PREFIX + '/userDelete')
 @cross_origin()
@@ -191,7 +190,7 @@ def rolePrivilegeEdit():
         return jsonify(response), 500
 
 
-# 角色信息新增和修改
+# 角色新增和修改
 @privilege.route('/roleEdit', methods=['POST'])
 @permission_required(URL_PREFIX + '/roleEdit')
 @cross_origin()
