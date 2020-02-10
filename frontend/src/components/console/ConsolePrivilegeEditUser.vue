@@ -98,7 +98,11 @@
 <script>
 import md5 from "js-md5";
 import axios from "axios";
-import { userGet, roleGet, userRoleChange } from "../../api/privilege";
+const api = {
+  userGet: "/privilege/userGet",
+  roleGet: "/privilege/roleGet",
+  userRoleChange: "/privilege/userRoleChange"
+};
 import {
   userLogin,
   userLoginGetSalt,
@@ -137,39 +141,40 @@ export default {
       }
       return pwd;
     },
-    userGetFront() {
-      var para = {
-        user: sessionStorage.getItem("user").replace(/\"/g, "")
-      };
-      userGet(para).then(data => {
-        if (data["code"] !== 200) {
-          this.$message({
-            message: data["msg"],
-            type: "error"
-          });
-        } else {
-          this.userData = data.data;
-        }
-      });
+    async userGetFront() {
+      try {
+        const { data: res } = await axios.post(api.userGet, {
+          user: sessionStorage.getItem("user").replace(/\"/g, "")
+        });
+        this.userData = res.data;
+      } catch (e) {
+        console.log(e);
+        this.$message({
+          message: e.response.data.msg,
+          type: "error"
+        });
+      }
     },
-    roleGetFront() {
-      roleGet().then(data => {
-        if (data["code"] !== 200) {
-          this.$message({
-            message: data["msg"],
-            type: "error"
-          });
-        } else {
-          for (let x = 0; x < data.data.length; x++) {
-            if (data.data[x].is_valid == 1) {
-              this.roleData.push({
-                label: data.data[x].name,
-                value: data.data[x].id
-              });
-            }
+    async roleGetFront() {
+      try {
+        const { data: res } = await axios.post(api.roleGet, {
+          user: sessionStorage.getItem("user").replace(/\"/g, "")
+        });
+        for (let x = 0; x < res.data.length; x++) {
+          if (res.data[x].is_valid == 1) {
+            this.roleData.push({
+              label: res.data[x].name,
+              value: res.data[x].id
+            });
           }
         }
-      });
+      } catch (e) {
+        console.log(e);
+        this.$message({
+          message: e.response.data.msg,
+          type: "error"
+        });
+      }
     },
     checkPass() {
       if (

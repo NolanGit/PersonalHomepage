@@ -70,7 +70,7 @@ export default {
             remark: this.privilegeRemark
           });
           this.$message({
-            message: data["msg"],
+            message: res["msg"],
             type: "success"
           });
           this.$emit("close");
