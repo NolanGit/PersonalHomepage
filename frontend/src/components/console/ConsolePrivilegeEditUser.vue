@@ -157,7 +157,7 @@ export default {
     },
     async roleGetFront() {
       try {
-        const { data: res } = await axios.post(api.roleGet, {
+        const { data: res } = await axios.get(api.roleGet, {
           user: sessionStorage.getItem("user").replace(/\"/g, "")
         });
         for (let x = 0; x < res.data.length; x++) {
