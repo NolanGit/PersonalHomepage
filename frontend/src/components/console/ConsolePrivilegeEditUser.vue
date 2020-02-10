@@ -102,10 +102,10 @@ const api = {
   userGet: "/privilege/userGet",
   roleGet: "/privilege/roleGet",
   userRoleChange: "/privilege/userRoleChange",
-  userLogin: "userLogin",
-  userLoginSalt: "userLoginSalt",
-  userChangePassword: "userChangePassword",
-  userAdd: "userAdd"
+  userLogin: "/login/userLogin",
+  userLoginSalt: "/login/userLoginSalt",
+  userChangePassword: "/login/userChangePassword",
+  userAdd: "/login/userAdd"
 };
 export default {
   name: "ConsolePrivilegeEditUser",
