@@ -103,16 +103,10 @@ const api = {
   roleGet: "/privilege/roleGet",
   userRoleChange: "/privilege/userRoleChange",
   userLogin: "userLogin",
-  userLoginGetSalt: "userLoginGetSalt",
+  userLoginSalt: "userLoginSalt",
   userChangePassword: "userChangePassword",
   userAdd: "userAdd"
 };
-import {
-  userLogin,
-  userLoginGetSalt,
-  userChangePassword,
-  userAdd
-} from "../../api/login";
 export default {
   name: "ConsolePrivilegeEditUser",
   props: {
@@ -192,7 +186,7 @@ export default {
         });
       } else {
         try {
-          const { data: res } = await axios.get(api.userLoginGetSalt, {
+          const { data: res } = await axios.post(api.userLoginSalt, {
             login_name: this.login_name
           });
           var para = {

@@ -49,7 +49,7 @@ import md5 from "js-md5";
 import axios from "axios";
 import Router from "vue-router";
 import Console from "./Console.vue";
-import { userLogin, userLoginGetSalt } from "../api/login";
+import { userLogin, userLoginSalt } from "../api/login";
 
 export default {
   name: "login",
@@ -93,7 +93,7 @@ export default {
         var para = {
           login_name: this.username
         };
-        userLoginGetSalt(para).then(data => {
+        userLoginSalt(para).then(data => {
           if (data["code"] !== 200) {
             this.$message({
               message: data["msg"],

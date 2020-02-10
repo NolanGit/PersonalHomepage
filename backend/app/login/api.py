@@ -97,9 +97,9 @@ def userLogin():
     return jsonify(login_response)
 
 
-@login.route('/userLoginGetSalt', methods=['POST'])
+@login.route('/userLoginSalt', methods=['POST'])
 @cross_origin()
-def userLoginGetSalt():
+def userLoginSalt():
     try:
         login_name = request.get_json()['login_name']
         salt = cf.random_str(40)
