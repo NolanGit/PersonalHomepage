@@ -101,7 +101,11 @@ import axios from "axios";
 const api = {
   userGet: "/privilege/userGet",
   roleGet: "/privilege/roleGet",
-  userRoleChange: "/privilege/userRoleChange"
+  userRoleChange: "/privilege/userRoleChange",
+  userLogin: "userLogin",
+  userLoginGetSalt: "userLoginGetSalt",
+  userChangePassword: "userChangePassword",
+  userAdd: "userAdd"
 };
 import {
   userLogin,
@@ -176,7 +180,7 @@ export default {
         });
       }
     },
-    checkPass() {
+    async checkPass() {
       if (
         this.password === "" ||
         this.password === undefined ||
@@ -187,85 +191,75 @@ export default {
           type: "error"
         });
       } else {
-        var para = {
-          login_name: this.login_name
-        };
-        userLoginGetSalt(para).then(data => {
-          if (data["code"] !== 200) {
-            this.$message({
-              message: data["msg"],
-              type: "error"
-            });
-          } else {
-            var para = {
-              login_name: this.login_name,
-              password: this.md5It(
-                this.md5It(this.md5It(this.password) + data.data.stable_salt) +
-                  data.data.salt
-              ),
-              is_generate_cookie: false
-            };
-            userLogin(para).then(data2 => {
-              if (data2["code"] !== 200) {
-                this.$message({
-                  message: data2.msg,
-                  type: "error"
-                });
-              } else {
-                this.$message({
-                  message: data2.msg,
-                  type: "success"
-                });
-                this.isCheckedPass = true;
-              }
-            });
-          }
-        });
+        try {
+          const { data: res } = await axios.get(api.userLoginGetSalt, {
+            login_name: this.login_name
+          });
+          var para = {
+            login_name: this.login_name,
+            password: this.md5It(
+              this.md5It(this.md5It(this.password) + res.data.stable_salt) +
+                res.data.salt
+            ),
+            is_generate_cookie: false
+          };
+          const { data: res2 } = await axios.post(api.userLogin, para);
+          this.$message({
+            message: res2.msg,
+            type: "success"
+          });
+          this.isCheckedPass = true;
+        } catch (e) {
+          console.log(e);
+          this.$message({
+            message: e.response.data.msg,
+            type: "error"
+          });
+        }
       }
     },
-    changePass() {
+    async changePass() {
       var stable_salt = this.randomString(40);
       var para = {
         login_name: this.login_name,
         stable_salt: stable_salt,
         password: this.md5It(this.md5It(this.passwordNew) + stable_salt)
       };
-      userChangePassword(para).then(data => {
-        if (data["code"] !== 200) {
-          this.$message({
-            message: data["msg"],
-            type: "error"
-          });
-        } else {
-          this.$message({
-            message: data["msg"],
-            type: "success"
-          });
-          this.passwordNew = "";
-        }
-      });
+      try {
+        const { data: res } = await axios.post(api.userChangePassword, para);
+        this.$message({
+          message: res["msg"],
+          type: "success"
+        });
+        this.passwordNew = "";
+      } catch (e) {
+        console.log(e);
+        this.$message({
+          message: e.response.data.msg,
+          type: "error"
+        });
+      }
     },
-    changeRole() {
-      var para = {
-        role_id: this.role_id,
-        login_name: this.login_name
-      };
-      userRoleChange(para).then(data => {
-        if (data["code"] !== 200) {
-          this.$message({
-            message: data["msg"],
-            type: "error"
-          });
-        } else {
-          this.$message({
-            message: data["msg"],
-            type: "success"
-          });
-          this.passwordNew = "";
-        }
-      });
+    async changeRole() {
+      try {
+        const { data: res } = await axios.post(api.userRoleChange, {
+          role_id: this.role_id,
+          login_name: this.login_name
+        });
+        this.$message({
+          message: res["msg"],
+          type: "success"
+        });
+        this.passwordNew = "";
+      } catch (e) {
+        console.log(e);
+        this.$message({
+          message: e.response.data.msg,
+          type: "error"
+        });
+      }
     },
-    userAddFront() {
+    async userAddFront() {
       if (
         this.username === "" ||
         this.username === undefined ||
@@ -288,20 +282,20 @@ export default {
           stable_salt: stable_salt,
           password: this.md5It(this.md5It(this.passwordNew) + stable_salt)
         };
-        userAdd(para).then(data => {
-          if (data["code"] !== 200) {
-            this.$message({
-              message: data["msg"],
-              type: "error"
-            });
-          } else {
-            this.$message({
-              message: data["msg"],
-              type: "success"
-            });
-            this.$emit("close");
-          }
-        });
+        try {
+          const { data: res } = await axios.post(api.userAdd, para);
+          this.$message({
+            message: res["msg"],
+            type: "success"
+          });
+          this.$emit("close");
+        } catch (e) {
+          console.log(e);
+          this.$message({
+            message: e.response.data.msg,
+            type: "error"
+          });
+        }
       }
     }
   },
