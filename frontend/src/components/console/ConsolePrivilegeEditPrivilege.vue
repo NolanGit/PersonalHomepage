@@ -39,7 +39,9 @@
 
 <script>
 import axios from "axios";
-import { privilegeEdit } from "../../api/privilege";
+const api = {
+  privilegeEdit: "/privilege/privilegeEdit"
+};
 export default {
   name: "ConsolePrivilegeEditPrivilege",
   props: {
@@ -58,28 +60,27 @@ export default {
     return {};
   },
   methods: {
-    submit() {
+    async submit() {
       if (this.action == "new") {
-        var para = {
-          privilege_id: this.privilegeId,
-          name: this.privilegeName,
-          mark: this.privilegeMark,
-          remark: this.privilegeRemark
-        };
-        privilegeEdit(para).then(data => {
-          if (data["code"] !== 200) {
-            this.$message({
-              message: data["msg"],
-              type: "error"
-            });
-          } else {
-            this.$message({
-              message: data["msg"],
-              type: "success"
-            });
-            this.$emit("close");
-          }
-        });
+        try {
+          const { data: res } = await axios.post(api.privilegeEdit, {
+            privilege_id: this.privilegeId,
+            name: this.privilegeName,
+            mark: this.privilegeMark,
+            remark: this.privilegeRemark
+          });
+          this.$message({
+            message: data["msg"],
+            type: "success"
+          });
+          this.$emit("close");
+        } catch (e) {
+          console.log(e);
+          this.$message({
+            message: e.response.data.msg,
+            type: "error"
+          });
+        }
       }
     }
   },

@@ -247,17 +247,6 @@
 
 <script>
 import axios from "axios";
-import {
-  roleGet,
-  rolePrivilegeGet,
-  roleDisable,
-  roleEnable,
-  roleDelete,
-  privilegeGet,
-  privilegeDisable,
-  privilegeEnable,
-  privilegeDelete
-} from "../../api/privilege";
 import ConsolePrivilegeEditUser from "./ConsolePrivilegeEditUser";
 import ConsolePrivilegeEditRole from "./ConsolePrivilegeEditRole";
 import ConsolePrivilegeEditPrivilege from "./ConsolePrivilegeEditPrivilege";

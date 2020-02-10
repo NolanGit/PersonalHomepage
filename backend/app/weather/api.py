@@ -58,7 +58,7 @@ def weatherData():
                 response['aqi'] = r.json()['HeWeather6'][0]['air_now_city']['aqi']
             except:
                 response['aqi'] = '暂无数据'
-            result.append(response)
+            result.append(response), 500
 
         return jsonify({'code': 200, 'msg': '成功！', 'data': result})
     except Exception as e:
@@ -80,4 +80,4 @@ def weatherPersonalizedSave():
     except Exception as e:
         traceback.print_exc()
         response = {'code': 500, 'msg': '失败！错误信息：' + str(e) + '，请联系管理员。', 'data': []}
-        return jsonify(response)
+        return jsonify(response), 500
