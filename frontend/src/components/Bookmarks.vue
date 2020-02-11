@@ -13,11 +13,7 @@
         :key="bookmarksSuite"
       >
         <el-col :span="6" v-for="bookmark in bookmarksSuite" :key="bookmark">
-          <el-button
-            class="bookmarks-main-button"
-            size="small"
-            @click="bookmarksClicked(bookmark.url)"
-          >
+          <el-button class="bookmarks-main-button" size="small" @click=" window.open(bookmark.url)">
             <i :class="bookmark.icon" style="margin-right=5px;font-size=15px"></i>
             {{bookmark.name}}
           </el-button>
@@ -120,7 +116,11 @@ import IconComponet from "./common/Icon.vue";
 import { bookmarksAdd, bookmarksEdit, bookmarksIcon } from "../api/bookmarks";
 import { SlickList, SlickItem } from "vue-slicksort";
 import { ContainerMixin, ElementMixin } from "vue-slicksort";
-
+const api = {
+  bookmarksAdd: "/bookmarks/bookmarksAdd",
+  bookmarksEdit: "/bookmarks/bookmarksEdit",
+  icon: "/icon"
+};
 export default {
   name: "bookmarks",
   props: {
@@ -161,28 +161,27 @@ export default {
     bookmarksClicked(bookmarkUrl) {
       window.open(bookmarkUrl);
     },
-    bookmarksEditFormConfirmClicked() {
+    async bookmarksEditFormConfirmClicked() {
       if (this.bookmarksEditForm.title == "新增书签") {
-        var para = {
-          url: this.bookmarksEditForm.url,
-          name: this.bookmarksEditForm.name,
-          icon: this.bookmarksEditForm.icon,
-          user: sessionStorage.getItem("user").replace(/\"/g, "")
-        };
-        bookmarksAdd(para).then(data => {
-          if (data["code"] !== 200) {
-            this.$message({
-              message: data["msg"],
-              type: "error"
-            });
-          } else {
-            this.$message({
-              message: data["msg"],
-              type: "success"
-            });
-            this.$emit("bookmarksUpdate");
-          }
-        });
+        try {
+          const { data: res } = await axios.post(api.bookmarksAdd, {
+            url: this.bookmarksEditForm.url,
+            name: this.bookmarksEditForm.name,
+            icon: this.bookmarksEditForm.icon,
+            user: sessionStorage.getItem("user").replace(/\"/g, "")
+          });
+          this.$message({
+            message: res["msg"],
+            type: "success"
+          });
+          this.$emit("bookmarksUpdate");
+        } catch (e) {
+          console.log(e);
+          this.$message({
+            message: e.response.data.msg,
+            type: "error"
+          });
+        }
       } else if (this.bookmarksEditForm.title == "编辑书签") {
         const tempEditIndex = this.bookmarksEditTempIndex;
         this.bookmarksEdit.list[tempEditIndex].url = this.bookmarksEditForm.url;
@@ -220,30 +219,28 @@ export default {
       this.bookmarksEdit.list = temp;
       this.bookmarksEdit.visible = true;
     },
-    bookmarksEditSubmit() {
+    async bookmarksEditSubmit() {
       for (let x = 0; x < this.bookmarksEdit.list.length; x++) {
         this.bookmarksEdit.list[x].order = x + 1;
       }
-      console.log(this.bookmarksEdit.list);
-      var para = {
-        bookmarks: this.bookmarksEdit.list,
-        user: sessionStorage.getItem("user").replace(/\"/g, "")
-      };
-      bookmarksEdit(para).then(data => {
-        if (data["code"] !== 200) {
-          this.$message({
-            message: data["msg"],
-            type: "error"
-          });
-        } else {
-          this.$message({
-            message: data["msg"],
-            type: "success"
-          });
-          this.bookmarksEdit.visible = false;
-        }
+      try {
+        const { data: res } = await axios.post(api.bookmarksEdit, {
+          bookmarks: this.bookmarksEdit.list,
+          user: sessionStorage.getItem("user").replace(/\"/g, "")
+        });
+        this.$message({
+          message: res["msg"],
+          type: "success"
+        });
+        this.bookmarksEdit.visible = false;
         this.$emit("bookmarksUpdate");
-      });
+      } catch (e) {
+        console.log(e);
+        this.$message({
+          message: e.response.data.msg,
+          type: "error"
+        });
+      }
     },
     bookmarksSetting(item, index) {
       this.bookmarksEditTempIndex = index;
@@ -259,18 +256,21 @@ export default {
       this.bookmarksEdit.list.splice(index, 1);
       console.log(item, index);
     },
-    bookmarksIconFront() {
-      bookmarksIcon().then(data => {
-        if (data["code"] !== 200) {
-          this.$message({
-            message: data["msg"],
-            type: "error"
-          });
-        } else {
-          this.icon.visible = true;
-          this.icon.data = data.data;
-        }
-      });
+    async bookmarksIconFront() {
+      try {
+        const { data: res } = await axios.get(api.icon, {
+          bookmarks: this.bookmarksEdit.list,
+          user: sessionStorage.getItem("user").replace(/\"/g, "")
+        });
+        this.icon.visible = true;
+        this.icon.data = res.data;
+      } catch (e) {
+        console.log(e);
+        this.$message({
+          message: e.response.data.msg,
+          type: "error"
+        });
+      }
     },
     iconNameGet(data) {
       this.bookmarksEditForm.icon = data;

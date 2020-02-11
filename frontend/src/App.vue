@@ -15,7 +15,7 @@
         </transition>
       </el-col>
       <el-col :span="7" :offset="1">
-        <el-card shadow="hover" v-show="show.weather">
+        <el-card shadow="hover" v-show="show.bookmarks">
           <bookmarks :bookmarksData="bookmarksData" @bookmarksUpdate="userInfo" :user="user" />
         </el-card>
       </el-col>
@@ -44,7 +44,8 @@ export default {
       locations: [],
       bookmarksData: [],
       show: {
-        weather: false
+        weather: false,
+        bookmarks: false
       },
       loginSwitch: true
     };
@@ -63,6 +64,7 @@ export default {
         });
         this.locations = res.data["locations"];
         this.bookmarksData = res.data["bookmarks"];
+        this.show.bookmarks = true;
       } catch (e) {
         if (e.response.status == 401) {
           sessionStorage.removeItem("user");
