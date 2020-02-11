@@ -110,7 +110,7 @@ export default {
         console.log(e);
       }
     },
-    async autoComplete(queryString, cb) {
+    autoComplete(queryString, cb) {
       if (
         queryString === "" ||
         queryString === [] ||
@@ -135,14 +135,11 @@ export default {
             var user = undefined;
           }
           try {
-            const { data: res } = await axios.post(
-              api.searchEnginesAutoComplete,
-              {
-                autoCompleteUrl: autoCompleteUrl,
-                name: this.searchEngines.select,
-                user: user
-              }
-            );
+            const { data: res } = axios.post(api.searchEnginesAutoComplete, {
+              autoCompleteUrl: autoCompleteUrl,
+              name: this.searchEngines.select,
+              user: user
+            });
             function String2Dict(x) {
               return {
                 value: x
