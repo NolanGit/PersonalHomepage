@@ -16,7 +16,7 @@
       </el-col>
       <el-col :span="7" :offset="1">
         <el-card shadow="hover" v-show="show.weather">
-          <bookmarks :bookmarksData="bookmarksData" @bookmarksUpdate="userInfoFront" :user="user" />
+          <bookmarks :bookmarksData="bookmarksData" @bookmarksUpdate="userInfo" :user="user" />
         </el-card>
       </el-col>
     </el-row>
@@ -30,7 +30,6 @@ import login from "./components/Login.vue";
 import weather from "./components/Weather.vue";
 import bookmarks from "./components/Bookmarks.vue";
 import stock from "./components/Stock.vue";
-import { userInfo } from "./api/app";
 export default {
   components: {
     search,
@@ -51,7 +50,7 @@ export default {
     };
   },
   methods: {
-    async userInfoFront() {
+    async userInfo() {
       try {
         var user = sessionStorage.getItem("user").replace(/\"/g, "");
       } catch (error) {
@@ -83,7 +82,7 @@ export default {
     },
     userLoginedOrLogout(user) {
       if (user != "") {
-        this.userInfoFront();
+        this.userInfo();
       } else {
         location.reload();
       }
@@ -93,7 +92,7 @@ export default {
     }
   },
   mounted() {
-    this.userInfoFront();
+    this.userInfo();
   }
 };
 </script>
