@@ -49,8 +49,10 @@ import md5 from "js-md5";
 import axios from "axios";
 import Router from "vue-router";
 import Console from "./Console.vue";
-import { userLogin, userLoginSalt } from "../api/login";
-
+const api = {
+  userLogin: "/login/userLogin",
+  userLoginSalt: "/login/userLoginSalt"
+};
 export default {
   name: "login",
   components: {
@@ -76,7 +78,7 @@ export default {
       str = md5(str);
       return str;
     },
-    login() {
+    async login() {
       if (
         this.username === "" ||
         this.password === "" ||
@@ -90,44 +92,35 @@ export default {
           type: "error"
         });
       } else {
-        var para = {
-          login_name: this.username
-        };
-        userLoginSalt(para).then(data => {
-          if (data["code"] !== 200) {
-            this.$message({
-              message: data["msg"],
-              type: "error"
-            });
-          } else {
-            var para = {
-              login_name: this.username,
-              password: this.md5It(
-                this.md5It(this.md5It(this.password) + data.data.stable_salt) +
-                  data.data.salt
-              ),
-              is_generate_cookie: true
-            };
-            userLogin(para).then(data2 => {
-              if (data2["code"] !== 200) {
-                this.$message({
-                  message: data2.msg,
-                  type: "error"
-                });
-              } else {
-                this.visible = false;
-                this.$message({
-                  message: data2.msg,
-                  type: "success"
-                });
-                this.$cookies.set("user_key", data2.user_key);
-                this.user = data2.user;
-                sessionStorage.setItem("user", JSON.stringify(data2.user));
-                this.$emit("user", this.user);
-              }
-            });
-          }
-        });
+        try {
+          const { data: res } = await axios.post(api.userLoginSalt, {
+            login_name: this.username
+          });
+          var para = {
+            login_name: this.username,
+            password: this.md5It(
+              this.md5It(this.md5It(this.password) + res.data.stable_salt) +
+                res.data.salt
+            ),
+            is_generate_cookie: true
+          };
+          const { data: res2 } = await axios.post(api.userLogin, para);
+          this.visible = false;
+          this.$message({
+            message: res2.msg,
+            type: "success"
+          });
+          this.$cookies.set("user_key", res2.user_key);
+          this.user = res2.user;
+          sessionStorage.setItem("user", JSON.stringify(res2.user));
+          this.$emit("user", this.user);
+        } catch (e) {
+          console.log(e);
+          this.$message({
+            message: e.response.data.msg,
+            type: "error"
+          });
+        }
       }
     },
     logout() {
