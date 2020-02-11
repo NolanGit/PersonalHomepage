@@ -35,7 +35,6 @@ export default {
     login,
     weather,
     bookmarks,
-    stock
   },
   data() {
     return {
