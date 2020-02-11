@@ -68,6 +68,7 @@ export default {
       } catch (e) {
         if (e.response.status == 401) {
           sessionStorage.removeItem("user");
+          this.$cookies.remove("user_key");
           this.loginSwitch = false;
           this.$nextTick(() => {
             this.loginSwitch = true;
