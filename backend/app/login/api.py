@@ -14,6 +14,7 @@ from ..model.login_model import user
 from ..privilege.api import privilegeFunction
 
 cf = CommonFunc()
+pf = privilegeFunction()
 ALLOWED_TIME_SPAN = 100  # 盐过期X秒内允许修改密码，否则需要重新登录
 
 
@@ -137,6 +138,7 @@ def userChangePassword():
                     stable_salt = request.get_json()['stable_salt']
                     password = request.get_json()['password']
                     user.update(stable_salt=stable_salt, password=password, update_time=datetime.datetime.now()).where(user.login_name == login_name).execute()
+                    pf.del_user_id_to_redis(row['id'])
                     response = {'code': 200, 'msg': '成功'}
                 else:
                     response = {'code': 403, 'msg': '登录状态已过期，请返回并重新验证密码'}

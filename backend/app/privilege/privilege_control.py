@@ -154,8 +154,8 @@ def privilege_role_list_get():
 class privilegeFunction(object):
 
     '''
-        加密：使用随机字符串+登录用户的密码加密，生成cookie，redis保存cookie、加密后的密码、随机字符串、对应用户id、ip、过期时间，cookie发给客户端后，客户端请求接口要带上cookie
-        解密：后端收到cookie后，校验过期时间，如有效则校验ip，如有效则取出cookie对应的加密后的密码、加密时使用的随机字符串，按照加密规则加密后和cookie对比，如果一致，进一步判断权限
+        加密：使用随机字符串+登录用户的密码加密，生成cookie，redis保存cookie和用户id的对应关系，用户id和加密后的密码、随机字符串、对应用户id、ip、登录时间的对应哈希，cookie发给客户端后，客户端请求接口要带上cookie
+        解密：后端收到cookie后，校验是否存在cookide(是否过期)，如有效则取出用户id后校验ip，如有效则取出cookie对应的加密后的密码、加密时使用的随机字符串，按照加密规则加密后和cookie对比，如果一致，进一步判断权限
         注意：用户修改密码后，应同步处理redis，以使修改密码后cookie失效
     '''
 
