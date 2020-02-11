@@ -13,7 +13,7 @@
         :key="bookmarksSuite"
       >
         <el-col :span="6" v-for="bookmark in bookmarksSuite" :key="bookmark">
-          <el-button class="bookmarks-main-button" size="small" @click=" window.open(bookmark.url)">
+          <el-button class="bookmarks-main-button" size="small" @click="bookmarksClicked(bookmark.url)">
             <i :class="bookmark.icon" style="margin-right=5px;font-size=15px"></i>
             {{bookmark.name}}
           </el-button>
@@ -113,7 +113,6 @@
 import axios from "axios";
 import Router from "vue-router";
 import IconComponet from "./common/Icon.vue";
-import { bookmarksAdd, bookmarksEdit, bookmarksIcon } from "../api/bookmarks";
 import { SlickList, SlickItem } from "vue-slicksort";
 import { ContainerMixin, ElementMixin } from "vue-slicksort";
 const api = {

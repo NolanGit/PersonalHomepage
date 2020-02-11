@@ -34,11 +34,11 @@
 <script>
 import axios from "axios";
 import Router from "vue-router";
-import {
-  searchEnginesData,
-  searchEnginesAutoComplete,
-  searchLog
-} from "../api/search";
+const api = {
+  searchEnginesData: "/search/searchEnginesData",
+  searchEnginesAutoComplete: "/search/searchEnginesAutoComplete",
+  searchLog: "/search/searchLog"
+};
 
 export default {
   name: "search",
@@ -56,32 +56,32 @@ export default {
     };
   },
   methods: {
-    searchEnginesDataFront() {
-      searchEnginesData().then(data => {
-        if (data["code"] !== 200) {
-          this.$message({
-            message: data["msg"],
-            type: "error"
+    async searchEnginesDataFront() {
+      try {
+        const { data: res } = await axios.get(api.searchEnginesData);
+        for (let s = 0; s < res.data.length; s++) {
+          this.searchEngines.options.push({
+            id: res.data[s].id,
+            main_url: res.data[s].main_url,
+            auto_complete_url: res.data[s].auto_complete_url,
+            icon: res.data[s].icon,
+            label: res.data[s].name,
+            value: res.data[s].name
           });
-        } else {
-          for (let s = 0; s < data.data.length; s++) {
-            this.searchEngines.options.push({
-              id: data.data[s].id,
-              main_url: data.data[s].main_url,
-              auto_complete_url: data.data[s].auto_complete_url,
-              icon: data.data[s].icon,
-              label: data.data[s].name,
-              value: data.data[s].name
-            });
-          }
-          this.searchEngines.select = this.searchEngines.options[0].value;
-          this.searchEngines.select_engine_id = this.searchEngines.options[0].id;
-          this.searchEngines.main_url = this.searchEngines.options[0].main_url;
-          this.searchEngines.auto_complete_url = this.searchEngines.options[0].auto_complete_url;
         }
-      });
+        this.searchEngines.select = this.searchEngines.options[0].value;
+        this.searchEngines.select_engine_id = this.searchEngines.options[0].id;
+        this.searchEngines.main_url = this.searchEngines.options[0].main_url;
+        this.searchEngines.auto_complete_url = this.searchEngines.options[0].auto_complete_url;
+      } catch (e) {
+        console.log(e);
+        this.$message({
+          message: e.response.data.msg,
+          type: "error"
+        });
+      }
     },
-    search() {
+    async search() {
       for (var s = 0; s < this.searchEngines.options.length; s++) {
         if (this.searchEngines.options[s].value == this.searchEngines.select) {
           break;
@@ -98,21 +98,19 @@ export default {
       } catch (error) {
         var user = undefined;
       }
-      let para = {
-        user: user,
-        engine_id: this.searchEngines.select_engine_id,
-        search_text: this.word
-      };
-      searchLog(para).then(data => {
-        if (data["code"] !== 200) {
-          console.log(data["msg"]);
-        } else {
-        }
-      });
       this.word = "";
       this.autoComplete("");
+      try {
+        const { data: res } = await axios.post(api.searchLog, {
+          user: user,
+          engine_id: this.searchEngines.select_engine_id,
+          search_text: this.word
+        });
+      } catch (e) {
+        console.log(e);
+      }
     },
-    autoComplete(queryString, cb) {
+    async autoComplete(queryString, cb) {
       if (
         queryString === "" ||
         queryString === [] ||
@@ -136,24 +134,33 @@ export default {
           } catch (error) {
             var user = undefined;
           }
-          var para = {
-            autoCompleteUrl: autoCompleteUrl,
-            name: this.searchEngines.select,
-            user: user
-          };
-          searchEnginesAutoComplete(para).then(data => {
+          try {
+            const { data: res } = await axios.post(
+              api.searchEnginesAutoComplete,
+              {
+                autoCompleteUrl: autoCompleteUrl,
+                name: this.searchEngines.select,
+                user: user
+              }
+            );
             function String2Dict(x) {
               return {
                 value: x
               };
             }
-            var result = data.data.map(String2Dict);
+            var result = res.data.map(String2Dict);
             sessionStorage.setItem(
               "lastWordAutoComplete",
               JSON.stringify(result)
             );
             cb(result);
-          });
+          } catch (e) {
+            console.log(e);
+            this.$message({
+              message: e.response.data.msg,
+              type: "error"
+            });
+          }
         }
       }
     }

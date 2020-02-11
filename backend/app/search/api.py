@@ -19,11 +19,11 @@ def searchEnginesData():
         search_engines_query = search_engines.select().dicts()
         for row in search_engines_query:
             result.append({'id': row['id'], 'name': row['name'], 'main_url': row['main_url'], 'auto_complete_url': row['auto_complete_url'], 'icon': row['icon']})
+        response = {'code': 200, 'msg': '成功！', 'data': result}
+        return jsonify(response)
     except Exception as e:
         response = {'code': 500, 'msg': '失败！错误信息：' + str(e) + '，请联系管理员。', 'data': []}
-        return jsonify(response)
-    response = {'code': 200, 'msg': '成功！', 'data': result}
-    return jsonify(response)
+        return jsonify(response), 500
 
 
 @search.route('/searchEnginesAutoComplete', methods=['POST'])
@@ -34,7 +34,7 @@ def searchEnginesAutoComplete():
     except Exception as e:
         traceback.print_exc()
         response = {'code': 500, 'msg': '失败！错误信息：' + str(e) + '，请联系管理员。', 'data': []}
-        return jsonify(response)
+        return jsonify(response), 500
 
 
 @search.route('/searchEnginesSearch', methods=['POST'])
@@ -46,7 +46,7 @@ def searchEnginesSearch():
     except Exception as e:
         traceback.print_exc()
         response = {'code': 500, 'msg': '失败！错误信息：' + str(e) + '，请联系管理员。', 'data': []}
-        return jsonify(response)
+        return jsonify(response), 500
 
 
 @search.route('/searchLog', methods=['POST'])
@@ -66,4 +66,4 @@ def searchLog():
     except Exception as e:
         traceback.print_exc()
         response = {'code': 500, 'msg': '失败！错误信息：' + str(e) + '，请联系管理员。', 'data': []}
-        return jsonify(response)
+        return jsonify(response), 500
