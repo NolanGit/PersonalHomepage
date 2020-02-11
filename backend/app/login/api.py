@@ -89,12 +89,15 @@ def userLogin():
     password = request.get_json()['password']
     is_generate_cookie = request.get_json()['is_generate_cookie']
     login_status, login_response = check_pass(login_name, password)
-    if not is_generate_cookie:
+    if login_status:  # 如果登录成功
+        if not is_generate_cookie:  # 如果不需要生成cookie
+            return jsonify(login_response)
+        else:  # 如果需要生成cookie
+            user_key = privilegeFunction().init_user_and_privilege(login_response['user_id'], request.remote_addr)
+            login_response['user_key'] = user_key
         return jsonify(login_response)
-    if login_status:
-        user_key = privilegeFunction().init_user_and_privilege(login_response['user_id'], request.remote_addr)
-        login_response['user_key'] = user_key
-    return jsonify(login_response)
+    else:
+        return jsonify(login_response), 500
 
 
 @login.route('/userLoginSalt', methods=['POST'])
@@ -111,7 +114,7 @@ def userLoginSalt():
         return jsonify(response)
     except Exception as e:
         response = {'code': 500, 'msg': e, 'data': {}}
-        return jsonify(response)
+        return jsonify(response), 500
 
 
 @login.route('/userChangePassword', methods=['POST'])
@@ -140,7 +143,7 @@ def userChangePassword():
         return jsonify(response)
     except Exception as e:
         response = {'code': 500, 'msg': e, 'data': {}}
-        return jsonify(response)
+        return jsonify(response), 500
 
 
 @login.route('/userAdd', methods=['POST'])
@@ -157,10 +160,16 @@ def userAdd():
             response = {'code': 406, 'msg': '已经存在此登录名的用户，请修改您的登录名'}
             return jsonify(response)
         else:
-            user.create(
-                name=name, login_name=login_name, role_id=role_id, stable_salt=stable_salt, password=password, is_valid=1, create_time=datetime.datetime.now(), update_time=datetime.datetime.now())
+            user.create(name=name,
+                        login_name=login_name,
+                        role_id=role_id,
+                        stable_salt=stable_salt,
+                        password=password,
+                        is_valid=1,
+                        create_time=datetime.datetime.now(),
+                        update_time=datetime.datetime.now())
             response = {'code': 200, 'msg': '成功'}
+        return jsonify(response)
     except Exception as e:
         response = {'code': 500, 'msg': e, 'data': {}}
-    finally:
-        return jsonify(response)
+        return jsonify(response), 500
