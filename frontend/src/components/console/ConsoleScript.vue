@@ -1010,8 +1010,6 @@
 import axios from "axios";
 import BScroll from "better-scroll";
 import {
-  consoleScriptSubSystem,
-  consoleScriptSubSystemScript,
   consoleScriptRun,
   consoleScriptTerminate,
   consoleScriptRunOutput,
@@ -1032,7 +1030,7 @@ const api = {
   run: "/script/consoleScriptRun",
   terminate: "/script/consoleScriptTerminate",
   runOutput: "/script/consoleScriptRunOutput",
-  eit: "/script/consoleScriptEdit",
+  edit: "/script/consoleScriptEdit",
   replay: "/script/consoleScriptReplay",
   delete: "/script/consoleScriptDelete",
   saveOutput: "/script/consoleScriptSaveOutput",
@@ -1278,13 +1276,55 @@ export default {
               version: res.data[d]["detail"][t]["version"]
             });
           }
-          this.subSystem[subSystemIndex].script.push(data["data"][d]["name"]);
+          this.subSystem[subSystemIndex].script.push(res.data[d]["name"]);
         }
         this.subSystem[subSystemIndex].scriptText = this.subSystem[
           subSystemIndex
         ].script.join("、");
         this.formDataLoading = false;
         return this.formData;
+      } catch (e) {
+        console.log(e);
+        this.$message({
+          message: e.response.data.msg,
+          type: "error"
+        });
+      }
+    },
+    //提交
+    async submit() {
+      this.submitButtonLoading = true;
+      var start_folder_with_start_script =
+        "cd " +
+        this.formData[this.activeTab].start_folder +
+        " && " +
+        this.formData[this.activeTab].start_script;
+      var command_get_result = this.command_get(
+        start_folder_with_start_script,
+        this.formData[this.activeTab].type
+      );
+      var command = command_get_result.command;
+      try {
+        const { data: res } = await axios.post(api.run, {
+          id: this.formData[this.activeTab].id,
+          command: command,
+          version: this.formData[this.activeTab].version,
+          detail: command_get_result.detail,
+          user: sessionStorage.getItem("user").replace(/\"/g, "")
+        });
+        if (res.data["process_id"] == -1) {
+          this.$message({
+            message: "任务创建错误，请联系管理员！",
+            type: "error"
+          });
+        } else {
+          this.output.log_id = res.data["log_id"];
+          this.output.visible = true;
+          this.output.text = command + "<br>";
+          this.output.process_id = res.data["process_id"];
+          this.output.canBeTerminate = true;
+          this.flushOutput(res.data["process_id"]);
+        }
       } catch (e) {
         console.log(e);
         this.$message({
@@ -2062,50 +2102,6 @@ export default {
         this.output.text = "";
         done();
       }
-    },
-    //提交
-    submit() {
-      this.submitButtonLoading = true;
-      var start_folder_with_start_script =
-        "cd " +
-        this.formData[this.activeTab].start_folder +
-        " && " +
-        this.formData[this.activeTab].start_script;
-      var command_get_result = this.command_get(
-        start_folder_with_start_script,
-        this.formData[this.activeTab].type
-      );
-      var command = command_get_result.command;
-      var detail = command_get_result.detail;
-      var para = {
-        id: this.formData[this.activeTab].id,
-        command: command,
-        version: this.formData[this.activeTab].version,
-        detail: detail,
-        user: sessionStorage.getItem("user").replace(/\"/g, "")
-      };
-      consoleScriptRun(para).then(data => {
-        if (data["code"] !== 200) {
-          this.$message({
-            message: data["msg"],
-            type: "error"
-          });
-        } else {
-          if (data["data"]["process_id"] == -1) {
-            this.$message({
-              message: "任务创建错误，请联系管理员！",
-              type: "error"
-            });
-          } else {
-            this.output.log_id = data["data"]["log_id"];
-            this.output.visible = true;
-            this.output.text = command + "<br>";
-            this.output.process_id = data["data"]["process_id"];
-            this.output.canBeTerminate = true;
-            this.flushOutput(data["data"]["process_id"]);
-          }
-        }
-      });
     }
   },
   mounted() {
