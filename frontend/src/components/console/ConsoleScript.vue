@@ -1010,7 +1010,6 @@
 import axios from "axios";
 import BScroll from "better-scroll";
 import {
-  consoleScriptRun,
   consoleScriptTerminate,
   consoleScriptRunOutput,
   consoleScriptEdit,
@@ -1292,7 +1291,7 @@ export default {
       }
     },
     //提交
-    async submit() {
+    submit() {
       this.submitButtonLoading = true;
       var start_folder_with_start_script =
         "cd " +
@@ -1305,7 +1304,7 @@ export default {
       );
       var command = command_get_result.command;
       try {
-        const { data: res } = await axios.post(api.run, {
+        const { data: res } = axios.post(api.run, {
           id: this.formData[this.activeTab].id,
           command: command,
           version: this.formData[this.activeTab].version,
