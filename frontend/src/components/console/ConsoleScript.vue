@@ -1027,21 +1027,21 @@ import {
   consoleScriptExtraButtonScriptRun
 } from "../../api/console";
 const api = {
-  consoleScriptSubSystem: "/script/consoleScriptSubSystem",
-  consoleScriptSubSystemScript: "/script/consoleScriptSubSystemScript",
-  consoleScriptRun: "/script/consoleScriptRun",
-  consoleScriptTerminate: "/script/consoleScriptTerminate",
-  consoleScriptRunOutput: "/script/consoleScriptRunOutput",
-  consoleScriptEdit: "/script/consoleScriptEdit",
-  consoleScriptReplay: "/script/consoleScriptReplay",
-  consoleScriptDelete: "/script/consoleScriptDelete",
-  consoleScriptSaveOutput: "/script/consoleScriptSaveOutput",
-  consoleScriptGetLogs: "/script/consoleScriptGetLogs",
-  consoleScriptGetNewestLog: "/script/consoleScriptGetNewestLog",
-  consoleScriptSchedule: "/script/consoleScriptSchedule",
-  consoleScriptScheduleEdit: "/script/consoleScriptScheduleEdit",
-  consoleScriptScheduleDelete: "/script/consoleScriptScheduleDelete",
-  consoleScriptExtraButtonScriptRun: "/script/consoleScriptExtraButtonScriptRun"
+  subSystem: "/script/subSystem",
+  subSystemScript: "/script/subSystemScript",
+  run: "/script/consoleScriptRun",
+  terminate: "/script/consoleScriptTerminate",
+  runOutput: "/script/consoleScriptRunOutput",
+  eit: "/script/consoleScriptEdit",
+  replay: "/script/consoleScriptReplay",
+  delete: "/script/consoleScriptDelete",
+  saveOutput: "/script/consoleScriptSaveOutput",
+  getLogs: "/script/consoleScriptGetLogs",
+  getNewestLog: "/script/consoleScriptGetNewestLog",
+  schedule: "/script/consoleScriptSchedule",
+  scheduleEdit: "/script/consoleScriptScheduleEdit",
+  scheduleDelete: "/script/consoleScriptScheduleDelete",
+  extraButtonScriptRun: "/script/consoleScriptExtraButtonScriptRun"
 };
 export default {
   name: "ConsoleScript",
@@ -1203,6 +1203,95 @@ export default {
       this.activedSystem = this.subSystem[s].id;
       this.activeTab = "0";
       this.consoleScriptSubSystemScriptFront(this.subSystem[s].id);
+    },
+    //获取系统信息
+    async getSubSystem() {
+      try {
+        const { data: res } = await axios.get(api.subSystem, {
+          user: sessionStorage.getItem("user").replace(/\"/g, "")
+        });
+        for (let x = 0; x < res.data.length; x++) {
+          this.subSystem.push({
+            id: res.data[x]["id"],
+            title: res.data[x]["name"]
+          });
+        }
+      } catch (e) {
+        console.log(e);
+        this.$message({
+          message: e.response.data.msg,
+          type: "error"
+        });
+      }
+    },
+    //展示子系统下的脚本
+    async consoleScriptSubSystemScriptFront(sub_system_id) {
+      this.formDataLoading = true;
+      for (
+        var subSystemIndex = 0;
+        subSystemIndex < this.subSystem.length;
+        subSystemIndex++
+      ) {
+        if (Number(sub_system_id) == this.subSystem[subSystemIndex].id) {
+          break;
+        }
+      }
+      try {
+        const { data: res } = await axios.post(api.subSystemScript, {
+          user: sessionStorage.getItem("user").replace(/\"/g, ""),
+          sub_system_id: this.subSystem[subSystemIndex].id
+        });
+        this.formData = [];
+        this.subSystem[subSystemIndex].script = [];
+        for (let d = 0; d < res.data.length; d++) {
+          this.formData.push({
+            title: res.data[d]["name"],
+            id: res.data[d]["id"],
+            start_folder: res.data[d]["start_folder"],
+            start_script: res.data[d]["start_script"],
+            runs: res.data[d]["runs"],
+            user: res.data[d]["user"],
+            update_time: res.data[d]["update_time"],
+            version: res.data[d]["version"],
+            update_time: res.data[d]["update_time"],
+            type: res.data[d]["type"],
+            sub_system_id: res.data[d]["sub_system_id"],
+            formDataDetail: []
+          });
+          for (var t = 0; t < res.data[d]["detail"].length; t++) {
+            this.formData[this.formData.length - 1]["formDataDetail"].push({
+              type: res.data[d]["detail"][t]["type"],
+              label: res.data[d]["detail"][t]["label"],
+              value: res.data[d]["detail"][t]["value"],
+              placeHolder: res.data[d]["detail"][t]["place_holder"],
+              options: res.data[d]["detail"][t]["options"],
+              createable: res.data[d]["detail"][t]["createable"],
+              disabled: res.data[d]["detail"][t]["disabled"],
+              remark: res.data[d]["detail"][t]["remark"],
+              is_important: res.data[d]["detail"][t]["is_important"],
+              visible: res.data[d]["detail"][t]["visible"],
+              extra_button: res.data[d]["detail"][t]["extra_button"],
+              extra_button_label:
+                res.data[d]["detail"][t]["extra_button_label"],
+              extra_button_script:
+                res.data[d]["detail"][t]["extra_button_script"],
+              version: res.data[d]["detail"][t]["version"]
+            });
+          }
+          this.subSystem[subSystemIndex].script.push(data["data"][d]["name"]);
+        }
+        this.subSystem[subSystemIndex].scriptText = this.subSystem[
+          subSystemIndex
+        ].script.join("、");
+        this.formDataLoading = false;
+        return this.formData;
+      } catch (e) {
+        console.log(e);
+        this.$message({
+          message: e.response.data.msg,
+          type: "error"
+        });
+      }
     },
     //增加组件
     editFormAddSingleData() {
@@ -1599,96 +1688,6 @@ export default {
             });
           }
         });
-      });
-    },
-    //展示子系统下的脚本
-    consoleScriptSubSystemScriptFront(sub_system_id) {
-      this.formDataLoading = true;
-      for (
-        var subSystemIndex = 0;
-        subSystemIndex < this.subSystem.length;
-        subSystemIndex++
-      ) {
-        if (Number(sub_system_id) == this.subSystem[subSystemIndex].id) {
-          break;
-        }
-      }
-      var para = {
-        user: sessionStorage.getItem("user").replace(/\"/g, ""),
-        sub_system_id: this.subSystem[subSystemIndex].id
-      };
-      return consoleScriptSubSystemScript(para).then(data => {
-        if (data["code"] !== 200) {
-          this.$message({
-            message: data["msg"],
-            type: "error"
-          });
-        } else {
-          this.formData = [];
-          this.subSystem[subSystemIndex].script = [];
-          for (let d = 0; d < data["data"].length; d++) {
-            this.formData.push({
-              title: data["data"][d]["name"],
-              id: data["data"][d]["id"],
-              start_folder: data["data"][d]["start_folder"],
-              start_script: data["data"][d]["start_script"],
-              runs: data["data"][d]["runs"],
-              user: data["data"][d]["user"],
-              update_time: data["data"][d]["update_time"],
-              version: data["data"][d]["version"],
-              update_time: data["data"][d]["update_time"],
-              type: data["data"][d]["type"],
-              sub_system_id: data["data"][d]["sub_system_id"],
-              formDataDetail: []
-            });
-            for (var t = 0; t < data["data"][d]["detail"].length; t++) {
-              this.formData[this.formData.length - 1]["formDataDetail"].push({
-                type: data["data"][d]["detail"][t]["type"],
-                label: data["data"][d]["detail"][t]["label"],
-                value: data["data"][d]["detail"][t]["value"],
-                placeHolder: data["data"][d]["detail"][t]["place_holder"],
-                options: data["data"][d]["detail"][t]["options"],
-                createable: data["data"][d]["detail"][t]["createable"],
-                disabled: data["data"][d]["detail"][t]["disabled"],
-                remark: data["data"][d]["detail"][t]["remark"],
-                is_important: data["data"][d]["detail"][t]["is_important"],
-                visible: data["data"][d]["detail"][t]["visible"],
-                extra_button: data["data"][d]["detail"][t]["extra_button"],
-                extra_button_label:
-                  data["data"][d]["detail"][t]["extra_button_label"],
-                extra_button_script:
-                  data["data"][d]["detail"][t]["extra_button_script"],
-                version: data["data"][d]["detail"][t]["version"]
-              });
-            }
-            this.subSystem[subSystemIndex].script.push(data["data"][d]["name"]);
-          }
-          this.subSystem[subSystemIndex].scriptText = this.subSystem[
-            subSystemIndex
-          ].script.join("、");
-          this.formDataLoading = false;
-          return this.formData;
-        }
-      });
-    },
-    //获取系统信息
-    getSubSystem() {
-      var para = {
-        user: sessionStorage.getItem("user").replace(/\"/g, "")
-      };
-      consoleScriptSubSystem(para).then(data => {
-        if (data["code"] !== 200) {
-          this.$message({
-            message: data["msg"],
-            type: "error"
-          });
-        } else {
-          for (let x = 0; x < data["data"].length; x++)
-            this.subSystem.push({
-              id: data["data"][x]["id"],
-              title: data["data"][x]["name"]
-            });
-        }
       });
     },
     //更新输出

@@ -36,9 +36,9 @@ def consoleGet():
         return jsonify(response), 500
 
 
-@script.route('/consoleScriptSubSystem', methods=['GET'])
+@script.route('/subSystem', methods=['GET'])
 @cross_origin()
-def consoleScriptSubSystem():
+def subSystem():
     result = []
     try:
         console_script_sub_system_query = console_script_sub_system.select().where((console_script_sub_system.is_valid == 1)).dicts()
@@ -51,9 +51,9 @@ def consoleScriptSubSystem():
         return jsonify(response), 500
 
 
-@script.route('/consoleScriptSubSystemScript', methods=['POST'])
+@script.route('/subSystemScript', methods=['POST'])
 @cross_origin()
-def consoleScriptSubSystemScript():
+def subSystemScript():
     sub_system_id = request.get_json()['sub_system_id']
     data = []
     try:
