@@ -5,7 +5,7 @@ import datetime
 import traceback
 import subprocess
 import collections
-from . import console as consoleApi
+from . import script
 from flask_cors import cross_origin
 from flask import render_template, session, redirect, url_for, current_app, flash, Response, request, jsonify
 from ..model.console_model import console, console_script_sub_system, console_script, console_script_detail, console_script_detail, console_script_log, console_script_schedule
@@ -21,7 +21,7 @@ def subprocess_run(command):
     return len(running_subprocess) - 1
 
 
-@consoleApi.route('/get', methods=['GET'])
+@script.route('/get', methods=['GET'])
 @cross_origin()
 def consoleGet():
     result = []
@@ -29,14 +29,14 @@ def consoleGet():
         console_query = console.select().where(console.is_valid == 1).order_by(console.order).dicts()
         for row in console_query:
             result.append({'id': row['id'], 'name': row['name'], 'order': row['order'], 'icon': row['icon'], 'component_name': row['component_name'], 'update_time': row['update_time']})
+        response = {'code': 200, 'msg': '成功！', 'data': result}
+        return jsonify(response)
     except Exception as e:
         response = {'code': 500, 'msg': '失败！错误信息：' + str(e) + '，请联系管理员。', 'data': []}
-        return jsonify(response)
-    response = {'code': 200, 'msg': '成功！', 'data': result}
-    return jsonify(response)
+        return jsonify(response), 500
 
 
-@consoleApi.route('/consoleScriptSubSystem', methods=['GET'])
+@script.route('/consoleScriptSubSystem', methods=['GET'])
 @cross_origin()
 def consoleScriptSubSystem():
     result = []
@@ -44,14 +44,14 @@ def consoleScriptSubSystem():
         console_script_sub_system_query = console_script_sub_system.select().where((console_script_sub_system.is_valid == 1)).dicts()
         for row in console_script_sub_system_query:
             result.append({'id': row['id'], 'name': row['name'], 'user': row['user'], 'update_time': row['update_time']})
+        response = {'code': 200, 'msg': '成功！', 'data': result}
+        return jsonify(response)
     except Exception as e:
         response = {'code': 500, 'msg': '失败！错误信息：' + str(e) + '，请联系管理员。', 'data': []}
-        return jsonify(response)
-    response = {'code': 200, 'msg': '成功！', 'data': result}
-    return jsonify(response)
+        return jsonify(response), 500
 
 
-@consoleApi.route('/consoleScriptSubSystemScript', methods=['POST'])
+@script.route('/consoleScriptSubSystemScript', methods=['POST'])
 @cross_origin()
 def consoleScriptSubSystemScript():
     sub_system_id = request.get_json()['sub_system_id']
@@ -93,15 +93,15 @@ def consoleScriptSubSystemScript():
                     data[-1]['detail'][-1]['extra_button_label'] = row2['extra_button_label']
                     data[-1]['detail'][-1]['extra_button_script'] = row2['extra_button_script']
                     data[-1]['detail'][-1]['version'] = row2['version']
+        response = {'code': 200, 'msg': '成功！', 'data': data}
+        return jsonify(response)
     except Exception as e:
         traceback.print_exc()
         response = {'code': 500, 'msg': '失败！错误信息：' + str(e) + '，请联系管理员。', 'data': []}
-        return jsonify(response)
-    response = {'code': 200, 'msg': '成功！', 'data': data}
-    return jsonify(response)
+        return jsonify(response), 500
 
 
-@consoleApi.route('/consoleScriptRun', methods=['POST'])
+@script.route('/consoleScriptRun', methods=['POST'])
 @cross_origin()
 def consoleScriptRun():
     global running_subprocess
@@ -145,6 +145,7 @@ def consoleScriptRun():
                 'log_id': console_script_log_query.id,
             }
         }
+        return jsonify(response)
     except Exception as e:
         print(e)
         traceback.print_exc()
@@ -152,11 +153,10 @@ def consoleScriptRun():
             'code': 500,
             'msg': str(e),
         }
-    finally:
-        return jsonify(response)
+        return jsonify(response), 500
 
 
-@consoleApi.route('/consoleScriptTerminate', methods=['POST'])
+@script.route('/consoleScriptTerminate', methods=['POST'])
 @cross_origin()
 def consoleScriptTerminate():
     global running_subprocess
@@ -164,6 +164,7 @@ def consoleScriptTerminate():
     try:
         running_subprocess[process_id].terminate()
         response = {'code': 200, 'msg': '任务已成功停止！', 'data': {}}
+        return jsonify(response)
     except Exception as e:
         print(e)
         traceback.print_exc()
@@ -171,11 +172,10 @@ def consoleScriptTerminate():
             'code': 500,
             'msg': str(e),
         }
-    finally:
-        return jsonify(response)
+        return jsonify(response), 500
 
 
-@consoleApi.route('/consoleScriptRunOutput', methods=['POST'])
+@script.route('/consoleScriptRunOutput', methods=['POST'])
 @cross_origin()
 def consoleScriptRunOutput():
     global running_subprocess
@@ -188,6 +188,7 @@ def consoleScriptRunOutput():
             for x in range(10):
                 output = output + str(running_subprocess[process_id].stdout.readline(), encoding='gbk')  #每次readline()后就会清理输出，见https://www.cnblogs.com/alan-babyblog/p/5261497.html
             response = {'code': 200, 'msg': '成功！', 'data': {'output': output, 'status': 1 if running_subprocess[process_id].poll() == None else 0}}
+        return jsonify(response)
     except Exception as e:
         print(e)
         traceback.print_exc()
@@ -195,11 +196,10 @@ def consoleScriptRunOutput():
             'code': 500,
             'msg': str(e),
         }
-    finally:
-        return jsonify(response)
+        return jsonify(response), 500
 
 
-@consoleApi.route('/consoleScriptEdit', methods=['POST'])
+@script.route('/consoleScriptEdit', methods=['POST'])
 @cross_origin()
 def consoleScriptEdit():
     try:
@@ -218,8 +218,16 @@ def consoleScriptEdit():
             }
             return jsonify(response)
         if script_id == 0:
-            console_script.create(
-                name=name, sub_system_id=sub_system_id, start_folder=start_folder, start_script=start_script, type=type, runs=0, is_valid=1, version=1, user=user, update_time=datetime.datetime.now())
+            console_script.create(name=name,
+                                  sub_system_id=sub_system_id,
+                                  start_folder=start_folder,
+                                  start_script=start_script,
+                                  type=type,
+                                  runs=0,
+                                  is_valid=1,
+                                  version=1,
+                                  user=user,
+                                  update_time=datetime.datetime.now())
             console_script_query = console_script.select().order_by(-console_script.id).limit(1).dicts()
             for row in console_script_query:
                 script_id = row['id']
@@ -284,25 +292,24 @@ def consoleScriptEdit():
                 except:
                     extra_button_script = ''
                 print(value, place_holder, options, createable, disabled, remark)
-                console_script_detail.create(
-                    script_id=script_id,
-                    type=detail[x]['type'],
-                    label=detail[x]['label'],
-                    value=value,
-                    place_holder=place_holder,
-                    options=options,
-                    createable=createable,
-                    disabled=disabled,
-                    remark=remark,
-                    is_important=is_important,
-                    extra_button=extra_button,
-                    extra_button_label=extra_button_label,
-                    extra_button_script=extra_button_script,
-                    is_valid=1,
-                    visible=visible,
-                    version=1,
-                    user=user,
-                    update_time=datetime.datetime.now())
+                console_script_detail.create(script_id=script_id,
+                                             type=detail[x]['type'],
+                                             label=detail[x]['label'],
+                                             value=value,
+                                             place_holder=place_holder,
+                                             options=options,
+                                             createable=createable,
+                                             disabled=disabled,
+                                             remark=remark,
+                                             is_important=is_important,
+                                             extra_button=extra_button,
+                                             extra_button_label=extra_button_label,
+                                             extra_button_script=extra_button_script,
+                                             is_valid=1,
+                                             visible=visible,
+                                             version=1,
+                                             user=user,
+                                             update_time=datetime.datetime.now())
             response = {
                 'code': 200,
                 'msg': '新增成功！',
@@ -312,10 +319,9 @@ def consoleScriptEdit():
             for row in console_script_query:
                 version = row['version'] + 1
 
-            console_script.update(
-                name=name, start_folder=start_folder, start_script=start_script, type=type, version=version, user=user,
-                update_time=datetime.datetime.now()).where((console_script.id == script_id)
-                                                           & (console_script.is_valid == 1)).execute()
+            console_script.update(name=name, start_folder=start_folder, start_script=start_script, type=type, version=version, user=user,
+                                  update_time=datetime.datetime.now()).where((console_script.id == script_id)
+                                                                             & (console_script.is_valid == 1)).execute()
             console_script_detail.update(is_valid=0).where(console_script_detail.script_id == script_id).execute()
 
             for x in range(len(detail)):
@@ -379,30 +385,29 @@ def consoleScriptEdit():
                 except:
                     extra_button_script = ''
                 print(detail[x])
-                console_script_detail.create(
-                    script_id=script_id,
-                    type=detail[x]['type'],
-                    label=detail[x]['label'],
-                    value=value,
-                    place_holder=place_holder,
-                    options=options,
-                    createable=createable,
-                    disabled=disabled,
-                    remark=remark,
-                    is_important=is_important,
-                    extra_button=extra_button,
-                    extra_button_label=extra_button_label,
-                    extra_button_script=extra_button_script,
-                    is_valid=1,
-                    visible=visible,
-                    version=version,
-                    user=user,
-                    update_time=datetime.datetime.now())
+                console_script_detail.create(script_id=script_id,
+                                             type=detail[x]['type'],
+                                             label=detail[x]['label'],
+                                             value=value,
+                                             place_holder=place_holder,
+                                             options=options,
+                                             createable=createable,
+                                             disabled=disabled,
+                                             remark=remark,
+                                             is_important=is_important,
+                                             extra_button=extra_button,
+                                             extra_button_label=extra_button_label,
+                                             extra_button_script=extra_button_script,
+                                             is_valid=1,
+                                             visible=visible,
+                                             version=version,
+                                             user=user,
+                                             update_time=datetime.datetime.now())
             response = {
                 'code': 200,
                 'msg': '修改成功！',
             }
-
+        return jsonify(response)
     except Exception as e:
         print(e)
         traceback.print_exc()
@@ -410,11 +415,10 @@ def consoleScriptEdit():
             'code': 500,
             'msg': str(e),
         }
-    finally:
-        return jsonify(response)
+        return jsonify(response), 500
 
 
-@consoleApi.route('/console_scriptReplay', methods=['POST'])
+@script.route('/console_scriptReplay', methods=['POST'])
 @cross_origin()
 def console_scriptReplay():
     try:
@@ -431,6 +435,7 @@ def console_scriptReplay():
             response = {'code': 200, 'msg': '成功', 'data': {'id': id, 'detail': detail, 'command': command, 'version': version, 'update_time': update_time}}
         else:
             response = {'code': 500, 'msg': '未查询到' + user + '的上次脚本运行参数，如想使用其他人的参数，请使用“查看全部运行记录”按钮', 'data': {}}
+        return jsonify(response)
     except Exception as e:
         print(e)
         traceback.print_exc()
@@ -438,11 +443,10 @@ def console_scriptReplay():
             'code': 500,
             'msg': str(e),
         }
-    finally:
-        return jsonify(response)
+        return jsonify(response), 500
 
 
-@consoleApi.route('/consoleScriptDelete', methods=['POST'])
+@script.route('/consoleScriptDelete', methods=['POST'])
 @cross_origin()
 def consoleScriptDelete():
     try:
@@ -450,6 +454,7 @@ def consoleScriptDelete():
         script_id = request.get_json()['script_id']
         console_script.update(is_valid=0, user=user, update_time=datetime.datetime.now()).where((console_script.id == script_id) & (console_script.is_valid == 1)).execute()
         response = {'code': 200, 'msg': '删除成功', 'data': {}}
+        return jsonify(response)
     except Exception as e:
         print(e)
         traceback.print_exc()
@@ -457,11 +462,10 @@ def consoleScriptDelete():
             'code': 500,
             'msg': str(e),
         }
-    finally:
-        return jsonify(response)
+        return jsonify(response), 500
 
 
-@consoleApi.route('/consoleScriptSaveOutput', methods=['POST'])
+@script.route('/consoleScriptSaveOutput', methods=['POST'])
 @cross_origin()
 def consoleScriptSaveOutput():
     try:
@@ -469,6 +473,7 @@ def consoleScriptSaveOutput():
         output = request.get_json()['output']
         console_script_log.update(output=output, end_time=datetime.datetime.now()).where((console_script_log.id == log_id)).execute()
         response = {'code': 200, 'msg': '成功', 'data': {}}
+        return jsonify(response)
     except Exception as e:
         print(e)
         traceback.print_exc()
@@ -476,11 +481,10 @@ def consoleScriptSaveOutput():
             'code': 500,
             'msg': str(e),
         }
-    finally:
-        return jsonify(response)
+        return jsonify(response), 500
 
 
-@consoleApi.route('/consoleScriptGetLogs', methods=['POST'])
+@script.route('/consoleScriptGetLogs', methods=['POST'])
 @cross_origin()
 def consoleScriptGetLogs():
     try:
@@ -506,6 +510,7 @@ def consoleScriptGetLogs():
             if row['is_important'] == 1:
                 important_fields.append(row['label'])
         response = {'code': 200, 'msg': '成功', 'data': {'logs': result, 'important_fields': important_fields}}
+        return jsonify(response)
     except Exception as e:
         print(e)
         traceback.print_exc()
@@ -513,11 +518,10 @@ def consoleScriptGetLogs():
             'code': 500,
             'msg': str(e),
         }
-    finally:
-        return jsonify(response)
+        return jsonify(response), 500
 
 
-@consoleApi.route('/consoleScriptGetNewestLog', methods=['POST'])
+@script.route('/consoleScriptGetNewestLog', methods=['POST'])
 @cross_origin()
 def consoleScriptGetNewestLog():
     try:
@@ -539,6 +543,7 @@ def consoleScriptGetNewestLog():
             response = {'code': 200, 'msg': '成功', 'data': result}
         else:
             response = {'code': 500, 'msg': '未查询到' + user + '的上次脚本运行日志，如想查看其他人的日志，请使用“查看全部运行记录”按钮', 'data': {}}
+        return jsonify(response)
     except Exception as e:
         print(e)
         traceback.print_exc()
@@ -546,11 +551,10 @@ def consoleScriptGetNewestLog():
             'code': 500,
             'msg': str(e),
         }
-    finally:
-        return jsonify(response)
+        return jsonify(response), 500
 
 
-@consoleApi.route('/consoleScriptSchedule', methods=['POST'])
+@script.route('/consoleScriptSchedule', methods=['POST'])
 @cross_origin()
 def consoleScriptSchedule():
     try:
@@ -576,6 +580,7 @@ def consoleScriptSchedule():
                 'update_time': row['update_time'].strftime("%Y-%m-%d %H:%M:%S"),
             })
         response = {'code': 200, 'msg': '成功', 'data': result}
+        return jsonify(response)
     except Exception as e:
         print(e)
         traceback.print_exc()
@@ -583,11 +588,10 @@ def consoleScriptSchedule():
             'code': 500,
             'msg': str(e),
         }
-    finally:
-        return jsonify(response)
+        return jsonify(response), 500
 
 
-@consoleApi.route('/consoleScriptScheduleEdit', methods=['POST'])
+@script.route('/consoleScriptScheduleEdit', methods=['POST'])
 @cross_origin()
 def consoleScriptScheduleEdit():
     try:
@@ -607,19 +611,18 @@ def consoleScriptScheduleEdit():
         schedule_id = request.get_json()['schedule_id']
         if schedule_id == 0:
             if is_automatic == 0:
-                console_script_schedule.create(
-                    script_id=script_id,
-                    command=command,
-                    detail=detail,
-                    version=version,
-                    user=user,
-                    is_automatic=is_automatic,
-                    trigger_time=trigger_time,
-                    interval=0,
-                    interval_raw=0,
-                    interval_unit=0,
-                    is_valid=1,
-                    update_time=datetime.datetime.now())
+                console_script_schedule.create(script_id=script_id,
+                                               command=command,
+                                               detail=detail,
+                                               version=version,
+                                               user=user,
+                                               is_automatic=is_automatic,
+                                               trigger_time=trigger_time,
+                                               interval=0,
+                                               interval_raw=0,
+                                               interval_unit=0,
+                                               is_valid=1,
+                                               update_time=datetime.datetime.now())
             elif is_automatic == 1:
                 interval_raw = int(request.get_json()['interval_raw'])
                 interval_unit = int(request.get_json()['interval_unit'])
@@ -627,32 +630,30 @@ def consoleScriptScheduleEdit():
                     interval = interval_raw
                 elif (interval_unit == 2):  #天
                     interval = interval_raw * 24
-                console_script_schedule.create(
-                    script_id=script_id,
-                    command=command,
-                    detail=detail,
-                    version=version,
-                    user=user,
-                    is_automatic=is_automatic,
-                    trigger_time=trigger_time,
-                    interval=interval,
-                    interval_raw=interval_raw,
-                    interval_unit=interval_unit,
-                    is_valid=1,
-                    update_time=datetime.datetime.now())
+                console_script_schedule.create(script_id=script_id,
+                                               command=command,
+                                               detail=detail,
+                                               version=version,
+                                               user=user,
+                                               is_automatic=is_automatic,
+                                               trigger_time=trigger_time,
+                                               interval=interval,
+                                               interval_raw=interval_raw,
+                                               interval_unit=interval_unit,
+                                               is_valid=1,
+                                               update_time=datetime.datetime.now())
         elif schedule_id != 0:
             if is_automatic == 0:
-                console_script_schedule.update(
-                    script_id=script_id,
-                    version=version,
-                    user=user,
-                    is_automatic=is_automatic,
-                    trigger_time=trigger_time,
-                    interval=0,
-                    interval_raw=0,
-                    interval_unit=0,
-                    is_valid=1,
-                    update_time=datetime.datetime.now()).where(console_script_schedule.id == schedule_id).execute()
+                console_script_schedule.update(script_id=script_id,
+                                               version=version,
+                                               user=user,
+                                               is_automatic=is_automatic,
+                                               trigger_time=trigger_time,
+                                               interval=0,
+                                               interval_raw=0,
+                                               interval_unit=0,
+                                               is_valid=1,
+                                               update_time=datetime.datetime.now()).where(console_script_schedule.id == schedule_id).execute()
             elif is_automatic == 1:
                 interval_raw = int(request.get_json()['interval_raw'])
                 interval_unit = int(request.get_json()['interval_unit'])
@@ -660,18 +661,18 @@ def consoleScriptScheduleEdit():
                     interval = interval_raw
                 elif (interval_unit == 2):  #天
                     interval = interval_raw * 24
-                console_script_schedule.update(
-                    script_id=script_id,
-                    version=version,
-                    user=user,
-                    is_automatic=is_automatic,
-                    trigger_time=trigger_time,
-                    interval=interval,
-                    interval_raw=interval_raw,
-                    interval_unit=interval_unit,
-                    is_valid=1,
-                    update_time=datetime.datetime.now()).where(console_script_schedule.id == schedule_id).execute()
+                console_script_schedule.update(script_id=script_id,
+                                               version=version,
+                                               user=user,
+                                               is_automatic=is_automatic,
+                                               trigger_time=trigger_time,
+                                               interval=interval,
+                                               interval_raw=interval_raw,
+                                               interval_unit=interval_unit,
+                                               is_valid=1,
+                                               update_time=datetime.datetime.now()).where(console_script_schedule.id == schedule_id).execute()
         response = {'code': 200, 'msg': '成功', 'data': []}
+        return jsonify(response)
     except Exception as e:
         print(e)
         traceback.print_exc()
@@ -679,11 +680,10 @@ def consoleScriptScheduleEdit():
             'code': 500,
             'msg': str(e),
         }
-    finally:
-        return jsonify(response)
+        return jsonify(response), 500
 
 
-@consoleApi.route('/consoleScriptScheduleDelete', methods=['POST'])
+@script.route('/consoleScriptScheduleDelete', methods=['POST'])
 @cross_origin()
 def consoleScriptScheduleDelete():
     try:
@@ -691,6 +691,7 @@ def consoleScriptScheduleDelete():
         schedule_id = request.get_json()['schedule_id']
         console_script_schedule.update(is_valid=0, update_time=datetime.datetime.now()).where(console_script_schedule.id == schedule_id).execute()
         response = {'code': 200, 'msg': '成功', 'data': []}
+        return jsonify(response)
     except Exception as e:
         print(e)
         traceback.print_exc()
@@ -698,11 +699,10 @@ def consoleScriptScheduleDelete():
             'code': 500,
             'msg': str(e),
         }
-    finally:
-        return jsonify(response)
+        return jsonify(response), 500
 
 
-@consoleApi.route('/consoleScriptExtraButtonScriptRun', methods=['POST'])
+@script.route('/consoleScriptExtraButtonScriptRun', methods=['POST'])
 @cross_origin()
 def consoleScriptExtraButtonScriptRun():
     global running_subprocess
@@ -719,6 +719,7 @@ def consoleScriptExtraButtonScriptRun():
                 'process_id': process_id,
             }
         }
+        return jsonify(response)
     except Exception as e:
         print(e)
         traceback.print_exc()
@@ -726,5 +727,4 @@ def consoleScriptExtraButtonScriptRun():
             'code': 500,
             'msg': str(e),
         }
-    finally:
-        return jsonify(response)
+        return jsonify(response), 500

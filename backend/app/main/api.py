@@ -56,7 +56,7 @@ def userInfo():
     except Exception as e:
         traceback.print_exc()
         response = {'code': 500, 'msg': '失败！错误信息：' + str(e) + '，请联系管理员。', 'data': []}
-        return jsonify(response)
+        return jsonify(response), 500
 
 
 @main.route('/favicon.ico', methods=['GET'])
@@ -77,8 +77,7 @@ def icon():
         for row in icon_query:
             result.append({'id': row['id'], 'name': row['name']})
         response = {'code': 200, 'msg': '成功！', 'data': result}
-
+        return jsonify(response)
     except Exception as e:
         response = {'code': 500, 'msg': '失败！错误信息：' + str(e) + '，请联系管理员。', 'data': []}
-    finally:
-        return jsonify(response)
+        return jsonify(response), 500

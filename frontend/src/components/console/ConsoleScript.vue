@@ -368,7 +368,6 @@
       </el-col>
     </el-row>
 
-
     <!--运行界面-->
     <el-drawer
       title="输出"
@@ -1027,6 +1026,23 @@ import {
   consoleScriptScheduleDelete,
   consoleScriptExtraButtonScriptRun
 } from "../../api/console";
+const api = {
+  consoleScriptSubSystem: "/script/consoleScriptSubSystem",
+  consoleScriptSubSystemScript: "/script/consoleScriptSubSystemScript",
+  consoleScriptRun: "/script/consoleScriptRun",
+  consoleScriptTerminate: "/script/consoleScriptTerminate",
+  consoleScriptRunOutput: "/script/consoleScriptRunOutput",
+  consoleScriptEdit: "/script/consoleScriptEdit",
+  consoleScriptReplay: "/script/consoleScriptReplay",
+  consoleScriptDelete: "/script/consoleScriptDelete",
+  consoleScriptSaveOutput: "/script/consoleScriptSaveOutput",
+  consoleScriptGetLogs: "/script/consoleScriptGetLogs",
+  consoleScriptGetNewestLog: "/script/consoleScriptGetNewestLog",
+  consoleScriptSchedule: "/script/consoleScriptSchedule",
+  consoleScriptScheduleEdit: "/script/consoleScriptScheduleEdit",
+  consoleScriptScheduleDelete: "/script/consoleScriptScheduleDelete",
+  consoleScriptExtraButtonScriptRun: "/script/consoleScriptExtraButtonScriptRun"
+};
 export default {
   name: "ConsoleScript",
   data() {
@@ -1270,8 +1286,6 @@ export default {
     },
     //选择器组件点击
     singleDataOptionDialogClicked(index, singleDataOptions) {
-      //console.log(index)
-      //console.log(singleDataOptions)
       this.singleDataOptionDialog.index = index;
       this.singleDataOptionDialog.visible = true;
       this.singleDataOptionDialog.data =
@@ -1287,13 +1301,10 @@ export default {
     },
     //选择器组件增加
     singleDataOptionDialogAddSingleData() {
-      //console.log(this.singleDataOptionDialog.data)
       this.singleDataOptionDialog.data.push({
         label: "",
         value: ""
       });
-      //console.log(this.singleDataOptionDialog.data)
-      //console.log(this.edit.formData)
     },
     //选择器组件提交
     singleDataOptionDialogSubmited() {
@@ -1339,7 +1350,6 @@ export default {
     //展示编辑脚本dialog
     singleDataSetting() {
       this.consoleScriptSubSystemScriptFront(this.activedSystem).then(data => {
-        //console.log(data)
         this.edit.dialogTitle = "编辑脚本";
         this.edit.title = data[this.activeTab].title;
         this.edit.id = data[this.activeTab].id;
@@ -1425,7 +1435,6 @@ export default {
               );
             }
           }
-          //console.log(data["data"])
         }
       });
     },
@@ -1594,7 +1603,6 @@ export default {
     },
     //展示子系统下的脚本
     consoleScriptSubSystemScriptFront(sub_system_id) {
-      //console.log('sub_system_id: ' + sub_system_id)
       this.formDataLoading = true;
       for (
         var subSystemIndex = 0;
@@ -1605,7 +1613,6 @@ export default {
           break;
         }
       }
-      //console.log('subSystemIndex: ' + subSystemIndex)
       var para = {
         user: sessionStorage.getItem("user").replace(/\"/g, ""),
         sub_system_id: this.subSystem[subSystemIndex].id
@@ -1659,7 +1666,6 @@ export default {
           this.subSystem[subSystemIndex].scriptText = this.subSystem[
             subSystemIndex
           ].script.join("、");
-          //console.log(this.formData)
           this.formDataLoading = false;
           return this.formData;
         }
@@ -1905,12 +1911,8 @@ export default {
       this.extra_button.output = "";
       this.extra_button.output_temp = "";
       this.extra_button.buttonLoading = true;
-      //console.log(singleFormIndex)
-      //console.log(singleFormIndex)
-      //console.log(extra_button_command)
       var command_get_result = this.command_get(extra_button_command, 2);
       var command = command_get_result.command;
-      //console.log(command)
       var para = {
         user: sessionStorage.getItem("user").replace(/\"/g, ""),
         command: command
@@ -1931,13 +1933,11 @@ export default {
           } else {
             var process_id = data["data"]["process_id"];
           }
-          //console.log(this.formData)
           this.extraButtonFlushOutput(
             singleFormIndex,
             singleDataIndex,
             process_id
           );
-          //console.log(this.formData)
         }
       });
     },
@@ -1945,7 +1945,6 @@ export default {
     command_get(start_command, type) {
       var command = "";
       var detail = {};
-      //console.log(this.activeTab)
       if (type == "1") {
         //顺序模式
         for (
@@ -1953,7 +1952,6 @@ export default {
           x < this.formData[this.activeTab].formDataDetail.length;
           x++
         ) {
-          //console.log(this.formData[this.activeTab].formDataDetail[x].type)
           detail[
             this.formData[this.activeTab].formDataDetail[x].label
           ] = this.formData[this.activeTab].formDataDetail[x].value;
@@ -2053,13 +2051,16 @@ export default {
     //关闭运行窗口
     outputDialogClose() {
       if (this.output.isAlert) {
-        this.$confirm('在运行中关闭运行窗口会导致运行日志保存不完整，仍然要关闭吗?', '提示', {
-        }).then(_ => {
-          this.output.text = ""
+        this.$confirm(
+          "在运行中关闭运行窗口会导致运行日志保存不完整，仍然要关闭吗?",
+          "提示",
+          {}
+        ).then(_ => {
+          this.output.text = "";
           done();
-        })
+        });
       } else {
-        this.output.text = ""
+        this.output.text = "";
         done();
       }
     },
@@ -2284,10 +2285,10 @@ export default {
   border-radius: 10px;
   background: #f3f3f300;
 }
-.max-height-large{
+.max-height-large {
   max-height: 70vh;
 }
-.max-height-medium{
+.max-height-medium {
   max-height: 40vh;
 }
 .margin-top-medium {

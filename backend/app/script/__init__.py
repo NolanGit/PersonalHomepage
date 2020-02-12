@@ -1,5 +1,5 @@
 from flask import Blueprint
 
-console = Blueprint('console', __name__)
+script = Blueprint('script', __name__)
 
 from . import api
