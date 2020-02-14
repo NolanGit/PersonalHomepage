@@ -1753,11 +1753,8 @@ export default {
           } else if (data["data"]["status"] == 0) {
             this.output.canBeTerminate = false;
             this.output.isAlert = false;
-            this.output.text =
-              this.output.text +
-              data["data"]["output"]
-                .replace(/\n/g, "<br>")
-                .replace(/\s/g, "&nbsp;");
+            this.output.text = '<div>' + this.output.text + '</div>' + data["data"]["output"].replace(/\n/g, '<br>').replace(/\s/g, '&nbsp;');
+            this.output.text = this.output.text.replace(/#&nbsp;/g, ' ')
             this.$message({
               message: "运行结束，请查看输出。",
               type: "success"
