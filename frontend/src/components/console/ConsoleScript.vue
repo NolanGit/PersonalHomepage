@@ -1453,7 +1453,7 @@ export default {
       this.output.loading = true;
       this.output.logs = [];
       try {
-        const { data: res } = await axios.post(api.singleDataShowLogs, {
+        const { data: res } = await axios.post(api.getLogs, {
           script_id: this.formData[this.activeTab].id,
           user: sessionStorage.getItem("user").replace(/\"/g, "")
         });
@@ -1478,7 +1478,7 @@ export default {
     //展示最近一次由我运行的脚本日志
     async singleDataLog() {
       try {
-        const { data: res } = await axios.post(api.singleDataLog, {
+        const { data: res } = await axios.post(api.getNewestLog, {
           script_id: this.formData[this.activeTab].id,
           user: sessionStorage.getItem("user").replace(/\"/g, "")
         });
@@ -1517,7 +1517,7 @@ export default {
       this.schedule.loading = true;
       this.schedule.schedules = [];
       try {
-        const { data: res } = await axios.post(api.singleDataScheduleShowSchedules, {
+        const { data: res } = await axios.post(api.schedule, {
           script_id: this.formData[this.activeTab].id,
           user: sessionStorage.getItem("user").replace(/\"/g, "")
         });
