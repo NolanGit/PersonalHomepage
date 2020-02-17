@@ -1513,7 +1513,7 @@ export default {
       }
     },
     //展示定时任务列表
-    singleDataScheduleShowSchedules() {
+    async singleDataScheduleShowSchedules() {
       this.schedule.loading = true;
       this.schedule.schedules = [];
       try {
