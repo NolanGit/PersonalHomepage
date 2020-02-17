@@ -371,7 +371,7 @@
     <!--运行界面-->
     <el-drawer
       title="输出"
-      v-if="output.visible"
+      :v-if="output.visible"
       :visible.sync="output.visible"
       size="70%"
       direction="btt"
@@ -1379,7 +1379,7 @@ export default {
     //回放上一次由我运行的脚本参数
     async singleDataReplay() {
       try {
-        const { data: res } = await axios.post(api.replay, {
+        const { data: res } = await axios.get(api.replay, {
           script_id: this.formData[this.activeTab].id,
           user: sessionStorage.getItem("user").replace(/\"/g, "")
         });
