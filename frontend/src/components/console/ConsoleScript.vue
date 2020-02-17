@@ -2100,7 +2100,7 @@ export default {
 </script>
 
 <style scoped>
-.main_input--large {
+/* .main_input--large {
   width: 350px;
 }
 .main_input--medium {
@@ -2241,15 +2241,6 @@ export default {
 .edit-form-question-mark {
   padding-left: 5px;
 }
-.noMargin {
-  margin-left: 0px;
-  margin-top: 0px;
-  margin-right: 0px;
-  margin-bottom: 0px;
-}
-.padding-right-19 {
-  padding-right: 19px;
-}
 .scrollbar-div {
   width: 100%;
   overflow-x: hidden;
@@ -2325,5 +2316,5 @@ export default {
   bottom: 0;
   right: 0;
   z-index: 99;
-}
+} */
 </style>
