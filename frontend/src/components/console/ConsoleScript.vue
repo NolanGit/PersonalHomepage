@@ -1010,11 +1010,7 @@
 import axios from "axios";
 import BScroll from "better-scroll";
 import {
-  consoleScriptTerminate,
   consoleScriptRunOutput,
-  consoleScriptEdit,
-  consoleScriptReplay,
-  consoleScriptDelete,
   consoleScriptSaveOutput,
   consoleScriptGetLogs,
   consoleScriptGetNewestLog,
@@ -1332,6 +1328,130 @@ export default {
         });
       }
     },
+    //运行中途停止运行
+    async terminate() {
+      this.$confirm("确定要停止运行吗?", "提示", {}).then(async () => {
+        try {
+          const { data: res } = await axios.post(api.terminate, {
+            user: sessionStorage.getItem("user").replace(/\"/g, ""),
+            process_id: this.output.process_id
+          });
+          this.$message({
+            message: res.msg,
+            type: "success"
+          });
+        } catch (e) {
+          console.log(e);
+          this.$message({
+            message: e.response.data.msg,
+            type: "error"
+          });
+        }
+      });
+    },
+    //编辑脚本提交
+    async editFormSubmited() {
+      this.edit.buttonLoading = true;
+      try {
+        const { data: res } = await axios.post(api.edit, {
+          sub_system_id: this.edit.sub_system_id,
+          script_id: this.edit.id,
+          name: this.edit.title,
+          start_folder: this.edit.start_folder,
+          start_script: this.edit.start_script,
+          type: Number(this.edit.type),
+          detail: this.edit.formData,
+          user: sessionStorage.getItem("user").replace(/\"/g, "")
+        });
+        this.$message({
+          message: res.msg,
+          type: "success"
+        });
+        this.edit.visible = false;
+        this.consoleScriptSubSystemScriptFront(this.edit.sub_system_id);
+      } catch (e) {
+        console.log(e);
+        this.$message({
+          message: e.response.data.msg,
+          type: "error"
+        });
+      }
+      this.edit.buttonLoading = false;
+    },
+    //回放上一次由我运行的脚本参数
+    async singleDataReplay() {
+      try {
+        const { data: res } = await axios.post(api.replay, {
+          script_id: this.formData[this.activeTab].id,
+          user: sessionStorage.getItem("user").replace(/\"/g, "")
+        });
+        if (this.formData[this.activeTab].version != res.data.version) {
+          this.$message({
+            message:
+              "检测到脚本配置发生过修改(" +
+              "V" +
+              res.data.version +
+              "→" +
+              "V" +
+              this.formData[this.activeTab].version +
+              ")，可能无法完美恢复上一次参数",
+            type: "info"
+          });
+        }
+        for (
+          var f = 0;
+          f < this.formData[this.activeTab].formDataDetail.length;
+          f++
+        ) {
+          try {
+            this.formData[this.activeTab].formDataDetail[f].value =
+              res.data.detail[
+                this.formData[this.activeTab].formDataDetail[f].label
+              ];
+          } catch (err) {
+            console.log(
+              "[" +
+                this.formData[this.activeTab].formDataDetail[f].label +
+                "]" +
+                "恢复失败：" +
+                err
+            );
+          }
+        }
+      } catch (e) {
+        console.log(e);
+        this.$message({
+          message: e.response.data.msg,
+          type: "error"
+        });
+      }
+    },
+    //删除脚本
+    async singleDataDelete() {
+      this.$confirm("确认删除吗?", "提示", {})
+        .then(async () => {
+          try {
+            const { data: res } = await axios.post(api.delete, {
+              script_id: this.formData[this.activeTab].id,
+              user: sessionStorage.getItem("user").replace(/\"/g, "")
+            });
+            this.$message({
+              message: res.msg,
+              type: "success"
+            });
+            this.consoleScriptSubSystemScriptFront(this.activedSystem);
+          } catch (e) {
+            console.log(e);
+            this.$message({
+              message: e.response.data.msg,
+              type: "error"
+            });
+          }
+        })
+        .catch(() => {});
+    },
+
+    // 以下为无接口交互函数
     //增加组件
     editFormAddSingleData() {
       this.edit.formData.push({
@@ -1382,36 +1502,6 @@ export default {
       this.edit.type = 1;
       this.edit.formData = [];
     },
-    //编辑脚本提交
-    editFormSubmited() {
-      this.edit.buttonLoading = true;
-      var para = {
-        sub_system_id: this.edit.sub_system_id,
-        script_id: this.edit.id,
-        name: this.edit.title,
-        start_folder: this.edit.start_folder,
-        start_script: this.edit.start_script,
-        type: Number(this.edit.type),
-        detail: this.edit.formData,
-        user: sessionStorage.getItem("user").replace(/\"/g, "")
-      };
-      consoleScriptEdit(para).then(data => {
-        if (data["code"] !== 200) {
-          this.$message({
-            message: data["msg"],
-            type: "error"
-          });
-        } else {
-          this.$message({
-            message: data["msg"],
-            type: "success"
-          });
-          this.edit.visible = false;
-          this.consoleScriptSubSystemScriptFront(this.edit.sub_system_id);
-        }
-        this.edit.buttonLoading = false;
-      });
-    },
     //选择器组件点击
     singleDataOptionDialogClicked(index, singleDataOptions) {
       this.singleDataOptionDialog.index = index;
@@ -1447,33 +1537,6 @@ export default {
       this.edit.sub_system_id = this.subSystem[this.activedSystem - 1].id;
       this.edit.id = 0;
       this.edit.visible = true;
-    },
-    //删除脚本
-    singleDataDelete() {
-      this.$confirm("确认删除吗?", "提示", {
-        // type: 'warning'
-      })
-        .then(() => {
-          var para = {
-            script_id: this.formData[this.activeTab].id,
-            user: sessionStorage.getItem("user").replace(/\"/g, "")
-          };
-          consoleScriptDelete(para).then(data => {
-            if (data["code"] !== 200) {
-              this.$message({
-                message: data["msg"],
-                type: "error"
-              });
-            } else {
-              this.$message({
-                message: data["msg"],
-                type: "success"
-              });
-              this.consoleScriptSubSystemScriptFront(this.activedSystem);
-            }
-          });
-        })
-        .catch(() => {});
     },
     //展示编辑脚本dialog
     singleDataSetting() {
@@ -1515,55 +1578,6 @@ export default {
           }
         }
         this.output.loading = false;
-      });
-    },
-    //回放上一次由我运行的脚本参数
-    singleDataReplay() {
-      var para = {
-        script_id: this.formData[this.activeTab].id,
-        user: sessionStorage.getItem("user").replace(/\"/g, "")
-      };
-      consoleScriptReplay(para).then(data => {
-        if (data["code"] !== 200) {
-          this.$message({
-            message: data["msg"],
-            type: "error"
-          });
-        } else {
-          if (this.formData[this.activeTab].version != data["data"].version) {
-            this.$message({
-              message:
-                "检测到脚本配置发生过修改(" +
-                "V" +
-                data["data"].version +
-                "→" +
-                "V" +
-                this.formData[this.activeTab].version +
-                ")，可能无法完美恢复上一次参数",
-              type: "info"
-            });
-          }
-          for (
-            var f = 0;
-            f < this.formData[this.activeTab].formDataDetail.length;
-            f++
-          ) {
-            try {
-              this.formData[this.activeTab].formDataDetail[f].value =
-                data["data"].detail[
-                  this.formData[this.activeTab].formDataDetail[f].label
-                ];
-            } catch (err) {
-              console.log(
-                "[" +
-                  this.formData[this.activeTab].formDataDetail[f].label +
-                  "]" +
-                  "恢复失败：" +
-                  err
-              );
-            }
-          }
-        }
       });
     },
     //展示最近一次由我运行的脚本日志
@@ -1753,8 +1767,14 @@ export default {
           } else if (data["data"]["status"] == 0) {
             this.output.canBeTerminate = false;
             this.output.isAlert = false;
-            this.output.text = '<div>' + this.output.text + '</div>' + data["data"]["output"].replace(/\n/g, '<br>').replace(/\s/g, '&nbsp;');
-            this.output.text = this.output.text.replace(/#&nbsp;/g, ' ')
+            this.output.text =
+              "<div>" +
+              this.output.text +
+              "</div>" +
+              data["data"]["output"]
+                .replace(/\n/g, "<br>")
+                .replace(/\s/g, "&nbsp;");
+            this.output.text = this.output.text.replace(/#&nbsp;/g, " ");
             this.$message({
               message: "运行结束，请查看输出。",
               type: "success"
@@ -2060,28 +2080,6 @@ export default {
         detail: detail
       };
       return temp;
-    },
-    //运行中途停止运行
-    terminate() {
-      this.$confirm("确定要停止运行吗?", "提示", {}).then(() => {
-        var para = {
-          user: sessionStorage.getItem("user").replace(/\"/g, ""),
-          process_id: this.output.process_id
-        };
-        consoleScriptTerminate(para).then(data => {
-          if (data["code"] !== 200) {
-            this.$message({
-              message: data["msg"],
-              type: "error"
-            });
-          } else {
-            this.$message({
-              message: data["msg"],
-              type: "success"
-            });
-          }
-        });
-      });
     },
     //关闭运行窗口
     outputDialogClose() {
