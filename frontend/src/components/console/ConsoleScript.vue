@@ -272,7 +272,7 @@
                               plain
                               type="primary"
                               icon="el-icon-edit"
-                              @click="singleDataScheduleEditSchedule(scope.row)"
+                              @click="scheduleEdit(scope.row)"
                             >编辑</el-button>
                             <el-button
                               class="noMargin"
@@ -280,7 +280,7 @@
                               plain
                               type="danger"
                               icon="el-icon-delete"
-                              @click="singleDataScheduleDeleteSchedule(scope.row.schedule_id)"
+                              @click="scheduleDelete(scope.row.schedule_id)"
                             >停止</el-button>
                           </template>
                         </el-table-column>
@@ -301,7 +301,7 @@
                         icon="el-icon-alarm-clock"
                         circle
                         slot="reference"
-                        @click="singleDataScheduleShowSchedules()"
+                        @click="scheduleShow()"
                       ></el-button>
                     </el-popover>
                   </el-tooltip>
@@ -1000,7 +1000,7 @@
         </div>
         <div class="dialog-footer">
           <el-button size="small" @click="schedule.dialogVisible = false">关闭</el-button>
-          <el-button type="primary" size="small" @click="singleDataScheduleAddScheduleSubmit()">提交</el-button>
+          <el-button type="primary" size="small" @click="scheduleAdd()">提交</el-button>
         </div>
       </div>
     </el-drawer>
@@ -1013,8 +1013,6 @@ import BScroll from "better-scroll";
 import {
   consoleScriptRunOutput,
   consoleScriptSaveOutput,
-  consoleScriptScheduleEdit,
-  consoleScriptScheduleDelete,
   consoleScriptExtraButtonScriptRun
 } from "../../api/console";
 const api = {
@@ -1030,7 +1028,7 @@ const api = {
   getLogs: "/script/consoleScriptGetLogs",
   getNewestLog: "/script/consoleScriptGetNewestLog",
   schedule: "/script/consoleScriptSchedule",
-  scheduleEdit: "/script/consoleScriptScheduleEdit",
+  scheduleAdd: "/script/consoleScriptScheduleEdit",
   scheduleDelete: "/script/consoleScriptScheduleDelete",
   extraButtonScriptRun: "/script/consoleScriptExtraButtonScriptRun"
 };
@@ -1513,7 +1511,7 @@ export default {
       }
     },
     //展示定时任务列表
-    async singleDataScheduleShowSchedules() {
+    async scheduleShow() {
       this.schedule.loading = true;
       this.schedule.schedules = [];
       try {
@@ -1531,6 +1529,71 @@ export default {
           type: "error"
         });
       }
+    },
+    //点击提交定时任务按钮
+    async scheduleAdd() {
+      var start_folder_with_start_script =
+        "cd " +
+        this.formData[this.activeTab].start_folder +
+        " && " +
+        this.formData[this.activeTab].start_script;
+      var command_get_result = this.command_get(
+        start_folder_with_start_script,
+        this.formData[this.activeTab].type
+      );
+      var command = command_get_result.command;
+      var detail = command_get_result.detail;
+      try {
+        const { data: res } = await axios.post(api.scheduleAdd, {
+          user: sessionStorage.getItem("user").replace(/\"/g, ""),
+          script_id: this.formData[this.activeTab].id,
+          command: command,
+          detail: detail,
+          version: this.formData[this.activeTab].version,
+          trigger_time:
+            this.schedule.scheduleData.triggerDate +
+            " " +
+            this.schedule.scheduleData.triggerTime,
+          is_automatic: this.schedule.scheduleData.is_automatic == true ? 1 : 0,
+          interval_raw: Number(this.schedule.scheduleData.interval.value),
+          interval_unit: this.schedule.scheduleData.interval.unit.select,
+          schedule_id: this.schedule.scheduleData.schedule_id
+        });
+        this.schedule.dialogVisible = false;
+        this.schedule.scheduleData.triggerDate = "";
+        this.schedule.scheduleData.triggerTime = "";
+        this.schedule.scheduleData.is_automatic = false;
+        this.schedule.scheduleData.schedule_id = 0;
+        this.schedule.scheduleData.interval.value = "";
+        this.schedule.scheduleData.interval.unit.select = 2;
+      } catch (e) {
+        console.log(e);
+        this.$message({
+          message: e.response.data.msg,
+          type: "error"
+        });
+      }
+    },
+    //删除定时任务
+    async scheduleDelete(schedule_id) {
+      this.$confirm("确认停止并删除定时任务吗?", "提示", {}).then(async () => {
+        try {
+          const { data: res } = await axios.post(api.scheduleDelete, {
+            user: sessionStorage.getItem("user").replace(/\"/g, ""),
+            schedule_id: schedule_id
+          });
+          this.$message({
+            message: data["msg"],
+            type: "success"
+          });
+        } catch (e) {
+          console.log(e);
+          this.$message({
+            message: e.response.data.msg,
+            type: "error"
+          });
+        }
+      });
     },
 
     // 以下为无接口交互函数
@@ -1634,55 +1697,6 @@ export default {
         this.edit.visible = true;
       });
     },
-    //点击提交定时任务按钮
-    singleDataScheduleAddScheduleSubmit() {
-      var start_folder_with_start_script =
-        "cd " +
-        this.formData[this.activeTab].start_folder +
-        " && " +
-        this.formData[this.activeTab].start_script;
-      var command_get_result = this.command_get(
-        start_folder_with_start_script,
-        this.formData[this.activeTab].type
-      );
-      var command = command_get_result.command;
-      var detail = command_get_result.detail;
-      var para = {
-        user: sessionStorage.getItem("user").replace(/\"/g, ""),
-        script_id: this.formData[this.activeTab].id,
-        command: command,
-        detail: detail,
-        version: this.formData[this.activeTab].version,
-        trigger_time:
-          this.schedule.scheduleData.triggerDate +
-          " " +
-          this.schedule.scheduleData.triggerTime,
-        is_automatic: this.schedule.scheduleData.is_automatic == true ? 1 : 0,
-        interval_raw: Number(this.schedule.scheduleData.interval.value),
-        interval_unit: this.schedule.scheduleData.interval.unit.select,
-        schedule_id: this.schedule.scheduleData.schedule_id
-      };
-      consoleScriptScheduleEdit(para).then(data => {
-        if (data["code"] !== 200) {
-          this.$message({
-            message: data["msg"],
-            type: "error"
-          });
-        } else {
-          this.$message({
-            message: data["msg"],
-            type: "success"
-          });
-          this.schedule.dialogVisible = false;
-          this.schedule.scheduleData.triggerDate = "";
-          this.schedule.scheduleData.triggerTime = "";
-          this.schedule.scheduleData.is_automatic = false;
-          this.schedule.scheduleData.schedule_id = 0;
-          this.schedule.scheduleData.interval.value = "";
-          this.schedule.scheduleData.interval.unit.select = 2;
-        }
-      });
-    },
     //定时任务dialog关闭
     schedulenDialogClosed() {
       this.schedule.dialogVisible = false;
@@ -1695,7 +1709,7 @@ export default {
       this.schedule.label = "新建定时任务";
     },
     //编辑定时任务
-    singleDataScheduleEditSchedule(schedule) {
+    scheduleEdit(schedule) {
       console.log(schedule);
       this.schedule.label = "编辑定时任务";
       this.schedule.scheduleData.schedule_id = schedule.schedule_id;
@@ -1715,28 +1729,6 @@ export default {
         ? schedule.interval_raw
         : 1;
       this.schedule.dialogVisible = true;
-    },
-    //删除定时任务
-    singleDataScheduleDeleteSchedule(schedule_id) {
-      this.$confirm("确认停止并删除定时任务吗?", "提示", {}).then(() => {
-        var para = {
-          user: sessionStorage.getItem("user").replace(/\"/g, ""),
-          schedule_id: schedule_id
-        };
-        consoleScriptScheduleDelete(para).then(data => {
-          if (data["code"] !== 200) {
-            this.$message({
-              message: data["msg"],
-              type: "error"
-            });
-          } else {
-            this.$message({
-              message: data["msg"],
-              type: "success"
-            });
-          }
-        });
-      });
     },
     //更新输出
     flushOutput(process_id) {
