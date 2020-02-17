@@ -8,8 +8,11 @@ import collections
 from . import script
 from flask_cors import cross_origin
 from flask import render_template, session, redirect, url_for, current_app, flash, Response, request, jsonify
-from ..model.console_model import console, console_script_sub_system, console_script, console_script_detail, console_script_detail, console_script_log, console_script_schedule
+from ..model.script_model import script as script_table_model
+from ..model.script_model import script_sub_system, script_detail, script_detail, script_log, script_schedule
+from ..privilege.privilege_control import permission_required
 
+URL_PREFIX = '/script'
 running_subprocess = []
 
 
@@ -21,28 +24,13 @@ def subprocess_run(command):
     return len(running_subprocess) - 1
 
 
-@script.route('/get', methods=['GET'])
-@cross_origin()
-def consoleGet():
-    result = []
-    try:
-        console_query = console.select().where(console.is_valid == 1).order_by(console.order).dicts()
-        for row in console_query:
-            result.append({'id': row['id'], 'name': row['name'], 'order': row['order'], 'icon': row['icon'], 'component_name': row['component_name'], 'update_time': row['update_time']})
-        response = {'code': 200, 'msg': '成功！', 'data': result}
-        return jsonify(response)
-    except Exception as e:
-        response = {'code': 500, 'msg': '失败！错误信息：' + str(e) + '，请联系管理员。', 'data': []}
-        return jsonify(response), 500
-
-
 @script.route('/subSystem', methods=['GET'])
 @cross_origin()
 def subSystem():
     result = []
     try:
-        console_script_sub_system_query = console_script_sub_system.select().where((console_script_sub_system.is_valid == 1)).dicts()
-        for row in console_script_sub_system_query:
+        script_sub_system_query = script_sub_system.select().where((script_sub_system.is_valid == 1)).dicts()
+        for row in script_sub_system_query:
             result.append({'id': row['id'], 'name': row['name'], 'user': row['user'], 'update_time': row['update_time']})
         response = {'code': 200, 'msg': '成功！', 'data': result}
         return jsonify(response)
@@ -57,13 +45,13 @@ def subSystemScript():
     sub_system_id = request.get_json()['sub_system_id']
     data = []
     try:
-        console_script_query = console_script.select().where((console_script.is_valid == 1) & (console_script.sub_system_id == sub_system_id)).dicts()
-        if len(console_script_query) == 0:
+        script_table_model_query = script_table_model.select().where((script_table_model.is_valid == 1) & (script_table_model.sub_system_id == sub_system_id)).dicts()
+        if len(script_table_model_query) == 0:
             response = {'code': 200, 'msg': '成功！', 'data': []}
             return jsonify(response)
         else:
-            for row in console_script_query:
-                console_script_detail_query = console_script_detail.select().where((console_script_detail.script_id == row['id']) & (console_script_detail.is_valid == 1)).dicts()
+            for row in script_table_model_query:
+                script_detail_query = script_detail.select().where((script_detail.script_id == row['id']) & (script_detail.is_valid == 1)).dicts()
                 data.append({})
                 data[-1]["id"] = row['id']
                 data[-1]["sub_system_id"] = row['sub_system_id']
@@ -76,7 +64,7 @@ def subSystemScript():
                 data[-1]["user"] = row['user']
                 data[-1]["update_time"] = row['update_time'].strftime("%Y-%m-%d %H:%M:%S")
                 data[-1]['detail'] = []
-                for row2 in console_script_detail_query:
+                for row2 in script_detail_query:
                     data[-1]['detail'].append({})
                     data[-1]['detail'][-1]['script_id'] = row2['script_id']
                     data[-1]['detail'][-1]['type'] = row2['type']
@@ -119,20 +107,20 @@ def consoleScriptRun():
 
         #记录运行次数
         id = request.get_json()['id']
-        console_script_query = console_script.select().where((console_script.is_valid == 1) & (console_script.id == id)).dicts()
-        for row in console_script_query:
+        script_table_model_query = script_table_model.select().where((script_table_model.is_valid == 1) & (script_table_model.id == id)).dicts()
+        for row in script_table_model_query:
             runs = int(row['runs']) + 1
-        console_script_query = console_script(id=id)
-        console_script_query.runs = runs
-        console_script_query.save()
+        script_table_model_query = script_table_model(id=id)
+        script_table_model_query.runs = runs
+        script_table_model_query.save()
 
         command = request.get_json()['command']
         #记录运行日志
         user = request.get_json()['user']
         detail = request.get_json()['detail']
         version = request.get_json()['version']
-        console_script_log_query = console_script_log(script_id=id, command=command, detail=detail, version=version, user=user, start_time=datetime.datetime.now())
-        console_script_log_query.save()
+        script_log_query = script_log(script_id=id, command=command, detail=detail, version=version, user=user, start_time=datetime.datetime.now())
+        script_log_query.save()
 
         #运行
         process_id = subprocess_run(command)
@@ -142,7 +130,7 @@ def consoleScriptRun():
             'msg': '成功！',
             'data': {
                 'process_id': process_id,
-                'log_id': console_script_log_query.id,
+                'log_id': script_log_query.id,
             }
         }
         return jsonify(response)
@@ -218,7 +206,7 @@ def consoleScriptEdit():
             }
             return jsonify(response)
         if script_id == 0:
-            console_script.create(name=name,
+            script_table_model.create(name=name,
                                   sub_system_id=sub_system_id,
                                   start_folder=start_folder,
                                   start_script=start_script,
@@ -228,8 +216,8 @@ def consoleScriptEdit():
                                   version=1,
                                   user=user,
                                   update_time=datetime.datetime.now())
-            console_script_query = console_script.select().order_by(-console_script.id).limit(1).dicts()
-            for row in console_script_query:
+            script_table_model_query = script_table_model.select().order_by(-script_table_model.id).limit(1).dicts()
+            for row in script_table_model_query:
                 script_id = row['id']
             for x in range(len(detail)):
                 try:
@@ -292,7 +280,7 @@ def consoleScriptEdit():
                 except:
                     extra_button_script = ''
                 print(value, place_holder, options, createable, disabled, remark)
-                console_script_detail.create(script_id=script_id,
+                script_detail.create(script_id=script_id,
                                              type=detail[x]['type'],
                                              label=detail[x]['label'],
                                              value=value,
@@ -315,14 +303,14 @@ def consoleScriptEdit():
                 'msg': '新增成功！',
             }
         else:
-            console_script_query = console_script.select().where(console_script.id == script_id).order_by(-console_script.id).limit(1).dicts()
-            for row in console_script_query:
+            script_table_model_query = script_table_model.select().where(script_table_model.id == script_id).order_by(-script_table_model.id).limit(1).dicts()
+            for row in script_table_model_query:
                 version = row['version'] + 1
 
-            console_script.update(name=name, start_folder=start_folder, start_script=start_script, type=type, version=version, user=user,
-                                  update_time=datetime.datetime.now()).where((console_script.id == script_id)
-                                                                             & (console_script.is_valid == 1)).execute()
-            console_script_detail.update(is_valid=0).where(console_script_detail.script_id == script_id).execute()
+            script_table_model.update(name=name, start_folder=start_folder, start_script=start_script, type=type, version=version, user=user,
+                                  update_time=datetime.datetime.now()).where((script_table_model.id == script_id)
+                                                                             & (script_table_model.is_valid == 1)).execute()
+            script_detail.update(is_valid=0).where(script_detail.script_id == script_id).execute()
 
             for x in range(len(detail)):
                 try:
@@ -385,7 +373,7 @@ def consoleScriptEdit():
                 except:
                     extra_button_script = ''
                 print(detail[x])
-                console_script_detail.create(script_id=script_id,
+                script_detail.create(script_id=script_id,
                                              type=detail[x]['type'],
                                              label=detail[x]['label'],
                                              value=value,
@@ -418,15 +406,15 @@ def consoleScriptEdit():
         return jsonify(response), 500
 
 
-@script.route('/console_scriptReplay', methods=['POST'])
+@script.route('/script_table_modelReplay', methods=['POST'])
 @cross_origin()
-def console_scriptReplay():
+def script_table_modelReplay():
     try:
         user = request.get_json()['user']
         script_id = request.get_json()['script_id']
-        console_script_log_query = console_script_log.select().order_by(-console_script_log.id).limit(1).where((console_script_log.script_id == script_id) & (console_script_log.user == user)).dicts()
-        if len(console_script_log_query) != 0:
-            for row in console_script_log_query:
+        script_log_query = script_log.select().order_by(-script_log.id).limit(1).where((script_log.script_id == script_id) & (script_log.user == user)).dicts()
+        if len(script_log_query) != 0:
+            for row in script_log_query:
                 id = row['id']
                 detail = eval(row['detail'])
                 command = row['command']
@@ -452,7 +440,7 @@ def consoleScriptDelete():
     try:
         user = request.get_json()['user']
         script_id = request.get_json()['script_id']
-        console_script.update(is_valid=0, user=user, update_time=datetime.datetime.now()).where((console_script.id == script_id) & (console_script.is_valid == 1)).execute()
+        script_table_model.update(is_valid=0, user=user, update_time=datetime.datetime.now()).where((script_table_model.id == script_id) & (script_table_model.is_valid == 1)).execute()
         response = {'code': 200, 'msg': '删除成功', 'data': {}}
         return jsonify(response)
     except Exception as e:
@@ -471,7 +459,7 @@ def consoleScriptSaveOutput():
     try:
         log_id = request.get_json()['log_id']
         output = request.get_json()['output']
-        console_script_log.update(output=output, end_time=datetime.datetime.now()).where((console_script_log.id == log_id)).execute()
+        script_log.update(output=output, end_time=datetime.datetime.now()).where((script_log.id == log_id)).execute()
         response = {'code': 200, 'msg': '成功', 'data': {}}
         return jsonify(response)
     except Exception as e:
@@ -490,9 +478,9 @@ def consoleScriptGetLogs():
     try:
         user = request.get_json()['user']
         script_id = request.get_json()['script_id']
-        console_script_log_query = console_script_log.select().where(console_script_log.script_id == script_id).limit(50).order_by(-console_script_log.id).dicts()
+        script_log_query = script_log.select().where(script_log.script_id == script_id).limit(50).order_by(-script_log.id).dicts()
         result = []
-        for row in console_script_log_query:
+        for row in script_log_query:
             result.append({
                 'log_id': row['id'],
                 'user': row['user'],
@@ -505,8 +493,8 @@ def consoleScriptGetLogs():
                 'duration': str((row['end_time'] - row['start_time']).seconds) + '秒' if row['end_time'] != None else '无数据'
             })
         important_fields = []
-        console_script_detail_query = console_script_detail.select().where((console_script_detail.script_id == script_id) & (console_script_detail.is_valid == 1)).dicts()
-        for row in console_script_detail_query:
+        script_detail_query = script_detail.select().where((script_detail.script_id == script_id) & (script_detail.is_valid == 1)).dicts()
+        for row in script_detail_query:
             if row['is_important'] == 1:
                 important_fields.append(row['label'])
         response = {'code': 200, 'msg': '成功', 'data': {'logs': result, 'important_fields': important_fields}}
@@ -527,10 +515,10 @@ def consoleScriptGetNewestLog():
     try:
         user = request.get_json()['user']
         script_id = request.get_json()['script_id']
-        console_script_log_query = console_script_log.select().where((console_script_log.script_id == script_id) & (console_script_log.user == user)).limit(1).order_by(-console_script_log.id).dicts()
+        script_log_query = script_log.select().where((script_log.script_id == script_id) & (script_log.user == user)).limit(1).order_by(-script_log.id).dicts()
         result = []
-        if len(console_script_log_query) != 0:
-            for row in console_script_log_query:
+        if len(script_log_query) != 0:
+            for row in script_log_query:
                 result.append({
                     'log_id': row['id'],
                     'user': row['user'],
@@ -560,10 +548,10 @@ def consoleScriptSchedule():
     try:
         user = request.get_json()['user']
         script_id = request.get_json()['script_id']
-        console_script_schedule_query = console_script_schedule.select().where((console_script_schedule.script_id == script_id)
-                                                                               & (console_script_schedule.is_valid == 1)).order_by(console_script_schedule.id).dicts()
+        script_schedule_query = script_schedule.select().where((script_schedule.script_id == script_id)
+                                                                               & (script_schedule.is_valid == 1)).order_by(script_schedule.id).dicts()
         result = []
-        for row in console_script_schedule_query:
+        for row in script_schedule_query:
             result.append({
                 'schedule_id': row['id'],
                 'script_id': row['script_id'],
@@ -611,7 +599,7 @@ def consoleScriptScheduleEdit():
         schedule_id = request.get_json()['schedule_id']
         if schedule_id == 0:
             if is_automatic == 0:
-                console_script_schedule.create(script_id=script_id,
+                script_schedule.create(script_id=script_id,
                                                command=command,
                                                detail=detail,
                                                version=version,
@@ -630,7 +618,7 @@ def consoleScriptScheduleEdit():
                     interval = interval_raw
                 elif (interval_unit == 2):  #天
                     interval = interval_raw * 24
-                console_script_schedule.create(script_id=script_id,
+                script_schedule.create(script_id=script_id,
                                                command=command,
                                                detail=detail,
                                                version=version,
@@ -644,7 +632,7 @@ def consoleScriptScheduleEdit():
                                                update_time=datetime.datetime.now())
         elif schedule_id != 0:
             if is_automatic == 0:
-                console_script_schedule.update(script_id=script_id,
+                script_schedule.update(script_id=script_id,
                                                version=version,
                                                user=user,
                                                is_automatic=is_automatic,
@@ -653,7 +641,7 @@ def consoleScriptScheduleEdit():
                                                interval_raw=0,
                                                interval_unit=0,
                                                is_valid=1,
-                                               update_time=datetime.datetime.now()).where(console_script_schedule.id == schedule_id).execute()
+                                               update_time=datetime.datetime.now()).where(script_schedule.id == schedule_id).execute()
             elif is_automatic == 1:
                 interval_raw = int(request.get_json()['interval_raw'])
                 interval_unit = int(request.get_json()['interval_unit'])
@@ -661,7 +649,7 @@ def consoleScriptScheduleEdit():
                     interval = interval_raw
                 elif (interval_unit == 2):  #天
                     interval = interval_raw * 24
-                console_script_schedule.update(script_id=script_id,
+                script_schedule.update(script_id=script_id,
                                                version=version,
                                                user=user,
                                                is_automatic=is_automatic,
@@ -670,7 +658,7 @@ def consoleScriptScheduleEdit():
                                                interval_raw=interval_raw,
                                                interval_unit=interval_unit,
                                                is_valid=1,
-                                               update_time=datetime.datetime.now()).where(console_script_schedule.id == schedule_id).execute()
+                                               update_time=datetime.datetime.now()).where(script_schedule.id == schedule_id).execute()
         response = {'code': 200, 'msg': '成功', 'data': []}
         return jsonify(response)
     except Exception as e:
@@ -689,7 +677,7 @@ def consoleScriptScheduleDelete():
     try:
         user = request.get_json()['user']
         schedule_id = request.get_json()['schedule_id']
-        console_script_schedule.update(is_valid=0, update_time=datetime.datetime.now()).where(console_script_schedule.id == schedule_id).execute()
+        script_schedule.update(is_valid=0, update_time=datetime.datetime.now()).where(script_schedule.id == schedule_id).execute()
         response = {'code': 200, 'msg': '成功', 'data': []}
         return jsonify(response)
     except Exception as e:

@@ -2,7 +2,7 @@ import axios from 'axios'
 
 let base = ''
 
-export const consoleGet = params => { return axios.get(`${base}/script/get`, params).then(res => res.data) }
+export const consoleGet = params => { return axios.get(`${base}/console/get`, params).then(res => res.data) }
 
 export const consoleScriptSubSystem = params => { return axios.get(`${base}/script/consoleScriptSubSystem`, params).then(res => res.data) }
 
