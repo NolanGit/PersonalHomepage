@@ -1018,19 +1018,19 @@ import {
 const api = {
   subSystem: "/script/subSystem",
   subSystemScript: "/script/subSystemScript",
-  run: "/script/consoleScriptRun",
-  terminate: "/script/consoleScriptTerminate",
-  runOutput: "/script/consoleScriptRunOutput",
-  edit: "/script/consoleScriptEdit",
-  replay: "/script/consoleScriptReplay",
-  delete: "/script/consoleScriptDelete",
-  saveOutput: "/script/consoleScriptSaveOutput",
-  getLogs: "/script/consoleScriptGetLogs",
-  getNewestLog: "/script/consoleScriptGetNewestLog",
-  schedule: "/script/consoleScriptSchedule",
-  scheduleAdd: "/script/consoleScriptScheduleEdit",
-  scheduleDelete: "/script/consoleScriptScheduleDelete",
-  extraButtonScriptRun: "/script/consoleScriptExtraButtonScriptRun"
+  run: "/script/run",
+  terminate: "/script/terminate",
+  runOutput: "/script/runOutput",
+  edit: "/script/edit",
+  replay: "/script/replay",
+  delete: "/script/delete",
+  saveOutput: "/script/saveOutput",
+  getLogs: "/script/getLogs",
+  getNewestLog: "/script/getNewestLog",
+  schedule: "/script/schedule",
+  scheduleAdd: "/script/scheduleEdit",
+  scheduleDelete: "/script/scheduleDelete",
+  extraButtonScriptRun: "/script/extraButtonScriptRun"
 };
 export default {
   name: "ConsoleScript",

@@ -25,6 +25,7 @@ def subprocess_run(command):
 
 
 @script.route('/subSystem', methods=['GET'])
+@permission_required(URL_PREFIX + '/subSystem')
 @cross_origin()
 def subSystem():
     result = []
@@ -40,6 +41,7 @@ def subSystem():
 
 
 @script.route('/subSystemScript', methods=['POST'])
+@permission_required(URL_PREFIX + '/subSystemScript')
 @cross_origin()
 def subSystemScript():
     sub_system_id = request.get_json()['sub_system_id']
@@ -89,9 +91,10 @@ def subSystemScript():
         return jsonify(response), 500
 
 
-@script.route('/consoleScriptRun', methods=['POST'])
+@script.route('/run', methods=['POST'])
+@permission_required(URL_PREFIX + '/run')
 @cross_origin()
-def consoleScriptRun():
+def run():
     global running_subprocess
 
     # 解决多人协作输出混乱问题，如果输出仍然混乱，不得已的情况下可以删除下方7行代码，但可能会有资源的耗费
@@ -144,9 +147,10 @@ def consoleScriptRun():
         return jsonify(response), 500
 
 
-@script.route('/consoleScriptTerminate', methods=['POST'])
+@script.route('/terminate', methods=['POST'])
+@permission_required(URL_PREFIX + '/terminate')
 @cross_origin()
-def consoleScriptTerminate():
+def terminate():
     global running_subprocess
     process_id = request.get_json()['process_id']
     try:
@@ -163,9 +167,10 @@ def consoleScriptTerminate():
         return jsonify(response), 500
 
 
-@script.route('/consoleScriptRunOutput', methods=['POST'])
+@script.route('/runOutput', methods=['POST'])
+@permission_required(URL_PREFIX + '/runOutput')
 @cross_origin()
-def consoleScriptRunOutput():
+def runOutput():
     global running_subprocess
     try:
         process_id = request.get_json()['process_id']
@@ -187,9 +192,10 @@ def consoleScriptRunOutput():
         return jsonify(response), 500
 
 
-@script.route('/consoleScriptEdit', methods=['POST'])
+@script.route('/edit', methods=['POST'])
+@permission_required(URL_PREFIX + '/edit')
 @cross_origin()
-def consoleScriptEdit():
+def edit():
     try:
         sub_system_id = request.get_json()['sub_system_id']
         script_id = request.get_json()['script_id']
@@ -406,9 +412,10 @@ def consoleScriptEdit():
         return jsonify(response), 500
 
 
-@script.route('/script_table_modelReplay', methods=['POST'])
+@script.route('/replay', methods=['POST'])
+@permission_required(URL_PREFIX + '/replay')
 @cross_origin()
-def script_table_modelReplay():
+def replay():
     try:
         user = request.get_json()['user']
         script_id = request.get_json()['script_id']
@@ -434,9 +441,10 @@ def script_table_modelReplay():
         return jsonify(response), 500
 
 
-@script.route('/consoleScriptDelete', methods=['POST'])
+@script.route('/delete', methods=['POST'])
+@permission_required(URL_PREFIX + '/delete')
 @cross_origin()
-def consoleScriptDelete():
+def delete():
     try:
         user = request.get_json()['user']
         script_id = request.get_json()['script_id']
@@ -453,9 +461,10 @@ def consoleScriptDelete():
         return jsonify(response), 500
 
 
-@script.route('/consoleScriptSaveOutput', methods=['POST'])
+@script.route('/saveOutput', methods=['POST'])
+@permission_required(URL_PREFIX + '/saveOutput')
 @cross_origin()
-def consoleScriptSaveOutput():
+def saveOutput():
     try:
         log_id = request.get_json()['log_id']
         output = request.get_json()['output']
@@ -472,9 +481,10 @@ def consoleScriptSaveOutput():
         return jsonify(response), 500
 
 
-@script.route('/consoleScriptGetLogs', methods=['POST'])
+@script.route('/getLogs', methods=['POST'])
+@permission_required(URL_PREFIX + '/getLogs')
 @cross_origin()
-def consoleScriptGetLogs():
+def getLogs():
     try:
         user = request.get_json()['user']
         script_id = request.get_json()['script_id']
@@ -509,9 +519,10 @@ def consoleScriptGetLogs():
         return jsonify(response), 500
 
 
-@script.route('/consoleScriptGetNewestLog', methods=['POST'])
+@script.route('/getNewestLog', methods=['POST'])
+@permission_required(URL_PREFIX + '/getNewestLog')
 @cross_origin()
-def consoleScriptGetNewestLog():
+def getNewestLog():
     try:
         user = request.get_json()['user']
         script_id = request.get_json()['script_id']
@@ -542,9 +553,10 @@ def consoleScriptGetNewestLog():
         return jsonify(response), 500
 
 
-@script.route('/consoleScriptSchedule', methods=['POST'])
+@script.route('/schedule', methods=['POST'])
+@permission_required(URL_PREFIX + '/schedule')
 @cross_origin()
-def consoleScriptSchedule():
+def schedule():
     try:
         user = request.get_json()['user']
         script_id = request.get_json()['script_id']
@@ -579,9 +591,10 @@ def consoleScriptSchedule():
         return jsonify(response), 500
 
 
-@script.route('/consoleScriptScheduleEdit', methods=['POST'])
+@script.route('/scheduleEdit', methods=['POST'])
+@permission_required(URL_PREFIX + '/scheduleEdit')
 @cross_origin()
-def consoleScriptScheduleEdit():
+def scheduleEdit():
     try:
         user = request.get_json()['user']
         script_id = request.get_json()['script_id']
@@ -671,9 +684,10 @@ def consoleScriptScheduleEdit():
         return jsonify(response), 500
 
 
-@script.route('/consoleScriptScheduleDelete', methods=['POST'])
+@script.route('/scheduleDelete', methods=['POST'])
+@permission_required(URL_PREFIX + '/scheduleDelete')
 @cross_origin()
-def consoleScriptScheduleDelete():
+def scheduleDelete():
     try:
         user = request.get_json()['user']
         schedule_id = request.get_json()['schedule_id']
@@ -690,9 +704,10 @@ def consoleScriptScheduleDelete():
         return jsonify(response), 500
 
 
-@script.route('/consoleScriptExtraButtonScriptRun', methods=['POST'])
+@script.route('/extraButtonScriptRun', methods=['POST'])
+@permission_required(URL_PREFIX + '/extraButtonScriptRun')
 @cross_origin()
-def consoleScriptExtraButtonScriptRun():
+def extraButtonScriptRun():
     global running_subprocess
 
     try:
@@ -716,3 +731,21 @@ def consoleScriptExtraButtonScriptRun():
             'msg': str(e),
         }
         return jsonify(response), 500
+
+
+# 权限初始化SQL
+# INSERT INTO "main"."privilege" ("id", "name", "mark", "remark", "is_valid", "update_time", "ROWID") VALUES (21, '控制台-脚本运行平台-子系统列表', '/script/subSystem', '', 1, '2019-10-28 11:35:37.428601', 21);
+# INSERT INTO "main"."privilege" ("id", "name", "mark", "remark", "is_valid", "update_time", "ROWID") VALUES (22, '控制台-脚本运行平台-子系统脚本', '/script/subSystemScript', '', 1, '2019-10-28 11:35:37.428601', 22);
+# INSERT INTO "main"."privilege" ("id", "name", "mark", "remark", "is_valid", "update_time", "ROWID") VALUES (23, '控制台-脚本运行平台-脚本运行', '/script/run', '', 1, '2019-10-28 11:35:37.428601', 23);
+# INSERT INTO "main"."privilege" ("id", "name", "mark", "remark", "is_valid", "update_time", "ROWID") VALUES (24, '控制台-脚本运行平台-脚本终止运行', '/script/terminate', '', 1, '2019-10-28 11:35:37.428601', 24);
+# INSERT INTO "main"."privilege" ("id", "name", "mark", "remark", "is_valid", "update_time", "ROWID") VALUES (25, '控制台-脚本运行平台-脚本运行输出获取', '/script/runOutput', '', 1, '2019-10-28 11:35:37.428601', 25);
+# INSERT INTO "main"."privilege" ("id", "name", "mark", "remark", "is_valid", "update_time", "ROWID") VALUES (26, '控制台-脚本运行平台-脚本编辑', '/script/edit', '', 1, '2019-10-28 11:35:37.428601', 26);
+# INSERT INTO "main"."privilege" ("id", "name", "mark", "remark", "is_valid", "update_time", "ROWID") VALUES (27, '控制台-脚本运行平台-脚本回放', '/script/replay', '', 1, '2019-10-28 11:35:37.428601', 27);
+# INSERT INTO "main"."privilege" ("id", "name", "mark", "remark", "is_valid", "update_time", "ROWID") VALUES (28, '控制台-脚本运行平台-脚本删除', '/script/delete', '', 1, '2019-10-28 11:35:37.428601', 28);
+# INSERT INTO "main"."privilege" ("id", "name", "mark", "remark", "is_valid", "update_time", "ROWID") VALUES (29, '控制台-脚本运行平台-脚本运行输出保存', '/script/saveOutput', '', 1, '2019-10-28 11:35:37.428601', 29);
+# INSERT INTO "main"."privilege" ("id", "name", "mark", "remark", "is_valid", "update_time", "ROWID") VALUES (30, '控制台-脚本运行平台-脚本运行记录获取', '/script/getLogs', '', 1, '2019-10-28 11:35:37.428601', 30);
+# INSERT INTO "main"."privilege" ("id", "name", "mark", "remark", "is_valid", "update_time", "ROWID") VALUES (31, '控制台-脚本运行平台-脚本最新运行记录获取', '/script/getNewestLog', '', 1, '2019-10-28 11:35:37.428601', 31);
+# INSERT INTO "main"."privilege" ("id", "name", "mark", "remark", "is_valid", "update_time", "ROWID") VALUES (32, '控制台-脚本运行平台-脚本额外按钮脚本运行', '/script/extraButtonScriptRun', '', 1, '2019-10-28 11:35:37.428601', 32);
+# INSERT INTO "main"."privilege" ("id", "name", "mark", "remark", "is_valid", "update_time", "ROWID") VALUES (33, '控制台-脚本运行平台-定时任务查看', '/script/schedule', '', 1, '2019-10-28 11:35:37.428601', 33);
+# INSERT INTO "main"."privilege" ("id", "name", "mark", "remark", "is_valid", "update_time", "ROWID") VALUES (34, '控制台-脚本运行平台-定时任务编辑', '/script/scheduleEdit', '', 1, '2019-10-28 11:35:37.428601', 34);
+# INSERT INTO "main"."privilege" ("id", "name", "mark", "remark", "is_valid", "update_time", "ROWID") VALUES (35, '控制台-脚本运行平台-定时任务删除', '/script/scheduleDelete', '', 1, '2019-10-28 11:35:37.428601', 35);
