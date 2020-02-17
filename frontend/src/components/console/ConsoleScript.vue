@@ -371,6 +371,7 @@
     <!--运行界面-->
     <el-drawer
       title="输出"
+      v-if="output.visible"
       :visible.sync="output.visible"
       size="70%"
       direction="btt"
@@ -1012,9 +1013,6 @@ import BScroll from "better-scroll";
 import {
   consoleScriptRunOutput,
   consoleScriptSaveOutput,
-  consoleScriptGetLogs,
-  consoleScriptGetNewestLog,
-  consoleScriptSchedule,
   consoleScriptScheduleEdit,
   consoleScriptScheduleDelete,
   consoleScriptExtraButtonScriptRun
@@ -1195,7 +1193,7 @@ export default {
       }
       this.activedSystem = this.subSystem[s].id;
       this.activeTab = "0";
-      this.consoleScriptSubSystemScriptFront(this.subSystem[s].id);
+      this.subSystemScript(this.subSystem[s].id);
     },
     //获取系统信息
     async getSubSystem() {
@@ -1218,7 +1216,7 @@ export default {
       }
     },
     //展示子系统下的脚本
-    async consoleScriptSubSystemScriptFront(sub_system_id) {
+    async subSystemScript(sub_system_id) {
       this.formDataLoading = true;
       for (
         var subSystemIndex = 0;
@@ -1368,7 +1366,7 @@ export default {
           type: "success"
         });
         this.edit.visible = false;
-        this.consoleScriptSubSystemScriptFront(this.edit.sub_system_id);
+        this.subSystemScript(this.edit.sub_system_id);
       } catch (e) {
         console.log(e);
         this.$message({
@@ -1439,7 +1437,7 @@ export default {
               message: res.msg,
               type: "success"
             });
-            this.consoleScriptSubSystemScriptFront(this.activedSystem);
+            this.subSystemScript(this.activedSystem);
           } catch (e) {
             console.log(e);
             this.$message({
@@ -1449,6 +1447,90 @@ export default {
           }
         })
         .catch(() => {});
+    },
+    //展示脚本的运行日志
+    async singleDataShowLogs() {
+      this.output.loading = true;
+      this.output.logs = [];
+      try {
+        const { data: res } = await axios.post(api.singleDataShowLogs, {
+          script_id: this.formData[this.activeTab].id,
+          user: sessionStorage.getItem("user").replace(/\"/g, "")
+        });
+        this.output.logs = res.data.logs;
+        this.output.important_fields = res.data.important_fields;
+        for (let o = 0; o < this.output.logs.length; o++) {
+          for (let i = 0; i < this.output.important_fields.length; i++) {
+            this.output.logs[o][
+              this.output.important_fields[i]
+            ] = this.output.logs[o].detail[this.output.important_fields[i]];
+          }
+        }
+      } catch (e) {
+        console.log(e);
+        this.$message({
+          message: e.response.data.msg,
+          type: "error"
+        });
+      }
+      this.output.loading = false;
+    },
+    //展示最近一次由我运行的脚本日志
+    async singleDataLog() {
+      try {
+        const { data: res } = await axios.post(api.singleDataLog, {
+          script_id: this.formData[this.activeTab].id,
+          user: sessionStorage.getItem("user").replace(/\"/g, "")
+        });
+        this.output.visible = true;
+        this.output.text = res.data[0].output;
+        if (this.bool.singleDataLog) {
+          this.$nextTick(() => {
+            try {
+              var scroll = new BScroll(this.$refs.outputDialog, {
+                scrollY: true,
+                scrollbar: {
+                  fade: true, // node_modules\better-scroll\dist\bscroll.esm.js:2345可以调时间，目前使用的是'var time = visible ? 500 : 5000;'
+                  interactive: true
+                },
+                momentumLimitDistance: 300,
+                mouseWheel: true,
+                preventDefault: false
+              });
+              scroll.refresh();
+            } catch (error) {
+              console.log("滚动条设置失败" + error);
+            }
+          });
+          this.bool.singleDataLog = false;
+        }
+      } catch (e) {
+        console.log(e);
+        this.$message({
+          message: e.response.data.msg,
+          type: "error"
+        });
+      }
+    },
+    //展示定时任务列表
+    singleDataScheduleShowSchedules() {
+      this.schedule.loading = true;
+      this.schedule.schedules = [];
+      try {
+        const { data: res } = await axios.post(api.singleDataScheduleShowSchedules, {
+          script_id: this.formData[this.activeTab].id,
+          user: sessionStorage.getItem("user").replace(/\"/g, "")
+        });
+          this.schedule.loading = false;
+          this.schedule.schedules = res.data;
+          this.schedule.popoverVisible = true;
+      } catch (e) {
+        console.log(e);
+        this.$message({
+          message: e.response.data.msg,
+          type: "error"
+        });
+      }
     },
 
     // 以下为无接口交互函数
@@ -1540,7 +1622,7 @@ export default {
     },
     //展示编辑脚本dialog
     singleDataSetting() {
-      this.consoleScriptSubSystemScriptFront(this.activedSystem).then(data => {
+      this.subSystemScript(this.activedSystem).then(data => {
         this.edit.dialogTitle = "编辑脚本";
         this.edit.title = data[this.activeTab].title;
         this.edit.id = data[this.activeTab].id;
@@ -1550,72 +1632,6 @@ export default {
         this.edit.formData = data[this.activeTab].formDataDetail;
         this.edit.sub_system_id = data[this.activeTab].sub_system_id;
         this.edit.visible = true;
-      });
-    },
-    //展示脚本的运行日志
-    singleDataShowLogs() {
-      this.output.loading = true;
-      this.output.logs = [];
-      var para = {
-        script_id: this.formData[this.activeTab].id,
-        user: sessionStorage.getItem("user").replace(/\"/g, "")
-      };
-      consoleScriptGetLogs(para).then(data => {
-        if (data["code"] !== 200) {
-          this.$message({
-            message: data["msg"],
-            type: "error"
-          });
-        } else {
-          this.output.logs = data.data.logs;
-          this.output.important_fields = data.data.important_fields;
-          for (let o = 0; o < this.output.logs.length; o++) {
-            for (let i = 0; i < this.output.important_fields.length; i++) {
-              this.output.logs[o][
-                this.output.important_fields[i]
-              ] = this.output.logs[o].detail[this.output.important_fields[i]];
-            }
-          }
-        }
-        this.output.loading = false;
-      });
-    },
-    //展示最近一次由我运行的脚本日志
-    singleDataLog() {
-      var para = {
-        script_id: this.formData[this.activeTab].id,
-        user: sessionStorage.getItem("user").replace(/\"/g, "")
-      };
-      consoleScriptGetNewestLog(para).then(data => {
-        if (data["code"] !== 200) {
-          this.$message({
-            message: data["msg"],
-            type: "error"
-          });
-        } else {
-          this.output.visible = true;
-          this.output.text = data.data[0].output;
-          if (this.bool.singleDataLog) {
-            this.$nextTick(() => {
-              try {
-                var scroll = new BScroll(this.$refs.outputDialog, {
-                  scrollY: true,
-                  scrollbar: {
-                    fade: true, // node_modules\better-scroll\dist\bscroll.esm.js:2345可以调时间，目前使用的是'var time = visible ? 500 : 5000;'
-                    interactive: true
-                  },
-                  momentumLimitDistance: 300,
-                  mouseWheel: true,
-                  preventDefault: false
-                });
-                scroll.refresh();
-              } catch (error) {
-                console.log("滚动条设置失败" + error);
-              }
-            });
-            this.bool.singleDataLog = false;
-          }
-        }
       });
     },
     //点击提交定时任务按钮
@@ -1677,27 +1693,6 @@ export default {
       this.schedule.scheduleData.interval.value = 1;
       this.schedule.scheduleData.interval.unit.select = 2;
       this.schedule.label = "新建定时任务";
-    },
-    //展示定时任务列表
-    singleDataScheduleShowSchedules() {
-      this.schedule.loading = true;
-      this.schedule.schedules = [];
-      var para = {
-        user: sessionStorage.getItem("user").replace(/\"/g, ""),
-        script_id: this.formData[this.activeTab].id
-      };
-      consoleScriptSchedule(para).then(data => {
-        if (data["code"] !== 200) {
-          this.$message({
-            message: data["msg"],
-            type: "error"
-          });
-        } else {
-          this.schedule.loading = false;
-          this.schedule.schedules = data.data;
-          this.schedule.popoverVisible = true;
-        }
-      });
     },
     //编辑定时任务
     singleDataScheduleEditSchedule(schedule) {

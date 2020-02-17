@@ -16,7 +16,7 @@ from ..common_func import CommonFunc
 pool0 = redis.ConnectionPool(host='localhost', port=6379, decode_responses=True, db=0)
 pool1 = redis.ConnectionPool(host='localhost', port=6379, decode_responses=True, db=1)
 cf = CommonFunc()
-
+LOGIN_STATUS_EXPIRE_TIME = 36000 # 登录状态过期时间
 
 # 权限装饰器
 def permission_required(privilege):
@@ -222,7 +222,7 @@ class privilegeFunction(object):
         '''
         random_str = cf.random_str(40)
         user_key = cf.md5_it(random_str + user_instance.password)
-        self.get_redis_conn0().set(user_key, user_instance.id, 36000)
+        self.get_redis_conn0().set(user_key, user_instance.id, LOGIN_STATUS_EXPIRE_TIME)
         dict = {'password': user_instance.password, 'ip': ip, 'random_str': random_str, 'role_id': user_instance.role_id, 'login_time': datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
         self.get_redis_conn0().hmset(user_instance.id, dict)
         return user_key
