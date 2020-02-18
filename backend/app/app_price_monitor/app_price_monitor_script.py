@@ -11,7 +11,8 @@ sys.path.append('../')
 sys.path.append('../../')
 from bs4 import BeautifulSoup
 from playhouse.shortcuts import model_to_dict
-from model import appstore, appstore_price_data
+from ..model.app_model import app as app_table
+from ..model.app_model import app_price
 
 GET = '获取'
 POST = '推送'
