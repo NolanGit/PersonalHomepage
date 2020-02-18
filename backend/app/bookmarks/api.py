@@ -9,7 +9,7 @@ from flask_cors import cross_origin
 from flask import render_template, session, redirect, url_for, current_app, flash, Response, request, jsonify
 from ..model.bookmarks_model import icon
 from ..model.bookmarks_model import bookmarks as bookmarks_table
-from ..login.api import User
+from ..login.login_funtion import User
 
 
 @bookmarks.route('/bookmarksData', methods=['POST'])
