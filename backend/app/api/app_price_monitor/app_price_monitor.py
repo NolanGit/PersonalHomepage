@@ -11,13 +11,15 @@ sys.path.append('../')
 sys.path.append('../../')
 from bs4 import BeautifulSoup
 from playhouse.shortcuts import model_to_dict
-from model import appstore, appstore_price_data
+from ..model.app_model import app as app_table
 
 GET = '获取'
 POST = '推送'
 count = 0
 q = queue.Queue()
-
+'''
+定时任务每天定时爬取数据存库，爬取后时判断是否到达推送阈值，推送后按照间隔修改下一次推送时间
+'''
 
 class App(object):
     price = 0.00

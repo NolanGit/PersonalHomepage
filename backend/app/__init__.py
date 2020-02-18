@@ -17,28 +17,28 @@ def create_app(config_name):
     config[config_name].init_app(app)
 
 
-    from .main import main as main_blueprint
+    from .api.main import main as main_blueprint
     app.register_blueprint(main_blueprint)
 
-    from .search import search as search_blueprint
+    from .api.search import search as search_blueprint
     app.register_blueprint(search_blueprint, url_prefix='/search')
 
-    from .login import login as login_blueprint
+    from .api.login import login as login_blueprint
     app.register_blueprint(login_blueprint, url_prefix='/login')
 
-    from .weather import weather as weather_blueprint
+    from .api.weather import weather as weather_blueprint
     app.register_blueprint(weather_blueprint, url_prefix='/weather')
     
-    from .bookmarks import bookmarks as bookmarks_blueprint
+    from .api.bookmarks import bookmarks as bookmarks_blueprint
     app.register_blueprint(bookmarks_blueprint, url_prefix='/bookmarks')
 
-    from .console import console as console_blueprint
+    from .api.console import console as console_blueprint
     app.register_blueprint(console_blueprint, url_prefix='/console')
 
-    from .script import script as script_blueprint
+    from .api.script import script as script_blueprint
     app.register_blueprint(script_blueprint, url_prefix='/script')
 
-    from .privilege import privilege as privilege_blueprint
+    from .api.privilege import privilege as privilege_blueprint
     app.register_blueprint(privilege_blueprint, url_prefix='/privilege')
 
     return app

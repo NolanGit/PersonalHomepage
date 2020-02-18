@@ -41,7 +41,7 @@
       :size="drawer.size"
       :before-close="drawerBeforeClose"
     >
-      <Console v-if="drawer.title=='控制台'"/>
+      <Console :v-if="drawer.title=='控制台'"/>
     </el-drawer>
   </div>
 </template>
