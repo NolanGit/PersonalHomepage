@@ -11,7 +11,7 @@ from ..model.search_model import search_engines, search_engines_log
 from ..model.weather_model import weather_personalized
 from ..model.bookmarks_model import bookmarks as bookmarks_table
 from ..model.bookmarks_model import icon as icon_table
-from ..login.api import User
+from ..login.login_funtion import User
 from ..privilege.privilege_control import permission_required
 
 URL_PREFIX = ''

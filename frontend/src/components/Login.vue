@@ -39,8 +39,9 @@
       :visible.sync="drawer.visible"
       :direction="drawer.direction"
       :size="drawer.size"
+      :before-close="drawerBeforeClose"
     >
-      <Console />
+      <Console v-if="drawer.title=='控制台'"/>
     </el-drawer>
   </div>
 </template>
@@ -138,6 +139,10 @@ export default {
       this.drawer.size = "500";
       this.drawer.visible = true;
       this.drawer.direction = "ttb";
+    },
+    //关闭窗口
+    drawerBeforeClose(done) {
+      this.drawer.title = "";
     }
   },
   created() {},
