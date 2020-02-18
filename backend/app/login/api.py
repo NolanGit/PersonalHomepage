@@ -9,28 +9,13 @@ import urllib.request
 from . import login
 from ..common_func import CommonFunc
 from flask_cors import cross_origin
-from flask import render_template, session, redirect, url_for, current_app, flash, Response, request, jsonify
+from flask import session, redirect, url_for, current_app, flash, Response, request, jsonify
 from ..model.login_model import user
 from ..privilege.api import privilegeFunction
 
 cf = CommonFunc()
 pf = privilegeFunction()
 ALLOWED_TIME_SPAN = 100  # 盐过期X秒内允许修改密码，否则需要重新登录
-
-
-class User(object):
-
-    user_name = ''
-    user_id = 0
-
-    def __init__(self, user_name):
-        self.user_name = user_name
-        user_query = user.select().where(user.name == self.user_name).limit(1).dicts()
-        for row in user_query:
-            self.user_id = row['id']
-            self.role_id = row['role_id']
-            self.create_time = row['create_time']
-            self.update_time = row['update_time']
 
 
 def check_pass(login_name, password):

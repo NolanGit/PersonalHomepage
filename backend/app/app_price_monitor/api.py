@@ -6,17 +6,15 @@ import traceback
 import urllib.request
 from . import appstore
 from flask_cors import cross_origin
-from flask import render_template, session, redirect, url_for, current_app, flash, Response, request, jsonify
-from ..model.bookemarks_model import icon
-from ..model.appstore_model import appstore as appstore_table
-from ..common_func import User
+from flask import session, redirect, url_for, current_app, flash, Response, request, jsonify
+from ..model.app_model import app as app_table
 
 
-@appstore.route('/appstoreData', methods=['GET'])
+@appstore.route('/appData', methods=['GET'])
 @cross_origin()
-def appstoreData():
+def appData():
     try:
-        response = {'code': 200, 'msg': '成功！', 'data': result}
+        response = {'code': 200, 'msg': '成功！', 'data': []}
         return jsonify(response)
 
     except Exception as e:

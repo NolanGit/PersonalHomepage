@@ -16,11 +16,11 @@ class BaseModel(Model):
         database = database
 
 
-class appstore(BaseModel):
+class app(BaseModel):
     name = CharField()
     url = CharField()
-    expect_price = IntegerField()
     user_id = IntegerField()
+    expect_price = IntegerField()
     order = IntegerField()
     is_valid = IntegerField()
     notify = IntegerField() # 1:是,2:否
@@ -36,7 +36,7 @@ class appstore(BaseModel):
 
 #用户表增加email和微信推送id的config
 
-class appstore_price_data(BaseModel):
+class app_price(BaseModel):
     app_id = IntegerField()
     time = TimeField()
     date = DateField()
@@ -44,5 +44,5 @@ class appstore_price_data(BaseModel):
     class Meta:
         table_name = 'appstore_price_data'
 
-appstore.create_table()
-appstore_price_data.create_table()
+app.create_table()
+app_price.create_table()
