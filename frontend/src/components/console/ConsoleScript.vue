@@ -1377,7 +1377,7 @@ export default {
     //回放上一次由我运行的脚本参数
     async singleDataReplay() {
       try {
-        const { data: res } = await axios.get(api.replay, {
+        const { data: res } = await axios.post(api.replay, {
           script_id: this.formData[this.activeTab].id,
           user: sessionStorage.getItem("user").replace(/\"/g, "")
         });
