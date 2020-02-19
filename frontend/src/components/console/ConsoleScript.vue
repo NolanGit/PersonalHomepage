@@ -1010,11 +1010,6 @@
 <script>
 import axios from "axios";
 import BScroll from "better-scroll";
-import {
-  consoleScriptRunOutput,
-  consoleScriptSaveOutput,
-  consoleScriptExtraButtonScriptRun
-} from "../../api/console";
 const api = {
   subSystem: "/script/subSystem",
   subSystemScript: "/script/subSystemScript",
@@ -1216,7 +1211,6 @@ export default {
             user: sessionStorage.getItem("user").replace(/\"/g, "")
           })
           .then(res => {
-            console.log(res)
             if (res.data.data["process_id"] == -1) {
               this.$message({
                 message: "任务创建错误，请联系管理员！",
@@ -1238,7 +1232,8 @@ export default {
           type: "error"
         });
       }
-    }, //更新输出
+    },
+    //更新输出
     flushOutput(process_id) {
       this.output.isAlert = true;
       try {
@@ -1283,20 +1278,23 @@ export default {
                 });
                 scroll.scrollTo(0, scroll.maxScrollY);
               });
-              var para2 = {
-                log_id: this.output.log_id,
-                output: this.output.text
-              };
-              consoleScriptSaveOutput(para2).then(data => {
-                if (data["data"]["status"] == -1) {
-                  this.$message({
-                    message: "记录运行日志错误！请联系管理员" + data["msg"],
-                    type: "error"
+              try {
+                axios
+                  .post(api.saveOutput, {
+                    log_id: this.output.log_id,
+                    output: this.output.text
+                  })
+                  .then(res => {
+                    this.submitButtonLoading = false;
                   });
-                } else {
-                  this.submitButtonLoading = false;
-                }
-              });
+              } catch (e) {
+                console.log(e);
+                this.$message({
+                  message:
+                    "记录运行日志错误！请联系管理员" + e.response.data.msg,
+                  type: "error"
+                });
+              }
               return;
             } else if (data["data"]["status"] == 1) {
               this.output.text =
@@ -1332,6 +1330,120 @@ export default {
           type: "error"
         });
       }
+    },
+    //额外脚本提交
+    extraButtonClicked(singleFormIndex, singleDataIndex, extra_button_command) {
+      if (this.extra_button.visible) {
+        this.extra_button.visible = false;
+        return;
+      }
+      this.extra_button.output = "";
+      this.extra_button.output_temp = "";
+      this.extra_button.buttonLoading = true;
+      var command_get_result = this.command_get(extra_button_command, 2);
+      var command = command_get_result.command;
+      this.extra_button.loading = true;
+      try {
+        axios
+          .post(api.extraButtonScriptRun, {
+            user: sessionStorage.getItem("user").replace(/\"/g, ""),
+            command: command
+          })
+          .then(res => {
+            if (res.data.data["process_id"] == -1) {
+              this.$message({
+                message: "任务创建错误，请联系管理员！",
+                type: "error"
+              });
+            } else {
+              var process_id = res.data.data["process_id"];
+            }
+            this.extraButtonFlushOutput(
+              singleFormIndex,
+              singleDataIndex,
+              process_id
+            );
+          });
+      } catch (e) {
+        console.log(e);
+        this.$message({
+          message: e.response.data.msg,
+          type: "error"
+        });
+      }
+    },
+    //额外脚本输出
+    extraButtonFlushOutput(singleFormIndex, singleDataIndex, process_id) {
+      try {
+        axios
+          .post(api.extraButtonScriptRun, {
+            process_id: process_id,
+            user: sessionStorage.getItem("user").replace(/\"/g, "")
+          })
+          .then(res => {
+            if (res.data.data["status"] == -1) {
+              this.$message({
+                message: data["msg"],
+                type: "error"
+              });
+              this.extra_button.loading = false;
+              this.extra_button.buttonLoading = false;
+              return;
+            } else if (res.data.data["status"] == 0) {
+              try {
+                var dataTemp = JSON.parse(
+                  this.extra_button.output_temp + res.data.data["output"]
+                );
+                this.extra_button.output = dataTemp.data.msg
+                  .replace(/\n/g, "<br>")
+                  .replace(/\s/g, "&nbsp;");
+                if (dataTemp.data.value != undefined) {
+                  this.formData[singleFormIndex].formDataDetail[
+                    singleDataIndex
+                  ].value = dataTemp.data.value;
+                }
+                if (dataTemp.data.options != undefined) {
+                  this.formData[singleFormIndex].formDataDetail[
+                    singleDataIndex
+                  ].options = dataTemp.data.options;
+                }
+              } catch (err) {
+                this.extra_button.output = (
+                  this.extra_button.output_temp + res.data.data["output"]
+                )
+                  .replace(/\n/g, "<br>")
+                  .replace(/\s/g, "&nbsp;");
+              }
+              this.extra_button.loading = false;
+              this.extra_button.buttonLoading = false;
+              return;
+            } else if (res.data.data["status"] == 1) {
+              this.extra_button.output_temp =
+                this.extra_button.output_temp + res.data.data["output"];
+              this.extraButtonFlushOutput(
+                singleFormIndex,
+                singleDataIndex,
+                process_id
+              );
+            }
+          });
+      } catch (e) {
+        console.log(e);
+        this.$message({
+          message: e.response.data.msg,
+          type: "error"
+        });
+      }
+
+      consoleScriptRunOutput(para).then(data => {
+        if (data["code"] !== 200) {
+          this.$message({
+            message: data["msg"],
+            type: "error"
+          });
+        } else {
+        }
+      });
     },
     //获取系统信息
     async getSubSystem() {
@@ -1889,104 +2001,6 @@ export default {
           type: "success"
         });
       }
-    },
-    extraButtonFlushOutput(singleFormIndex, singleDataIndex, process_id) {
-      var para = {
-        process_id: process_id,
-        user: sessionStorage.getItem("user").replace(/\"/g, "")
-      };
-      consoleScriptRunOutput(para).then(data => {
-        if (data["code"] !== 200) {
-          this.$message({
-            message: data["msg"],
-            type: "error"
-          });
-        } else {
-          if (data["data"]["status"] == -1) {
-            this.$message({
-              message: data["msg"],
-              type: "error"
-            });
-            this.extra_button.loading = false;
-            this.extra_button.buttonLoading = false;
-            return;
-          } else if (data["data"]["status"] == 0) {
-            try {
-              var dataTemp = JSON.parse(
-                this.extra_button.output_temp + data["data"]["output"]
-              );
-              this.extra_button.output = dataTemp.data.msg
-                .replace(/\n/g, "<br>")
-                .replace(/\s/g, "&nbsp;");
-              if (dataTemp.data.value != undefined) {
-                this.formData[singleFormIndex].formDataDetail[
-                  singleDataIndex
-                ].value = dataTemp.data.value;
-              }
-              if (dataTemp.data.options != undefined) {
-                this.formData[singleFormIndex].formDataDetail[
-                  singleDataIndex
-                ].options = dataTemp.data.options;
-              }
-            } catch (err) {
-              this.extra_button.output = (
-                this.extra_button.output_temp + data["data"]["output"]
-              )
-                .replace(/\n/g, "<br>")
-                .replace(/\s/g, "&nbsp;");
-            }
-            this.extra_button.loading = false;
-            this.extra_button.buttonLoading = false;
-            return;
-          } else if (data["data"]["status"] == 1) {
-            this.extra_button.output_temp =
-              this.extra_button.output_temp + data["data"]["output"];
-            this.extraButtonFlushOutput(
-              singleFormIndex,
-              singleDataIndex,
-              process_id
-            );
-          }
-        }
-      });
-    },
-    extraButtonClicked(singleFormIndex, singleDataIndex, extra_button_command) {
-      if (this.extra_button.visible) {
-        this.extra_button.visible = false;
-        return;
-      }
-      this.extra_button.output = "";
-      this.extra_button.output_temp = "";
-      this.extra_button.buttonLoading = true;
-      var command_get_result = this.command_get(extra_button_command, 2);
-      var command = command_get_result.command;
-      var para = {
-        user: sessionStorage.getItem("user").replace(/\"/g, ""),
-        command: command
-      };
-      this.extra_button.loading = true;
-      consoleScriptExtraButtonScriptRun(para).then(data => {
-        if (data["code"] !== 200) {
-          this.$message({
-            message: data["msg"],
-            type: "error"
-          });
-        } else {
-          if (data["data"]["process_id"] == -1) {
-            this.$message({
-              message: "任务创建错误，请联系管理员！",
-              type: "error"
-            });
-          } else {
-            var process_id = data["data"]["process_id"];
-          }
-          this.extraButtonFlushOutput(
-            singleFormIndex,
-            singleDataIndex,
-            process_id
-          );
-        }
-      });
     },
     //使用当前激活tab的detial，接收start_command和组装方式，组装好command和detail并返回，start_command在运行脚本时为打开文件夹的命令加上起始命令
     command_get(start_command, type) {
