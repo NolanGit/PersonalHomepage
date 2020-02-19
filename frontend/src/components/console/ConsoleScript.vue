@@ -1193,6 +1193,145 @@ export default {
       this.activeTab = "0";
       this.subSystemScript(this.subSystem[s].id);
     },
+    //提交
+    submit() {
+      this.submitButtonLoading = true;
+      var start_folder_with_start_script =
+        "cd " +
+        this.formData[this.activeTab].start_folder +
+        " && " +
+        this.formData[this.activeTab].start_script;
+      var command_get_result = this.command_get(
+        start_folder_with_start_script,
+        this.formData[this.activeTab].type
+      );
+      var command = command_get_result.command;
+      try {
+        axios
+          .post(api.run, {
+            id: this.formData[this.activeTab].id,
+            command: command,
+            version: this.formData[this.activeTab].version,
+            detail: command_get_result.detail,
+            user: sessionStorage.getItem("user").replace(/\"/g, "")
+          })
+          .then(res => {
+            if (res.data["process_id"] == -1) {
+              this.$message({
+                message: "任务创建错误，请联系管理员！",
+                type: "error"
+              });
+            } else {
+              this.output.log_id = res.data["log_id"];
+              this.output.visible = true;
+              this.output.text = command + "<br>";
+              this.output.process_id = res.data["process_id"];
+              this.output.canBeTerminate = true;
+              this.flushOutput(res.data["process_id"]);
+            }
+          });
+      } catch (e) {
+        console.log(e);
+        this.$message({
+          message: e.response.data.msg,
+          type: "error"
+        });
+      }
+    }, //更新输出
+    flushOutput(process_id) {
+      this.output.isAlert = true;
+      try {
+        axios
+          .post(api.runOutput, {
+            process_id: process_id,
+            user: sessionStorage.getItem("user").replace(/\"/g, "")
+          })
+          .then(res => {
+            if (res.data["status"] == -1) {
+              this.$message({
+                message: data["msg"],
+                type: "error"
+              });
+              this.submitButtonLoading = false;
+              return;
+            } else if (res.data["status"] == 0) {
+              this.output.canBeTerminate = false;
+              this.output.isAlert = false;
+              this.output.text =
+                "<div>" +
+                this.output.text +
+                "</div>" +
+                res.data["output"]
+                  .replace(/\n/g, "<br>")
+                  .replace(/\s/g, "&nbsp;");
+              this.output.text = this.output.text.replace(/#&nbsp;/g, " ");
+              this.$message({
+                message: "运行结束，请查看输出。",
+                type: "success"
+              });
+              this.$nextTick(() => {
+                let scroll = new BScroll(this.$refs.outputDialog, {
+                  scrollY: true,
+                  scrollbar: {
+                    fade: true, // node_modules\better-scroll\dist\bscroll.esm.js:2345可以调时间，目前使用的是'var time = visible ? 500 : 5000;'
+                    interactive: true
+                  },
+                  momentumLimitDistance: 300,
+                  mouseWheel: true,
+                  preventDefault: false
+                });
+                scroll.scrollTo(0, scroll.maxScrollY);
+              });
+              var para2 = {
+                log_id: this.output.log_id,
+                output: this.output.text
+              };
+              consoleScriptSaveOutput(para2).then(data => {
+                if (data["data"]["status"] == -1) {
+                  this.$message({
+                    message: "记录运行日志错误！请联系管理员" + data["msg"],
+                    type: "error"
+                  });
+                } else {
+                  this.submitButtonLoading = false;
+                }
+              });
+              return;
+            } else if (data["data"]["status"] == 1) {
+              this.output.text =
+                this.output.text +
+                data["data"]["output"]
+                  .replace(/\n/g, "<br>")
+                  .replace(/\s/g, "&nbsp;");
+              this.$nextTick(() => {
+                try {
+                  let scroll = new BScroll(this.$refs.outputDialog, {
+                    scrollY: true,
+                    scrollbar: {
+                      fade: true, // node_modules\better-scroll\dist\bscroll.esm.js:2345可以调时间，目前使用的是'var time = visible ? 500 : 5000;'
+                      interactive: true
+                    },
+                    momentumLimitDistance: 300,
+                    mouseWheel: true,
+                    preventDefault: false
+                  });
+                  scroll.scrollTo(0, scroll.maxScrollY);
+                  scroll.destroy();
+                } catch (error) {
+                  console.log("滚动条设置失败" + error);
+                }
+              });
+              this.flushOutput(process_id);
+            }
+          });
+      } catch (e) {
+        console.log(e);
+        this.$message({
+          message: e.response.data.msg,
+          type: "error"
+        });
+      }
+    },
     //获取系统信息
     async getSubSystem() {
       try {
@@ -1274,48 +1413,6 @@ export default {
         ].script.join("、");
         this.formDataLoading = false;
         return this.formData;
-      } catch (e) {
-        console.log(e);
-        this.$message({
-          message: e.response.data.msg,
-          type: "error"
-        });
-      }
-    },
-    //提交
-    submit() {
-      this.submitButtonLoading = true;
-      var start_folder_with_start_script =
-        "cd " +
-        this.formData[this.activeTab].start_folder +
-        " && " +
-        this.formData[this.activeTab].start_script;
-      var command_get_result = this.command_get(
-        start_folder_with_start_script,
-        this.formData[this.activeTab].type
-      );
-      var command = command_get_result.command;
-      try {
-        const { data: res } = axios.post(api.run, {
-          id: this.formData[this.activeTab].id,
-          command: command,
-          version: this.formData[this.activeTab].version,
-          detail: command_get_result.detail,
-          user: sessionStorage.getItem("user").replace(/\"/g, "")
-        });
-        if (res.data["process_id"] == -1) {
-          this.$message({
-            message: "任务创建错误，请联系管理员！",
-            type: "error"
-          });
-        } else {
-          this.output.log_id = res.data["log_id"];
-          this.output.visible = true;
-          this.output.text = command + "<br>";
-          this.output.process_id = res.data["process_id"];
-          this.output.canBeTerminate = true;
-          this.flushOutput(res.data["process_id"]);
-        }
       } catch (e) {
         console.log(e);
         this.$message({
@@ -1729,99 +1826,6 @@ export default {
         ? schedule.interval_raw
         : 1;
       this.schedule.dialogVisible = true;
-    },
-    //更新输出
-    flushOutput(process_id) {
-      this.output.isAlert = true;
-      var para = {
-        process_id: process_id,
-        user: sessionStorage.getItem("user").replace(/\"/g, "")
-      };
-      consoleScriptRunOutput(para).then(data => {
-        if (data["code"] !== 200) {
-          this.$message({
-            message: data["msg"],
-            type: "error"
-          });
-        } else {
-          if (data["data"]["status"] == -1) {
-            this.$message({
-              message: data["msg"],
-              type: "error"
-            });
-            this.submitButtonLoading = false;
-            return;
-          } else if (data["data"]["status"] == 0) {
-            this.output.canBeTerminate = false;
-            this.output.isAlert = false;
-            this.output.text =
-              "<div>" +
-              this.output.text +
-              "</div>" +
-              data["data"]["output"]
-                .replace(/\n/g, "<br>")
-                .replace(/\s/g, "&nbsp;");
-            this.output.text = this.output.text.replace(/#&nbsp;/g, " ");
-            this.$message({
-              message: "运行结束，请查看输出。",
-              type: "success"
-            });
-            this.$nextTick(() => {
-              let scroll = new BScroll(this.$refs.outputDialog, {
-                scrollY: true,
-                scrollbar: {
-                  fade: true, // node_modules\better-scroll\dist\bscroll.esm.js:2345可以调时间，目前使用的是'var time = visible ? 500 : 5000;'
-                  interactive: true
-                },
-                momentumLimitDistance: 300,
-                mouseWheel: true,
-                preventDefault: false
-              });
-              scroll.scrollTo(0, scroll.maxScrollY);
-            });
-            var para2 = {
-              log_id: this.output.log_id,
-              output: this.output.text
-            };
-            consoleScriptSaveOutput(para2).then(data => {
-              if (data["data"]["status"] == -1) {
-                this.$message({
-                  message: "记录运行日志错误！请联系管理员" + data["msg"],
-                  type: "error"
-                });
-              } else {
-                this.submitButtonLoading = false;
-              }
-            });
-            return;
-          } else if (data["data"]["status"] == 1) {
-            this.output.text =
-              this.output.text +
-              data["data"]["output"]
-                .replace(/\n/g, "<br>")
-                .replace(/\s/g, "&nbsp;");
-            this.$nextTick(() => {
-              try {
-                let scroll = new BScroll(this.$refs.outputDialog, {
-                  scrollY: true,
-                  scrollbar: {
-                    fade: true, // node_modules\better-scroll\dist\bscroll.esm.js:2345可以调时间，目前使用的是'var time = visible ? 500 : 5000;'
-                    interactive: true
-                  },
-                  momentumLimitDistance: 300,
-                  mouseWheel: true,
-                  preventDefault: false
-                });
-                scroll.scrollTo(0, scroll.maxScrollY);
-                scroll.destroy();
-              } catch (error) {
-                console.log("滚动条设置失败" + error);
-              }
-            });
-            this.flushOutput(process_id);
-          }
-        }
-      });
     },
     //展示日志中的输出
     log_output(output) {
