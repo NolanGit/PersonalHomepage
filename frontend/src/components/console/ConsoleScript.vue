@@ -1216,6 +1216,7 @@ export default {
             user: sessionStorage.getItem("user").replace(/\"/g, "")
           })
           .then(res => {
+            console.log(res)
             if (res.data["process_id"] == -1) {
               this.$message({
                 message: "任务创建错误，请联系管理员！",
