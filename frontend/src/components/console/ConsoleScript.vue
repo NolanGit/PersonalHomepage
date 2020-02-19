@@ -1296,7 +1296,7 @@ export default {
                 });
               }
               return;
-            } else if (data["data"]["status"] == 1) {
+            } else if (res.data["data"]["status"] == 1) {
               this.output.text =
                 this.output.text +
                 data["data"]["output"]
