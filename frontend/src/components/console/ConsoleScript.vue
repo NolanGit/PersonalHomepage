@@ -1296,10 +1296,10 @@ export default {
                 });
               }
               return;
-            } else if (res.data["data"]["status"] == 1) {
+            } else if (res.data.data["status"] == 1) {
               this.output.text =
                 this.output.text +
-                data["data"]["output"]
+                res.data.data["output"]
                   .replace(/\n/g, "<br>")
                   .replace(/\s/g, "&nbsp;");
               this.$nextTick(() => {
