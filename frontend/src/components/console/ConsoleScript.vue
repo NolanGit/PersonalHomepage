@@ -1217,18 +1217,18 @@ export default {
           })
           .then(res => {
             console.log(res)
-            if (res.data["process_id"] == -1) {
+            if (res.data.data["process_id"] == -1) {
               this.$message({
                 message: "任务创建错误，请联系管理员！",
                 type: "error"
               });
             } else {
-              this.output.log_id = res.data["log_id"];
+              this.output.log_id = res.data.data["log_id"];
               this.output.visible = true;
               this.output.text = command + "<br>";
-              this.output.process_id = res.data["process_id"];
+              this.output.process_id = res.data.data["process_id"];
               this.output.canBeTerminate = true;
-              this.flushOutput(res.data["process_id"]);
+              this.flushOutput(res.data.data["process_id"]);
             }
           });
       } catch (e) {
@@ -1248,21 +1248,21 @@ export default {
             user: sessionStorage.getItem("user").replace(/\"/g, "")
           })
           .then(res => {
-            if (res.data["status"] == -1) {
+            if (res.data.data["status"] == -1) {
               this.$message({
                 message: data["msg"],
                 type: "error"
               });
               this.submitButtonLoading = false;
               return;
-            } else if (res.data["status"] == 0) {
+            } else if (res.data.data["status"] == 0) {
               this.output.canBeTerminate = false;
               this.output.isAlert = false;
               this.output.text =
                 "<div>" +
                 this.output.text +
                 "</div>" +
-                res.data["output"]
+                res.data.data["output"]
                   .replace(/\n/g, "<br>")
                   .replace(/\s/g, "&nbsp;");
               this.output.text = this.output.text.replace(/#&nbsp;/g, " ");
