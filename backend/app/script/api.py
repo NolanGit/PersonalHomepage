@@ -212,16 +212,8 @@ def edit():
             }
             return jsonify(response)
         if script_id == 0:
-            script_table_model.create(name=name,
-                                  sub_system_id=sub_system_id,
-                                  start_folder=start_folder,
-                                  start_script=start_script,
-                                  type=type,
-                                  runs=0,
-                                  is_valid=1,
-                                  version=1,
-                                  user=user,
-                                  update_time=datetime.datetime.now())
+            script_table_model.create(
+                name=name, sub_system_id=sub_system_id, start_folder=start_folder, start_script=start_script, type=type, runs=0, is_valid=1, version=1, user=user, update_time=datetime.datetime.now())
             script_table_model_query = script_table_model.select().order_by(-script_table_model.id).limit(1).dicts()
             for row in script_table_model_query:
                 script_id = row['id']
@@ -286,24 +278,25 @@ def edit():
                 except:
                     extra_button_script = ''
                 print(value, place_holder, options, createable, disabled, remark)
-                script_detail.create(script_id=script_id,
-                                             type=detail[x]['type'],
-                                             label=detail[x]['label'],
-                                             value=value,
-                                             place_holder=place_holder,
-                                             options=options,
-                                             createable=createable,
-                                             disabled=disabled,
-                                             remark=remark,
-                                             is_important=is_important,
-                                             extra_button=extra_button,
-                                             extra_button_label=extra_button_label,
-                                             extra_button_script=extra_button_script,
-                                             is_valid=1,
-                                             visible=visible,
-                                             version=1,
-                                             user=user,
-                                             update_time=datetime.datetime.now())
+                script_detail.create(
+                    script_id=script_id,
+                    type=detail[x]['type'],
+                    label=detail[x]['label'],
+                    value=value,
+                    place_holder=place_holder,
+                    options=options,
+                    createable=createable,
+                    disabled=disabled,
+                    remark=remark,
+                    is_important=is_important,
+                    extra_button=extra_button,
+                    extra_button_label=extra_button_label,
+                    extra_button_script=extra_button_script,
+                    is_valid=1,
+                    visible=visible,
+                    version=1,
+                    user=user,
+                    update_time=datetime.datetime.now())
             response = {
                 'code': 200,
                 'msg': '新增成功！',
@@ -313,9 +306,10 @@ def edit():
             for row in script_table_model_query:
                 version = row['version'] + 1
 
-            script_table_model.update(name=name, start_folder=start_folder, start_script=start_script, type=type, version=version, user=user,
-                                  update_time=datetime.datetime.now()).where((script_table_model.id == script_id)
-                                                                             & (script_table_model.is_valid == 1)).execute()
+            script_table_model.update(
+                name=name, start_folder=start_folder, start_script=start_script, type=type, version=version, user=user,
+                update_time=datetime.datetime.now()).where((script_table_model.id == script_id)
+                                                           & (script_table_model.is_valid == 1)).execute()
             script_detail.update(is_valid=0).where(script_detail.script_id == script_id).execute()
 
             for x in range(len(detail)):
@@ -379,24 +373,25 @@ def edit():
                 except:
                     extra_button_script = ''
                 print(detail[x])
-                script_detail.create(script_id=script_id,
-                                             type=detail[x]['type'],
-                                             label=detail[x]['label'],
-                                             value=value,
-                                             place_holder=place_holder,
-                                             options=options,
-                                             createable=createable,
-                                             disabled=disabled,
-                                             remark=remark,
-                                             is_important=is_important,
-                                             extra_button=extra_button,
-                                             extra_button_label=extra_button_label,
-                                             extra_button_script=extra_button_script,
-                                             is_valid=1,
-                                             visible=visible,
-                                             version=version,
-                                             user=user,
-                                             update_time=datetime.datetime.now())
+                script_detail.create(
+                    script_id=script_id,
+                    type=detail[x]['type'],
+                    label=detail[x]['label'],
+                    value=value,
+                    place_holder=place_holder,
+                    options=options,
+                    createable=createable,
+                    disabled=disabled,
+                    remark=remark,
+                    is_important=is_important,
+                    extra_button=extra_button,
+                    extra_button_label=extra_button_label,
+                    extra_button_script=extra_button_script,
+                    is_valid=1,
+                    visible=visible,
+                    version=version,
+                    user=user,
+                    update_time=datetime.datetime.now())
             response = {
                 'code': 200,
                 'msg': '修改成功！',
@@ -560,8 +555,7 @@ def schedule():
     try:
         user = request.get_json()['user']
         script_id = request.get_json()['script_id']
-        script_schedule_query = script_schedule.select().where((script_schedule.script_id == script_id)
-                                                                               & (script_schedule.is_valid == 1)).order_by(script_schedule.id).dicts()
+        script_schedule_query = script_schedule.select().where((script_schedule.script_id == script_id) & (script_schedule.is_valid == 1)).order_by(script_schedule.id).dicts()
         result = []
         for row in script_schedule_query:
             result.append({
@@ -608,22 +602,23 @@ def scheduleEdit():
                 'code': 500,
                 'msg': '定时运行时间不可以小于当前时间',
             }
-            return jsonify(response)
+            return jsonify(response), 500
         schedule_id = request.get_json()['schedule_id']
         if schedule_id == 0:
             if is_automatic == 0:
-                script_schedule.create(script_id=script_id,
-                                               command=command,
-                                               detail=detail,
-                                               version=version,
-                                               user=user,
-                                               is_automatic=is_automatic,
-                                               trigger_time=trigger_time,
-                                               interval=0,
-                                               interval_raw=0,
-                                               interval_unit=0,
-                                               is_valid=1,
-                                               update_time=datetime.datetime.now())
+                script_schedule.create(
+                    script_id=script_id,
+                    command=command,
+                    detail=detail,
+                    version=version,
+                    user=user,
+                    is_automatic=is_automatic,
+                    trigger_time=trigger_time,
+                    interval=0,
+                    interval_raw=0,
+                    interval_unit=0,
+                    is_valid=1,
+                    update_time=datetime.datetime.now())
             elif is_automatic == 1:
                 interval_raw = int(request.get_json()['interval_raw'])
                 interval_unit = int(request.get_json()['interval_unit'])
@@ -631,30 +626,32 @@ def scheduleEdit():
                     interval = interval_raw
                 elif (interval_unit == 2):  #天
                     interval = interval_raw * 24
-                script_schedule.create(script_id=script_id,
-                                               command=command,
-                                               detail=detail,
-                                               version=version,
-                                               user=user,
-                                               is_automatic=is_automatic,
-                                               trigger_time=trigger_time,
-                                               interval=interval,
-                                               interval_raw=interval_raw,
-                                               interval_unit=interval_unit,
-                                               is_valid=1,
-                                               update_time=datetime.datetime.now())
+                script_schedule.create(
+                    script_id=script_id,
+                    command=command,
+                    detail=detail,
+                    version=version,
+                    user=user,
+                    is_automatic=is_automatic,
+                    trigger_time=trigger_time,
+                    interval=interval,
+                    interval_raw=interval_raw,
+                    interval_unit=interval_unit,
+                    is_valid=1,
+                    update_time=datetime.datetime.now())
         elif schedule_id != 0:
             if is_automatic == 0:
-                script_schedule.update(script_id=script_id,
-                                               version=version,
-                                               user=user,
-                                               is_automatic=is_automatic,
-                                               trigger_time=trigger_time,
-                                               interval=0,
-                                               interval_raw=0,
-                                               interval_unit=0,
-                                               is_valid=1,
-                                               update_time=datetime.datetime.now()).where(script_schedule.id == schedule_id).execute()
+                script_schedule.update(
+                    script_id=script_id,
+                    version=version,
+                    user=user,
+                    is_automatic=is_automatic,
+                    trigger_time=trigger_time,
+                    interval=0,
+                    interval_raw=0,
+                    interval_unit=0,
+                    is_valid=1,
+                    update_time=datetime.datetime.now()).where(script_schedule.id == schedule_id).execute()
             elif is_automatic == 1:
                 interval_raw = int(request.get_json()['interval_raw'])
                 interval_unit = int(request.get_json()['interval_unit'])
@@ -662,16 +659,17 @@ def scheduleEdit():
                     interval = interval_raw
                 elif (interval_unit == 2):  #天
                     interval = interval_raw * 24
-                script_schedule.update(script_id=script_id,
-                                               version=version,
-                                               user=user,
-                                               is_automatic=is_automatic,
-                                               trigger_time=trigger_time,
-                                               interval=interval,
-                                               interval_raw=interval_raw,
-                                               interval_unit=interval_unit,
-                                               is_valid=1,
-                                               update_time=datetime.datetime.now()).where(script_schedule.id == schedule_id).execute()
+                script_schedule.update(
+                    script_id=script_id,
+                    version=version,
+                    user=user,
+                    is_automatic=is_automatic,
+                    trigger_time=trigger_time,
+                    interval=interval,
+                    interval_raw=interval_raw,
+                    interval_unit=interval_unit,
+                    is_valid=1,
+                    update_time=datetime.datetime.now()).where(script_schedule.id == schedule_id).execute()
         response = {'code': 200, 'msg': '成功', 'data': []}
         return jsonify(response)
     except Exception as e:

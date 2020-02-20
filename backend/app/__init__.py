@@ -41,4 +41,7 @@ def create_app(config_name):
     from .privilege import privilege as privilege_blueprint
     app.register_blueprint(privilege_blueprint, url_prefix='/privilege')
 
+    from .app_price_monitor import app_price_monitor as app_price_monitor_blueprint
+    app.register_blueprint(app_price_monitor_blueprint, url_prefix='/app')
+
     return app

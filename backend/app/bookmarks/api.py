@@ -38,7 +38,6 @@ def bookmarksData():
 @cross_origin()
 def bookmarksAdd():
     try:
-        result = []
         try:
             user_name = request.get_json()['user']
             user = User(user_name)
@@ -51,7 +50,7 @@ def bookmarksAdd():
         bookmarks_query = bookmarks_table.select().where((bookmarks_table.user_id == user_id) & (bookmarks_table.is_valid == 1)).order_by(bookmarks_table.order).dicts()
         order = bookmarks_query[-1]['order']
         bookmarks_table.create(name=name, url=url, icon=icon, order=order + 1, user_id=user_id, is_valid=1, update_time=datetime.datetime.now())
-        response = {'code': 200, 'msg': '成功！', 'data': result}
+        response = {'code': 200, 'msg': '成功！'}
         return jsonify(response)
     except Exception as e:
         response = {'code': 500, 'msg': '失败！错误信息：' + str(e) + '，请联系管理员。', 'data': []}
@@ -88,7 +87,7 @@ def bookmarksEdit():
         except:
             user_id = 0
         bookmarks = request.get_json()['bookmarks']
-        bookmarks_table.update(is_valid=0, update_time=datetime.datetime.now()).where(bookmarks_table.user_id == user_id).execute()
+        bookmarks_table.update(is_valid=0, update_time=datetime.datetime.now()).where((bookmarks_table.user_id == user_id) & (bookmarks_table.is_valid == 1)).execute()
         for bookmark in bookmarks:
             bookmarks_table.create(name=bookmark['name'], url=bookmark['url'], icon=bookmark['icon'], order=bookmark['order'], user_id=user_id, is_valid=1, update_time=datetime.datetime.now())
         response = {'code': 200, 'msg': '成功！', 'data': []}

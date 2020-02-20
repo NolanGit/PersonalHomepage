@@ -32,7 +32,7 @@ class app(BaseModel):
     update_time = DateTimeField()
 
     class Meta:
-        table_name = 'appstore'
+        table_name = 'app'
 
 #用户表增加email和微信推送id的config
 
@@ -42,7 +42,7 @@ class app_price(BaseModel):
     date = DateField()
 
     class Meta:
-        table_name = 'appstore_price_data'
+        table_name = 'app_price'
 
 app.create_table()
 app_price.create_table()
