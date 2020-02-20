@@ -41,6 +41,7 @@ def get():
         return jsonify(response)
 
     except Exception as e:
+        traceback.print_exc()
         response = {'code': 500, 'msg': '失败！错误信息：' + str(e) + '，请联系管理员。', 'data': []}
         return jsonify(response), 500
 
@@ -87,5 +88,6 @@ def edit():
         return jsonify(response)
 
     except Exception as e:
+        traceback.print_exc()
         response = {'code': 500, 'msg': '失败！错误信息：' + str(e) + '，请联系管理员。', 'data': []}
         return jsonify(response), 500
