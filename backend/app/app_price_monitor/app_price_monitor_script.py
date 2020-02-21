@@ -17,7 +17,6 @@ from ..model.app_model import app_price
 GET = '获取'
 POST = '推送'
 count = 0
-q = queue.Queue()
 
 
 class App(object):
@@ -51,7 +50,7 @@ class App(object):
         if app_name == None or app_price == None or app_price == '' or app_price == 'None':
 
             if count >= 10:
-                # To Do :告警功能
+                # To Do :爬取失败告警功能
 
                 return (None, None)
             else:
@@ -69,45 +68,21 @@ class App(object):
         return (app_name, app_price)
 
 
-def app_price_monitor(app_dict):
+def app_price_push_generator():
     '''
-        价格监控：接收格式化的app dict，如果超过阈值则触发邮件通知。
+        首先获取所有需要推送的用户id，然后取该用户id下的app（id，名称、期望价格），然后去价格表查最新的一条
     '''
-    content = ''
-    globalvar = Global_Var()
-
-    for key in app_dict.keys():
-        app_name, app_price = get_app_price(key)
-        save_data(app_name, app_price)
-
-        if app_price <= float(app_dict[key]):
-            content = content + '\n' + '[' + app_name + ']' + ' is ¥' + str(
-                app_price) + ' now !' + '\n'
-
-    if content != '':
-        app_price_monitor_mail_flag = globalvar.get_value(
-            'app_price_monitor_mail_flag')
-
-        if app_price_monitor_mail_flag == "None":
-            globalvar.set_value('app_price_monitor_mail_flag', 1)
-            app_price_monitor_mail_flag = globalvar.get_value(
-                'app_price_monitor_mail_flag')
-
-        if app_price_monitor_mail_flag == 1:
-            ws = Wechat_Sender()
-            ws.send('App Discount!', content)
-            globalvar.set_value('app_price_monitor_mail_flag', 0)
-            threading.Timer(21600, count_time_thread).start()
+    pass
 
 
 if sys.argv[1] == GET:
-    appstore_query = appstore.select().where(appstore.is_valid == 1).dicts()
-    for single_appstore_query in appstore_query:
-        app = App(single_appstore_query.url)
-        appstore_price_data.create(
-            app_id=single_appstore_query['app_id'],
-            time=datetime.datetime.now().strftime('%H:%M:%S'),
-            date=datetime.datetime.now().date(),
+    app_table_query = app_table.select().where(app_table.is_valid == 1).dicts()
+    for single_app_table_query in app_table_query:
+        app = App(single_app_table_query.url)
+        app_price.create(
+            app_id=single_app_table_query['app_id'],
+            price=app.price,
+            update_time=datetime.datetime.now()
         )
 elif sys.argv[1] == POST:
     pass

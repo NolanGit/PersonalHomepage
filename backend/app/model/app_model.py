@@ -32,8 +32,8 @@ class app(BaseModel):
 
 class app_price(BaseModel):
     app_id = IntegerField()
-    time = TimeField()
-    date = DateField()
+    price = CharField()
+    update_time = DateTimeField()
 
     class Meta:
         table_name = 'app_price'
