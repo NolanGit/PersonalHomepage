@@ -10,7 +10,7 @@ from flask import session, redirect, url_for, current_app, flash, Response, requ
 from ..model.app_model import app as app_table
 from ..login.login_funtion import User
 from ..privilege.privilege_control import permission_required
-from .common import app_get, app_del_all
+from .app_function import app_get, app_del_all
 
 URL_PREFIX = '/app'
 DAY_HOUR = 24
