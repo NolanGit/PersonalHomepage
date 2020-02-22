@@ -40,6 +40,7 @@ class app_price(BaseModel):
 
 class app_push(BaseModel):
     user_id = IntegerField()
+    is_valid = IntegerField()
     notify = IntegerField() # 1:是,2:否
     notify_method = IntegerField() # 1:微信,2:邮件
     notify_interval_raw = IntegerField() # 用户填写的间隔

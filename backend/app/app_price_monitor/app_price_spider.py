@@ -10,12 +10,9 @@ import threading
 sys.path.append('../')
 sys.path.append('../../')
 from bs4 import BeautifulSoup
-from playhouse.shortcuts import model_to_dict
 from ..model.app_model import app as app_table
 from ..model.app_model import app_price
 
-GET = '获取'
-POST = '推送'
 count = 0
 
 
@@ -39,13 +36,9 @@ class App(object):
 
         app_name = soup.find(class_='product-header__title app-header__title')
 
-        app_price = soup.find(
-            class_='inline-list__item inline-list__item--bulleted')
+        app_price = soup.find(class_='inline-list__item inline-list__item--bulleted')
         if app_price == None or app_price == '' or app_price == 'None':
-            app_price = soup.find(
-                class_=
-                'inline-list__item inline-list__item--bulleted app-header__list__item--price'
-            )
+            app_price = soup.find(class_='inline-list__item inline-list__item--bulleted app-header__list__item--price')
 
         if app_name == None or app_price == None or app_price == '' or app_price == 'None':
 
@@ -68,23 +61,7 @@ class App(object):
         return (app_name, app_price)
 
 
-def app_price_push_generator():
-    '''
-        首先获取所有需要推送的用户id，然后取该用户id下的app（id，名称、期望价格），然后去价格表查最新的一条
-    '''
-    pass
-
-
-if sys.argv[1] == GET:
-    app_table_query = app_table.select().where(app_table.is_valid == 1).dicts()
-    for single_app_table_query in app_table_query:
-        app = App(single_app_table_query.url)
-        app_price.create(
-            app_id=single_app_table_query['app_id'],
-            price=app.price,
-            update_time=datetime.datetime.now()
-        )
-elif sys.argv[1] == POST:
-    pass
-else:
-    print('参数错误！')
+app_table_query = app_table.select().where(app_table.is_valid == 1).dicts()
+for single_app_table_query in app_table_query:
+    app = App(single_app_table_query.url)
+    app_price.create(app_id=single_app_table_query['app_id'], price=app.price, update_time=datetime.datetime.now())
