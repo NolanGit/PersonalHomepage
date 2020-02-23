@@ -1,0 +1,1 @@
+from ..model.push_model import push as push_table
