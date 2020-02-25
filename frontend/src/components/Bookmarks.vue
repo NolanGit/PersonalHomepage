@@ -276,8 +276,6 @@ export default {
       this.icon.visible = false;
     }
   },
-  created() {},
-  mounted() {}
 };
 </script>
 <style scoped>
@@ -346,32 +344,5 @@ export default {
 .slick_list_item_button {
   margin-right: 10px;
   margin-left: auto;
-}
-.div-flex {
-  display: flex;
-}
-.text-mini {
-  font-size: 10px;
-}
-.text-small {
-  font-size: 14px;
-}
-.text-medium {
-  font-size: 20px;
-}
-.margin_right-small {
-  margin-right: 10px;
-}
-.margin_left-medium {
-  margin-left: 20px;
-}
-.margin_bottom-medium {
-  margin-bottom: 20px;
-}
-.margin_bottom-large {
-  margin-bottom: 40px;
-}
-.margin-top-medium {
-  margin-top: 20px;
 }
 </style>

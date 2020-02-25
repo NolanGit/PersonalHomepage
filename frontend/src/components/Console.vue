@@ -89,40 +89,4 @@ export default {
 };
 </script>
 <style scoped>
-.div-flex {
-  display: flex;
-}
-.text-mini {
-  font-size: 10px;
-}
-.text-small {
-  font-size: 14px;
-}
-.text-medium {
-  font-size: 20px;
-}
-.margin-top-medium {
-  margin-top: 20px;
-}
-.margin_bottom-medium {
-  margin-bottom: 20px;
-}
-.margin_bottom-large {
-  margin-bottom: 40px;
-}
-.margin_left-medium {
-  margin-left: 20px;
-}
-.margin_right-small {
-  margin-right: 10px;
-}
-.margin_right-medium {
-  margin-right: 20px;
-}
-.margin-medium{
-  margin-top: 20px;
-  margin-bottom: 20px;
-  margin-left: 20px;
-  margin-right: 20px;
-}
 </style>
