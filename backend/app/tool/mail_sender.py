@@ -27,7 +27,7 @@ class Mail(object):
         self.subject = subject
         self.content = content
 
-    def send_it(self):
+    def send(self):
         msg = MIMEText(
             self.content,
             'plain',

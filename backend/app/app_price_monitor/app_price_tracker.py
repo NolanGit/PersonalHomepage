@@ -33,7 +33,8 @@ def app_price_push_generator():
                 address = User(user_id=user_id).wechat_key
             elif notify_method == 2:
                 address = User(user_id=user_id).email
-            push_add(user_id, notify_method, address, content, notify_trigger_time)
+            title='App Discount!'
+            push_add(user_id, notify_method, address,title, content, notify_trigger_time)
             generate_next(app_push_data)
 
 
