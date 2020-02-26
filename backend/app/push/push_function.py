@@ -1,5 +1,11 @@
 import datetime
-from ..model.push_model import push as push_table
+try:
+    from ..model.push_model import push as push_table
+except:
+    import sys
+    sys.path.append('../')
+    sys.path.append('../../')
+    from model.push_model import push as push_table
 
 
 def push_add(user_id, method, address, title, content, trigger_time):
