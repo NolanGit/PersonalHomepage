@@ -62,7 +62,7 @@ def app_push_get():
         'notify_interval_raw': app_push_valid['notify_interval_raw'],
         'notify_interval_unit': app_push_valid['notify_interval_unit'],
         'notify_interval': app_push_valid['notify_interval'],
-        'notify_trigger_time': app_push_valid['notify_trigger_time']
+        'notify_trigger_time': app_push_valid['notify_trigger_time'],
         'update_time': app_push_valid['update_time']
     } for app_push_valid in app_push_valids]
 
