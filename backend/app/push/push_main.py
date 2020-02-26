@@ -1,7 +1,15 @@
 import datetime
-from ..model.push_model import push as push_table
-from ..tool.wechat_sender import Wechat
-from ..tool.mail_sender import Mail
+try:
+    from ..model.push_model import push as push_table
+    from ..tool.wechat_sender import Wechat
+    from ..tool.mail_sender import Mail
+except:
+    import sys
+    sys.path.append('../')
+    sys.path.append('../../')
+    from model.push_model import push as push_table
+    from tool.wechat_sender import Wechat
+    from tool.mail_sender import Mail
 '''
     推送扫库脚本，需要定时循环运行
 '''
