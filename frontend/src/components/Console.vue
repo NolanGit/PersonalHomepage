@@ -22,10 +22,10 @@
       :size="drawer.size"
     >
       <div class="margin-medium" :v-if="drawer.visible">
-        <div :v-if="activeComponent=='ConsoleScript'">
+        <div v-if="activeComponent=='ConsoleScript'">
           <ConsoleScript />
         </div>
-        <div :v-if="activeComponent=='ConsolePrivilege'">
+        <div v-if="activeComponent=='ConsolePrivilege'">
           <ConsolePrivilege />
         </div>
       </div>
