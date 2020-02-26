@@ -10,8 +10,8 @@ import threading
 sys.path.append('../')
 sys.path.append('../../')
 from bs4 import BeautifulSoup
-from ..model.app_model import app as app_table
-from ..model.app_model import app_price
+from model.app_model import app as app_table
+from model.app_model import app_price
 
 count = 0
 
@@ -59,7 +59,7 @@ class App(object):
         else:
             app_price = float(app_price.text.split('¥')[1])
 
-        print('%s is ￥%s' % app_name, app_price)
+        print('%s is ￥%s' % (app_name, app_price))
 
         return (app_name, app_price)
 
@@ -67,4 +67,4 @@ class App(object):
 app_table_query = app_table.select().where(app_table.is_valid == 1).dicts()
 for single_app_table_query in app_table_query:
     app = App(single_app_table_query['url'])
-    app_price.create(app_id=single_app_table_query['app_id'], price=app.price, update_time=datetime.datetime.now())
+    app_price.create(app_id=single_app_table_query['id'], price=app.price, update_time=datetime.datetime.now())
