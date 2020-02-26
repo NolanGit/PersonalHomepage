@@ -1,0 +1,47 @@
+import os
+import sys
+currentUrl = os.path.dirname(__file__)
+parentUrl = os.path.abspath(os.path.join(currentUrl, os.pardir))
+sys.path.append(parentUrl)
+sys.path.append(currentUrl)
+from flask import Flask
+from config import config
+from flask_cors import CORS
+
+
+
+def create_app(config_name):
+    app = Flask(__name__, static_folder="../../dist/static", template_folder="../../dist")
+    CORS(app, supports_credentials=True)
+    app.config.from_object(config[config_name])
+    config[config_name].init_app(app)
+
+
+    from .main import main as main_blueprint
+    app.register_blueprint(main_blueprint)
+
+    from .search import search as search_blueprint
+    app.register_blueprint(search_blueprint, url_prefix='/search')
+
+    from .login import login as login_blueprint
+    app.register_blueprint(login_blueprint, url_prefix='/login')
+
+    from .weather import weather as weather_blueprint
+    app.register_blueprint(weather_blueprint, url_prefix='/weather')
+    
+    from .bookmarks import bookmarks as bookmarks_blueprint
+    app.register_blueprint(bookmarks_blueprint, url_prefix='/bookmarks')
+
+    from .console import console as console_blueprint
+    app.register_blueprint(console_blueprint, url_prefix='/console')
+
+    from .script import script as script_blueprint
+    app.register_blueprint(script_blueprint, url_prefix='/script')
+
+    from .privilege import privilege as privilege_blueprint
+    app.register_blueprint(privilege_blueprint, url_prefix='/privilege')
+
+    from .app_price_monitor import app_price_monitor as app_price_monitor_blueprint
+    app.register_blueprint(app_price_monitor_blueprint, url_prefix='/app')
+
+    return app
