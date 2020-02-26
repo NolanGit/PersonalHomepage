@@ -23,7 +23,7 @@ def app_get(user_id=0):
         app_table_query = app_table.select().where(app_table.is_valid == 1).dicts()
     else:
         app_table_query = app_table.select().where((app_table.user_id == user_id) & (app_table.is_valid == 1)).order_by(app_table.order).dicts()
-    result = [{'id': row['id'], 'name': row['name'], 'except_price': row['except_price'], 'update_time': row['update_time']} for row in app_table_query]
+    result = [{'id': row['id'], 'name': row['name'], 'expect_price': row['expect_price'], 'update_time': row['update_time']} for row in app_table_query]
     return result
 
 
