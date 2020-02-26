@@ -1,8 +1,15 @@
 import datetime
-from ..model.app_model import app as app_table
-from ..model.app_model import app_price
-from ..model.app_model import app_push
-
+try:
+    from ..model.app_model import app as app_table
+    from ..model.app_model import app_price
+    from ..model.app_model import app_push
+except:
+    import sys
+    sys.path.append('../')
+    sys.path.append('../../')
+    from model.app_model import app as app_table
+    from model.app_model import app_price
+    from model.app_model import app_push
 
 def app_get(user_id=0):
     '''
