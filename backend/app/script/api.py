@@ -179,7 +179,7 @@ def runOutput():
         else:
             output = ''
             for x in range(2):
-                output = output + str(running_subprocess[process_id].stdout.readline(), encoding='gbk')  #每次readline()后就会清理输出，见https://www.cnblogs.com/alan-babyblog/p/5261497.html
+                output = output + str(running_subprocess[process_id].stdout.readline(), encoding='utf-8')  #每次readline()后就会清理输出，见https://www.cnblogs.com/alan-babyblog/p/5261497.html
             response = {'code': 200, 'msg': '成功！', 'data': {'output': output, 'status': 1 if running_subprocess[process_id].poll() == None else 0}}
         return jsonify(response)
     except Exception as e:
