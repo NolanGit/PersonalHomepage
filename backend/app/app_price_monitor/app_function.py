@@ -52,7 +52,7 @@ def app_push_get():
 
         returns: push_list(list)[{id, user_id, notify, notify_method, notify_interval_raw, notify_interval_unit, notify_interval, notify_trigger_time}...]
     '''
-    app_push_valids = app_push.select().where((app_push.is_valid == 1) & (app_push.notify == 1) & (app_push.trigger_time <= datetime.datetime.now())).dicts()
+    app_push_valids = app_push.select().where((app_push.is_valid == 1) & (app_push.notify == 1) & (app_push.notify_trigger_time <= datetime.datetime.now())).dicts()
     return [{
         app_push_valid['id'], app_push_valid['user_id'], app_push_valid['notify'], app_push_valid['notify_method'], app_push_valid['notify_interval_raw'], app_push_valid['notify_interval_unit'],
         app_push_valid['notify_interval'], app_push_valid['notify_trigger_time']
