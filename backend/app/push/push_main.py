@@ -27,7 +27,7 @@ def push():
             if method == 1:  # 微信
                 Wechat(title, content, address).send()
             elif method == 2:  # 邮件
-                Mail('推送通知', title, content).send()
+                Mail('推送通知', title, content, address).send()
 
 
 push()
