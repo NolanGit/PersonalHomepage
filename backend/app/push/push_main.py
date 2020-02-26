@@ -15,8 +15,11 @@ def push():
             address = push['address']
             title = push['title']
             content = push['content']
+            print('推送:[%s]%s' % (title, content))
             if method == 1:  # 微信
                 Wechat(title, content, address).send()
-            elif method == 2: # 邮件
+            elif method == 2:  # 邮件
                 Mail('推送通知', title, content).send()
+
+
 push()
