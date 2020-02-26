@@ -26,16 +26,20 @@ class Mail(object):
         self.content = content
 
     def send(self):
-        msg = MIMEText(
-            self.content,
-            'plain',
-            'utf-8',
-        )
-        msg['From'] = formataddr([self.sender_name, self.my_sender])
-        msg['to'] = '管理员'
-        msg['Subject'] = self.subject
-        server = smtplib.SMTP_SSL("smtp.qq.com", 465)
-        server.login(self.my_sender, self.my_pass)
-        server.sendmail(self.my_sender, self.receiver_addr, msg.as_string())
-        server.quit()
-        print(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())) + ' 邮件发送成功')
+        try:
+            msg = MIMEText(
+                self.content,
+                'plain',
+                'utf-8',
+            )
+            msg['From'] = formataddr([self.sender_name, self.my_sender])
+            msg['to'] = '管理员'
+            msg['Subject'] = self.subject
+            server = smtplib.SMTP_SSL("smtp.qq.com", 465)
+            server.login(self.my_sender, self.my_pass)
+            server.sendmail(self.my_sender, self.receiver_addr, msg.as_string())
+            server.quit()
+            print(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())) + ' 邮件发送成功')
+            return ({'msg:': 'success', 'code': 200})
+        except Exception as e:
+            return ({'msg:': 'failed:' + str(e), 'code': 500})

@@ -34,9 +34,8 @@ class Wechat(object):
         r = requests.get('https://sc.ftqq.com/' + self.sckey + '.send', params=payload)
         print(eval(r.text)['errmsg'])
         if eval(r.text)['errno'] == 0:
-            return 'success'
+            return ({'msg:': 'success', 'code': 200})
         else:
             from .mail_sender import Mail
             Mail('Administrator', 'push wechat failed!', self.content, ADMIN_EMAIL).send()
-            return 'failed'
-        return str(r)
+            return ({'msg:': 'failed:' + str(eval(r.text)['errmsg']), 'code': 500})
