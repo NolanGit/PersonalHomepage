@@ -1,5 +1,10 @@
 #coding=utf-8
 import requests
+import configparser
+
+cf = configparser.ConfigParser()
+cf.read('../homepage.config')
+ADMIN_EMAIL = cf.get('config', 'ADMIN_EMAIL')
 
 
 class Wechat(object):
@@ -32,7 +37,6 @@ class Wechat(object):
             return 'success'
         else:
             from .mail_sender import Mail
-            ms = Mail('Administrator', 'push wechat failed!', self.content)
-            ms.send_it()
+            Mail('Administrator', 'push wechat failed!', self.content, ADMIN_EMAIL).send()
             return 'failed'
         return str(r)
