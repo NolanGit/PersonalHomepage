@@ -32,7 +32,6 @@ class App(object):
         count += 1
 
         response = requests.get("https://itunes.apple.com/cn/app/" + app_url)
-        print('getting %s' % app_url)
         soup = BeautifulSoup(response.text, 'lxml')
 
         app_name = soup.find(class_='product-header__title app-header__title')
@@ -59,7 +58,8 @@ class App(object):
         else:
             app_price = float(app_price.text.split('¥')[1])
 
-        print('%s is ￥%s' % (app_name, app_price))
+        print('已经爬取%s的价格' % app_name)
+        print('%s 的价格为 ￥%s' % (app_name, app_price))
 
         return (app_name, app_price)
 
