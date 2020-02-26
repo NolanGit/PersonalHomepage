@@ -1,5 +1,0 @@
-# Created by .ignore support plugin (hsz.mobi)
-.idea/
-package-lock.json
-dist/
-node_modules
