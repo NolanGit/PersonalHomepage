@@ -32,6 +32,7 @@ class App(object):
         count += 1
 
         response = requests.get("https://itunes.apple.com/cn/app/" + app_url)
+        print('getting %s' % app_url)
         soup = BeautifulSoup(response.text, 'lxml')
 
         app_name = soup.find(class_='product-header__title app-header__title')
@@ -58,10 +59,12 @@ class App(object):
         else:
             app_price = float(app_price.text.split('¥')[1])
 
+        print('%s is ￥%s' % app_name, app_price)
+
         return (app_name, app_price)
 
 
 app_table_query = app_table.select().where(app_table.is_valid == 1).dicts()
 for single_app_table_query in app_table_query:
-    app = App(single_app_table_query.url)
+    app = App(single_app_table_query['url'])
     app_price.create(app_id=single_app_table_query['app_id'], price=app.price, update_time=datetime.datetime.now())
