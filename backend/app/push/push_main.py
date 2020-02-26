@@ -31,9 +31,9 @@ def push():
             elif method == 2:  # 邮件
                 log = Mail('推送通知', title, content, address).send()
             if log['code'] == 200:
-                push_table.update(status=2).where(push_table.id == id).execute()
+                push_table.update(status=2, log=str(log)).where(push_table.id == id).execute()
             else:
-                push_table.update(status=0).where(push_table.id == id).execute()
+                push_table.update(status=0, log=str(log)).where(push_table.id == id).execute()
 
 
 push()
