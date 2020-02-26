@@ -48,7 +48,7 @@ def generate_next(app_push_data):
         notify_interval_raw=app_push_data['notify_interval_raw'],
         notify_interval_unit=app_push_data['notify_interval_unit'],
         notify_interval=app_push_data['notify_interval'],
-        notify_trigger_time=app_push_data['trigger_time'] + datetime.timedelta(hours=app_push_data['notify_interval']),
+        notify_trigger_time=app_push_data['notify_trigger_time'] + datetime.timedelta(hours=app_push_data['notify_interval']),
         update_time=app_push_data['update_time'])
 
 
