@@ -7,7 +7,7 @@
     </el-row>
     <el-carousel height="250px" trigger="click" interval="5000" indicator-position="outside">
       <el-carousel-item v-for="weather in tableData" :key="weather">
-        <el-table :data="tableData" style="width: 100%" size="mini">
+        <el-table height="250" :data="tableData" style="width: 100%" size="mini">
           <el-table-column prop="date" label="日期" width="180"></el-table-column>
           <el-table-column prop="name" label="姓名" width="180"></el-table-column>
           <el-table-column prop="address" label="地址"></el-table-column>
