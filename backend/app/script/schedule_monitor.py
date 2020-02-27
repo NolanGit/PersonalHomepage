@@ -38,7 +38,7 @@ def run(schedules):
                 output = ''
                 for x in range(3000):
                     temp_output = subprocess_instance.stdout.readline()
-                    output = output + str(temp_output.decode('gbk'))
+                    output = output + str(temp_output.decode('utf-8'))
                     if subprocess_instance.poll() != None:
                         break
                 print(output)
