@@ -4,7 +4,13 @@ import logging
 import datetime
 import traceback
 import subprocess
-from ..model.script_model import script_sub_system, script, script_detail, script_detail, script_log, script_schedule
+try:
+    from ..model.script_model import script_sub_system, script, script_detail, script_detail, script_log, script_schedule
+except:
+    import sys
+    sys.path.append('../')
+    sys.path.append('../../')
+    from model.script_model import push as script_sub_system, script, script_detail, script_detail, script_log, script_schedule
 
 
 def schedule_get():
@@ -26,7 +32,7 @@ def run(schedules):
                 script_query = script(id=script_id)
                 script_query.runs = int(runs)
                 script_query.save()
-                
+
                 start_time = datetime.datetime.now()
                 subprocess_instance = subprocess.Popen(schedule['command'], shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, bufsize=1)
                 output = ''
