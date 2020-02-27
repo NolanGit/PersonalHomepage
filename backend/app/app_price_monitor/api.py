@@ -17,6 +17,7 @@ DAY_HOUR = 24
 
 
 @app_price_monitor.route('/get', methods=['GET'])
+@permission_required(URL_PREFIX + '/get')
 @cross_origin()
 def get():
     try:
@@ -31,6 +32,7 @@ def get():
 
 
 @app_price_monitor.route('/add', methods=['POST'])
+@permission_required(URL_PREFIX + '/add')
 @cross_origin()
 def add():
     try:
@@ -58,6 +60,7 @@ def add():
 
 
 @app_price_monitor.route('/edit', methods=['POST'])
+@permission_required(URL_PREFIX + '/edit')
 @cross_origin()
 def edit():
     try:

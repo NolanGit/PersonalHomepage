@@ -18,6 +18,9 @@ except:
 
 def push():
     push_table_query = push_table.select().where(push_table.status == 0).dicts()
+    if len(push_table_query) == 0:
+        print('无待推送任务')
+        exit()
     push_list = [{
         'id': single_push_table_query['id'],
         'method': single_push_table_query['method'],

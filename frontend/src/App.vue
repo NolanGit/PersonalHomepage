@@ -19,6 +19,11 @@
           <bookmarks :bookmarksData="bookmarksData" @bookmarksUpdate="userInfo" :user="user" />
         </el-card>
       </el-col>
+      <el-col :span="7" :offset="1">
+        <el-card shadow="hover">
+          <appMonitor />
+        </el-card>
+      </el-col>
     </el-row>
   </div>
 </template>
@@ -29,12 +34,14 @@ import search from "./components/Search.vue";
 import login from "./components/Login.vue";
 import weather from "./components/Weather.vue";
 import bookmarks from "./components/Bookmarks.vue";
+import appMonitor from "./components/AppMonitor.vue";
 export default {
   components: {
     search,
     login,
     weather,
     bookmarks,
+    appMonitor
   },
   data() {
     return {
