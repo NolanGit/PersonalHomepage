@@ -10,7 +10,7 @@ except:
     import sys
     sys.path.append('../')
     sys.path.append('../../')
-    from model.script_model import push as script_sub_system, script, script_detail, script_detail, script_log, script_schedule
+    from model.script_model import script_sub_system, script, script_detail, script_detail, script_log, script_schedule
 
 
 def schedule_get():
