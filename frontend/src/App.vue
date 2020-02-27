@@ -7,20 +7,24 @@
       <search />
     </el-row>
     <el-row class="cardRow">
-      <el-col :span="7" :offset="1">
-        <transition name="el-zoom-in-top">
+      <el-col :span="8">
+        <transition name="el-zoom-in-top" class="margin_left-medium margin_right-medium">
           <el-card shadow="hover" v-show="show.weather">
             <weather @weatherLoaded="weatherLoaded" :locations="locations" :user="user" />
           </el-card>
         </transition>
       </el-col>
-      <el-col :span="7" :offset="1">
-        <el-card shadow="hover" v-show="show.bookmarks">
+      <el-col :span="8">
+        <el-card
+          shadow="hover"
+          v-show="show.bookmarks"
+          class="margin_left-medium margin_right-medium"
+        >
           <bookmarks :bookmarksData="bookmarksData" @bookmarksUpdate="userInfo" :user="user" />
         </el-card>
       </el-col>
-      <el-col :span="7" :offset="1">
-        <el-card shadow="hover">
+      <el-col :span="8">
+        <el-card shadow="hover" class="margin_left-medium margin_right-medium">
           <appMonitor />
         </el-card>
       </el-col>

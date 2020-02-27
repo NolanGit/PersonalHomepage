@@ -2,7 +2,7 @@
   <div class="bookmarks-main">
     <el-row type="flex" justify="center">
       <div>
-        <div class="bookmarks-label">书签</div>
+        <div class="widget-label">书签</div>
       </div>
     </el-row>
 
@@ -281,14 +281,6 @@ export default {
 <style scoped>
 .bookmarks-main {
   min-height: 280px;
-}
-.bookmarks-label {
-  font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB,
-    Microsoft YaHei, SimSun, sans-serif;
-  font-weight: 600;
-  font-size: 20px;
-  color: #303133;
-  padding-bottom: 20px;
 }
 .bookmarks-data-row-main {
   min-height: 210px;
