@@ -13,7 +13,11 @@
         :key="bookmarksSuite"
       >
         <el-col :span="6" v-for="bookmark in bookmarksSuite" :key="bookmark">
-          <el-button class="bookmarks-main-button" size="small" @click="bookmarksClicked(bookmark.url)">
+          <el-button
+            class="bookmarks-main-button"
+            size="small"
+            @click="bookmarksClicked(bookmark.url)"
+          >
             <i :class="bookmark.icon" style="margin-right=5px;font-size=15px"></i>
             {{bookmark.name}}
           </el-button>
@@ -21,16 +25,16 @@
       </el-row>
     </div>
 
-    <el-row type="flex" justify="center" class="bookmarks-option-button" v-show="user!=undefined">
+    <el-row type="flex" justify="center" class="margin-top-medium" v-show="user!=undefined">
       <el-button
-        class="bookmarks-option-button-add"
+        class="margin_left-mini margin_right-mini"
         size="small"
         @click="bookmarksOptionButtonAddClicked()"
         icon="el-icon-plus"
         circle
       ></el-button>
       <el-button
-        class="bookmarks-option-button-edit-form"
+        class="bmargin_left-mini margin_right-mini"
         size="small"
         @click="bookmarksOptionButtonSettingClicked()"
         icon="el-icon-setting"
@@ -275,7 +279,7 @@ export default {
       this.bookmarksEditForm.icon = data;
       this.icon.visible = false;
     }
-  },
+  }
 };
 </script>
 <style scoped>
@@ -288,17 +292,6 @@ export default {
 .bookmarks-main-button {
   width: 90px;
   height: 40px;
-}
-.bookmarks-option-button {
-  margin-top: 20px;
-}
-.bookmarks-option-button-add {
-  margin-left: 5px;
-  margin-right: 5px;
-}
-.bookmarks-option-button-edit-form {
-  margin-left: 5px;
-  margin-right: 5px;
 }
 .slick_list {
   max-height: 80vh;

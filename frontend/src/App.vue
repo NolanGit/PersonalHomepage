@@ -19,18 +19,22 @@
         </transition>
       </el-col>
       <el-col :span="8">
-        <el-card
-          shadow="hover"
-          v-show="show.bookmarks"
-          class="margin_left-medium margin_right-medium"
-        >
-          <bookmarks :bookmarksData="bookmarksData" @bookmarksUpdate="userInfo" :user="user" />
-        </el-card>
+        <transition name="el-zoom-in-top">
+          <el-card
+            shadow="hover"
+            v-show="show.bookmarks"
+            class="margin_left-medium margin_right-medium"
+          >
+            <bookmarks :bookmarksData="bookmarksData" @bookmarksUpdate="userInfo" :user="user" />
+          </el-card>
+        </transition>
       </el-col>
       <el-col :span="8">
-        <el-card shadow="hover" class="margin_left-medium margin_right-medium">
-          <appMonitor />
-        </el-card>
+        <transition name="el-zoom-in-top">
+          <el-card shadow="hover" class="margin_left-medium margin_right-medium">
+            <appMonitor />
+          </el-card>
+        </transition>
       </el-col>
     </el-row>
   </div>

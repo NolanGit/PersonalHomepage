@@ -239,12 +239,19 @@
     margin-left: 40px;
 }
 
-.margin_right-small {
-    margin-right: 10px;
+.margin_left-mini {
+    margin-left: 5px;
 }
 
 .margin_right-medium {
     margin-right: 20px;
+}
+.margin_right-small {
+    margin-right: 10px;
+}
+
+.margin_right-mini {
+    margin-left: 5px;
 }
 
 .margin-medium {
