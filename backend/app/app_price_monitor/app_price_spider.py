@@ -42,9 +42,9 @@ class App(object):
 
         if app_name == None or app_price == None or app_price == '' or app_price == 'None':
 
-            if count >= 10:
+            if count >= 20:
                 # To Do :爬取失败告警功能
-
+                print(soup)
                 return (None, None)
             else:
                 self.get_app_price(app_url)
