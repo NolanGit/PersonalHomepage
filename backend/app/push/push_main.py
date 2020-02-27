@@ -17,9 +17,15 @@ except:
 
 
 def push():
-    push_list = push_table.select().where(push_table.status == 0).dicts()
-    print(push_list)
-    print(type(push_list))
+    push_table_query = push_table.select().where(push_table.status == 0).dicts()
+    push_list = [{
+        'id': single_push_table_query['id'],
+        'method': single_push_table_query['method'],
+        'address': single_push_table_query['address'],
+        'title': single_push_table_query['title'],
+        'content': single_push_table_query['content'],
+        'trigger_time': single_push_table_query['trigger_time']
+    } for single_push_table_query in push_table_query]
     try:
         for push in push_list:
             if push['trigger_time'] <= datetime.datetime.now():
