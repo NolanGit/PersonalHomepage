@@ -8,8 +8,12 @@
     </el-row>
     <el-row class="cardRow">
       <el-col :span="8">
-        <transition name="el-zoom-in-top" class="margin_left-medium margin_right-medium">
-          <el-card shadow="hover" v-show="show.weather">
+        <transition name="el-zoom-in-top">
+          <el-card
+            shadow="hover"
+            v-show="show.weather"
+            class="margin_left-medium margin_right-medium"
+          >
             <weather @weatherLoaded="weatherLoaded" :locations="locations" :user="user" />
           </el-card>
         </transition>

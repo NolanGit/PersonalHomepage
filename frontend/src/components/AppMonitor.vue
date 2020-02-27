@@ -10,25 +10,21 @@
       <el-table-column prop="name" label="姓名" width="180"></el-table-column>
       <el-table-column prop="address" label="地址"></el-table-column>
     </el-table>
-    <el-col :span="20">
-      <el-pagination layout="prev, pager, next" :total="50"></el-pagination>
-    </el-col>
-    <el-col :span="4">
-      <el-button
-        class="bookmarks-option-button-add"
-        size="small"
-        @click="bookmarksOptionButtonAddClicked()"
-        icon="el-icon-plus"
-        circle
-      ></el-button>
-      <el-button
-        class="bookmarks-option-button-edit-form"
-        size="small"
-        @click="bookmarksOptionButtonSettingClicked()"
-        icon="el-icon-setting"
-        circle
-      ></el-button>
-    </el-col>
+    <el-pagination layout="prev, pager, next" :total="50"></el-pagination>
+    <el-button
+      class="bookmarks-option-button-add"
+      size="small"
+      @click="bookmarksOptionButtonAddClicked()"
+      icon="el-icon-plus"
+      circle
+    ></el-button>
+    <el-button
+      class="bookmarks-option-button-edit-form"
+      size="small"
+      @click="bookmarksOptionButtonSettingClicked()"
+      icon="el-icon-setting"
+      circle
+    ></el-button>
   </section>
 </template>
 
