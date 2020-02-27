@@ -7,7 +7,7 @@
     </el-row>
     <el-carousel height="250px" trigger="click" interval="5000" indicator-position="outside">
       <el-carousel-item v-for="weather in tableData" :key="weather">
-        <el-table height="250" :data="tableData" style="width: 100%" size="mini">
+        <el-table :data="tableData" style="width: 100%" size="mini">
           <el-table-column prop="date" label="日期" width="180"></el-table-column>
           <el-table-column prop="name" label="姓名" width="180"></el-table-column>
           <el-table-column prop="address" label="地址"></el-table-column>
@@ -62,10 +62,15 @@ export default {
           address: "上海市普陀区金沙江路 1519 弄"
         },
         {
-          date: "2016-05-03",
+          date: "2016-05-02",
           name: "王小虎",
-          address: "上海市普陀区金沙江路 1516 弄"
-        }
+          address: "上海市普陀区金沙江路 1518 弄"
+        },
+        {
+          date: "2016-05-02",
+          name: "王小虎",
+          address: "上海市普陀区金沙江路 1518 弄"
+        },
       ]
     };
   },
