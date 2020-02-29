@@ -120,7 +120,7 @@ export default {
       }
     }
   },
-  beforeCreate() {
+  created() {
     try {
       var user = sessionStorage.getItem("user").replace(/\"/g, "");
       var userID = sessionStorage.getItem("userID").replace(/\"/g, "");
