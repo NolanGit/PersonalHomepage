@@ -18,18 +18,57 @@
       <el-button
         class="margin_left-mini margin_right-mini"
         size="small"
-        @click="bookmarksOptionButtonAddClicked()"
+        @click="add()"
         icon="el-icon-plus"
         circle
       ></el-button>
       <el-button
         class="bmargin_left-mini margin_right-mini"
         size="small"
-        @click="bookmarksOptionButtonSettingClicked()"
+        @click="setting()"
         icon="el-icon-setting"
         circle
       ></el-button>
+      <el-button
+        class="margin_left-mini margin_right-mini"
+        size="small"
+        @click="notify()"
+        icon="el-icon-bell"
+        circle
+      ></el-button>
     </el-row>
+
+    <!--编辑界面-->
+    <el-dialog :title="edit.title" :visible.sync="edit.visible" width="40%">
+      <el-form ref="form" :model="edit.form" size="mini">
+        <el-form-item label="名称">
+          <div class="div-flex">
+            <el-input size="small" v-model="edit.form.name" placeholder="名称"></el-input>
+          </div>
+        </el-form-item>
+        <el-form-item label="URL">
+          <div class="div-flex">
+            <el-input
+              size="small"
+              v-model="edit.form.url"
+              placeholder="App Store链接('https://apps.apple.com/cn/app/'后的字段)"
+            ></el-input>
+          </div>
+        </el-form-item>
+        <el-form-item label="期望价格">
+          <div class="div-flex">
+            <el-input
+              size="small"
+              v-model="edit.form.expect_price"
+              placeholder="当小于期望价格时，如果设置了通知，会发送提醒"
+            ></el-input>
+          </div>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" size="small" @click="editSubmit()">确定</el-button>
+      </span>
+    </el-dialog>
   </section>
 </template>
 
@@ -49,10 +88,23 @@ export default {
   components: {},
   data() {
     return {
-      appSuite: []
+      appSuite: [],
+      edit: {
+        visible: false,
+        title: "",
+        form: {
+          name: "",
+          url: "",
+          expect_price: 0
+        }
+      }
     };
   },
   methods: {
+    add() {
+      this.edit.title = "新增App";
+      this.edit.visible = true;
+    },
     async appGet() {
       try {
         const { data: res } = await axios.post(api.get, {
@@ -68,7 +120,6 @@ export default {
             }
           }
         }
-        console.log(temp);
         this.appSuite = temp;
         this.$emit("done");
       } catch (e) {
@@ -77,6 +128,25 @@ export default {
           message: e.response.data.msg,
           type: "error"
         });
+      }
+    },
+    async editSubmit() {
+      if (this.edit.title == "新增App") {
+        try {
+          const { data: res } = await axios.post(api.add, {
+            user_id: this.userID,
+            name: this.edit.form.name,
+            url: this.edit.form.url,
+            expect_price: this.edit.form.expect_price
+          });
+          this.appGet();
+        } catch (e) {
+          console.log(e);
+          this.$message({
+            message: e.response.data.msg,
+            type: "error"
+          });
+        }
       }
     }
   },
