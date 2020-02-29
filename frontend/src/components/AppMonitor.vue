@@ -54,7 +54,7 @@ export default {
   methods: {
     async appGet() {
       try {
-        const { data: res } = await axios.get(api.get, {
+        const { data: res } = await axios.post(api.get, {
           user_id: this.userID
         });
         const STEP = 4; // 每页几行

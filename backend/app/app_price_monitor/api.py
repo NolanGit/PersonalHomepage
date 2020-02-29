@@ -16,7 +16,7 @@ URL_PREFIX = '/app'
 DAY_HOUR = 24
 
 
-@app_price_monitor.route('/get', methods=['GET'])
+@app_price_monitor.route('/get', methods=['POST'])
 @permission_required(URL_PREFIX + '/get')
 @cross_origin()
 def get():
