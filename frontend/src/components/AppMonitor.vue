@@ -41,12 +41,12 @@
     <!--编辑界面-->
     <el-dialog :title="edit.title" :visible.sync="edit.visible" width="40%">
       <el-form ref="form" :model="edit.form" size="mini">
-        <el-form-item label="名称">
+        <el-form-item label="App名称">
           <div class="div-flex">
             <el-input size="small" v-model="edit.form.name" placeholder="名称"></el-input>
           </div>
         </el-form-item>
-        <el-form-item label="URL">
+        <el-form-item label="AppURL">
           <div class="div-flex">
             <el-input
               size="small"

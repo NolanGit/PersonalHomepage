@@ -40,9 +40,9 @@ def get():
 def add():
     try:
         user_id = request.get_json()['user_id']
-        name = request.get_json()['user']
-        url = request.get_json()['user']
-        expect_price = request.get_json()['user']
+        name = request.get_json()['name']
+        url = request.get_json()['url']
+        expect_price = request.get_json()['expect_price']
 
         app_table_query = app_table.select().where((app_table.user_id == user_id) & (app_table.is_valid == 1)).order_by(app_table.order).dicts()
         order = app_table_query[-1]['order'] + 1
