@@ -10,7 +10,7 @@ from flask import session, redirect, url_for, current_app, flash, Response, requ
 from ..model.app_model import app as app_table
 from ..login.login_funtion import User
 from ..privilege.privilege_control import permission_required
-from .app_function import app_get, app_del_all
+from .app_function import app_get, app_del_all, app_price_get
 
 URL_PREFIX = '/app'
 DAY_HOUR = 24
@@ -22,6 +22,9 @@ DAY_HOUR = 24
 def get():
     try:
         user_id = request.get_json()['user_id']
+        user_app_list = app_get(user_id)
+        for x in range(len(user_app_list)):
+            user_app_list[x]['price'] = app_price_get(user_app_list[x]['id'])
         response = {'code': 200, 'msg': '成功！', 'data': app_get(user_id)}
         return jsonify(response)
 

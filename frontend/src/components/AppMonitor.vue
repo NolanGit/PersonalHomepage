@@ -8,8 +8,8 @@
     <el-carousel height="180px" trigger="click" interval="5000" indicator-position="outside">
       <el-carousel-item v-for="appData in appSuite" :key="appData">
         <el-table :data="appData" style="width: 100%" size="mini">
-          <el-table-column prop="date" label="名称"></el-table-column>
-          <el-table-column prop="name" label="当前价格" width="80"></el-table-column>
+          <el-table-column prop="name" label="名称"></el-table-column>
+          <el-table-column prop="price" label="当前价格" width="80"></el-table-column>
         </el-table>
       </el-carousel-item>
     </el-carousel>
