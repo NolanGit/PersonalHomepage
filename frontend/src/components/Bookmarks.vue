@@ -142,7 +142,7 @@ export default {
   watch: {
     bookmarksData(newVal, oldVal) {
       this.bookmarksDataRaw = newVal;
-      this.bookmarksSuitesGenerate()
+      this.bookmarksSuitesGenerate();
     }
   },
   data() {
@@ -178,7 +178,7 @@ export default {
       for (let x = 0; x < this.bookmarksDataRaw.length; x += STEP1) {
         temp1.push([]);
         for (let y = 0; y < STEP1; y++) {
-          temp1[temp1.length - 1].push(this.bookmarksDataRaw[x]);
+          temp1[temp1.length - 1].push(this.bookmarksDataRaw[x + y]);
         }
       }
       console.log("temp1");
@@ -186,7 +186,7 @@ export default {
       for (let x = 0; x < temp1.length; x += STEP2) {
         temp2.push([]);
         for (let y = 0; y < STEP2; y++) {
-          temp2[temp2.length - 1].push(temp1[x]);
+          temp2[temp2.length - 1].push(temp1[x + y]);
         }
       }
       console.log("temp2");
