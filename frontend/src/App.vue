@@ -72,15 +72,6 @@ export default {
   methods: {
     async userInfo() {
       try {
-        var user = sessionStorage.getItem("user").replace(/\"/g, "");
-        var userID = sessionStorage.getItem("userID").replace(/\"/g, "");
-      } catch (error) {
-        var user = undefined;
-        var userID = undefined;
-      }
-      this.user = user;
-      this.userID = userID;
-      try {
         const { data: res } = await axios.post("/userInfo", {
           user: user
         });
@@ -128,6 +119,17 @@ export default {
           break;
       }
     }
+  },
+  beforeCreate() {
+    try {
+      var user = sessionStorage.getItem("user").replace(/\"/g, "");
+      var userID = sessionStorage.getItem("userID").replace(/\"/g, "");
+    } catch (error) {
+      var user = undefined;
+      var userID = undefined;
+    }
+    this.user = user;
+    this.userID = userID;
   },
   mounted() {
     this.userInfo();
