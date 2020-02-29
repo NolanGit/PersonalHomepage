@@ -38,7 +38,7 @@ def app_price_get(app_id):
     if len(app_price_query) != 0:
         return (float(app_price_query[0]['price']), app_price_query[0]['update_time'].strftime("%Y-%m-%d %H:%M:%S"))
     else:
-        return (None, datetime.datetime.now())
+        return ('暂未获取', datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
 
 
 def app_del_all(user_id):
