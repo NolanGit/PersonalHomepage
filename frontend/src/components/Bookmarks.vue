@@ -186,7 +186,7 @@ export default {
       for (let x = 0; x < temp1.length; x += STEP2) {
         temp2.push([]);
         for (let y = 0; y < STEP2; y++) {
-          temp2[tepm2.length - 1].push(temp1[x]);
+          temp2[temp2.length - 1].push(temp1[x]);
         }
       }
       console.log("temp2");
