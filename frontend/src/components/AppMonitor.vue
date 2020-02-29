@@ -55,7 +55,7 @@ export default {
     async appGet() {
       try {
         const { data: res } = await axios.get(api.get, {
-          user_id: userID
+          user_id: this.userID
         });
         const STEP = 4; // 每页几行
         let temp = [];
