@@ -175,10 +175,10 @@ export default {
       const STEP2 = 3;
       let temp1 = [];
       let temp2 = [];
-      for (let x = 0; x < bookmarksDataRaw.length; x += STEP1) {
+      for (let x = 0; x < this.bookmarksDataRaw.length; x += STEP1) {
         temp1.push([]);
         for (let y = 0; y < STEP1; y++) {
-          temp1[temp1.length - 1].push(bookmarksDataRaw[x]);
+          temp1[temp1.length - 1].push(this.bookmarksDataRaw[x]);
         }
       }
       console.log("temp1");
