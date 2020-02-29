@@ -73,7 +73,7 @@ export default {
     async userInfo() {
       try {
         const { data: res } = await axios.post("/userInfo", {
-          user: user
+          user: this.user
         });
         this.locations = res.data["locations"];
         this.bookmarksData = res.data["bookmarks"];
