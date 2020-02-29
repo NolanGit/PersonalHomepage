@@ -7,7 +7,7 @@
     </el-row>
 
     <div class="bookmarks-data-row-main">
-      <el-carousel height="250px" trigger="click" interval="5000" indicator-position="outside">
+      <el-carousel height="180px" trigger="click" indicator-position="outside">
         <el-carousel-item v-for="bookmarksSuite in bookmarksSuites" :key="bookmarksSuite">
           <el-row
             class="margin_bottom-medium"
