@@ -31,8 +31,8 @@
       </el-col>
       <el-col :span="8">
         <transition name="el-zoom-in-top">
-          <el-card shadow="hover" class="margin_left-medium margin_right-medium">
-            <appMonitor />
+          <el-card shadow="hover" v-show="show.app" class="margin_left-medium margin_right-medium">
+            <appMonitor :user="user" @done="done('app')" />
           </el-card>
         </transition>
       </el-col>
@@ -62,7 +62,8 @@ export default {
       bookmarksData: [],
       show: {
         weather: false,
-        bookmarks: false
+        bookmarks: false,
+        app: false
       },
       loginSwitch: true
     };
@@ -109,6 +110,19 @@ export default {
     },
     weatherLoaded() {
       this.show.weather = true;
+    },
+    done(para) {
+      switch (para) {
+        case "weather":
+          this.show.weather = true;
+          break;
+        case "bookmarks":
+          this.show.bookmarks = true;
+          break;
+        case "app":
+          this.show.app = true;
+          break;
+      }
     }
   },
   mounted() {

@@ -6,15 +6,14 @@
       </div>
     </el-row>
     <el-carousel height="180px" trigger="click" interval="5000" indicator-position="outside">
-      <el-carousel-item v-for="weather in tableData" :key="weather">
-        <el-table :data="tableData" style="width: 100%" size="mini">
-          <el-table-column prop="date" label="日期" width="180"></el-table-column>
-          <el-table-column prop="name" label="姓名" width="180"></el-table-column>
-          <el-table-column prop="address" label="地址"></el-table-column>
+      <el-carousel-item v-for="appData in appSuite" :key="appData">
+        <el-table :data="appData" style="width: 100%" size="mini">
+          <el-table-column prop="date" label="名称"></el-table-column>
+          <el-table-column prop="name" label="当前价格" width="80"></el-table-column>
         </el-table>
       </el-carousel-item>
     </el-carousel>
-    <el-row type="flex" justify="center" class="margin-top-medium">
+    <el-row type="flex" justify="center" class="margin-top-medium" v-show="user!=undefined">
       <el-button
         class="margin_left-mini margin_right-mini"
         size="small"
@@ -42,34 +41,41 @@ const api = {
 };
 export default {
   name: "AppMonitor",
+  props: {
+    user: String
+  },
   components: {},
   data() {
     return {
-      tableData: [
-        {
-          date: "2016-05-02",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄"
-        },
-        {
-          date: "2016-05-04",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1517 弄"
-        },
-        {
-          date: "2016-05-01",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1519 弄"
-        },
-        {
-          date: "2016-05-02",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄"
-        },
-      ]
+      appSuite: []
     };
   },
-  methods: {},
+  methods: {
+    async appGet() {
+      try {
+        const { data: res } = await axios.get(api.get);
+        const STEP = 4; // 每页几行
+        let temp = [];
+        for (let x = 0; x < this.res.data.length; x += STEP) {
+          temp.push([]);
+          for (let y = 0; y < STEP; y++) {
+            if (this.res.data[x + y] != undefined) {
+              temp[temp.length - 1].push(this.res.data[x + y]);
+            }
+          }
+        }
+        console.log(temp);
+        this.appSuite = temp;
+        this.$emit("done");
+      } catch (e) {
+        console.log(e);
+        this.$message({
+          message: e.response.data.msg,
+          type: "error"
+        });
+      }
+    }
+  },
   mounted() {}
 };
 </script>

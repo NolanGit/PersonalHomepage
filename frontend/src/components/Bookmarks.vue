@@ -7,7 +7,7 @@
     </el-row>
 
     <div class="bookmarks-data-row-main">
-      <el-carousel height="180px" trigger="click" indicator-position="outside">
+      <el-carousel height="180px" trigger="click" :autoplay="false" indicator-position="outside">
         <el-carousel-item v-for="bookmarksSuite in bookmarksSuites" :key="bookmarksSuite">
           <el-row
             class="margin_bottom-medium"
@@ -171,8 +171,8 @@ export default {
       window.open(bookmarkUrl);
     },
     bookmarksSuitesGenerate() {
-      const STEP1 = 4;
-      const STEP2 = 3;
+      const STEP1 = 4; // 每行几个
+      const STEP2 = 3; // 共有几行
       let temp1 = [];
       let temp2 = [];
       for (let x = 0; x < this.bookmarksDataRaw.length; x += STEP1) {
@@ -183,16 +183,12 @@ export default {
           }
         }
       }
-      console.log("temp1");
-      console.log(temp1);
       for (let x = 0; x < temp1.length; x += STEP2) {
         temp2.push([]);
         for (let y = 0; y < STEP2; y++) {
           temp2[temp2.length - 1].push(temp1[x + y]);
         }
       }
-      console.log("temp2");
-      console.log(temp2);
       this.bookmarksSuites = temp2;
     },
     async bookmarksEditFormConfirmClicked() {
@@ -311,42 +307,5 @@ export default {
 .bookmarks-main-button {
   width: 90px;
   height: 40px;
-}
-.slick_list {
-  max-height: 80vh;
-  margin: 0 auto;
-  padding: 0;
-  overflow: auto;
-  border: 1px solid #efefef;
-  max-width: 600px;
-  cursor: pointer;
-}
-.slick_list_item {
-  list-style: none;
-  padding: 10px 0;
-  height: 40px;
-  width: 100%;
-  color: #606266;
-  font-size: 14px;
-  z-index: 3000;
-  box-sizing: border-box;
-  user-select: none;
-  display: flex;
-  align-items: center;
-  width: 100%;
-  padding: 20px;
-  background-color: #fff;
-  border-bottom: 1px solid #efefef;
-  box-sizing: border-box;
-  user-select: none;
-  color: #333;
-  font-weight: 400;
-}
-.slick_list_item_span {
-  margin-left: 20px;
-}
-.slick_list_item_button {
-  margin-right: 10px;
-  margin-left: auto;
 }
 </style>

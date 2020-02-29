@@ -246,6 +246,7 @@
 .margin_right-medium {
     margin-right: 20px;
 }
+
 .margin_right-small {
     margin-right: 10px;
 }
@@ -303,11 +304,52 @@
     right: 0;
     z-index: 99;
 }
+
 .widget-label {
-  font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB,
-    Microsoft YaHei, SimSun, sans-serif;
-  font-weight: 600;
-  font-size: 20px;
-  color: #303133;
-  padding-bottom: 20px;
+    font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, SimSun, sans-serif;
+    font-weight: 600;
+    font-size: 20px;
+    color: #303133;
+    padding-bottom: 20px;
+}
+
+.slick_list {
+    max-height: 80vh;
+    margin: 0 auto;
+    padding: 0;
+    overflow: auto;
+    border: 1px solid #efefef;
+    max-width: 600px;
+    cursor: pointer;
+}
+
+.slick_list_item {
+    list-style: none;
+    padding: 10px 0;
+    height: 40px;
+    width: 100%;
+    color: #606266;
+    font-size: 14px;
+    z-index: 3000;
+    box-sizing: border-box;
+    user-select: none;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 20px;
+    background-color: #fff;
+    border-bottom: 1px solid #efefef;
+    box-sizing: border-box;
+    user-select: none;
+    color: #333;
+    font-weight: 400;
+}
+
+.slick_list_item_span {
+    margin-left: 20px;
+}
+
+.slick_list_item_button {
+    margin-right: 10px;
+    margin-left: auto;
 }
