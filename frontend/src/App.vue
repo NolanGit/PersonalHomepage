@@ -32,7 +32,7 @@
       <el-col :span="8">
         <transition name="el-zoom-in-top">
           <el-card shadow="hover" v-show="show.app" class="margin_left-medium margin_right-medium">
-            <appMonitor :user="user" @done="done('app')" />
+            <appMonitor :user="user" :userID="userID" @done="done('app')" />
           </el-card>
         </transition>
       </el-col>
@@ -58,6 +58,7 @@ export default {
   data() {
     return {
       user: "",
+      userID: Number,
       locations: [],
       bookmarksData: [],
       show: {
@@ -72,10 +73,13 @@ export default {
     async userInfo() {
       try {
         var user = sessionStorage.getItem("user").replace(/\"/g, "");
+        var userID = sessionStorage.getItem("userID").replace(/\"/g, "");
       } catch (error) {
         var user = undefined;
+        var userID = undefined;
       }
       this.user = user;
+      this.userID = userID;
       try {
         const { data: res } = await axios.post("/userInfo", {
           user: user

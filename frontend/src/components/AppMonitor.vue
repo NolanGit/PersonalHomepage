@@ -42,7 +42,8 @@ const api = {
 export default {
   name: "AppMonitor",
   props: {
-    user: String
+    user: String,
+    userID: String
   },
   components: {},
   data() {
@@ -53,7 +54,9 @@ export default {
   methods: {
     async appGet() {
       try {
-        const { data: res } = await axios.get(api.get);
+        const { data: res } = await axios.get(api.get, {
+          user_id: userID
+        });
         const STEP = 4; // 每页几行
         let temp = [];
         for (let x = 0; x < this.res.data.length; x += STEP) {

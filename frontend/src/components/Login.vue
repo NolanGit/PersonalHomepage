@@ -114,7 +114,7 @@ export default {
           this.$cookies.set("user_key", res2.user_key);
           this.user = res2.user;
           sessionStorage.setItem("user", JSON.stringify(res2.user));
-          sessionStorage.setItem("user_id", JSON.stringify(res2.user_id));
+          sessionStorage.setItem("userID", JSON.stringify(res2.user_id));
           this.$emit("user", this.user);
         } catch (e) {
           console.log(e);
@@ -127,7 +127,7 @@ export default {
     },
     logout() {
       sessionStorage.removeItem("user");
-      sessionStorage.removeItem("user_id");
+      sessionStorage.removeItem("userID");
       this.user = "";
       this.$message({
         message: "退出成功！",
