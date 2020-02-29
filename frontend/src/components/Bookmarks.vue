@@ -178,7 +178,9 @@ export default {
       for (let x = 0; x < this.bookmarksDataRaw.length; x += STEP1) {
         temp1.push([]);
         for (let y = 0; y < STEP1; y++) {
-          temp1[temp1.length - 1].push(this.bookmarksDataRaw[x + y]);
+          if (this.bookmarksDataRaw[x + y] != undefined) {
+            temp1[temp1.length - 1].push(this.bookmarksDataRaw[x + y]);
+          }
         }
       }
       console.log("temp1");
