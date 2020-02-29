@@ -7,22 +7,26 @@
     </el-row>
 
     <div class="bookmarks-data-row-main">
-      <el-row
-        class="margin_bottom-medium"
-        v-for="bookmarksSuite in bookmarksDataArray"
-        :key="bookmarksSuite"
-      >
-        <el-col :span="6" v-for="bookmark in bookmarksSuite" :key="bookmark">
-          <el-button
-            class="bookmarks-main-button"
-            size="small"
-            @click="bookmarksClicked(bookmark.url)"
+      <el-carousel height="250px" trigger="click" interval="5000" indicator-position="outside">
+        <el-carousel-item v-for="bookmarksSuite in bookmarksSuites" :key="bookmarksSuite">
+          <el-row
+            class="margin_bottom-medium"
+            v-for="bookmarksArray in bookmarksSuite"
+            :key="bookmarksArray"
           >
-            <i :class="bookmark.icon" style="margin-right=5px;font-size=15px"></i>
-            {{bookmark.name}}
-          </el-button>
-        </el-col>
-      </el-row>
+            <el-col :span="6" v-for="bookmark in bookmarksArray" :key="bookmark">
+              <el-button
+                class="bookmarks-main-button"
+                size="small"
+                @click="bookmarksClicked(bookmark.url)"
+              >
+                <i :class="bookmark.icon" style="margin-right=5px;font-size=15px"></i>
+                {{bookmark.name}}
+              </el-button>
+            </el-col>
+          </el-row>
+        </el-carousel-item>
+      </el-carousel>
     </div>
 
     <el-row type="flex" justify="center" class="margin-top-medium" v-show="user!=undefined">
@@ -137,12 +141,14 @@ export default {
   },
   watch: {
     bookmarksData(newVal, oldVal) {
-      this.bookmarksDataArray = newVal;
+      this.bookmarksDataRaw = newVal;
+      this.bookmarksSuitesGenerate()
     }
   },
   data() {
     return {
-      bookmarksDataArray: [],
+      bookmarksDataRaw: [],
+      bookmarksSuites: [],
       bookmarksEdit: {
         visible: false,
         list: []
@@ -163,6 +169,29 @@ export default {
   methods: {
     bookmarksClicked(bookmarkUrl) {
       window.open(bookmarkUrl);
+    },
+    bookmarksSuitesGenerate() {
+      const STEP1 = 4;
+      const STEP2 = 3;
+      let temp1 = [];
+      let temp2 = [];
+      for (let x = 0; x < bookmarksDataRaw.length; x += STEP1) {
+        temp1.push([]);
+        for (let y = 0; y < STEP1; y++) {
+          temp1[temp1.length - 1].push(bookmarksDataRaw[x]);
+        }
+      }
+      console.log("temp1");
+      console.log(temp1);
+      for (let x = 0; x < temp1.length; x += STEP2) {
+        temp2.push([]);
+        for (let y = 0; y < STEP2; y++) {
+          temp2[tepm2.length - 1].push(temp1[x]);
+        }
+      }
+      console.log("temp2");
+      console.log(temp2);
+      this.bookmarksSuites = temp2;
     },
     async bookmarksEditFormConfirmClicked() {
       if (this.bookmarksEditForm.title == "新增书签") {
@@ -207,19 +236,7 @@ export default {
       };
     },
     bookmarksOptionButtonSettingClicked() {
-      var temp = [];
-      for (let x = 0; x < this.bookmarksDataArray.length; x++) {
-        for (let y = 0; y < this.bookmarksDataArray[x].length; y++) {
-          temp.push({
-            id: this.bookmarksDataArray[x][y].id,
-            name: this.bookmarksDataArray[x][y].name,
-            url: this.bookmarksDataArray[x][y].url,
-            icon: this.bookmarksDataArray[x][y].icon
-          });
-        }
-      }
-      console.log(temp);
-      this.bookmarksEdit.list = temp;
+      this.bookmarksEdit.list = this.bookmarksDataRaw;
       this.bookmarksEdit.visible = true;
     },
     async bookmarksEditSubmit() {
