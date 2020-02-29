@@ -76,7 +76,9 @@ export default {
       }
     }
   },
-  mounted() {}
+  mounted() {
+    this.appGet();
+  }
 };
 </script>
 
