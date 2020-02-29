@@ -69,6 +69,35 @@
         <el-button type="primary" size="small" @click="editSubmit()">确定</el-button>
       </span>
     </el-dialog>
+
+    <!--编辑提醒界面-->
+    <el-dialog title="提醒" :visible.sync="notify.visible" width="40%">
+      <el-form ref="form" :model="notify.form" size="mini">
+        <el-form-item label="是否推送">
+          <div class="div-flex">
+            <el-input size="small" v-model="notify.form.notify" placeholder="名称"></el-input>
+          </div>
+        </el-form-item>
+        <el-form-item label="推送方式">
+          <div class="div-flex">
+            <el-input size="small" v-model="notify.form.notify_method" placeholder="名称"></el-input>
+          </div>
+        </el-form-item>
+        <el-form-item label="提醒时间">
+          <div class="div-flex">
+            <el-input size="small" v-model="notify.form.notify_method" placeholder="名称"></el-input>
+          </div>
+        </el-form-item>
+        <el-form-item label="提醒间隔">
+          <div class="div-flex">
+            <el-input size="small" v-model="notify.form.notify_method" placeholder="名称"></el-input>
+          </div>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" size="small" @click="editSubmit()">确定</el-button>
+      </span>
+    </el-dialog>
   </section>
 </template>
 
