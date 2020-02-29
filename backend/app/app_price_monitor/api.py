@@ -24,8 +24,8 @@ def get():
         user_id = request.get_json()['user_id']
         user_app_list = app_get(user_id)
         for x in range(len(user_app_list)):
-            user_app_list[x]['price'] = app_price_get(user_app_list[x]['id'])
-        response = {'code': 200, 'msg': '成功！', 'data': app_get(user_id)}
+            user_app_list[x]['price'], user_app_list[x]['update_time'] = app_price_get(user_app_list[x]['id'])
+        response = {'code': 200, 'msg': '成功！', 'data': user_app_list}
         return jsonify(response)
 
     except Exception as e:

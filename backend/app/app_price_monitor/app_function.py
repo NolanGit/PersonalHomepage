@@ -32,10 +32,10 @@ def app_price_get(app_id):
         获取该app_id的最新爬取的价格
 
         args:app_id(Int)
-        returns:current_app_price(Float)
+        returns:current_app_price(Float),update_time(Datetime)
     '''
     app_price_query = app_price.select().where(app_price.app_id == app_id).order_by(app_price.update_time).limit(1).dicts()
-    return float(app_price_query[0]['price'])
+    return (float(app_price_query[0]['price']),app_price_query[0]['update_time'].strftime("%Y-%m-%d %H:%M:%S"))
 
 
 def app_del_all(user_id):
