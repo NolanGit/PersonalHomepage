@@ -56,6 +56,9 @@ def add():
             is_valid=1,
             update_time=datetime.datetime.now(),
         )
+        response = {'code': 200, 'msg': '成功！'}
+        return jsonify(response)
+
     except Exception as e:
         traceback.print_exc()
         response = {'code': 500, 'msg': '失败！错误信息：' + str(e) + '，请联系管理员。', 'data': []}
