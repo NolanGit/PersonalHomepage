@@ -59,11 +59,11 @@ export default {
         });
         const STEP = 4; // 每页几行
         let temp = [];
-        for (let x = 0; x < this.res.data.length; x += STEP) {
+        for (let x = 0; x < res.data.length; x += STEP) {
           temp.push([]);
           for (let y = 0; y < STEP; y++) {
-            if (this.res.data[x + y] != undefined) {
-              temp[temp.length - 1].push(this.res.data[x + y]);
+            if (res.data[x + y] != undefined) {
+              temp[temp.length - 1].push(res.data[x + y]);
             }
           }
         }
