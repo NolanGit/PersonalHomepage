@@ -90,7 +90,7 @@
             </el-select>
           </div>
         </el-form-item>
-        <el-form-item label="推送方式">
+        <el-form-item label="推送方式" :v-show="notify.form.notify.select==1">
           <div class="div-flex">
             <el-select
               v-model="notify.form.notifyMethod.select"
@@ -107,7 +107,7 @@
             </el-select>
           </div>
         </el-form-item>
-        <el-form-item label="提醒时间">
+        <el-form-item label="提醒时间" :v-show="notify.form.notify.select==1">
           <div class="div-flex">
             <el-date-picker
               v-model="notify.form.triggerDate"
@@ -130,7 +130,7 @@
             ></el-time-select>
           </div>
         </el-form-item>
-        <el-form-item label="提醒间隔">
+        <el-form-item label="提醒间隔" :v-show="notify.form.notify.select==1">
           <div class="div-flex">
             <p class="inline_margin--medium">每</p>
             <el-input
@@ -243,6 +243,9 @@ export default {
     add() {
       this.edit.title = "新增App";
       this.edit.visible = true;
+    },
+    notify() {
+      this.notify.visible = true;
     },
     async appGet() {
       try {
