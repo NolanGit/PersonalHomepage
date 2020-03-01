@@ -75,22 +75,83 @@
       <el-form ref="form" :model="notify.form" size="mini">
         <el-form-item label="是否推送">
           <div class="div-flex">
-            <el-input size="small" v-model="notify.form.notify" placeholder="名称"></el-input>
+            <el-select
+              v-model="notify.form.notify.select"
+              placeholder="请选择"
+              size="small"
+              class="main_select--medium"
+            >
+              <el-option
+                v-for="item in notify.form.notify.options"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              ></el-option>
+            </el-select>
           </div>
         </el-form-item>
         <el-form-item label="推送方式">
           <div class="div-flex">
-            <el-input size="small" v-model="notify.form.notify_method" placeholder="名称"></el-input>
+            <el-select
+              v-model="notify.form.notifyMethod.select"
+              placeholder="请选择"
+              size="small"
+              class="main_select--medium"
+            >
+              <el-option
+                v-for="item in notify.form.notifyMethod.options"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              ></el-option>
+            </el-select>
           </div>
         </el-form-item>
         <el-form-item label="提醒时间">
           <div class="div-flex">
-            <el-input size="small" v-model="notify.form.notify_method" placeholder="名称"></el-input>
+            <el-date-picker
+              v-model="notify.form.triggerDate"
+              type="date"
+              placeholder="选择日期"
+              value-format="yyyy-MM-dd"
+              size="small"
+              class="main_select--medium"
+            ></el-date-picker>
+            <el-time-select
+              v-model="notify.form.triggerTime"
+              :picker-options="{
+              start: '00:00',
+              step: '00:15',
+              end: '24:00'
+            }"
+              placeholder="选择时间"
+              size="small"
+              class="main_select--medium"
+            ></el-time-select>
           </div>
         </el-form-item>
         <el-form-item label="提醒间隔">
           <div class="div-flex">
-            <el-input size="small" v-model="notify.form.notify_method" placeholder="名称"></el-input>
+            <p class="inline_margin--medium">每</p>
+            <el-input
+              v-model="notify.form.interval.value"
+              placeholder="请输入"
+              size="small"
+              class="main_input--tiny inline_margin--small"
+            ></el-input>
+            <el-select
+              v-model="notify.form.interval.unit.select"
+              placeholder="请选择"
+              size="small"
+              class="main_select--medium"
+            >
+              <el-option
+                v-for="item in notify.form.interval.options"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              ></el-option>
+            </el-select>
           </div>
         </el-form-item>
       </el-form>
@@ -125,6 +186,55 @@ export default {
           name: "",
           url: "",
           expect_price: 0
+        }
+      },
+      notify: {
+        visible: false,
+        form: {
+          notify: {
+            select: 0,
+            options: [
+              {
+                value: 0,
+                label: "否"
+              },
+              {
+                value: 1,
+                label: "是"
+              }
+            ]
+          },
+          notifyMethod: {
+            select: 0,
+            options: [
+              {
+                value: 0,
+                label: "微信"
+              },
+              {
+                value: 1,
+                label: "邮件"
+              }
+            ]
+          },
+          triggerDate: "",
+          triggerTime: "",
+          interval: {
+            value: "",
+            unit: {
+              select: 0,
+              options: [
+                {
+                  value: 0,
+                  label: "小时"
+                },
+                {
+                  value: 1,
+                  label: "天"
+                }
+              ]
+            }
+          }
         }
       }
     };

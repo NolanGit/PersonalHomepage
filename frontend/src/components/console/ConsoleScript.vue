@@ -939,7 +939,7 @@
             <el-date-picker
               v-model="schedule.scheduleData.triggerDate"
               type="date"
-              placeholder="选择日期时间"
+              placeholder="选择日期"
               value-format="yyyy-MM-dd"
               size="small"
               class="main_select--medium"
