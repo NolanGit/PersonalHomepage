@@ -19,7 +19,7 @@ class UnknownField(object):
 class BaseModel(Model):
 
     class Meta:
-        database = PooledMySQLDatabase('my_app', user='root', password=DB_PASS, host='localhost', port=3306)
+        database = PooledMySQLDatabase('PersonalHomepage', user='root', password=DB_PASS, host='localhost', port=3306)
 
 
 class weather_personalized(BaseModel):

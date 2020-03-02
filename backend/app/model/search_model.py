@@ -19,8 +19,7 @@ class UnknownField(object):
 class BaseModel(Model):
 
     class Meta:
-        database = PooledMySQLDatabase('my_app', user='root', password=DB_PASS, host='localhost', port=3306)
-
+        database = PooledMySQLDatabase('PersonalHomepage', user='root', password=DB_PASS, host='localhost', port=3306)
 
 
 class search_engines(BaseModel):
@@ -32,16 +31,18 @@ class search_engines(BaseModel):
     class Meta:
         table_name = 'search_engines'
 
+
 class search_engines_log(BaseModel):
     user_id = IntegerField()
     user = CharField()
-    engine_id= IntegerField()
+    engine_id = IntegerField()
     search_text = CharField()
     ip = CharField()
     update_time = DateTimeField()
 
     class Meta:
         table_name = 'search_engines_log'
+
 
 search_engines.create_table()
 search_engines_log.create_table()

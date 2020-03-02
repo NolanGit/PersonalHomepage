@@ -19,8 +19,7 @@ class UnknownField(object):
 class BaseModel(Model):
 
     class Meta:
-        database = PooledMySQLDatabase('my_app', user='root', password=DB_PASS, host='localhost', port=3306)
-
+        database = PooledMySQLDatabase('PersonalHomepage', user='root', password=DB_PASS, host='localhost', port=3306)
 
 
 class role(BaseModel):
@@ -32,6 +31,7 @@ class role(BaseModel):
     class Meta:
         table_name = 'role'
 
+
 class privilege(BaseModel):
     name = CharField()
     mark = CharField()
@@ -42,6 +42,7 @@ class privilege(BaseModel):
     class Meta:
         table_name = 'privilege'
 
+
 class privilege_role(BaseModel):
     privilege_id = IntegerField()
     role_id = IntegerField()
@@ -49,6 +50,7 @@ class privilege_role(BaseModel):
 
     class Meta:
         table_name = 'privilege_role'
+
 
 role.create_table()
 privilege.create_table()
