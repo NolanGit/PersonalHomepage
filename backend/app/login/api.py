@@ -32,7 +32,7 @@ def check_pass(login_name, password):
             salt_expire_time = row['salt_expire_time']
             is_valid = row['is_valid']
             salt = row['salt']
-            server_timestamp = int(time.mktime(datetime.datetime.now().timetuple()))
+            server_timestamp = datetime.datetime.now()
             if is_valid != 1:
                 response = {
                     'code': 403,
@@ -40,7 +40,7 @@ def check_pass(login_name, password):
                 }
                 return (False, response)
             else:
-                if server_timestamp < int(salt_expire_time):
+                if server_timestamp < salt_expire_time:
                     password2compare = cf.md5_it(password_without_salt + salt)
                     if password == password2compare:
                         response = {'code': 200, 'msg': '验证成功！', 'user': row['name'], 'user_id': row['id']}
@@ -95,7 +95,7 @@ def userLoginSalt():
         user_query = user.select().where(user.login_name == login_name).dicts()
         for row in user_query:
             stable_salt = row['stable_salt']
-        user.update(salt=salt, salt_expire_time=time.mktime((datetime.datetime.now() + datetime.timedelta(minutes=1)).timetuple())).where(user.login_name == login_name).execute()
+        user.update(salt=salt, salt_expire_time=(datetime.datetime.now() + datetime.timedelta(minutes=1))).where(user.login_name == login_name).execute()
         response = {'code': 200, 'msg': '成功！', 'data': {'salt': salt, 'stable_salt': stable_salt}}
         return jsonify(response)
     except Exception as e:
