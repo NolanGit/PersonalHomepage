@@ -1,21 +1,20 @@
 import os
 import peewee
+import configparser
 from peewee import *
 
-PATH = lambda p: os.path.abspath(os.path.join(os.path.dirname(__file__), p))
-database = peewee.SqliteDatabase(PATH("../../data.sqlite"))
+cf = configparser.ConfigParser()
+cf.read('../homepage.config')
 
 
 class UnknownField(object):
-
     def __init__(self, *_, **__):
         pass
 
 
 class BaseModel(Model):
-
     class Meta:
-        database = database
+        database = MySQLDatabase('my_app', user='root', password=cf.get('config', 'DB_PASS'), host='localhost', port=3306)
 
 
 class stock(BaseModel):
