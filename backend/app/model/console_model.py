@@ -5,6 +5,7 @@ from peewee import *
 
 cf = configparser.ConfigParser()
 cf.read('../homepage.config')
+DB_PASS = cf.get('config', 'DB_PASS')
 
 
 class UnknownField(object):
@@ -14,7 +15,7 @@ class UnknownField(object):
 
 class BaseModel(Model):
     class Meta:
-        database = MySQLDatabase('my_app', user='root', password=cf.get('config', 'DB_PASS'), host='localhost', port=3306)
+        database = MySQLDatabase('my_app', user='root', password=DB_PASS, host='localhost', port=3306)
 
 
 class console_script_sub_system(BaseModel):
@@ -103,7 +104,7 @@ class console_script_schedule(BaseModel):
     is_automatic = IntegerField()
     interval = IntegerField()
     interval_raw = IntegerField()
-    interval_unit = IntegerField() # 1:小时,2:天
+    interval_unit = IntegerField()  # 1:小时,2:天
     trigger_time = DateTimeField(null=True)
     update_time = DateTimeField(null=True)
 
