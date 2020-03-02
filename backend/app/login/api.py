@@ -40,7 +40,7 @@ def check_pass(login_name, password):
                 }
                 return (False, response)
             else:
-                if server_timestamp < salt_expire_time:
+                if server_timestamp < int(salt_expire_time):
                     password2compare = cf.md5_it(password_without_salt + salt)
                     if password == password2compare:
                         response = {'code': 200, 'msg': '验证成功！', 'user': row['name'], 'user_id': row['id']}
@@ -95,7 +95,7 @@ def userLoginSalt():
         user_query = user.select().where(user.login_name == login_name).dicts()
         for row in user_query:
             stable_salt = row['stable_salt']
-        user.update(salt=salt, salt_expire_time=int(time.mktime((datetime.datetime.now() + datetime.timedelta(minutes=1)).timetuple()))).where(user.login_name == login_name).execute()
+        user.update(salt=salt, salt_expire_time=time.mktime((datetime.datetime.now() + datetime.timedelta(minutes=1)).timetuple())).where(user.login_name == login_name).execute()
         response = {'code': 200, 'msg': '成功！', 'data': {'salt': salt, 'stable_salt': stable_salt}}
         return jsonify(response)
     except Exception as e:
@@ -147,14 +147,8 @@ def userAdd():
             response = {'code': 406, 'msg': '已经存在此登录名的用户，请修改您的登录名'}
             return jsonify(response)
         else:
-            user.create(name=name,
-                        login_name=login_name,
-                        role_id=role_id,
-                        stable_salt=stable_salt,
-                        password=password,
-                        is_valid=1,
-                        create_time=datetime.datetime.now(),
-                        update_time=datetime.datetime.now())
+            user.create(
+                name=name, login_name=login_name, role_id=role_id, stable_salt=stable_salt, password=password, is_valid=1, create_time=datetime.datetime.now(), update_time=datetime.datetime.now())
             response = {'code': 200, 'msg': '成功'}
         return jsonify(response)
     except Exception as e:
