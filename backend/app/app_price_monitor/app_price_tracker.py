@@ -25,9 +25,9 @@ def app_price_push_generator():
         content = ''
         applist = app_get(user_id)
         for app in applist:
-            current_price = float(app_price_get(app['id']))
-            if current_price <= float(app['expect_price']):
-                content = content + '\n' + '[' + app['name'] + ']' + ' is ¥' + str(current_price) + ' now !' + '\n'
+            current_price ,update_time= app_price_get(app['id'])
+            if float(current_price) <= float(app['expect_price']):
+                content = content + '\n' + '[' + app['name'] + ']' + ' is ¥' + str(current_price) + ' now !(' + update_time + ')' + '\n'
         if content != '':
             if notify_method == 1:
                 address = User(user_id=user_id).wechat_key
