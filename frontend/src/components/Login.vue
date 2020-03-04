@@ -41,7 +41,7 @@
       :size="drawer.size"
       :before-close="drawerBeforeClose"
     >
-      <Console :v-if="drawer.title=='控制台'"/>
+      <Console :v-if="drawer.title=='控制台'" />
     </el-drawer>
   </div>
 </template>
@@ -113,6 +113,8 @@ export default {
           });
           this.$cookies.set("user_key", res2.user_key);
           this.user = res2.user;
+          this.$cookies.set("user", JSON.stringify(res2.user));
+          this.$cookies.set("userID", JSON.stringify(res2.user_id));
           sessionStorage.setItem("user", JSON.stringify(res2.user));
           sessionStorage.setItem("userID", JSON.stringify(res2.user_id));
           this.$emit("user", this.user);
@@ -128,12 +130,14 @@ export default {
     logout() {
       sessionStorage.removeItem("user");
       sessionStorage.removeItem("userID");
+      this.$cookies.remove("user_key");
+      this.$cookies.remove("user");
+      this.$cookies.remove("userID");
       this.user = "";
       this.$message({
         message: "退出成功！",
         type: "success"
       });
-      this.$cookies.remove("user_key");
       this.$emit("user", "");
     },
     consoleSettingClicked() {
@@ -150,7 +154,7 @@ export default {
   created() {},
   mounted() {
     try {
-      var user = sessionStorage.getItem("user").replace(/\"/g, "");
+      var user = this.$cookies.get("user");
       this.user = user;
     } catch (error) {}
   }

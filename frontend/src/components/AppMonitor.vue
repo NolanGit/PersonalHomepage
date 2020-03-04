@@ -245,7 +245,7 @@ export default {
       this.edit.visible = true;
     },
     notify() {
-      this.notify.visible = true;
+      this.notifyData.visible = true;
     },
     async appGet() {
       try {

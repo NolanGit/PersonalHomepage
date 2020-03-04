@@ -122,8 +122,8 @@ export default {
   },
   created() {
     try {
-      var user = sessionStorage.getItem("user").replace(/\"/g, "");
-      var userID = sessionStorage.getItem("userID").replace(/\"/g, "");
+      var user = this.$cookies.get("user").replace(/\"/g, "");
+      var userID = this.$cookies.get("userID").replace(/\"/g, "");
     } catch (error) {
       var user = undefined;
       var userID = undefined;
