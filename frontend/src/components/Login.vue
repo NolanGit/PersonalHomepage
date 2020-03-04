@@ -155,6 +155,7 @@ export default {
   mounted() {
     try {
       var user = this.$cookies.get("user");
+      console.log(user)
       this.user = user;
     } catch (error) {}
   }
