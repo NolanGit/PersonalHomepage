@@ -7,15 +7,16 @@ sys.path.append(currentUrl)
 from flask import Flask
 from config import config
 from flask_cors import CORS
-
+from .model.model_function import BaseModel
+from playhouse.flask_utils import FlaskDB
 
 
 def create_app(config_name):
     app = Flask(__name__, static_folder="../../dist/static", template_folder="../../dist")
+    FlaskDB(app, BaseModel.database)
     CORS(app, supports_credentials=True)
     app.config.from_object(config[config_name])
     config[config_name].init_app(app)
-
 
     from .main import main as main_blueprint
     app.register_blueprint(main_blueprint)
@@ -28,7 +29,7 @@ def create_app(config_name):
 
     from .weather import weather as weather_blueprint
     app.register_blueprint(weather_blueprint, url_prefix='/weather')
-    
+
     from .bookmarks import bookmarks as bookmarks_blueprint
     app.register_blueprint(bookmarks_blueprint, url_prefix='/bookmarks')
 
