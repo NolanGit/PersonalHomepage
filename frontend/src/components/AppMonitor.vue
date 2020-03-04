@@ -71,7 +71,7 @@
     </el-dialog>
 
     <!--编辑提醒界面-->
-    <el-dialog title="提醒" :visible.sync="notifyData.visible" width="40%">
+    <el-dialog title="提醒" :visible.sync="notifyData.visible" width="50%">
       <el-form ref="form" :model="notifyData.form" size="mini">
         <el-form-item label="是否推送">
           <div class="div-flex">
@@ -132,7 +132,7 @@
         </el-form-item>
         <el-form-item label="提醒间隔" :v-show="notifyData.form.notify.select==1">
           <div class="div-flex">
-            <p class="inline_margin--medium">每</p>
+            <p>每</p>
             <el-input
               v-model="notifyData.form.interval.value"
               placeholder="请输入"
@@ -146,7 +146,7 @@
               class="main_select--medium"
             >
               <el-option
-                v-for="item in notifyData.form.interval.options"
+                v-for="item in notifyData.form.interval.unit.options"
                 :key="item.value"
                 :label="item.label"
                 :value="item.value"
