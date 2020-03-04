@@ -8,10 +8,12 @@ ADMIN_EMAIL = cf.get('config', 'ADMIN_EMAIL')
 
 
 class Wechat(object):
+
     '''
         使用服务"Server酱"(http://sc.ftqq.com)，感谢大佬。
         send()
     '''
+
     def __init__(self, title, content, sckey):
         '''
             args:
@@ -35,5 +37,5 @@ class Wechat(object):
             return ({'msg:': 'success', 'code': 200})
         else:
             from .mail_sender import Mail
-            Mail('Administrator', 'push wechat failed!', self.content, ADMIN_EMAIL).send()
+            Mail('Administrator', 'push wechat failed!', self.content + '\n' + '失败原因:' + str(eval(r.text)['errmsg']), ADMIN_EMAIL).send()
             return ({'msg:': 'failed:' + str(eval(r.text)['errmsg']), 'code': 500})

@@ -29,6 +29,7 @@ def push():
         'content': single_push_table_query['content'],
         'trigger_time': single_push_table_query['trigger_time']
     } for single_push_table_query in push_table_query]
+    print(push_list)
     try:
         for push in push_list:
             if push['trigger_time'] <= datetime.datetime.now():
