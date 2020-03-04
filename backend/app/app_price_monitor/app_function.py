@@ -34,7 +34,7 @@ def app_price_get(app_id):
         args:app_id(Int)
         returns:current_app_price(Float),update_time(Datetime)
     '''
-    app_price_query = app_price.select().where(app_price.app_id == app_id).order_by(app_price.update_time).limit(1).dicts()
+    app_price_query = app_price.select().where(app_price.app_id == app_id).order_by(-app_price.update_time).limit(1).dicts()
     if len(app_price_query) != 0:
         return (float(app_price_query[0]['price']), app_price_query[0]['update_time'].strftime("%Y-%m-%d %H:%M:%S"))
     else:
