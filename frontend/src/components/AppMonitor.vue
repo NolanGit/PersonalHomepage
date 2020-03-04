@@ -71,18 +71,18 @@
     </el-dialog>
 
     <!--编辑提醒界面-->
-    <el-dialog title="提醒" :visible.sync="notify.visible" width="40%">
-      <el-form ref="form" :model="notify.form" size="mini">
+    <el-dialog title="提醒" :visible.sync="notifyData.visible" width="40%">
+      <el-form ref="form" :model="notifyData.form" size="mini">
         <el-form-item label="是否推送">
           <div class="div-flex">
             <el-select
-              v-model="notify.form.notify.select"
+              v-model="notifyData.form.notify.select"
               placeholder="请选择"
               size="small"
               class="main_select--medium"
             >
               <el-option
-                v-for="item in notify.form.notify.options"
+                v-for="item in notifyData.form.notify.options"
                 :key="item.value"
                 :label="item.label"
                 :value="item.value"
@@ -90,16 +90,16 @@
             </el-select>
           </div>
         </el-form-item>
-        <el-form-item label="推送方式" :v-show="notify.form.notify.select==1">
+        <el-form-item label="推送方式" :v-show="notifyData.form.notify.select==1">
           <div class="div-flex">
             <el-select
-              v-model="notify.form.notifyMethod.select"
+              v-model="notifyData.form.notifyMethod.select"
               placeholder="请选择"
               size="small"
               class="main_select--medium"
             >
               <el-option
-                v-for="item in notify.form.notifyMethod.options"
+                v-for="item in notifyData.form.notifyMethod.options"
                 :key="item.value"
                 :label="item.label"
                 :value="item.value"
@@ -107,10 +107,10 @@
             </el-select>
           </div>
         </el-form-item>
-        <el-form-item label="提醒时间" :v-show="notify.form.notify.select==1">
+        <el-form-item label="提醒时间" :v-show="notifyData.form.notify.select==1">
           <div class="div-flex">
             <el-date-picker
-              v-model="notify.form.triggerDate"
+              v-model="notifyData.form.triggerDate"
               type="date"
               placeholder="选择日期"
               value-format="yyyy-MM-dd"
@@ -118,7 +118,7 @@
               class="main_select--medium"
             ></el-date-picker>
             <el-time-select
-              v-model="notify.form.triggerTime"
+              v-model="notifyData.form.triggerTime"
               :picker-options="{
               start: '00:00',
               step: '00:15',
@@ -130,23 +130,23 @@
             ></el-time-select>
           </div>
         </el-form-item>
-        <el-form-item label="提醒间隔" :v-show="notify.form.notify.select==1">
+        <el-form-item label="提醒间隔" :v-show="notifyData.form.notify.select==1">
           <div class="div-flex">
             <p class="inline_margin--medium">每</p>
             <el-input
-              v-model="notify.form.interval.value"
+              v-model="notifyData.form.interval.value"
               placeholder="请输入"
               size="small"
               class="main_input--tiny inline_margin--small"
             ></el-input>
             <el-select
-              v-model="notify.form.interval.unit.select"
+              v-model="notifyData.form.interval.unit.select"
               placeholder="请选择"
               size="small"
               class="main_select--medium"
             >
               <el-option
-                v-for="item in notify.form.interval.options"
+                v-for="item in notifyData.form.interval.options"
                 :key="item.value"
                 :label="item.label"
                 :value="item.value"
@@ -188,7 +188,7 @@ export default {
           expect_price: 0
         }
       },
-      notify: {
+      notifyData: {
         visible: false,
         form: {
           notify: {
