@@ -7,13 +7,13 @@ sys.path.append(currentUrl)
 from flask import Flask
 from config import config
 from flask_cors import CORS
-from .model.model_function import BaseModel
+from .model.model_function import db
 from playhouse.flask_utils import FlaskDB
 
 
 def create_app(config_name):
     app = Flask(__name__, static_folder="../../dist/static", template_folder="../../dist")
-    FlaskDB(app, BaseModel.database)
+    FlaskDB(app, db)
     CORS(app, supports_credentials=True)
     app.config.from_object(config[config_name])
     config[config_name].init_app(app)
