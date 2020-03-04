@@ -5,7 +5,7 @@
       placement="top"
       width="160"
       v-model="visible"
-      v-show="user==''"
+      v-show="user==null"
     >
       <div style="text-align: right; margin: 0">
         <el-input
