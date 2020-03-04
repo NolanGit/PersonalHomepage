@@ -115,8 +115,6 @@ export default {
           this.user = res2.user;
           this.$cookies.set("user", JSON.stringify(res2.user));
           this.$cookies.set("userID", JSON.stringify(res2.user_id));
-          sessionStorage.setItem("user", JSON.stringify(res2.user));
-          sessionStorage.setItem("userID", JSON.stringify(res2.user_id));
           this.$emit("user", this.user);
         } catch (e) {
           console.log(e);
@@ -128,8 +126,6 @@ export default {
       }
     },
     logout() {
-      sessionStorage.removeItem("user");
-      sessionStorage.removeItem("userID");
       this.$cookies.remove("user_key");
       this.$cookies.remove("user");
       this.$cookies.remove("userID");
@@ -154,8 +150,7 @@ export default {
   created() {},
   mounted() {
     try {
-      var user = this.$cookies.get("user");
-      console.log(user)
+      var user = this.$cookies.get("user").replace(/\"/g, "");
       this.user = user;
     } catch (error) {}
   }
