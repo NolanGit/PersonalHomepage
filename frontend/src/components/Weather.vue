@@ -93,7 +93,7 @@ export default {
   name: "weather",
   props: {
     user: String,
-    userID: Number
+    user_id: Number
   },
   data() {
     return {
@@ -146,7 +146,7 @@ export default {
     async locationGet() {
       try {
         const { data: res } = await axios.post(api.locationGet, {
-          user_id: this.userID
+          user_id: this.user_id
         });
         this.getWeatherDatafront(res.data);
       } catch (e) {

@@ -172,7 +172,7 @@ const api = {
 export default {
   name: "AppMonitor",
   props: {
-    userID: String
+    user_id: String
   },
   components: {},
   data() {
@@ -249,7 +249,7 @@ export default {
     async appGet() {
       try {
         const { data: res } = await axios.post(api.get, {
-          user_id: this.userID
+          user_id: this.user_id
         });
         const STEP = 4; // 每页几行
         let temp = [];
@@ -275,7 +275,7 @@ export default {
       if (this.edit.title == "新增App") {
         try {
           const { data: res } = await axios.post(api.add, {
-            user_id: this.userID,
+            user_id: this.user_id,
             name: this.edit.form.name,
             url: this.edit.form.url,
             expect_price: this.edit.form.expect_price

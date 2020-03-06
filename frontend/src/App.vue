@@ -14,7 +14,7 @@
             v-show="show.weather"
             class="margin_left-medium margin_right-medium"
           >
-            <weather :userID="userID" @done="done('weather')" />
+            <weather :user_id="user_id" @done="done('weather')" />
           </el-card>
         </transition>
       </el-col>
@@ -25,14 +25,14 @@
             v-show="show.bookmarks"
             class="margin_left-medium margin_right-medium"
           >
-            <bookmarks :userID="userID" @done="done('bookmarks')"  />
+            <bookmarks :user_id="user_id" @done="done('bookmarks')"  />
           </el-card>
         </transition>
       </el-col>
       <el-col :span="8">
         <transition name="el-zoom-in-top">
           <el-card shadow="hover" v-show="show.app" class="margin_left-medium margin_right-medium">
-            <appMonitor :userID="userID" @done="done('app')" />
+            <appMonitor :user_id="user_id" @done="done('app')" />
           </el-card>
         </transition>
       </el-col>
@@ -62,7 +62,7 @@ export default {
   data() {
     return {
       user: "",
-      userID: 0,
+      user_id: 0,
       widget:[],
       locations: [],
       bookmarksData: [],
@@ -78,13 +78,13 @@ export default {
     async userInfo() {
       try {
         const { data: res } = await axios.post(api.userInfo, {
-          user_id: this.userID
+          user_id: this.user_id
         });
       } catch (e) {
         if (e.response.status == 401) {
           this.$cookies.remove("user_key");
           this.$cookies.remove("user");
-          this.$cookies.remove("userID");
+          this.$cookies.remove("user_id");
           this.loginSwitch = false;
           this.$nextTick(() => {
             this.loginSwitch = true;
@@ -102,7 +102,7 @@ export default {
     async widgetGet() {
       try {
         const { data: res } = await axios.post(api.widget, {
-          user_id: this.userID
+          user_id: this.user_id
         });
         this.widget = res.data;
         console.log(this.widget)
@@ -140,10 +140,10 @@ export default {
   created() {
     try {
       this.user = this.$cookies.get("user").replace(/\"/g, "");
-      this.userID = this.$cookies.get("userID").replace(/\"/g, "");
+      this.user_id = this.$cookies.get("user_id").replace(/\"/g, "");
     } catch (error) {
       this.user = "";
-      this.userID = 0;
+      this.user_id = 0;
     }
   },
   mounted() {

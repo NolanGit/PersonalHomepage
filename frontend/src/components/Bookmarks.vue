@@ -132,7 +132,7 @@ const api = {
 export default {
   name: "bookmarks",
   props: {
-    userID: Number,
+    user_id: Number,
   },
   components: {
     SlickItem,
@@ -188,7 +188,7 @@ export default {
     async bookmarksGet() {
       try {
         const { data: res } = await axios.post(api.get, {
-          user_id: this.userID
+          user_id: this.user_id
         });
         this.bookmarksDataRaw = res.data;
         this.bookmarksSuitesGenerate();

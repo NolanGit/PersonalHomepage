@@ -114,7 +114,7 @@ export default {
           this.$cookies.set("user_key", res2.user_key);
           this.user = res2.user;
           this.$cookies.set("user", JSON.stringify(res2.user));
-          this.$cookies.set("userID", JSON.stringify(res2.user_id));
+          this.$cookies.set("user_id", JSON.stringify(res2.user_id));
           this.$emit("user", this.user);
         } catch (e) {
           console.log(e);
@@ -128,7 +128,7 @@ export default {
     logout() {
       this.$cookies.remove("user_key");
       this.$cookies.remove("user");
-      this.$cookies.remove("userID");
+      this.$cookies.remove("user_id");
       this.user = "";
       this.$message({
         message: "退出成功！",
