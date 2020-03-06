@@ -16,7 +16,7 @@ def app_get(user_id=0):
     '''
         获取用户id下有效的app，user_id不传则获取全部
 
-        args:user_id(Int)(defalt:0)
+        args:user_id(Int)(default:0)
         returns:app_list(List)
     '''
     if user_id == 0:

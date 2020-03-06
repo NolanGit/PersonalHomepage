@@ -11,8 +11,11 @@ from ..model.search_model import search_engines, search_engines_log
 from ..model.weather_model import weather_personalized
 from ..model.bookmarks_model import bookmarks as bookmarks_table
 from ..model.bookmarks_model import icon as icon_table
+from ..model.widget_model import widget as widget_table
+from ..model.widget_model import widget_user as widget_user
 from ..login.login_funtion import User
 from ..privilege.privilege_control import permission_required
+from .main_fuction import MainUser
 
 URL_PREFIX = ''
 
@@ -24,30 +27,38 @@ def catch_all(path):
 
 
 @main.route('/userInfo', methods=['POST'])
-@permission_required(URL_PREFIX + '/userInfo')
 @cross_origin()
 def userInfo():
     try:
-        result = {}
         try:
-            user_name = request.get_json()['user']
-            user = User(user_name)
+            user_id = request.get_json()['user_id']
+            user = User(user_id=user_id)
+            user_name = user.user_name
+        except:
+            user_id = 0
+            user_name = ''
+
+        response = {'code': 200, 'msg': '成功！', 'data': {'user_id': user_id, 'user_name': user_name}}
+        return jsonify(response)
+    except Exception as e:
+        traceback.print_exc()
+        response = {'code': 500, 'msg': '失败！错误信息：' + str(e) + '，请联系管理员。', 'data': []}
+        return jsonify(response), 500
+
+
+@main.route('/widget', methods=['POST'])
+@permission_required(URL_PREFIX + '/widget')
+@cross_origin()
+def widget():
+    try:
+        try:
+            user_id = request.get_json()['user_id']
+            user = MainUser(user_id=user_id)
             user_id = user.user_id
         except:
             user_id = 0
 
-        if user_id != 0:
-            weather_personalized_query = weather_personalized.select().where((weather_personalized.user_id == user_id) & (weather_personalized.is_valid == 1)).dicts()
-            result['locations'] = []
-            for row in weather_personalized_query:
-                result['locations'].append(row['location'])
-
-        result['bookmarks'] = []
-        bookmarks_query = bookmarks_table.select().where((bookmarks_table.user_id == user_id) & (bookmarks_table.is_valid == 1)).order_by(bookmarks_table.order).dicts()
-        for row in bookmarks_query:
-            result['bookmarks'].append({'id': row['id'], 'name': row['name'], 'url': row['url'], 'icon': row['icon'], 'update_time': row['update_time']})
-
-        response = {'code': 200, 'msg': '成功！', 'data': result}
+        response = {'code': 200, 'msg': '成功！', 'data': user.get_widget().widget}
         return jsonify(response)
     except Exception as e:
         traceback.print_exc()

@@ -74,7 +74,7 @@
       <p>添加城市：</p>
       <el-input size="mini" v-model="popover.location" placeholder="城市名称，如：北京"></el-input>
       <div style="text-align: right; margin: 0">
-        <el-button type="primary" size="mini" @click="addLocation()">确定</el-button>
+        <el-button type="primary" size="mini" @click="locationAdd()">确定</el-button>
       </div>
       <el-button slot="reference" v-show="user!=undefined" icon="el-icon-plus" size="mini" circle></el-button>
     </el-popover>
@@ -85,14 +85,15 @@ import axios from "axios";
 import Router from "vue-router";
 const api = {
   weatherData: "/weather/weatherData",
-  weatherPersonalizedSave: "/weather/weatherPersonalizedSave"
+  locationAdd: "/weather/weatherPersonalizedSave",
+  locationGet: "/weather/get"
 };
 
 export default {
   name: "weather",
   props: {
-    locations: Array,
-    user: String
+    user: String,
+    userID: Number
   },
   data() {
     return {
@@ -122,16 +123,11 @@ export default {
       }
     };
   },
-  watch: {
-    locations(newVal, oldVal) {
-      this.getWeatherDatafront(newVal);
-    }
-  },
   methods: {
-    async addLocation() {
+    async locationAdd() {
       this.popover.visible = false;
       try {
-        const { data: res } = await axios.post(api.weatherPersonalizedSave, {
+        const { data: res } = await axios.post(api.locationAdd, {
           user: sessionStorage.getItem("user").replace(/\"/g, ""),
           location: this.popover.location
         });
@@ -139,6 +135,20 @@ export default {
           message: res["msg"],
           type: "success"
         });
+      } catch (e) {
+        console.log(e);
+        this.$message({
+          message: e.response.data.msg,
+          type: "error"
+        });
+      }
+    },
+    async locationGet() {
+      try {
+        const { data: res } = await axios.post(api.locationGet, {
+          user_id: this.userID
+        });
+        this.getWeatherDatafront(res.data);
       } catch (e) {
         console.log(e);
         this.$message({
@@ -425,7 +435,7 @@ export default {
           }
           this.todayShow = true;
         }
-        this.$emit("weatherLoaded", true);
+        this.$emit("done");
       } catch (e) {
         console.log(e);
         this.$message({

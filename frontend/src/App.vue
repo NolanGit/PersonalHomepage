@@ -14,7 +14,7 @@
             v-show="show.weather"
             class="margin_left-medium margin_right-medium"
           >
-            <weather @weatherLoaded="weatherLoaded" :locations="locations" :user="user" />
+            <weather :userID="userID" @done="done('weather')" :locations="locations" :user="user" />
           </el-card>
         </transition>
       </el-col>
@@ -47,6 +47,10 @@ import login from "./components/Login.vue";
 import weather from "./components/Weather.vue";
 import bookmarks from "./components/Bookmarks.vue";
 import appMonitor from "./components/AppMonitor.vue";
+const api = {
+  userInfo: "/userInfo",
+  widget: "/widget"
+};
 export default {
   components: {
     search,
@@ -58,7 +62,8 @@ export default {
   data() {
     return {
       user: "",
-      userID: Number,
+      userID: 0,
+      widget:[],
       locations: [],
       bookmarksData: [],
       show: {
@@ -72,12 +77,9 @@ export default {
   methods: {
     async userInfo() {
       try {
-        const { data: res } = await axios.post("/userInfo", {
-          user: this.user
+        const { data: res } = await axios.post(api.userInfo, {
+          user_id: this.userID
         });
-        this.locations = res.data["locations"];
-        this.bookmarksData = res.data["bookmarks"];
-        this.show.bookmarks = true;
       } catch (e) {
         if (e.response.status == 401) {
           this.$cookies.remove("user_key");
@@ -97,9 +99,23 @@ export default {
         }
       }
     },
+    async widgetGet() {
+      try {
+        const { data: res } = await axios.post(api.widget, {
+          user_id: this.userID
+        });
+        this.widget = res.data;
+        console.log(this.widget)
+      } catch (e) {
+        this.$message({
+          message: e.response.data.msg,
+          type: "error"
+        });
+      }
+    },
     userLoginedOrLogout(user) {
       if (user != "") {
-        this.userInfo();
+        this.widgetGet();
       } else {
         location.reload();
       }
@@ -123,17 +139,16 @@ export default {
   },
   created() {
     try {
-      var user = this.$cookies.get("user").replace(/\"/g, "");
-      var userID = this.$cookies.get("userID").replace(/\"/g, "");
+      this.user = this.$cookies.get("user").replace(/\"/g, "");
+      this.userID = this.$cookies.get("userID").replace(/\"/g, "");
     } catch (error) {
-      var user = undefined;
-      var userID = undefined;
+      this.user = "";
+      this.userID = 0;
     }
-    this.user = user;
-    this.userID = userID;
   },
   mounted() {
     this.userInfo();
+    this.widgetGet();
   }
 };
 </script>

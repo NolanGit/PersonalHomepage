@@ -6,12 +6,14 @@ except:
     sys.path.append('../../')
     from model.login_model import user
 
+
 class User(object):
 
     user_name = ''
     user_id = 0
     email = ''
     wechat_key = ''
+    widget=[]
 
     def __init__(self, user_name='', user_id=0):
         if user_id == 0:

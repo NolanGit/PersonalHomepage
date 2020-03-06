@@ -5,7 +5,7 @@
       placement="top"
       width="160"
       v-model="visible"
-      v-show="user==null"
+      v-show="user==''"
     >
       <div style="text-align: right; margin: 0">
         <el-input
@@ -150,9 +150,14 @@ export default {
   created() {},
   mounted() {
     try {
-      var user = this.$cookies.get("user").replace(/\"/g, "");
-      this.user = user;
-    } catch (error) {}
+      this.user = this.$cookies.get("user").replace(/\"/g, "");
+      console.log(this.user);
+      if (this.user == null) {
+        this.user = "";
+      }
+    } catch (error) {
+      this.user = "";
+    }
   }
 };
 </script>

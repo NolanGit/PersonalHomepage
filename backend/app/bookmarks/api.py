@@ -10,6 +10,33 @@ from flask import render_template, session, redirect, url_for, current_app, flas
 from ..model.bookmarks_model import icon
 from ..model.bookmarks_model import bookmarks as bookmarks_table
 from ..login.login_funtion import User
+from ..privilege.privilege_control import permission_required
+
+URL_PREFIX = 'bookmarks'
+
+@bookmarks.route('/get', methods=['POST'])
+@permission_required(URL_PREFIX + '/get')
+@cross_origin()
+def userInfo():
+    try:
+        result = []
+        try:
+            user_name = request.get_json()['user']
+            user = User(user_name)
+            user_id = user.user_id
+        except:
+            user_id = 0
+
+        bookmarks_query = bookmarks_table.select().where((bookmarks_table.user_id == user_id) & (bookmarks_table.is_valid == 1)).order_by(bookmarks_table.order).dicts()
+        for row in bookmarks_query:
+            result.append({'id': row['id'], 'name': row['name'], 'url': row['url'], 'icon': row['icon'], 'update_time': row['update_time']})
+
+        response = {'code': 200, 'msg': '成功！', 'data': result}
+        return jsonify(response)
+    except Exception as e:
+        traceback.print_exc()
+        response = {'code': 500, 'msg': '失败！错误信息：' + str(e) + '，请联系管理员。', 'data': []}
+        return jsonify(response), 500
 
 
 # @bookmarks.route('/bookmarksData', methods=['POST'])
