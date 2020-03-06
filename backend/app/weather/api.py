@@ -24,9 +24,7 @@ def userInfo():
     try:
         result = {}
         try:
-            user_name = request.get_json()['user']
-            user = User(user_name)
-            user_id = user.user_id
+            user_id = request.get_json()['user_id']
         except:
             user_id = 0
 
