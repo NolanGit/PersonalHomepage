@@ -447,7 +447,7 @@ export default {
   },
   created() {},
   mounted() {
-    //this.getWeatherDatafront(this.locations);
+    this.locationGet()
   }
 };
 </script>
