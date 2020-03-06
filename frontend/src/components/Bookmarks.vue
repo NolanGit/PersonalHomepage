@@ -199,6 +199,7 @@ export default {
           user_id: this.userID
         });
         this.bookmarksDataRaw = res.data;
+          this.$emit("done");
       } catch (e) {
         console.log(e);
         this.$message({
@@ -220,7 +221,7 @@ export default {
             message: res["msg"],
             type: "success"
           });
-          this.$emit("bookmarksUpdate");
+          this.bookmarksGet()
         } catch (e) {
           console.log(e);
           this.$message({

@@ -9,7 +9,7 @@ from .model_function import BaseModel
 
 
 class widget(BaseModel):
-    widget_name = CharField()
+    name = CharField()
     is_valid = IntegerField()
     is_login_needed = IntegerField()
     update_time = DateTimeField()

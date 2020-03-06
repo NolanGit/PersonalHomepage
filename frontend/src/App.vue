@@ -14,7 +14,7 @@
             v-show="show.weather"
             class="margin_left-medium margin_right-medium"
           >
-            <weather :userID="userID" @done="done('weather')" :locations="locations" :user="user" />
+            <weather :userID="userID" @done="done('weather')" />
           </el-card>
         </transition>
       </el-col>
@@ -25,7 +25,7 @@
             v-show="show.bookmarks"
             class="margin_left-medium margin_right-medium"
           >
-            <bookmarks :bookmarksData="bookmarksData" :userID="userID" @bookmarksUpdate="userInfo" @done="done('bookmarks')"  />
+            <bookmarks :userID="userID" @done="done('bookmarks')"  />
           </el-card>
         </transition>
       </el-col>
