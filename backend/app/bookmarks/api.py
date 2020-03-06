@@ -19,17 +19,13 @@ URL_PREFIX = 'bookmarks'
 @cross_origin()
 def userInfo():
     try:
-        result = []
         try:
-            user_name = request.get_json()['user']
-            user = User(user_name)
-            user_id = user.user_id
+            user_id = request.get_json()['user_id']
         except:
             user_id = 0
 
         bookmarks_query = bookmarks_table.select().where((bookmarks_table.user_id == user_id) & (bookmarks_table.is_valid == 1)).order_by(bookmarks_table.order).dicts()
-        for row in bookmarks_query:
-            result.append({'id': row['id'], 'name': row['name'], 'url': row['url'], 'icon': row['icon'], 'update_time': row['update_time']})
+        result=[{'id': row['id'], 'name': row['name'], 'url': row['url'], 'icon': row['icon'], 'update_time': row['update_time']} for row in bookmarks_query]
 
         response = {'code': 200, 'msg': '成功！', 'data': result}
         return jsonify(response)
@@ -37,28 +33,6 @@ def userInfo():
         traceback.print_exc()
         response = {'code': 500, 'msg': '失败！错误信息：' + str(e) + '，请联系管理员。', 'data': []}
         return jsonify(response), 500
-
-
-# @bookmarks.route('/bookmarksData', methods=['POST'])
-# @cross_origin()
-# def bookmarksData():
-#     try:
-#         result = []
-#         try:
-#             user_name = request.get_json()['user']
-#             user = User(user_name)
-#             user_id = user.user_id
-#         except:
-#             user_id = 0
-#         bookmarks_query = bookmarks_table.select().where((bookmarks_table.user_id == user_id) & (bookmarks_table.is_valid == 1)).order_by(bookmarks_table.order).dicts()
-#         for row in bookmarks_query:
-#             result.append({'id': row['id'], 'name': row['name'], 'url': row['url'], 'icon': row['icon'], 'update_time': row['update_time']})
-#         response = {'code': 200, 'msg': '成功！', 'data': result}
-#         return jsonify(response)
-
-#     except Exception as e:
-#         response = {'code': 500, 'msg': '失败！错误信息：' + str(e) + '，请联系管理员。', 'data': []}
-#         return jsonify(response), 500
 
 
 @bookmarks.route('/bookmarksAdd', methods=['POST'])

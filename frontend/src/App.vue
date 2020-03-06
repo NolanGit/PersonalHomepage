@@ -25,7 +25,7 @@
             v-show="show.bookmarks"
             class="margin_left-medium margin_right-medium"
           >
-            <bookmarks :bookmarksData="bookmarksData" @bookmarksUpdate="userInfo" :user="user" />
+            <bookmarks :bookmarksData="bookmarksData" :userID="userID" @bookmarksUpdate="userInfo" @done="done('bookmarks')"  />
           </el-card>
         </transition>
       </el-col>

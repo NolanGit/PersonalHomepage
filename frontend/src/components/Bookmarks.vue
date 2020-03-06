@@ -124,6 +124,7 @@ import IconComponet from "./common/Icon.vue";
 import { SlickList, SlickItem } from "vue-slicksort";
 import { ContainerMixin, ElementMixin } from "vue-slicksort";
 const api = {
+  get: "/bookmarks/get",
   bookmarksAdd: "/bookmarks/bookmarksAdd",
   bookmarksEdit: "/bookmarks/bookmarksEdit",
   icon: "/icon"
@@ -132,6 +133,7 @@ export default {
   name: "bookmarks",
   props: {
     user: String,
+    userID: Number,
     bookmarksData: Array
   },
   components: {
@@ -190,6 +192,20 @@ export default {
         }
       }
       this.bookmarksSuites = temp2;
+    },
+    async bookmarksGet() {
+      try {
+        const { data: res } = await axios.post(api.get, {
+          user_id: this.userID
+        });
+        this.bookmarksDataRaw = res.data;
+      } catch (e) {
+        console.log(e);
+        this.$message({
+          message: e.response.data.msg,
+          type: "error"
+        });
+      }
     },
     async bookmarksEditFormConfirmClicked() {
       if (this.bookmarksEditForm.title == "新增书签") {
@@ -294,6 +310,9 @@ export default {
       this.bookmarksEditForm.icon = data;
       this.icon.visible = false;
     }
+  },
+  mounted() {
+    this.bookmarksGet();
   }
 };
 </script>
