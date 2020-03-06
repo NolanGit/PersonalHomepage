@@ -32,7 +32,7 @@
       <el-col :span="8">
         <transition name="el-zoom-in-top">
           <el-card shadow="hover" v-show="show.app" class="margin_left-medium margin_right-medium">
-            <appMonitor :user="user" :userID="userID" @done="done('app')" />
+            <appMonitor :userID="userID" @done="done('app')" />
           </el-card>
         </transition>
       </el-col>

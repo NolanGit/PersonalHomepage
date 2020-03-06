@@ -172,7 +172,6 @@ const api = {
 export default {
   name: "AppMonitor",
   props: {
-    user: String,
     userID: String
   },
   components: {},

@@ -132,20 +132,12 @@ const api = {
 export default {
   name: "bookmarks",
   props: {
-    user: String,
     userID: Number,
-    bookmarksData: Array
   },
   components: {
     SlickItem,
     SlickList,
     IconComponet
-  },
-  watch: {
-    bookmarksData(newVal, oldVal) {
-      this.bookmarksDataRaw = newVal;
-      this.bookmarksSuitesGenerate();
-    }
   },
   data() {
     return {
@@ -199,7 +191,8 @@ export default {
           user_id: this.userID
         });
         this.bookmarksDataRaw = res.data;
-          this.$emit("done");
+        this.bookmarksSuitesGenerate();
+        this.$emit("done");
       } catch (e) {
         console.log(e);
         this.$message({
@@ -221,7 +214,7 @@ export default {
             message: res["msg"],
             type: "success"
           });
-          this.bookmarksGet()
+          this.bookmarksGet();
         } catch (e) {
           console.log(e);
           this.$message({
