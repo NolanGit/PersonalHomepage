@@ -15,7 +15,7 @@ from ..privilege.privilege_control import permission_required
 URL_PREFIX = 'bookmarks'
 
 @bookmarks.route('/get', methods=['POST'])
-@permission_required(URL_PREFIX + '/get')
+#@permission_required(URL_PREFIX + '/get')
 @cross_origin()
 def userInfo():
     try:

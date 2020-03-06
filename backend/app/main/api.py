@@ -47,7 +47,7 @@ def userInfo():
 
 
 @main.route('/widget', methods=['POST'])
-@permission_required(URL_PREFIX + '/widget')
+#@permission_required(URL_PREFIX + '/widget')
 @cross_origin()
 def widget():
     try:
