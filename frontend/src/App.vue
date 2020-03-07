@@ -11,7 +11,7 @@
         <transition name="el-zoom-in-top">
           <el-card
             shadow="hover"
-            v-show="singleWidget.show"
+            :v-show="singleWidget.show"
             class="margin_left-medium margin_right-medium"
           >
             <weather
@@ -96,9 +96,8 @@ export default {
         });
         this.widget = res.data;
         for (let x = 0; x < this.widget.length; x++) {
-          this.widget[x].show = true;
+          this.widget[x].show = false;
         }
-        console.log(this.widget);
       } catch (e) {
         this.$message({
           message: e.response.data.msg,
@@ -117,14 +116,12 @@ export default {
       this.show.weather = true;
     },
     done(para) {
-      console.log(this.widget);
       for (let x = 0; x < this.widget.length; x++) {
         if (this.widget[x].name == para) {
           this.widget[x].show = true;
           break;
         }
       }
-      console.log(this.widget);
     }
   },
   created() {
