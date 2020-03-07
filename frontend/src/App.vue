@@ -94,11 +94,12 @@ export default {
         const { data: res } = await axios.post(api.widget, {
           user_id: this.user_id
         });
-        for (let x = 0; x < this.res.data.length; x++) {
-          this.res.data[x].show = false;
+        for (let x = 0; x < res.data.length; x++) {
+          res.data[x].show = false;
         }
         this.widget = res.data;
       } catch (e) {
+        console.log(e)
         this.$message({
           message: e.response.data.msg,
           type: "error"
