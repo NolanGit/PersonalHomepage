@@ -148,7 +148,7 @@ export default {
         const { data: res } = await axios.post(api.locationGet, {
           user_id: this.user_id
         });
-        this.getWeatherDatafront(res.data);
+        this.getWeatherDatafront(res.data.locations);
       } catch (e) {
         console.log(e);
         this.$message({

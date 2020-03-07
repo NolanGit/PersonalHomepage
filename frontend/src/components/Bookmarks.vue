@@ -122,7 +122,6 @@ import axios from "axios";
 import Router from "vue-router";
 import IconComponet from "./common/Icon.vue";
 import { SlickList, SlickItem } from "vue-slicksort";
-import { ContainerMixin, ElementMixin } from "vue-slicksort";
 const api = {
   get: "/bookmarks/get",
   bookmarksAdd: "/bookmarks/bookmarksAdd",
