@@ -96,7 +96,7 @@ export default {
         });
         this.widget = res.data;
         for (let x = 0; x < this.widget.length; x++) {
-          this.widget[x].show = false;
+          this.widget[x].show = true;
         }
         console.log(this.widget);
       } catch (e) {
