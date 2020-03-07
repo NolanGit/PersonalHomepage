@@ -95,6 +95,9 @@ export default {
           user_id: this.user_id
         });
         this.widget = res.data;
+        for (let x = 0; x < this.widget.length; x++) {
+          this.widget[x].show = false;
+        }
         console.log(this.widget);
       } catch (e) {
         this.$message({
@@ -114,14 +117,14 @@ export default {
       this.show.weather = true;
     },
     done(para) {
+      console.log(this.widget);
       for (let x = 0; x < this.widget.length; x++) {
-        console.log(this.widget[x].name);
-        console.log(para);
         if (this.widget[x].name == para) {
           this.widget[x].show = true;
           break;
         }
       }
+      console.log(this.widget);
     }
   },
   created() {
