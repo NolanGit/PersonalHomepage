@@ -92,10 +92,21 @@ export default {
         });
       }
     },
+    userIdFlush() {
+      try {
+        this.user = this.$cookies.get("user").replace(/\"/g, "");
+        this.user_id = this.$cookies.get("user_id").replace(/\"/g, "");
+      } catch (error) {
+        this.user = "";
+        this.user_id = 0;
+      }
+    },
     userLoginedOrLogout(user) {
       if (user != "") {
+        this.userIdFlush();
         this.widgetGet();
       } else {
+        this.userIdFlush();
         location.reload();
       }
     },
@@ -107,13 +118,7 @@ export default {
     }
   },
   created() {
-    try {
-      this.user = this.$cookies.get("user").replace(/\"/g, "");
-      this.user_id = this.$cookies.get("user_id").replace(/\"/g, "");
-    } catch (error) {
-      this.user = "";
-      this.user_id = 0;
-    }
+    this.userIdFlush();
   },
   mounted() {
     this.userInfo();
