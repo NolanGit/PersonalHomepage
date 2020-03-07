@@ -11,7 +11,7 @@
         <transition name="el-zoom-in-top">
           <el-card
             shadow="hover"
-            v-show="singleWidget.show==true"
+            v-show="singleWidget.show"
             class="margin_left-medium margin_right-medium"
           >
             <weather
@@ -94,10 +94,10 @@ export default {
         const { data: res } = await axios.post(api.widget, {
           user_id: this.user_id
         });
-        this.widget = res.data;
-        for (let x = 0; x < this.widget.length; x++) {
-          this.widget[x].show = false;
+        for (let x = 0; x < this.res.data.length; x++) {
+          this.res.data[x].show = false;
         }
+        this.widget = res.data;
       } catch (e) {
         this.$message({
           message: e.response.data.msg,
@@ -119,10 +119,10 @@ export default {
       for (let x = 0; x < this.widget.length; x++) {
         if (this.widget[x].name == para) {
           this.widget[x].show = true;
-          this.$nextTick(() => {});
           break;
         }
       }
+      this.$nextTick(() => {});
     }
   },
   created() {
