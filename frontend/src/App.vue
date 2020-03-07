@@ -115,6 +115,8 @@ export default {
     },
     done(para) {
       for (let x = 0; x < this.widget.length; x++) {
+        console.log(this.widget[x].name);
+        console.log(para);
         if (this.widget[x].name == para) {
           this.widget[x].show = true;
           break;
