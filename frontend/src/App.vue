@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <el-row class="loginRow">
-      <login v-if="loginSwitch" @user="userLoginedOrLogout" />
+      <login @user="userLoginedOrLogout" />
     </el-row>
     <el-row class="searchRow">
       <search />
@@ -55,13 +55,7 @@ export default {
     return {
       user: "",
       user_id: 0,
-      widget: [],
-      show: {
-        weather: false,
-        bookmarks: false,
-        app: false
-      },
-      loginSwitch: true
+      widget: []
     };
   },
   methods: {
@@ -75,8 +69,6 @@ export default {
           this.$cookies.remove("user_key");
           this.$cookies.remove("user");
           this.$cookies.remove("user_id");
-          this.loginSwitch = true;
-          this.$nextTick(() => {});
         } else if (e.response.status == 403) {
           console.log(e.response.data.msg);
         } else {
