@@ -75,10 +75,8 @@ export default {
           this.$cookies.remove("user_key");
           this.$cookies.remove("user");
           this.$cookies.remove("user_id");
-          this.loginSwitch = false;
-          this.$nextTick(() => {
-            this.loginSwitch = true;
-          });
+          this.loginSwitch = true;
+          this.$nextTick(() => {});
         } else if (e.response.status == 403) {
           console.log(e.response.data.msg);
         } else {
@@ -99,7 +97,7 @@ export default {
         }
         this.widget = res.data;
       } catch (e) {
-        console.log(e)
+        console.log(e);
         this.$message({
           message: e.response.data.msg,
           type: "error"
@@ -123,7 +121,6 @@ export default {
           break;
         }
       }
-      this.$nextTick(() => {});
     }
   },
   created() {
