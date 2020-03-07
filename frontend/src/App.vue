@@ -11,7 +11,7 @@
         <transition name="el-zoom-in-top">
           <el-card
             shadow="hover"
-            :v-show="singleWidget.show"
+            v-show="singleWidget.show==true"
             class="margin_left-medium margin_right-medium"
           >
             <weather
