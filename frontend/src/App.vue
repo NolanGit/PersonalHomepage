@@ -11,20 +11,20 @@
         <transition name="el-zoom-in-top">
           <el-card
             shadow="hover"
-            v-show="show.weather"
+            v-show="singleWidget.show"
             class="margin_left-medium margin_right-medium"
           >
             <weather
-              :v-if="singleWidget.name=='weather'"
+              v-if="singleWidget.name=='weather'"
               :user_id="user_id"
               @done="done('weather')"
             />
             <bookmarks
-              :v-if="singleWidget.name=='bookmarks'"
+              v-if="singleWidget.name=='bookmarks'"
               :user_id="user_id"
               @done="done('bookmarks')"
             />
-            <appMonitor :v-if="singleWidget.name=='app'" :user_id="user_id" @done="done('app')" />
+            <appMonitor v-if="singleWidget.name=='app'" :user_id="user_id" @done="done('app')" />
           </el-card>
         </transition>
       </el-col>
