@@ -6,37 +6,29 @@
     <el-row class="searchRow">
       <search />
     </el-row>
-    <el-row class="cardRow">
-      <el-col :span="8">
+    <div class="cardRow div-flex">
+      <el-col :span="singleWidget.span" v-for="singleWidget in widget" :key="singleWidget">
         <transition name="el-zoom-in-top">
           <el-card
             shadow="hover"
             v-show="show.weather"
             class="margin_left-medium margin_right-medium"
           >
-            <weather :user_id="user_id" @done="done('weather')" />
+            <weather
+              :v-if="singleWidget.name=='weather'"
+              :user_id="user_id"
+              @done="done('weather')"
+            />
+            <bookmarks
+              :v-if="singleWidget.name=='bookmarks'"
+              :user_id="user_id"
+              @done="done('bookmarks')"
+            />
+            <appMonitor :v-if="singleWidget.name=='app'" :user_id="user_id" @done="done('app')" />
           </el-card>
         </transition>
       </el-col>
-      <el-col :span="8">
-        <transition name="el-zoom-in-top">
-          <el-card
-            shadow="hover"
-            v-show="show.bookmarks"
-            class="margin_left-medium margin_right-medium"
-          >
-            <bookmarks :user_id="user_id" @done="done('bookmarks')"  />
-          </el-card>
-        </transition>
-      </el-col>
-      <el-col :span="8">
-        <transition name="el-zoom-in-top">
-          <el-card shadow="hover" v-show="show.app" class="margin_left-medium margin_right-medium">
-            <appMonitor :user_id="user_id" @done="done('app')" />
-          </el-card>
-        </transition>
-      </el-col>
-    </el-row>
+    </div>
   </div>
 </template>
 
@@ -63,9 +55,7 @@ export default {
     return {
       user: "",
       user_id: 0,
-      widget:[],
-      locations: [],
-      bookmarksData: [],
+      widget: [],
       show: {
         weather: false,
         bookmarks: false,
@@ -105,7 +95,7 @@ export default {
           user_id: this.user_id
         });
         this.widget = res.data;
-        console.log(this.widget)
+        console.log(this.widget);
       } catch (e) {
         this.$message({
           message: e.response.data.msg,
@@ -124,16 +114,11 @@ export default {
       this.show.weather = true;
     },
     done(para) {
-      switch (para) {
-        case "weather":
-          this.show.weather = true;
+      for (let x = 0; x < this.widget.length; x++) {
+        if (this.widget[x].name == para) {
+          this.widget[x].show = true;
           break;
-        case "bookmarks":
-          this.show.bookmarks = true;
-          break;
-        case "app":
-          this.show.app = true;
-          break;
+        }
       }
     }
   },

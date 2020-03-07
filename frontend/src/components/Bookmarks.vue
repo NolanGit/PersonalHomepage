@@ -141,8 +141,8 @@ export default {
   },
   data() {
     return {
-      bookmarksDataRaw: [],
-      bookmarksSuites: [],
+      bookmarksDataRaw: [],//未处理的原始数据
+      bookmarksSuites: [],//分组后的数据，原始数据
       bookmarksEdit: {
         visible: false,
         list: []
@@ -165,8 +165,8 @@ export default {
       window.open(bookmarkUrl);
     },
     bookmarksSuitesGenerate() {
-      const STEP1 = 4; // 每行几个
-      const STEP2 = 3; // 共有几行
+      const STEP1 = 4; // 每行有几个
+      const STEP2 = 3; // 每页有几行
       let temp1 = [];
       let temp2 = [];
       for (let x = 0; x < this.bookmarksDataRaw.length; x += STEP1) {

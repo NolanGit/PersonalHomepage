@@ -29,7 +29,8 @@ class MainUser(User):
             'id': single_user_widget['widget_id'],
             'order': single_user_widget['order'],
             'name': cf.dict_list_get_single_element(widget_list, 'id', single_user_widget['widget_id'], 'name', single_user_widget['widget_id'] - 1),
-            'is_login_needed': cf.dict_list_get_single_element(widget_list, 'id', single_user_widget['widget_id'], 'is_login_needed', single_user_widget['widget_id'] - 1)
+            'is_login_needed': cf.dict_list_get_single_element(widget_list, 'id', single_user_widget['widget_id'], 'is_login_needed', single_user_widget['widget_id'] - 1),
+            'span': cf.dict_list_get_single_element(widget_list, 'id', single_user_widget['widget_id'], 'span', single_user_widget['widget_id'] - 1)
         } for single_user_widget in user_widget_list]
         self.widget = result
         return self
