@@ -118,9 +118,8 @@ export default {
     done(para) {
       for (let x = 0; x < this.widget.length; x++) {
         if (this.widget[x].name == para) {
-          this.$nextTick(() => {
-            this.widget[x].show = true;
-          });
+          this.widget[x].show = true;
+          this.$nextTick(() => {});
           break;
         }
       }
