@@ -106,7 +106,7 @@ export default {
             : this.$cookies.get("user_name").replace(/\"/g, "");
         this.user_id =
           this.$cookies.get("user_id") == null
-            ? ""
+            ? 0
             : this.$cookies.get("user_id");
         this.login_name =
           this.$cookies.get("login_name") == null
