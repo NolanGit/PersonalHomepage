@@ -22,11 +22,11 @@
       :size="drawer.size"
     >
       <div class="margin-medium" v-if="drawer.visible==true">
-        <div :user_id='user_id' v-if="activeComponent=='ConsoleScript'">
-          <ConsoleScript />
+        <div v-if="activeComponent=='ConsoleScript'">
+          <ConsoleScript :user_id="user_id" />
         </div>
         <div v-if="activeComponent=='ConsolePrivilege'">
-          <ConsolePrivilege />
+          <ConsolePrivilege :user_id="user_id" />
         </div>
       </div>
     </el-drawer>

@@ -272,6 +272,9 @@ export default {
     ConsolePrivilegeEditRole,
     ConsolePrivilegeEditPrivilege
   },
+  props: {
+    user_id: Number
+  },
   data() {
     return {
       activeSystem: "用户设置",
@@ -332,7 +335,7 @@ export default {
     async userGet() {
       try {
         const { data: res } = await axios.post(api.userGet, {
-          user: sessionStorage.getItem("user").replace(/\"/g, "")
+          user_id: this.user_id
         });
         for (let x = 0; x < res.data.length; x++) {
           if (res.data[x].is_valid == 1) {

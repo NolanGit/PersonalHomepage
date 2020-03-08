@@ -28,11 +28,11 @@ pf = privilegeFunction()
 @cross_origin()
 def userGet():
     try:
-        user_name = request.get_json()['user']
+        user_id = request.get_json()['user_id']
         result = []
         role_list = role_list_get()
         user_list = user_list_get()
-        current_role_id = cf.dict_list_get_single_element(user_list, 'name', user_name, 'role_id')
+        current_role_id = cf.dict_list_get_single_element(user_list, 'id', user_id, 'role_id')
         current_user_role = cf.dict_list_get_single_element(role_list, 'id', current_role_id, 'name', current_role_id - 1)
         if current_user_role == '管理员':
             for single_user in user_list:
@@ -40,7 +40,7 @@ def userGet():
                 single_user['role_name'] = cf.dict_list_get_single_element(role_list, 'id', single_user['role_id'], 'name', single_user['role_id'] - 1)
         else:
             for single_user in user_list:
-                if single_user['name'] == user_name:
+                if single_user['id'] == user_id:  # 允许编辑自己的
                     single_user['is_edit'] = 1
                 else:
                     single_user['is_edit'] = 0
