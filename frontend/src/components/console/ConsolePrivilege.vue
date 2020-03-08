@@ -215,6 +215,7 @@
         <div v-if="edit.type=='user' & edit.visible">
           <ConsolePrivilegeEditUser
             :user_id="user_id"
+            :login_name="login_name"
             :action="edit.userEditAction"
             @close="close()"
           />
@@ -273,7 +274,8 @@ export default {
     ConsolePrivilegeEditPrivilege
   },
   props: {
-    user_id: Number
+    user_id: Number,
+    login_name: String
   },
   data() {
     return {

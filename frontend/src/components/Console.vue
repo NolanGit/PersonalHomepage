@@ -26,7 +26,7 @@
           <ConsoleScript :user_id="user_id" />
         </div>
         <div v-if="activeComponent=='ConsolePrivilege'">
-          <ConsolePrivilege :user_id="user_id" />
+          <ConsolePrivilege :user_id="user_id" :login_name="login_name" />
         </div>
       </div>
     </el-drawer>
@@ -42,7 +42,8 @@ import { consoleGet } from "../api/console";
 export default {
   name: "Console",
   props: {
-    user_id: Number
+    user_id: Number,
+    login_name: String
   },
   components: {
     ConsoleScript,

@@ -111,6 +111,7 @@ export default {
   name: "ConsolePrivilegeEditUser",
   props: {
     user_id: Number,
+    login_name: String,
     action: String
   },
   data() {

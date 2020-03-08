@@ -9,9 +9,9 @@
     >
       <div style="text-align: right; margin: 0">
         <el-input
-          class="username"
+          class="login_name"
           size="small"
-          v-model="username"
+          v-model="login_name"
           placeholder="用户名"
           @keyup.enter.native="login()"
         ></el-input>
@@ -43,7 +43,7 @@
       :size="drawer.size"
       :before-close="drawerBeforeClose"
     >
-      <Console :user_id="user_id" v-if="drawer.title=='控制台'" />
+      <Console :user_id="user_id" :login_name="login_name" v-if="drawer.title=='控制台'" />
     </el-drawer>
   </div>
 </template>
@@ -64,7 +64,7 @@ export default {
   data() {
     return {
       visible: false,
-      username: "",
+      login_name: "",
       user_id: 0,
       password: "",
       salt: "",
@@ -84,11 +84,11 @@ export default {
     },
     async login() {
       if (
-        this.username === "" ||
+        this.login_name === "" ||
         this.password === "" ||
-        this.username === undefined ||
+        this.login_name === undefined ||
         this.password === undefined ||
-        this.username.length == 0 ||
+        this.login_name.length == 0 ||
         this.password.length == 0
       ) {
         this.$notify.error({
@@ -98,10 +98,10 @@ export default {
       } else {
         try {
           const { data: res } = await axios.post(api.userLoginSalt, {
-            login_name: this.username
+            login_name: this.login_name
           });
           var para = {
-            login_name: this.username,
+            login_name: this.login_name,
             password: this.md5It(
               this.md5It(this.md5It(this.password) + res.data.stable_salt) +
                 res.data.salt
@@ -184,7 +184,7 @@ export default {
   z-index: 99;
   margin-right: 20px;
 }
-.username {
+.login_name {
   padding-bottom: 3px;
 }
 .password {
