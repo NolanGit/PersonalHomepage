@@ -76,6 +76,8 @@ export default {
           });
         }
       }
+      this.userIdFlush();
+      this.widgetGet();
     },
     async widgetGet() {
       console.log("=====");
