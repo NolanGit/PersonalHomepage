@@ -28,7 +28,7 @@ pf = privilegeFunction()
 @cross_origin()
 def userGet():
     try:
-        user_id = request.get_json()['user_id']
+        user_id = int(request.get_json()['user_id'])
         role_list = role_list_get()
         user_list = user_list_get()
         current_role_id = cf.dict_list_get_single_element(user_list, 'id', user_id, 'role_id')
@@ -56,7 +56,7 @@ def userGet():
 @cross_origin()
 def userDisable():
     try:
-        user_id = request.get_json()['user_id']
+        user_id = int(request.get_json()['user_id'])
         user.update(is_valid=0, update_time=datetime.datetime.now()).where(user.id == user_id).execute()
         pf.del_user_id_to_redis(user_id)
         return jsonify({'code': 200, 'msg': '成功！'})
@@ -72,7 +72,7 @@ def userDisable():
 @cross_origin()
 def userEnable():
     try:
-        user_id = request.get_json()['user_id']
+        user_id = int(request.get_json()['user_id'])
         user.update(is_valid=1, update_time=datetime.datetime.now()).where(user.id == user_id).execute()
         return jsonify({'code': 200, 'msg': '成功！'})
     except Exception as e:
@@ -118,7 +118,7 @@ def userRoleChange():
 @cross_origin()
 def userDelete():
     try:
-        user_id = request.get_json()['user_id']
+        user_id = int(request.get_json()['user_id'])
         user_status = user.get(user.id == user_id).is_valid
         if user_status == 0:
             user.update(is_valid=-1, update_time=datetime.datetime.now()).where(user.id == user_id).execute()

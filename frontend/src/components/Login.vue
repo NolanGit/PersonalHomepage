@@ -164,6 +164,7 @@ export default {
     }
     try {
       this.user_id = this.$cookies.get("user_id");
+      console.log(this.user_id);
       if (this.user_id == null) {
         this.user_id = 0;
       }
