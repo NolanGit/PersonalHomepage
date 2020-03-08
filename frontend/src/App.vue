@@ -1,3 +1,8 @@
+// 前端页面主入口
+// 首先试图从cookie中恢复用户名、登录名、用户id以及用户密钥，如果cookie中没有，则置相关字段为空或0
+// 接着调用一个userInfo接口。
+// 此接口的作用是：当存在cookie时，检查cookie的有效性。
+// 如果cookie过期则清空cookie，置相关字段为空或0，获取不登陆状态可以使用的组件列表并加载；如果有效，则获取用户的组件并加载
 <template>
   <div id="app">
     <el-row class="loginRow">
@@ -63,8 +68,9 @@ export default {
       } catch (e) {
         if (e.response.status == 401) {
           this.$cookies.remove("user_key");
-          this.$cookies.remove("user");
+          this.$cookies.remove("user_name");
           this.$cookies.remove("user_id");
+          this.$cookies.remove("login_name");
           this.user = "";
           this.user_id = 0;
         } else if (e.response.status == 403) {
@@ -101,9 +107,9 @@ export default {
     userIdFlush() {
       try {
         this.user_name =
-          this.$cookies.get("user_name").replace(/\"/g, "") == null
+          this.$cookies.get("user_name") == null
             ? ""
-            : this.$cookies.get("user_name").replace(/\"/g, "");
+            : this.$cookies.get("user_name");
         this.user_id =
           this.$cookies.get("user_id") == null
             ? 0

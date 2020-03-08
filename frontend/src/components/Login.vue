@@ -1,3 +1,6 @@
+// 登录页不往父组件传递任何信息，登录/登出只会操作cookie后刷新页面以重加载父组件，父组件自行判断cookie状态
+// 登录页接受三个参数，父组件从cookie获取的用户id、用户名、登录名
+// 用户id用于判定按钮展示"登录"还是用户名，用户名用于在页面上展示，登录名用于传入子组件，便于修改用户信息（如改密码）时减少填写量
 <template>
   <div class="login-button">
     <el-popover
@@ -119,8 +122,14 @@ export default {
           });
           this.$cookies.set("user_key", res2.user_key);
           this.$cookies.set("user_name", JSON.stringify(res2.user_name));
-          this.$cookies.set("login_name", JSON.stringify(res2.login_name));
-          this.$cookies.set("user_id", JSON.stringify(res2.user_id));
+          this.$cookies.set(
+            "login_name",
+            JSON.stringify(res2.login_name.replace(/\"/g, ""))
+          );
+          this.$cookies.set(
+            "user_id",
+            JSON.stringify(res2.user_id.replace(/\"/g, ""))
+          );
           location.reload();
         } catch (e) {
           console.log(e);
