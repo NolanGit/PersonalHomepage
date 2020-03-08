@@ -219,7 +219,7 @@
     max-height: 40vh;
 }
 
-.margin-top-medium {
+.margin_top-medium {
     margin-top: 20px;
 }
 
@@ -262,7 +262,7 @@
     margin-right: 20px;
 }
 
-::-webkit-scrollbar {
+icon-medium::-webkit-scrollbar {
     width: 5px;
     height: 1px;
 }

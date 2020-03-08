@@ -29,7 +29,7 @@
       </el-carousel>
     </div>
 
-    <el-row type="flex" justify="center" class="margin-top-medium" v-show="user_id!=0">
+    <el-row type="flex" justify="center" class="margin_top-medium" v-show="user_id!=0">
       <el-button
         class="margin_left-mini margin_right-mini"
         size="small"

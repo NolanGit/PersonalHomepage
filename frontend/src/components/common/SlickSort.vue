@@ -17,7 +17,7 @@
         </SlickItem>
       </SlickList>
     </el-row>
-    <el-row>
+    <el-row class="margin_top-medium dialog-footer">
       <el-button class="edit-form-confirm" type="primary" size="small" @click="submit()">确定</el-button>
     </el-row>
   </div>
