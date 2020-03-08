@@ -148,6 +148,7 @@ export default {
     //关闭窗口
     drawerBeforeClose(done) {
       this.drawer.title = "";
+      done()
     }
   },
   created() {},
