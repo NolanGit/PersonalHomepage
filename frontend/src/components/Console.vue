@@ -80,10 +80,6 @@ export default {
   },
   created() {},
   mounted() {
-    try {
-      var user = sessionStorage.getItem("user").replace(/\"/g, "");
-      this.user = user;
-    } catch (error) {}
     this.consoleGetFront();
   }
 };
