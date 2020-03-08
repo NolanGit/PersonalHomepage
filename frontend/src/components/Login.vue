@@ -118,7 +118,7 @@ export default {
           this.$cookies.set("user", JSON.stringify(res2.user));
           this.$cookies.set("user_id", JSON.stringify(res2.user_id));
           this.user = res2.user;
-          this.user = res2.user_id;
+          this.user_id = res2.user_id;
           this.$emit("user", this.user);
         } catch (e) {
           console.log(e);
