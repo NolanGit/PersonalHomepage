@@ -65,6 +65,8 @@ export default {
           this.$cookies.remove("user_key");
           this.$cookies.remove("user");
           this.$cookies.remove("user_id");
+          this.user = "";
+          this.user_id = 0;
         } else if (e.response.status == 403) {
           console.log(e.response.data.msg);
         } else {

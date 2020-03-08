@@ -76,7 +76,7 @@
       <div style="text-align: right; margin: 0">
         <el-button type="primary" size="mini" @click="locationAdd()">确定</el-button>
       </div>
-      <el-button slot="reference" v-show="user!=undefined" icon="el-icon-plus" size="mini" circle></el-button>
+      <el-button slot="reference" v-show="user_id!=0" icon="el-icon-plus" size="mini" circle></el-button>
     </el-popover>
   </div>
 </template>

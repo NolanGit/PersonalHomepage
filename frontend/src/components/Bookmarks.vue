@@ -29,7 +29,7 @@
       </el-carousel>
     </div>
 
-    <el-row type="flex" justify="center" class="margin-top-medium" v-show="user!=undefined">
+    <el-row type="flex" justify="center" class="margin-top-medium" v-show="user_id!=0">
       <el-button
         class="margin_left-mini margin_right-mini"
         size="small"
@@ -81,7 +81,7 @@
 
     <!--编辑顺序界面-->
     <el-dialog title="编辑书签" :visible.sync="bookmarksEdit.visible" width="40%">
-      <SlickSort :list=bookmarksEdit.list @set="set" @edit="edit" ></SlickSort>
+      <SlickSort :list="bookmarksEdit.list" @set="set" @edit="edit"></SlickSort>
     </el-dialog>
 
     <!--选择图标界面-->

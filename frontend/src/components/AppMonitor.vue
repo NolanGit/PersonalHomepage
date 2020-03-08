@@ -14,7 +14,7 @@
         </el-table>
       </el-carousel-item>
     </el-carousel>
-    <el-row type="flex" justify="center" class="margin-top-medium" v-show="user!=undefined">
+    <el-row type="flex" justify="center" class="margin-top-medium" v-show="user_id!=0">
       <el-button
         class="margin_left-mini margin_right-mini"
         size="small"
