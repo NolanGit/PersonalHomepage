@@ -115,9 +115,10 @@ export default {
             type: "success"
           });
           this.$cookies.set("user_key", res2.user_key);
-          this.user = res2.user;
           this.$cookies.set("user", JSON.stringify(res2.user));
           this.$cookies.set("user_id", JSON.stringify(res2.user_id));
+          this.user = res2.user;
+          this.user = res2.user_id;
           this.$emit("user", this.user);
         } catch (e) {
           console.log(e);
@@ -133,6 +134,7 @@ export default {
       this.$cookies.remove("user");
       this.$cookies.remove("user_id");
       this.user = "";
+      this.user_id = 0;
       this.$message({
         message: "退出成功！",
         type: "success"
@@ -148,7 +150,7 @@ export default {
     //关闭窗口
     drawerBeforeClose(done) {
       this.drawer.title = "";
-      done()
+      done();
     }
   },
   created() {},
