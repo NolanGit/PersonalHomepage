@@ -1029,6 +1029,9 @@ const api = {
 };
 export default {
   name: "ConsoleScript",
+  props: {
+    user_id: Number
+  },
   data() {
     return {
       pickerOptions: {
@@ -1208,7 +1211,7 @@ export default {
             command: command,
             version: this.formData[this.activeTab].version,
             detail: command_get_result.detail,
-            user: sessionStorage.getItem("user").replace(/\"/g, "")
+            user_id: this.user_id
           })
           .then(res => {
             if (res.data.data["process_id"] == -1) {
@@ -1240,7 +1243,7 @@ export default {
         axios
           .post(api.runOutput, {
             process_id: process_id,
-            user: sessionStorage.getItem("user").replace(/\"/g, "")
+            user_id: this.user_id
           })
           .then(res => {
             if (res.data.data["status"] == -1) {
@@ -1346,7 +1349,7 @@ export default {
       try {
         axios
           .post(api.extraButtonScriptRun, {
-            user: sessionStorage.getItem("user").replace(/\"/g, ""),
+            user_id: this.user_id,
             command: command
           })
           .then(res => {
@@ -1378,7 +1381,7 @@ export default {
         axios
           .post(api.extraButtonScriptRun, {
             process_id: process_id,
-            user: sessionStorage.getItem("user").replace(/\"/g, "")
+            user_id: this.user_id
           })
           .then(res => {
             if (res.data.data["status"] == -1) {
@@ -1449,7 +1452,7 @@ export default {
     async getSubSystem() {
       try {
         const { data: res } = await axios.get(api.subSystem, {
-          user: sessionStorage.getItem("user").replace(/\"/g, "")
+          user_id: this.user_id
         });
         for (let x = 0; x < res.data.length; x++) {
           this.subSystem.push({
@@ -1479,7 +1482,7 @@ export default {
       }
       try {
         const { data: res } = await axios.post(api.subSystemScript, {
-          user: sessionStorage.getItem("user").replace(/\"/g, ""),
+          user_id: this.user_id,
           sub_system_id: this.subSystem[subSystemIndex].id
         });
         this.formData = [];
@@ -1539,7 +1542,7 @@ export default {
       this.$confirm("确定要停止运行吗?", "提示", {}).then(async () => {
         try {
           const { data: res } = await axios.post(api.terminate, {
-            user: sessionStorage.getItem("user").replace(/\"/g, ""),
+            user_id: this.user_id,
             process_id: this.output.process_id
           });
           this.$message({
@@ -1567,7 +1570,7 @@ export default {
           start_script: this.edit.start_script,
           type: Number(this.edit.type),
           detail: this.edit.formData,
-          user: sessionStorage.getItem("user").replace(/\"/g, "")
+          user_id: this.user_id
         });
         this.$message({
           message: res.msg,
@@ -1589,7 +1592,7 @@ export default {
       try {
         const { data: res } = await axios.post(api.replay, {
           script_id: this.formData[this.activeTab].id,
-          user: sessionStorage.getItem("user").replace(/\"/g, "")
+          user_id: this.user_id
         });
         if (this.formData[this.activeTab].version != res.data.version) {
           this.$message({
@@ -1639,7 +1642,7 @@ export default {
           try {
             const { data: res } = await axios.post(api.delete, {
               script_id: this.formData[this.activeTab].id,
-              user: sessionStorage.getItem("user").replace(/\"/g, "")
+              user_id: this.user_id
             });
             this.$message({
               message: res.msg,
@@ -1663,7 +1666,7 @@ export default {
       try {
         const { data: res } = await axios.post(api.getLogs, {
           script_id: this.formData[this.activeTab].id,
-          user: sessionStorage.getItem("user").replace(/\"/g, "")
+          user_id: this.user_id
         });
         this.output.logs = res.data.logs;
         this.output.important_fields = res.data.important_fields;
@@ -1688,7 +1691,7 @@ export default {
       try {
         const { data: res } = await axios.post(api.getNewestLog, {
           script_id: this.formData[this.activeTab].id,
-          user: sessionStorage.getItem("user").replace(/\"/g, "")
+          user_id: this.user_id
         });
         this.output.visible = true;
         this.output.text = res.data[0].output;
@@ -1727,7 +1730,7 @@ export default {
       try {
         const { data: res } = await axios.post(api.schedule, {
           script_id: this.formData[this.activeTab].id,
-          user: sessionStorage.getItem("user").replace(/\"/g, "")
+          user_id: this.user_id
         });
         this.schedule.loading = false;
         this.schedule.schedules = res.data;
@@ -1755,7 +1758,7 @@ export default {
       var detail = command_get_result.detail;
       try {
         const { data: res } = await axios.post(api.scheduleAdd, {
-          user: sessionStorage.getItem("user").replace(/\"/g, ""),
+          user_id: this.user_id,
           script_id: this.formData[this.activeTab].id,
           command: command,
           detail: detail,
@@ -1789,7 +1792,7 @@ export default {
       this.$confirm("确认停止并删除定时任务吗?", "提示", {}).then(async () => {
         try {
           const { data: res } = await axios.post(api.scheduleDelete, {
-            user: sessionStorage.getItem("user").replace(/\"/g, ""),
+            user_id: this.user_id,
             schedule_id: schedule_id
           });
           this.$message({

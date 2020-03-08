@@ -22,7 +22,7 @@
       :size="drawer.size"
     >
       <div class="margin-medium" v-if="drawer.visible==true">
-        <div v-if="activeComponent=='ConsoleScript'">
+        <div :user_id='user_id' v-if="activeComponent=='ConsoleScript'">
           <ConsoleScript />
         </div>
         <div v-if="activeComponent=='ConsolePrivilege'">
@@ -41,6 +41,9 @@ import { consoleGet } from "../api/console";
 
 export default {
   name: "Console",
+  props: {
+    user_id: Number
+  },
   components: {
     ConsoleScript,
     ConsolePrivilege

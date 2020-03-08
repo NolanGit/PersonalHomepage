@@ -27,6 +27,7 @@
       </div>
       <el-button type="text" slot="reference">登录</el-button>
     </el-popover>
+
     <el-dropdown class="user-popover" trigger="hover" v-show="user!=''">
       <span class="el-dropdown-link userinfo-inner">{{user}}</span>
       <el-dropdown-menu slot="dropdown">
@@ -34,6 +35,7 @@
         <el-dropdown-item divided @click.native="logout">退出登录</el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
+
     <el-drawer
       :title="drawer.title"
       :visible.sync="drawer.visible"
@@ -41,7 +43,7 @@
       :size="drawer.size"
       :before-close="drawerBeforeClose"
     >
-      <Console :v-if="drawer.title=='控制台'" />
+      <Console :user_id="user_id" v-if="drawer.title=='控制台'" />
     </el-drawer>
   </div>
 </template>
@@ -63,6 +65,7 @@ export default {
     return {
       visible: false,
       username: "",
+      user_id: 0,
       password: "",
       salt: "",
       user: "",
@@ -157,6 +160,14 @@ export default {
       }
     } catch (error) {
       this.user = "";
+    }
+    try {
+      this.user_id = this.$cookies.get("user_id");
+      if (this.user_id == null) {
+        this.user_id = 0;
+      }
+    } catch (error) {
+      this.user_id = 0;
     }
   }
 };
