@@ -81,7 +81,7 @@
 
     <!--编辑顺序界面-->
     <el-dialog title="编辑书签" :visible.sync="bookmarksEdit.visible" width="40%">
-      <SlickSort :list="bookmarksEdit.list" @submit="bookmarksEditSubmit" @edit="bookmarksSetting"></SlickSort>
+      <SlickSort v-if="bookmarksEdit.visible" :list="bookmarksEdit.list" @submit="bookmarksEditSubmit" @edit="bookmarksSetting"></SlickSort>
     </el-dialog>
 
     <!--选择图标界面-->
