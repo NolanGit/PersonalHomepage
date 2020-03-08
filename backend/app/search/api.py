@@ -8,7 +8,7 @@ from . import search
 from flask_cors import cross_origin
 from flask import render_template, session, redirect, url_for, current_app, flash, Response, request, jsonify
 from ..model.search_model import search_engines, search_engines_log
-from ..common_func import CommonFunc
+from ..login.login_funtion import User
 
 
 @search.route('/searchEnginesData', methods=['GET'])
@@ -53,15 +53,11 @@ def searchEnginesSearch():
 @cross_origin()
 def searchLog():
     try:
-        try:
-            user = request.get_json()['user']
-            user_id = CommonFunc().get_user_id(user)
-        except:
-            user = ''
-            user_id = 0
+        user_id = request.get_json()['user_id']
         engine_id = request.get_json()['engine_id']
         search_text = request.get_json()['search_text']
-        search_engines_log.create(user_id=user_id, user=user, engine_id=engine_id, search_text=search_text, ip=request.remote_addr, update_time=datetime.datetime.now())
+        search_engines_log.create(
+            user_id=user_id, user='' if user_id == 0 else User(user_id=user_id).user_name, engine_id=engine_id, search_text=search_text, ip=request.remote_addr, update_time=datetime.datetime.now())
         return jsonify({'code': 200, 'msg': '成功！', 'data': {}})
     except Exception as e:
         traceback.print_exc()

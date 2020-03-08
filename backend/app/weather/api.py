@@ -53,7 +53,6 @@ def weatherData():
             locations = locations + request.get_json()['locations']
         except:
             pass
-        print(locations)
         url = 'https://free-api.heweather.net/s6/weather'
         result = []
 
@@ -99,9 +98,7 @@ def weatherData():
 @cross_origin()
 def weatherPersonalizedSave():
     try:
-        user_name = request.get_json()['user']
-        user = User(user_name)
-        user_id = user.user_id
+        user_id = request.get_json()['user_id']
         location = request.get_json()['location']
         weather_personalized.create(location=location, user_id=user_id, is_valid=1, update_time=datetime.datetime.now())
         return jsonify({'code': 200, 'msg': '成功！', 'data': []})

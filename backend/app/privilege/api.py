@@ -29,7 +29,6 @@ pf = privilegeFunction()
 def userGet():
     try:
         user_id = request.get_json()['user_id']
-        result = []
         role_list = role_list_get()
         user_list = user_list_get()
         current_role_id = cf.dict_list_get_single_element(user_list, 'id', user_id, 'role_id')

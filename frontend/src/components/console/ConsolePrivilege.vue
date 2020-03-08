@@ -214,7 +214,7 @@
       >
         <div v-if="edit.type=='user' & edit.visible">
           <ConsolePrivilegeEditUser
-            :login_name="edit.login_name"
+            :user_id="user_id"
             :action="edit.userEditAction"
             @close="close()"
           />

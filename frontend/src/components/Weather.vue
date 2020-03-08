@@ -2,13 +2,7 @@
   <div class="weather">
     <el-carousel height="250px" trigger="click" interval="5000" indicator-position="outside">
       <el-carousel-item v-for="weather in weathers" :key="weather">
-        <el-row
-          type="flex"
-          justify="center"
-          ref="weatherForm"
-          :model="weather.weatherForm"
-          v-show="todayShow"
-        >
+        <el-row type="flex" justify="center" ref="weatherForm" :model="weather.weatherForm">
           <div>
             <td>
               <div class="location">{{weather.location}}</div>
@@ -18,13 +12,7 @@
             </td>
           </div>
         </el-row>
-        <el-row
-          type="flex"
-          justify="center"
-          ref="weatherForm"
-          :model="weather.weatherForm"
-          v-show="todayShow"
-        >
+        <el-row type="flex" justify="center" ref="weatherForm" :model="weather.weatherForm">
           <td>
             <el-row type="flex" justify="left">
               <td class="todayWeatherIcon">
@@ -116,7 +104,6 @@ export default {
         }
       ],
       loading: true,
-      todayShow: true,
       popover: {
         visible: false,
         location: ""
@@ -128,7 +115,7 @@ export default {
       this.popover.visible = false;
       try {
         const { data: res } = await axios.post(api.locationAdd, {
-          user: sessionStorage.getItem("user").replace(/\"/g, ""),
+          user_id: this.user_id,
           location: this.popover.location
         });
         this.$message({
@@ -161,22 +148,9 @@ export default {
       console.log(location);
     },
     async getWeatherDatafront(locations) {
-      this.todayShow = false;
-      if (locations == undefined || locations == "" || locations.length == 0) {
-        locations = undefined;
-      }
-      try {
-        var user = sessionStorage.getItem("user").replace(/\"/g, "");
-      } catch (error) {
-        var user = undefined;
-      }
-      if ((user != undefined) & (locations == undefined)) {
-        return;
-      }
       try {
         const { data: res } = await axios.post(api.weatherData, {
-          locations: locations,
-          user: user
+          locations: locations
         });
         this.weathers = [];
         for (
@@ -433,7 +407,6 @@ export default {
             this.weathers[single_result].iconfontTomorrowWeatherClass =
               "iconfont icon-shachenbao";
           }
-          this.todayShow = true;
         }
         this.$emit("done");
       } catch (e) {
@@ -447,7 +420,7 @@ export default {
   },
   created() {},
   mounted() {
-    this.locationGet()
+    this.locationGet();
   }
 };
 </script>

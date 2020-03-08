@@ -110,7 +110,7 @@ const api = {
 export default {
   name: "ConsolePrivilegeEditUser",
   props: {
-    login_name: String,
+    user_id: Number,
     action: String
   },
   data() {
@@ -142,7 +142,7 @@ export default {
     async userGetFront() {
       try {
         const { data: res } = await axios.post(api.userGet, {
-          user: sessionStorage.getItem("user").replace(/\"/g, "")
+          user_id: this.user_id
         });
         this.userData = res.data;
       } catch (e) {
@@ -155,9 +155,7 @@ export default {
     },
     async roleGetFront() {
       try {
-        const { data: res } = await axios.get(api.roleGet, {
-          user: sessionStorage.getItem("user").replace(/\"/g, "")
-        });
+        const { data: res } = await axios.get(api.roleGet);
         for (let x = 0; x < res.data.length; x++) {
           if (res.data[x].is_valid == 1) {
             this.roleData.push({

@@ -4,7 +4,7 @@
       <login @user="userLoginedOrLogout" />
     </el-row>
     <el-row class="searchRow">
-      <search />
+      <search :user_id="user_id"/>
     </el-row>
     <div class="cardRow div-flex">
       <el-col :span="singleWidget.span" v-for="(singleWidget,index) in widget" :key="singleWidget">

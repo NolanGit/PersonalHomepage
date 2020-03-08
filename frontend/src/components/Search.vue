@@ -42,6 +42,9 @@ const api = {
 
 export default {
   name: "search",
+  props: {
+    user_id: Number
+  },
   data() {
     return {
       word: "",
@@ -93,16 +96,11 @@ export default {
         this.word
       );
       window.open(searchUrl);
-      try {
-        var user = sessionStorage.getItem("user").replace(/\"/g, "");
-      } catch (error) {
-        var user = undefined;
-      }
       this.word = "";
       this.autoComplete("");
       try {
         const { data: res } = await axios.post(api.searchLog, {
-          user: user,
+          user_id: this.user_id,
           engine_id: this.searchEngines.select_engine_id,
           search_text: this.word
         });
@@ -130,17 +128,12 @@ export default {
             this.word
           );
           try {
-            var user = sessionStorage.getItem("user").replace(/\"/g, "");
-          } catch (error) {
-            var user = undefined;
-          }
-          try {
             const { data: res } = await axios.post(
               api.searchEnginesAutoComplete,
               {
                 autoCompleteUrl: autoCompleteUrl,
                 name: this.searchEngines.select,
-                user: user
+                user_id: this.user_id
               }
             );
             function String2Dict(x) {
