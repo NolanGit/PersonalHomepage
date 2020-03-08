@@ -18,9 +18,7 @@
       </SlickList>
     </el-row>
     <el-row>
-      <span slot="footer" class="dialog-footer">
-        <el-button class="edit-form-confirm" type="primary" size="small" @click="submit()">确定</el-button>
-      </span>
+      <el-button class="edit-form-confirm" type="primary" size="small" @click="submit()">确定</el-button>
     </el-row>
   </div>
 </template>
@@ -45,7 +43,7 @@ export default {
   },
   methods: {
     edit(item, index) {
-      this.$emit("set", item, index);
+      this.$emit("edit", item, index);
     },
     del(item, index) {
       this.list.splice(index, 1);
