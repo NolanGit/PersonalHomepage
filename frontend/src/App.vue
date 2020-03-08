@@ -1,10 +1,10 @@
 <template>
   <div id="app">
     <el-row class="loginRow">
-      <login @user="userLoginedOrLogout" />
+      <login :user_id="user_id" :user_name="user_name" :login_name="login_name" />
     </el-row>
     <el-row class="searchRow">
-      <search :user_id="user_id"/>
+      <search :user_id="user_id" />
     </el-row>
     <div class="cardRow div-flex">
       <el-col :span="singleWidget.span" v-for="(singleWidget,index) in widget" :key="singleWidget">
@@ -96,24 +96,14 @@ export default {
     },
     userIdFlush() {
       try {
-        this.user = this.$cookies.get("user").replace(/\"/g, "");
+        this.user_name = this.$cookies.get("user_name").replace(/\"/g, "");
         this.user_id = this.$cookies.get("user_id").replace(/\"/g, "");
+        this.login_name = this.$cookies.get("login_name").replace(/\"/g, "");
       } catch (error) {
-        this.user = "";
+        this.user_name = "";
         this.user_id = 0;
+        this.login_name = "";
       }
-    },
-    userLoginedOrLogout(user) {
-      if (user != "") {
-        this.userIdFlush();
-        this.widgetGet();
-      } else {
-        this.userIdFlush();
-        location.reload();
-      }
-    },
-    weatherLoaded() {
-      this.show.weather = true;
     },
     done(index) {
       this.widget[index].show = true;
@@ -124,6 +114,7 @@ export default {
   },
   mounted() {
     this.userInfo();
+    this.userIdFlush();
     this.widgetGet();
   }
 };

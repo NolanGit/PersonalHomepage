@@ -5,7 +5,7 @@
       placement="top"
       width="160"
       v-model="visible"
-      v-show="user==''"
+      v-show="user_id==0"
     >
       <div style="text-align: right; margin: 0">
         <el-input
@@ -28,7 +28,7 @@
       <el-button type="text" slot="reference">登录</el-button>
     </el-popover>
 
-    <el-dropdown class="user-popover" trigger="hover" v-show="user!=''">
+    <el-dropdown class="user-popover" trigger="hover" v-show="user_id!=0">
       <span class="el-dropdown-link userinfo-inner">{{user}}</span>
       <el-dropdown-menu slot="dropdown">
         <el-dropdown-item @click.native="consoleSettingClicked">控制台</el-dropdown-item>
@@ -61,11 +61,14 @@ export default {
   components: {
     Console
   },
+  props: {
+    login_name: String,
+    user_name: String,
+    user_id: Number
+  },
   data() {
     return {
       visible: false,
-      login_name: "",
-      user_id: 0,
       password: "",
       salt: "",
       user: "",
@@ -115,11 +118,10 @@ export default {
             type: "success"
           });
           this.$cookies.set("user_key", res2.user_key);
-          this.$cookies.set("user", JSON.stringify(res2.user));
+          this.$cookies.set("user_name", JSON.stringify(res2.user));
+          this.$cookies.set("login_name", JSON.stringify(res2.login_name));
           this.$cookies.set("user_id", JSON.stringify(res2.user_id));
-          this.user = res2.user;
-          this.user_id = res2.user_id;
-          this.$emit("user", this.user);
+          location.reload();
         } catch (e) {
           console.log(e);
           this.$message({
@@ -131,15 +133,14 @@ export default {
     },
     logout() {
       this.$cookies.remove("user_key");
-      this.$cookies.remove("user");
+      this.$cookies.remove("user_name");
+      this.$cookies.remove("login_name");
       this.$cookies.remove("user_id");
-      this.user = "";
-      this.user_id = 0;
       this.$message({
         message: "退出成功！",
         type: "success"
       });
-      this.$emit("user", "");
+      location.reload();
     },
     consoleSettingClicked() {
       this.drawer.title = "控制台";
@@ -154,26 +155,7 @@ export default {
     }
   },
   created() {},
-  mounted() {
-    try {
-      this.user = this.$cookies.get("user").replace(/\"/g, "");
-      console.log(this.user);
-      if (this.user == null) {
-        this.user = "";
-      }
-    } catch (error) {
-      this.user = "";
-    }
-    try {
-      this.user_id = this.$cookies.get("user_id");
-      console.log(this.user_id);
-      if (this.user_id == null) {
-        this.user_id = 0;
-      }
-    } catch (error) {
-      this.user_id = 0;
-    }
-  }
+  mounted() {}
 };
 </script>
 <style scoped>
