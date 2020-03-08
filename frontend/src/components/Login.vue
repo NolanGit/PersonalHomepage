@@ -29,7 +29,7 @@
     </el-popover>
 
     <el-dropdown class="user-popover" trigger="hover" v-show="user_id!=0">
-      <span class="el-dropdown-link userinfo-inner">{{user}}</span>
+      <span class="el-dropdown-link userinfo-inner">{{user_name}}</span>
       <el-dropdown-menu slot="dropdown">
         <el-dropdown-item @click.native="consoleSettingClicked">控制台</el-dropdown-item>
         <el-dropdown-item divided @click.native="logout">退出登录</el-dropdown-item>
