@@ -118,7 +118,7 @@ export default {
             type: "success"
           });
           this.$cookies.set("user_key", res2.user_key);
-          this.$cookies.set("user_name", JSON.stringify(res2.user));
+          this.$cookies.set("user_name", JSON.stringify(res2.user_name));
           this.$cookies.set("login_name", JSON.stringify(res2.login_name));
           this.$cookies.set("user_id", JSON.stringify(res2.user_id));
           location.reload();

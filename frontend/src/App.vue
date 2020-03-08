@@ -97,9 +97,13 @@ export default {
     userIdFlush() {
       try {
         this.user_name = this.$cookies.get("user_name").replace(/\"/g, "");
-        this.user_id = this.$cookies.get("user_id").replace(/\"/g, "");
-        this.login_name = this.$cookies.get("login_name").replace(/\"/g, "");
+        this.user_id = this.$cookies.get("user_id");
+        this.login_name = this.$cookies.get("login_name");
       } catch (error) {
+        console.log(error);
+        console.log(this.user_name);
+        console.log(this.user_id);
+        console.log(this.login_name);
         this.user_name = "";
         this.user_id = 0;
         this.login_name = "";
