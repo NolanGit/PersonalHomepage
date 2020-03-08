@@ -78,6 +78,8 @@ export default {
       }
     },
     async widgetGet() {
+      console.log("=====");
+      console.log(this.user_id);
       try {
         const { data: res } = await axios.post(api.widget, {
           user_id: this.user_id
@@ -96,9 +98,18 @@ export default {
     },
     userIdFlush() {
       try {
-        this.user_name = this.$cookies.get("user_name").replace(/\"/g, "");
-        this.user_id = this.$cookies.get("user_id");
-        this.login_name = this.$cookies.get("login_name");
+        this.user_name =
+          this.$cookies.get("user_name").replace(/\"/g, "") == null
+            ? ""
+            : this.$cookies.get("user_name").replace(/\"/g, "");
+        this.user_id =
+          this.$cookies.get("user_id") == null
+            ? ""
+            : this.$cookies.get("user_id");
+        this.login_name =
+          this.$cookies.get("login_name") == null
+            ? ""
+            : this.$cookies.get("login_name");
       } catch (error) {
         this.user_name = "";
         this.user_id = 0;
@@ -114,8 +125,6 @@ export default {
   },
   mounted() {
     this.userInfo();
-    this.userIdFlush();
-    this.widgetGet();
   }
 };
 </script>
