@@ -235,7 +235,7 @@ export default {
           type: "success"
         });
         this.bookmarksEdit.visible = false;
-        this.$emit("bookmarksUpdate");
+        this.bookmarksGet();
       } catch (e) {
         console.log(e);
         this.$message({
@@ -262,7 +262,7 @@ export default {
       try {
         const { data: res } = await axios.get(api.icon, {
           bookmarks: this.bookmarksEdit.list,
-          user: sessionStorage.getItem("user").replace(/\"/g, "")
+          user_id: this.user_id
         });
         this.icon.visible = true;
         this.icon.data = res.data;
