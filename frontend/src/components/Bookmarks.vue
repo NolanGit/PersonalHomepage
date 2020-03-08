@@ -81,34 +81,7 @@
 
     <!--编辑顺序界面-->
     <el-dialog title="编辑书签" :visible.sync="bookmarksEdit.visible" width="40%">
-      <SlickList lockAxis="y" v-model="bookmarksEdit.list" class="slick_list">
-        <SlickItem
-          class="slick_list_item"
-          v-for="(item, index) in bookmarksEdit.list"
-          :index="index"
-          :key="index"
-        >
-          <i class="el-icon-s-operation" style="color: #6a6c70;"></i>
-          <span class="slick_list_item_span">{{ item.name }}</span>
-          <div class="slick_list_item_button">
-            <el-button size="mini" class="el-icon-setting" @click="bookmarksSetting(item, index)"></el-button>
-            <el-button
-              type="danger"
-              size="mini"
-              class="el-icon-delete"
-              @click="bookmarksDeleteSubmit(item, index)"
-            ></el-button>
-          </div>
-        </SlickItem>
-      </SlickList>
-      <span slot="footer" class="dialog-footer">
-        <el-button
-          class="edit-form-confirm"
-          type="primary"
-          size="small"
-          @click="bookmarksEditSubmit()"
-        >确定</el-button>
-      </span>
+      <SlickSort :list=bookmarksEdit.list @set="set" @edit="edit" ></SlickSort>
     </el-dialog>
 
     <!--选择图标界面-->
@@ -121,6 +94,7 @@
 import axios from "axios";
 import Router from "vue-router";
 import IconComponet from "./common/Icon.vue";
+import SlickSort from "./common/SlickSort.vue";
 import { SlickList, SlickItem } from "vue-slicksort";
 const api = {
   get: "/bookmarks/get",
@@ -131,7 +105,7 @@ const api = {
 export default {
   name: "bookmarks",
   props: {
-    user_id: Number,
+    user_id: Number
   },
   components: {
     SlickItem,
@@ -140,8 +114,8 @@ export default {
   },
   data() {
     return {
-      bookmarksDataRaw: [],//未处理的原始数据
-      bookmarksSuites: [],//分组后的数据，原始数据
+      bookmarksDataRaw: [], //未处理的原始数据
+      bookmarksSuites: [], //分组后的数据，原始数据
       bookmarksEdit: {
         visible: false,
         list: []
