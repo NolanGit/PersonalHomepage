@@ -85,8 +85,6 @@ export default {
       this.widgetGet();
     },
     async widgetGet() {
-      console.log("=====");
-      console.log(this.user_id);
       try {
         const { data: res } = await axios.post(api.widget, {
           user_id: this.user_id
