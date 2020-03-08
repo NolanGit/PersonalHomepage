@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-form ref="form" :model="bookmarksEditForm" size="mini">
+    <el-row>
       <SlickList lockAxis="y" v-model="list" class="slick_list">
         <SlickItem
           class="slick_list_item"
@@ -16,10 +16,10 @@
           </div>
         </SlickItem>
       </SlickList>
-    </el-form>
-    <span slot="footer" class="dialog-footer">
+    </el-row>
+    <el-row class="margin_top-medium">
       <el-button class="edit-form-confirm" type="primary" size="small" @click="submit()">确定</el-button>
-    </span>
+    </el-row>
   </div>
 </template>
 <script>
