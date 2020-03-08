@@ -81,7 +81,7 @@
 
     <!--编辑顺序界面-->
     <el-dialog title="编辑书签" :visible.sync="bookmarksEdit.visible" width="40%">
-      <SlickSort :list="bookmarksEdit.list" @set="set" @edit="edit"></SlickSort>
+      <SlickSort :list="bookmarksEdit.list" @submit="bookmarksEditSubmit" @edit="bookmarksSetting"></SlickSort>
     </el-dialog>
 
     <!--选择图标界面-->
@@ -182,7 +182,7 @@ export default {
             url: this.bookmarksEditForm.url,
             name: this.bookmarksEditForm.name,
             icon: this.bookmarksEditForm.icon,
-            user: sessionStorage.getItem("user").replace(/\"/g, "")
+            user_id: this.user_id
           });
           this.$message({
             message: res["msg"],
@@ -221,14 +221,14 @@ export default {
       this.bookmarksEdit.list = this.bookmarksDataRaw;
       this.bookmarksEdit.visible = true;
     },
-    async bookmarksEditSubmit() {
-      for (let x = 0; x < this.bookmarksEdit.list.length; x++) {
-        this.bookmarksEdit.list[x].order = x + 1;
+    async bookmarksEditSubmit(list) {
+      for (let x = 0; x < list.length; x++) {
+        list[x].order = x + 1;
       }
       try {
         const { data: res } = await axios.post(api.bookmarksEdit, {
-          bookmarks: this.bookmarksEdit.list,
-          user: sessionStorage.getItem("user").replace(/\"/g, "")
+          bookmarks: list,
+          user_id: this.user_id
         });
         this.$message({
           message: res["msg"],

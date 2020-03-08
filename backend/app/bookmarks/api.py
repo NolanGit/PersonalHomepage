@@ -39,12 +39,7 @@ def userInfo():
 @cross_origin()
 def bookmarksAdd():
     try:
-        try:
-            user_name = request.get_json()['user']
-            user = User(user_name)
-            user_id = user.user_id
-        except:
-            user_id = 0
+        user_id = request.get_json()['user_id']
         name = request.get_json()['name']
         url = request.get_json()['url']
         icon = request.get_json()['icon']
@@ -58,35 +53,11 @@ def bookmarksAdd():
         return jsonify(response), 500
 
 
-@bookmarks.route('/bookmarksDelete', methods=['POST'])
-@cross_origin()
-def bookmarksDelete():
-    try:
-        try:
-            user_name = request.get_json()['user']
-            user = User(user_name)
-            user_id = user.user_id
-        except:
-            user_id = 0
-        id = request.get_json()['id']
-        bookmarks_table.update(is_valid=0, update_time=datetime.datetime.now()).where(bookmarks_table.id == id).execute()
-        response = {'code': 200, 'msg': '成功！', 'data': []}
-        return jsonify(response)
-    except Exception as e:
-        response = {'code': 500, 'msg': '失败！错误信息：' + str(e) + '，请联系管理员。', 'data': []}
-        return jsonify(response), 500
-
-
 @bookmarks.route('/bookmarksEdit', methods=['POST'])
 @cross_origin()
 def bookmarksEdit():
     try:
-        try:
-            user_name = request.get_json()['user']
-            user = User(user_name)
-            user_id = user.user_id
-        except:
-            user_id = 0
+        user_id = request.get_json()['user_id']
         bookmarks = request.get_json()['bookmarks']
         bookmarks_table.update(is_valid=0, update_time=datetime.datetime.now()).where((bookmarks_table.user_id == user_id) & (bookmarks_table.is_valid == 1)).execute()
         for bookmark in bookmarks:
