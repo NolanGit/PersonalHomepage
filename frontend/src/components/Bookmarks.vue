@@ -110,7 +110,8 @@ export default {
   components: {
     SlickItem,
     SlickList,
-    IconComponet
+    IconComponet,
+    SlickSort
   },
   data() {
     return {
