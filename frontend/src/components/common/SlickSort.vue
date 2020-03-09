@@ -1,3 +1,4 @@
+// 拖动排序组件，接受一个Array，每一组数据必须有name参数，点击提交后返回带顺序的Array，点击编辑则返回目标组的数据和index
 <template>
   <div>
     <el-row>

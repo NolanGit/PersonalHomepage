@@ -207,7 +207,6 @@
       <el-drawer
         :title="edit.title"
         :visible.sync="edit.visible"
-        :close-on-click-modal="false"
         size="60%"
         @closed="editFormClosed"
         direction="btt"

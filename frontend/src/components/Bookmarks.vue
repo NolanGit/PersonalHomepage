@@ -81,7 +81,12 @@
 
     <!--编辑顺序界面-->
     <el-dialog title="编辑书签" :visible.sync="bookmarksEdit.visible" width="40%">
-      <SlickSort v-if="bookmarksEdit.visible" :list="bookmarksEdit.list" @submit="bookmarksEditSubmit" @edit="bookmarksSetting"></SlickSort>
+      <SlickSort
+        v-if="bookmarksEdit.visible"
+        :list="bookmarksEdit.list"
+        @submit="bookmarksEditSubmit"
+        @edit="bookmarksSetting"
+      ></SlickSort>
     </el-dialog>
 
     <!--选择图标界面-->
@@ -96,6 +101,8 @@ import Router from "vue-router";
 import IconComponet from "./common/Icon.vue";
 import SlickSort from "./common/SlickSort.vue";
 import { SlickList, SlickItem } from "vue-slicksort";
+import { deepClone } from "../js/common";
+
 const api = {
   get: "/bookmarks/get",
   bookmarksAdd: "/bookmarks/bookmarksAdd",
@@ -218,7 +225,7 @@ export default {
       };
     },
     bookmarksOptionButtonSettingClicked() {
-      this.bookmarksEdit.list = this.bookmarksDataRaw;
+      this.bookmarksEdit.list = deepClone(this.bookmarksDataRaw);
       this.bookmarksEdit.visible = true;
     },
     async bookmarksEditSubmit(list) {
