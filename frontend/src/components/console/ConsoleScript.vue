@@ -1010,6 +1010,7 @@
 <script>
 import axios from "axios";
 import BScroll from "better-scroll";
+import { deepClone } from "../js/common";
 const api = {
   subSystem: "/script/subSystem",
   subSystemScript: "/script/subSystemScript",
@@ -1169,11 +1170,6 @@ export default {
     };
   },
   methods: {
-    deepClone(obj) {
-      var _obj = JSON.stringify(obj),
-        objClone = JSON.parse(_obj);
-      return objClone;
-    },
     swapItem(arr, index1, index2) {
       arr[index1] = arr.splice(index2, 1, arr[index1])[0];
       return arr;
@@ -1865,7 +1861,7 @@ export default {
       this.singleDataOptionDialog.index = index;
       this.singleDataOptionDialog.visible = true;
       this.singleDataOptionDialog.data =
-        singleDataOptions == "" ? [] : this.deepClone(singleDataOptions);
+        singleDataOptions == "" ? [] : deepClone(singleDataOptions);
     },
     //选择器组件关闭
     singleDataOptionDialogClosed() {
