@@ -37,7 +37,9 @@ import axios from "axios";
 import Router from "vue-router";
 import ConsoleScript from "./console/ConsoleScript.vue";
 import ConsolePrivilege from "./console/ConsolePrivilege.vue";
-import { consoleGet } from "../api/console";
+const api = {
+  get: "/console/get"
+};
 
 export default {
   name: "Console",
@@ -62,17 +64,17 @@ export default {
     };
   },
   methods: {
-    consoleGetFront() {
-      consoleGet().then(data => {
-        if (data["code"] !== 200) {
-          this.$message({
-            message: data["msg"],
-            type: "error"
-          });
-        } else {
-          this.consoleOptions = data.data;
-        }
-      });
+    async consoleGetFront() {
+      try {
+        const { data: res } = await axios.get(api.get);
+        this.consoleOptions = res.data;
+      } catch (e) {
+        console.log(e);
+        this.$message({
+          message: e.response.data.msg,
+          type: "error"
+        });
+      }
     },
     consoleOptionClicked(consoleOption) {
       this.activeComponent = consoleOption.component_name;
