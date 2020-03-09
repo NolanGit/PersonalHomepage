@@ -34,7 +34,6 @@
 </template>
 <script>
 import axios from "axios";
-import Router from "vue-router";
 import ConsoleScript from "./console/ConsoleScript.vue";
 import ConsolePrivilege from "./console/ConsolePrivilege.vue";
 const api = {

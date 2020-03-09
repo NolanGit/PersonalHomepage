@@ -1010,7 +1010,7 @@
 <script>
 import axios from "axios";
 import BScroll from "better-scroll";
-import { deepClone } from "../js/common";
+import { deepClone } from "../../js/common";
 const api = {
   subSystem: "/script/subSystem",
   subSystemScript: "/script/subSystemScript",
