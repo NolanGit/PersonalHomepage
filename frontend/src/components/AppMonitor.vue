@@ -25,7 +25,7 @@
       <el-button
         class="bmargin_left-mini margin_right-mini"
         size="small"
-        @click="setting()"
+        @click="edit()"
         icon="el-icon-setting"
         circle
       ></el-button>
@@ -159,11 +159,24 @@
         <el-button type="primary" size="small" @click="editSubmit()">确定</el-button>
       </span>
     </el-dialog>
+
+    <!--编辑顺序界面-->
+    <el-dialog title="编辑书签" :visible.sync="appSortEdit.visible" width="40%">
+      <SlickSort
+        v-if="appSortEdit.visible"
+        :list="appSortEdit.list"
+        @submit="appSortEditSubmit"
+        @edit="appSortEditSetting"
+      ></SlickSort>
+    </el-dialog>
   </section>
 </template>
 
 <script>
 import axios from "axios";
+import SlickSort from "./common/SlickSort.vue";
+import { deepClone } from "../js/common";
+
 const api = {
   get: "/app/get",
   add: "/app/add",
@@ -177,6 +190,9 @@ export default {
   components: {},
   data() {
     return {
+      appSortEdit:{
+
+      },
       appSuite: [],
       edit: {
         visible: false,
@@ -245,6 +261,9 @@ export default {
     },
     notify() {
       this.notifyData.visible = true;
+    },
+    edit(){
+
     },
     async appGet() {
       try {

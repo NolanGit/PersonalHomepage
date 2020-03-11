@@ -20,6 +20,7 @@ from ..privilege.privilege_control import permission_required
 URL_PREFIX = '/privilege'
 cf = CommonFunc()
 pf = privilegeFunction()
+ALLOWED_TIME_SPAN = 100  # 盐过期X秒内允许修改，否则需要重新登录
 
 
 # 用户列表获取（带有用户的角色信息）
@@ -86,7 +87,6 @@ def userEnable():
 @permission_required(URL_PREFIX + '/userRoleChange')
 @cross_origin()
 def userRoleChange():
-    ALLOWED_TIME_SPAN = 100  # 盐过期X秒内允许修改，否则需要重新登录
     try:
         login_name = request.get_json()['login_name']
         user_query = user.select().where(user.login_name == login_name).dicts()
@@ -99,8 +99,8 @@ def userRoleChange():
         else:
             for row in user_query:
                 salt_expire_time = row['salt_expire_time']
-                server_timestamp = int(time.mktime(datetime.datetime.now().timetuple()))
-                if server_timestamp < salt_expire_time + ALLOWED_TIME_SPAN:
+                server_timestamp = datetime.datetime.now()
+                if server_timestamp < salt_expire_time + datetime.timedelta(seconds=ALLOWED_TIME_SPAN):
                     role_id = request.get_json()['role_id']
                     user.update(role_id=role_id, update_time=datetime.datetime.now()).where(user.login_name == login_name).execute()
                     response = {'code': 200, 'msg': '成功'}

@@ -100,7 +100,6 @@ import axios from "axios";
 import Router from "vue-router";
 import IconComponet from "./common/Icon.vue";
 import SlickSort from "./common/SlickSort.vue";
-import { SlickList, SlickItem } from "vue-slicksort";
 import { deepClone } from "../js/common";
 
 const api = {

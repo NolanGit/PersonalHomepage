@@ -118,8 +118,8 @@ def userChangePassword():
         else:
             for row in user_query:
                 salt_expire_time = row['salt_expire_time']
-                server_timestamp = int(time.mktime(datetime.datetime.now().timetuple()))
-                if server_timestamp < salt_expire_time + ALLOWED_TIME_SPAN:
+                server_timestamp = datetime.datetime.now()
+                if server_timestamp < salt_expire_time + datetime.timedelta(seconds=ALLOWED_TIME_SPAN):
                     stable_salt = request.get_json()['stable_salt']
                     password = request.get_json()['password']
                     user.update(stable_salt=stable_salt, password=password, update_time=datetime.datetime.now()).where(user.login_name == login_name).execute()
