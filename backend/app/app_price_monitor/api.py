@@ -77,7 +77,7 @@ def edit():
             app_table.create(
                 name=app['name'],
                 url=app['url'],
-                user_id=app['user_id'],
+                user_id=user_id,
                 expect_price=app['expect_price'],
                 order=app['order'],
                 is_valid=1,
