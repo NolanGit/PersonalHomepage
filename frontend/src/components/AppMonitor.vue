@@ -190,7 +190,10 @@ export default {
   components: {},
   data() {
     return {
-      appSortEdit: {},
+      appSortEdit: {
+        visible: false,
+        list: []
+      },
       appRawData: [],
       appSuite: [],
       edit: {
