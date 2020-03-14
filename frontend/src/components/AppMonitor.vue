@@ -187,7 +187,9 @@ export default {
   props: {
     user_id: Number
   },
-  components: {},
+  components: {
+    SlickSort
+  },
   data() {
     return {
       appSortEdit: {
