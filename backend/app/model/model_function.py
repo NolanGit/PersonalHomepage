@@ -9,7 +9,7 @@ cf = configparser.ConfigParser()
 cf.read(PATH('../homepage.config'))
 DB_PASS = cf.get('config', 'DB_PASS')
 db = PooledMySQLDatabase('PersonalHomepage', user='root', password=DB_PASS, host='localhost', port=3306)
-
+print(11111)
 
 class UnknownField(object):
     def __init__(self, *_, **__):
