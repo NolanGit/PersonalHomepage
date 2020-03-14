@@ -271,29 +271,6 @@ export default {
       this.appSortEdit.visible = true;
       this.appSortEdit.list = deepClone(this.appRawData);
     },
-    appSortEditSubmit(list) {
-      for (let x = 0; x < list.length; x++) {
-        list[x].order = x + 1;
-      }
-      try {
-        const { data: res } = await axios.post(api.edit, {
-          apps: list,
-          user_id: this.user_id
-        });
-        this.$message({
-          message: res["msg"],
-          type: "success"
-        });
-        this.appSortEdit.visible = false;
-        this.appGet();
-      } catch (e) {
-        console.log(e);
-        this.$message({
-          message: e.response.data.msg,
-          type: "error"
-        });
-      }
-    },
     appSortEditSetting(item, index) {
       this.edit.title = "编辑App";
       this.edit.form.name = item[index].name;
@@ -352,6 +329,29 @@ export default {
         this.appSortEdit.list[index].expect_price = this.edit.form.expect_price;
       }
       this.edit.visible = false;
+    },
+    async appSortEditSubmit(list) {
+      for (let x = 0; x < list.length; x++) {
+        list[x].order = x + 1;
+      }
+      try {
+        const { data: res } = await axios.post(api.edit, {
+          apps: list,
+          user_id: this.user_id
+        });
+        this.$message({
+          message: res["msg"],
+          type: "success"
+        });
+        this.appSortEdit.visible = false;
+        this.appGet();
+      } catch (e) {
+        console.log(e);
+        this.$message({
+          message: e.response.data.msg,
+          type: "error"
+        });
+      }
     }
   },
   mounted() {
