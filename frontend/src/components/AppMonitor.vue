@@ -25,7 +25,7 @@
       <el-button
         class="bmargin_left-mini margin_right-mini"
         size="small"
-        @click="edit()"
+        @click="sort()"
         icon="el-icon-setting"
         circle
       ></el-button>
@@ -156,12 +156,12 @@
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" size="small" @click="editSubmit()">确定</el-button>
+        <el-button type="primary" size="small" @click="editNotifySubmit()">确定</el-button>
       </span>
     </el-dialog>
 
     <!--编辑顺序界面-->
-    <el-dialog title="编辑书签" :visible.sync="appSortEdit.visible" width="40%">
+    <el-dialog title="编辑App" :visible.sync="appSortEdit.visible" width="40%">
       <SlickSort
         v-if="appSortEdit.visible"
         :list="appSortEdit.list"
@@ -197,6 +197,7 @@ export default {
         visible: false,
         title: "",
         form: {
+          index: "",
           name: "",
           url: "",
           expect_price: 0
@@ -261,9 +262,18 @@ export default {
     notify() {
       this.notifyData.visible = true;
     },
-    edit() {
+    sort() {
       this.appSortEdit.visible = true;
       this.appSortEdit.list = this.appRawData;
+    },
+    appSortEditSubmit() {},
+    appSortEditSetting(item, index) {
+      this.edit.title = "编辑App";
+      this.edit.form.name = this.appRawData[index].name;
+      this.edit.form.url = this.appRawData[index].url;
+      this.edit.form.expect_price = this.appRawData[index].expect_price;
+      this.edit.form.index = index;
+      this.edit.visible = true;
     },
     async appGet() {
       try {
@@ -308,6 +318,11 @@ export default {
             type: "error"
           });
         }
+      } else if ((this.edit.title = "编辑App")) {
+        let index = this.edit.form.index;
+        this.appRawData[index].name = this.edit.form.name;
+        this.appRawData[index].url = this.edit.form.url;
+        this.appRawData[index].expect_price = this.edit.form.expect_price;
       }
     }
   },
