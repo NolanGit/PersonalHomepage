@@ -114,8 +114,6 @@ export default {
     user_id: Number
   },
   components: {
-    SlickItem,
-    SlickList,
     IconComponet,
     SlickSort
   },
