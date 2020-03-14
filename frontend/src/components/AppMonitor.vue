@@ -190,9 +190,8 @@ export default {
   components: {},
   data() {
     return {
-      appSortEdit:{
-
-      },
+      appSortEdit: {},
+      appRawData: [],
       appSuite: [],
       edit: {
         visible: false,
@@ -262,14 +261,16 @@ export default {
     notify() {
       this.notifyData.visible = true;
     },
-    edit(){
-
+    edit() {
+      this.appSortEdit.visible = true;
+      this.appSortEdit.list = this.appRawData;
     },
     async appGet() {
       try {
         const { data: res } = await axios.post(api.get, {
           user_id: this.user_id
         });
+        this.appRawData = res.data;
         const STEP = 4; // 每页几行
         let temp = [];
         for (let x = 0; x < res.data.length; x += STEP) {
