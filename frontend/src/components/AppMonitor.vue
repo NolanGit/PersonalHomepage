@@ -269,7 +269,7 @@ export default {
     },
     sort() {
       this.appSortEdit.visible = true;
-      this.appSortEdit.list = this.appRawData;
+      this.appSortEdit.list = deepClone(this.appRawData);
     },
     appSortEditSubmit() {},
     appSortEditSetting(item, index) {
@@ -325,9 +325,9 @@ export default {
         }
       } else if ((this.edit.title = "编辑App")) {
         let index = this.edit.form.index;
-        this.appRawData[index].name = this.edit.form.name;
-        this.appRawData[index].url = this.edit.form.url;
-        this.appRawData[index].expect_price = this.edit.form.expect_price;
+        this.appSortEdit.list[index].name = this.edit.form.name;
+        this.appSortEdit.list[index].url = this.edit.form.url;
+        this.appSortEdit.list[index].expect_price = this.edit.form.expect_price;
       }
     }
   },
