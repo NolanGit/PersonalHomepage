@@ -11,6 +11,7 @@ from flask import render_template, session, redirect, url_for, current_app, flas
 from ..model.script_model import script as script_table_model
 from ..model.script_model import script_sub_system, script_detail, script_detail, script_log, script_schedule
 from ..privilege.privilege_control import permission_required
+from ..login.login_funtion import User
 
 URL_PREFIX = '/script'
 running_subprocess = []
@@ -119,10 +120,10 @@ def run():
 
         command = request.get_json()['command']
         #记录运行日志
-        user = request.get_json()['user']
+        user_id = request.get_json()['user_id']
         detail = request.get_json()['detail']
         version = request.get_json()['version']
-        script_log_query = script_log(script_id=id, command=command, detail=detail, version=version, user=user, start_time=datetime.datetime.now())
+        script_log_query = script_log(script_id=id, command=command, detail=detail, version=version, user=User(user_id=user_id).user_name, start_time=datetime.datetime.now())
         script_log_query.save()
 
         #运行
