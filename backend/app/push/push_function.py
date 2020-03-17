@@ -6,7 +6,7 @@ except:
     import sys
     sys.path.append('../')
     sys.path.append('../../')
-    from ..model.push_model import push
+    from model.push_model import push
     from model.push_model import push_queue
 
 
