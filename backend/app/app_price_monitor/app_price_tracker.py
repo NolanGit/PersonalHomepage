@@ -37,3 +37,4 @@ def app_price_push_generator():
                 if (app_push_data.generate_next()):
                     app_push_data.delete()
 
+app_price_push_generator()
