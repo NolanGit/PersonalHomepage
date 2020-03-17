@@ -6,6 +6,7 @@ sys.path.append('../')
 sys.path.append('../../')
 from app_function import app_push_get, app_get, app_price_get, app_push_del
 from push.push_function import push_add
+from model.push_model import push
 from login.login_funtion import User
 
 APP_WIDGET_ID=3
