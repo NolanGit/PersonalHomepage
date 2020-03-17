@@ -204,7 +204,8 @@ def edit():
         start_folder = request.get_json()['start_folder']
         start_script = request.get_json()['start_script']
         type = request.get_json()['type']
-        user = request.get_json()['user']
+        user_id = request.get_json()['user_id']
+        user_name = User(user_id=user_id).user_name
         detail = request.get_json()['detail']
         if len(detail) == 0:
             response = {
@@ -214,7 +215,7 @@ def edit():
             return jsonify(response)
         if script_id == 0:
             script_table_model.create(
-                name=name, sub_system_id=sub_system_id, start_folder=start_folder, start_script=start_script, type=type, runs=0, is_valid=1, version=1, user=user, update_time=datetime.datetime.now())
+                name=name, sub_system_id=sub_system_id, start_folder=start_folder, start_script=start_script, type=type, runs=0, is_valid=1, version=1, user=user_name, update_time=datetime.datetime.now())
             script_table_model_query = script_table_model.select().order_by(-script_table_model.id).limit(1).dicts()
             for row in script_table_model_query:
                 script_id = row['id']
@@ -296,7 +297,7 @@ def edit():
                     is_valid=1,
                     visible=visible,
                     version=1,
-                    user=user,
+                    user=user_name,
                     update_time=datetime.datetime.now())
             response = {
                 'code': 200,
@@ -308,7 +309,7 @@ def edit():
                 version = row['version'] + 1
 
             script_table_model.update(
-                name=name, start_folder=start_folder, start_script=start_script, type=type, version=version, user=user,
+                name=name, start_folder=start_folder, start_script=start_script, type=type, version=version, user=user_name,
                 update_time=datetime.datetime.now()).where((script_table_model.id == script_id)
                                                            & (script_table_model.is_valid == 1)).execute()
             script_detail.update(is_valid=0).where(script_detail.script_id == script_id).execute()
@@ -391,7 +392,7 @@ def edit():
                     is_valid=1,
                     visible=visible,
                     version=version,
-                    user=user,
+                    user=user_name,
                     update_time=datetime.datetime.now())
             response = {
                 'code': 200,
@@ -413,9 +414,10 @@ def edit():
 @cross_origin()
 def replay():
     try:
-        user = request.get_json()['user']
+        user_id = request.get_json()['user_id']
+        user_name = User(user_id=user_id).user_name
         script_id = request.get_json()['script_id']
-        script_log_query = script_log.select().order_by(-script_log.id).limit(1).where((script_log.script_id == script_id) & (script_log.user == user)).dicts()
+        script_log_query = script_log.select().order_by(-script_log.id).limit(1).where((script_log.script_id == script_id) & (script_log.user == user_name)).dicts()
         if len(script_log_query) != 0:
             for row in script_log_query:
                 id = row['id']
@@ -425,7 +427,7 @@ def replay():
                 update_time = row['start_time']
             response = {'code': 200, 'msg': '成功', 'data': {'id': id, 'detail': detail, 'command': command, 'version': version, 'update_time': update_time}}
         else:
-            response = {'code': 500, 'msg': '未查询到' + user + '的上次脚本运行参数，如想使用其他人的参数，请使用“查看全部运行记录”按钮', 'data': {}}
+            response = {'code': 500, 'msg': '未查询到' + user_name + '的上次脚本运行参数，如想使用其他人的参数，请使用“查看全部运行记录”按钮', 'data': {}}
         return jsonify(response)
     except Exception as e:
         print(e)
@@ -442,9 +444,10 @@ def replay():
 @cross_origin()
 def delete():
     try:
-        user = request.get_json()['user']
+        user_id = request.get_json()['user_id']
+        user_name = User(user_id=user_id).user_name
         script_id = request.get_json()['script_id']
-        script_table_model.update(is_valid=0, user=user, update_time=datetime.datetime.now()).where((script_table_model.id == script_id) & (script_table_model.is_valid == 1)).execute()
+        script_table_model.update(is_valid=0, user=user_name, update_time=datetime.datetime.now()).where((script_table_model.id == script_id) & (script_table_model.is_valid == 1)).execute()
         response = {'code': 200, 'msg': '删除成功', 'data': {}}
         return jsonify(response)
     except Exception as e:
@@ -482,7 +485,7 @@ def saveOutput():
 @cross_origin()
 def getLogs():
     try:
-        user = request.get_json()['user']
+        user_id = request.get_json()['user_id']
         script_id = request.get_json()['script_id']
         script_log_query = script_log.select().where(script_log.script_id == script_id).limit(50).order_by(-script_log.id).dicts()
         result = []
@@ -520,9 +523,10 @@ def getLogs():
 @cross_origin()
 def getNewestLog():
     try:
-        user = request.get_json()['user']
+        user_id = request.get_json()['user_id']
+        user_name = User(user_id=user_id).user_name
         script_id = request.get_json()['script_id']
-        script_log_query = script_log.select().where((script_log.script_id == script_id) & (script_log.user == user)).limit(1).order_by(-script_log.id).dicts()
+        script_log_query = script_log.select().where((script_log.script_id == script_id) & (script_log.user == User(user_id=user_id).user_name)).limit(1).order_by(-script_log.id).dicts()
         result = []
         if len(script_log_query) != 0:
             for row in script_log_query:
@@ -537,7 +541,7 @@ def getNewestLog():
                 })
             response = {'code': 200, 'msg': '成功', 'data': result}
         else:
-            response = {'code': 500, 'msg': '未查询到' + user + '的上次脚本运行日志，如想查看其他人的日志，请使用“查看全部运行记录”按钮', 'data': {}}
+            response = {'code': 500, 'msg': '未查询到' + user_name + '的上次脚本运行日志，如想查看其他人的日志，请使用“查看全部运行记录”按钮', 'data': {}}
         return jsonify(response)
     except Exception as e:
         print(e)
@@ -591,7 +595,8 @@ def schedule():
 @cross_origin()
 def scheduleEdit():
     try:
-        user = request.get_json()['user']
+        user_id = request.get_json()['user_id']
+        user_name = User(user_id=user_id).user_name
         script_id = request.get_json()['script_id']
         command = request.get_json()['command']
         detail = request.get_json()['detail']
@@ -612,7 +617,7 @@ def scheduleEdit():
                     command=command,
                     detail=detail,
                     version=version,
-                    user=user,
+                    user_id=user_id,
                     is_automatic=is_automatic,
                     trigger_time=trigger_time,
                     interval=0,
@@ -632,7 +637,7 @@ def scheduleEdit():
                     command=command,
                     detail=detail,
                     version=version,
-                    user=user,
+                    user_id=user_id,
                     is_automatic=is_automatic,
                     trigger_time=trigger_time,
                     interval=interval,
@@ -645,7 +650,7 @@ def scheduleEdit():
                 script_schedule.update(
                     script_id=script_id,
                     version=version,
-                    user=user,
+                    user_id=user_id,
                     is_automatic=is_automatic,
                     trigger_time=trigger_time,
                     interval=0,
@@ -663,7 +668,7 @@ def scheduleEdit():
                 script_schedule.update(
                     script_id=script_id,
                     version=version,
-                    user=user,
+                    user_id=user_id,
                     is_automatic=is_automatic,
                     trigger_time=trigger_time,
                     interval=interval,
@@ -688,7 +693,8 @@ def scheduleEdit():
 @cross_origin()
 def scheduleDelete():
     try:
-        user = request.get_json()['user']
+        user_id = request.get_json()['user_id']
+        user_name = User(user_id=user_id).user_name
         schedule_id = request.get_json()['schedule_id']
         script_schedule.update(is_valid=0, update_time=datetime.datetime.now()).where(script_schedule.id == schedule_id).execute()
         response = {'code': 200, 'msg': '成功', 'data': []}

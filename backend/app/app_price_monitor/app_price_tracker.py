@@ -5,8 +5,6 @@ import datetime
 sys.path.append('../')
 sys.path.append('../../')
 from app_function import app_push_get, app_get, app_price_get, app_push_del
-from model.push_model import push
-from model.push import app_push
 from push.push_function import push_add
 from login.login_funtion import User
 
