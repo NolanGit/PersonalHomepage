@@ -5,11 +5,12 @@ import datetime
 sys.path.append('../')
 sys.path.append('../../')
 from app_function import app_push_get, app_get, app_price_get, app_push_del
-from model.push_model import push_queue
+from model.push_model import push
 from model.push import app_push
 from push.push_function import push_add
 from login.login_funtion import User
 
+APP_WIDGET_ID=3
 
 def app_price_push_generator():
     '''
@@ -40,8 +41,9 @@ def app_price_push_generator():
 
 def generate_next(app_push_data):
     app_push_del(app_push_data['id'])
-    push_queue.create(
+    push.create(
         user_id=app_push_data['user_id'],
+        widget_id=APP_WIDGET_ID,
         is_valid=1,
         notify=app_push_data['notify'],
         notify_method=app_push_data['notify_method'],

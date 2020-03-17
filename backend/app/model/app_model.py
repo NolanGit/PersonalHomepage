@@ -19,9 +19,6 @@ class app(BaseModel):
         table_name = 'app'
 
 
-#用户表增加email和微信推送id的config
-
-
 class app_price(BaseModel):
     app_id = IntegerField()
     price = CharField()
