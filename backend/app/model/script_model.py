@@ -75,7 +75,7 @@ class script_schedule(BaseModel):
     command = TextField(null=True)
     detail = TextField(null=True)
     version = IntegerField(null=True)
-    user = TextField(null=True)
+    user_id = IntegerField()
     is_valid = IntegerField()
     is_automatic = IntegerField()
     interval = IntegerField()

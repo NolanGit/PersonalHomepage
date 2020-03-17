@@ -553,7 +553,7 @@ def getNewestLog():
 @cross_origin()
 def schedule():
     try:
-        user = request.get_json()['user']
+        user_id = request.get_json()['user_id']
         script_id = request.get_json()['script_id']
         script_schedule_query = script_schedule.select().where((script_schedule.script_id == script_id) & (script_schedule.is_valid == 1)).order_by(script_schedule.id).dicts()
         result = []
@@ -564,7 +564,7 @@ def schedule():
                 'command': row['command'],
                 'detail': eval(row['detail']),
                 'version': row['version'],
-                'user': row['user'],
+                'user_id': row['user_id'],
                 'is_automatic': row['is_automatic'],
                 'is_automatic_text': '是' if row['is_automatic'] else '否',
                 'interval': row['interval'],
