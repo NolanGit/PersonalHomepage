@@ -2,15 +2,16 @@ import datetime
 try:
     from ..model.app_model import app as app_table
     from ..model.app_model import app_price
-    from ..model.app_model import app_push
+    from ..model.push_model import push
 except:
     import sys
     sys.path.append('../')
     sys.path.append('../../')
     from model.app_model import app as app_table
     from model.app_model import app_price
-    from model.app_model import app_push
+    from model.push_model import push
 
+APP_WIDGET_ID=3
 
 def app_get(user_id=0):
     '''
@@ -56,9 +57,10 @@ def app_push_get():
 
         returns: push_list(list)[{id, user_id, notify, notify_method, notify_interval_raw, notify_interval_unit, notify_interval, notify_trigger_time}...]
     '''
-    app_push_valids = app_push.select().where((app_push.is_valid == 1) & (app_push.notify == 1) & (app_push.notify_trigger_time <= datetime.datetime.now())).dicts()
+    app_push_valids = push.select().where((push.widget_id == APP_WIDGET_ID)& (push.is_valid == 1) & (push.notify == 1) & (push.notify_trigger_time <= datetime.datetime.now())).dicts()
     return [{
         'id': app_push_valid['id'],
+        'widget_id': app_push_valid['widget_id'],
         'user_id': app_push_valid['user_id'],
         'notify': app_push_valid['notify'],
         'notify_method': app_push_valid['notify_method'],
@@ -74,4 +76,4 @@ def app_push_del(app_push_id):
     '''
         将指定id的推送数据置为无效
     '''
-    app_push.update(is_valid=0).where(app_push.id == app_push_id).execute()
+    push.update(is_valid=0).where(push.id == app_push_id).execute()
