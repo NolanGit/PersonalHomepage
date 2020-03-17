@@ -10,8 +10,7 @@ except:
     from model.app_model import app as app_table
     from model.app_model import app_price
     from model.push_model import push
-
-APP_WIDGET_ID=3
+    
 
 def app_get(user_id=0):
     '''
@@ -49,31 +48,3 @@ def app_del_all(user_id):
         args:user_id(Int)
     '''
     app_table.update(is_valid=0, update_time=datetime.datetime.now()).where((app_table.user_id == user_id) & (app_table.is_valid == 1)).execute()
-
-
-def app_push_get():
-    '''
-        返回生效状态且需要推送且已到推送时间的推送列表
-
-        returns: push_list(list)[{id, user_id, notify, notify_method, notify_interval_raw, notify_interval_unit, notify_interval, notify_trigger_time}...]
-    '''
-    app_push_valids = push.select().where((push.widget_id == APP_WIDGET_ID)& (push.is_valid == 1) & (push.notify == 1) & (push.notify_trigger_time <= datetime.datetime.now())).dicts()
-    return [{
-        'id': app_push_valid['id'],
-        'widget_id': app_push_valid['widget_id'],
-        'user_id': app_push_valid['user_id'],
-        'notify': app_push_valid['notify'],
-        'notify_method': app_push_valid['notify_method'],
-        'notify_interval_raw': app_push_valid['notify_interval_raw'],
-        'notify_interval_unit': app_push_valid['notify_interval_unit'],
-        'notify_interval': app_push_valid['notify_interval'],
-        'notify_trigger_time': app_push_valid['notify_trigger_time'],
-        'update_time': app_push_valid['update_time']
-    } for app_push_valid in app_push_valids]
-
-
-def app_push_del(app_push_id):
-    '''
-        将指定id的推送数据置为无效
-    '''
-    push.update(is_valid=0).where(push.id == app_push_id).execute()
