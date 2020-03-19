@@ -165,38 +165,29 @@ class PushQueueData(object):
         self.content = param_dict['content']
         self.trigger_time = param_dict['trigger_time']
 
-    def before_push(push_func):
-        @wraps(push_func)
-        def inner(*args, **kwargs):
-            try:
-                push_queue.update(status=1).where(push_queue.id == id).execute()
-                push_func(*args, **kwargs)
-            except Exception as e:
-                print('修改id为%s推送队列任务的状态失败' % self.id + str(e))
-                return False
-            return inner
+    def a(func):
 
-    def after_push(push_func):
-        @wraps(push_func)
-        def inner(*args, **kwargs):
-            push_func(*args, **kwargs)
-            if self.log['code'] == 200:
-                push_queue.update(status=2, log=str(self.log)).where(push_queue.id == id).execute()
-            else:
-                push_queue.update(status=0, log=str(self.log)).where(push_queue.id == id).execute()
-            return inner
+        def inner_a(*args, **kwargs):
+            print('a')
+            func(*args, **kwargs)
 
-    @before_push
-    @after_push
-    def push(self):
-        print('推送:[%s]%s' % (self.title, self.content))
-        if self.method == 1:  # 微信
-            self.log = Wechat(self.title, self.content, self.address).send()
-        elif self.method == 2:  # 邮件
-            self.log = Mail('推送通知', self.title, self.content, self.address).send()
+        return inner_a
+
+    def b(func):
+
+        def inner_b(*args, **kwargs):
+            print('b')
+            func(*args, **kwargs)
+
+        return inner_b
+
+    @a
+    @b
+    def c(self):
+        print('c')
 
 
 if __name__ == '__main__':
     push_queue_list = PushQueueList().push_queue_list_get().push_queue_list
     for push_queue_data in push_queue_list:
-        push_queue_data.push()
+        push_queue_data.c()
