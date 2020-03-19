@@ -1,4 +1,5 @@
 import datetime
+from functools import wraps
 try:
     from ..model.push_model import push
     from ..model.push_model import push_queue
@@ -165,18 +166,20 @@ class PushQueueData(object):
         self.trigger_time = param_dict['trigger_time']
 
     def before_push(push_func):
-        def inner(self):
+        @wraps(push_func)
+        def inner(*args, **kwargs):
             try:
                 push_queue.update(status=1).where(push_queue.id == id).execute()
-                push_func(self)
+                push_func(*args, **kwargs)
             except Exception as e:
                 print('修改id为%s推送队列任务的状态失败' % self.id + str(e))
                 return False
             return inner
 
     def after_push(push_func):
-        def inner(self):
-            push_func(self)
+        @wraps(push_func)
+        def inner(*args, **kwargs):
+            push_func(*args, **kwargs)
             if self.log['code'] == 200:
                 push_queue.update(status=2, log=str(self.log)).where(push_queue.id == id).execute()
             else:
