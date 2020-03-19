@@ -2003,88 +2003,54 @@ export default {
     },
     //使用当前激活tab的detial，接收start_command和组装方式，组装好command和detail并返回，start_command在运行脚本时为打开文件夹的命令加上起始命令
     command_get(start_command, type) {
-      var command = "";
-      var detail = {};
+      var command = ""
+      var detail = {}
+      //console.log(this.activeTab)
       if (type == "1") {
         //顺序模式
-        for (
-          var x = 0;
-          x < this.formData[this.activeTab].formDataDetail.length;
-          x++
-        ) {
-          detail[
-            this.formData[this.activeTab].formDataDetail[x].label
-          ] = this.formData[this.activeTab].formDataDetail[x].value;
-          if (
-            this.formData[this.activeTab].formDataDetail[x].type == "dateRange"
-          ) {
-            for (
-              let d = 0;
-              d < this.formData[this.activeTab].formDataDetail[x].value.length;
-              d++
-            ) {
-              command =
-                command +
-                " " +
-                this.formData[this.activeTab].formDataDetail[x].value[d];
+        for (var x = 0; x < this.formData[this.activeTab].formDataDetail.length; x++) {
+          //console.log(this.formData[this.activeTab].formDataDetail[x].type)
+          detail[this.formData[this.activeTab].formDataDetail[x].label] = this.formData[this.activeTab].formDataDetail[x].value
+          if (this.formData[this.activeTab].formDataDetail[x].type == 'dateRange') {
+            if (this.formData[this.activeTab].formDataDetail[x].value == null) {//解决用户点击了组建上的清空按钮后导致前端报错的问题
+              continue
             }
-            continue;
+            for (let d = 0; d < this.formData[this.activeTab].formDataDetail[x].value.length; d++) {
+              command = command + " " + this.formData[this.activeTab].formDataDetail[x].value[d]
+            }
+            continue
           }
-          command =
-            command +
-            " " +
-            this.formData[this.activeTab].formDataDetail[x].value;
+          command = command + " " + this.formData[this.activeTab].formDataDetail[x].value
         }
-        command = start_command + command;
+        command = start_command + command
         //console.log(command)
       } else if (type == "2") {
         //替换模式
-        var tempCommand = start_command;
-        for (
-          var x = 0;
-          x < this.formData[this.activeTab].formDataDetail.length;
-          x++
-        ) {
-          detail[
-            this.formData[this.activeTab].formDataDetail[x].label
-          ] = this.formData[this.activeTab].formDataDetail[x].value;
-          if (
-            this.formData[this.activeTab].formDataDetail[x].type == "dateRange"
-          ) {
-            var tempDateRange = "";
-            for (
-              let d = 0;
-              d < this.formData[this.activeTab].formDataDetail[x].value.length;
-              d++
-            ) {
-              tempDateRange =
-                tempDateRange +
-                " " +
-                this.formData[this.activeTab].formDataDetail[x].value[d];
+        var tempCommand = start_command
+        for (var x = 0; x < this.formData[this.activeTab].formDataDetail.length; x++) {
+          detail[this.formData[this.activeTab].formDataDetail[x].label] = this.formData[this.activeTab].formDataDetail[x].value
+          if (this.formData[this.activeTab].formDataDetail[x].type == 'dateRange') {
+            if (this.formData[this.activeTab].formDataDetail[x].value == null) {//解决用户点击了组建上的清空按钮后导致前端报错的问题
+              continue
             }
-            var reg = new RegExp(
-              "%" + this.formData[this.activeTab].formDataDetail[x].label + "%",
-              "g"
-            );
+            var tempDateRange = ""
+            for (let d = 0; d < this.formData[this.activeTab].formDataDetail[x].value.length; d++) {
+              tempDateRange = tempDateRange + " " + this.formData[this.activeTab].formDataDetail[x].value[d]
+            }
+            var reg = new RegExp("%" + this.formData[this.activeTab].formDataDetail[x].label + "%", "g")
             tempCommand = tempCommand.replace(reg, tempDateRange);
-            continue;
+            continue
           }
-          var reg = new RegExp(
-            "%" + this.formData[this.activeTab].formDataDetail[x].label + "%",
-            "g"
-          );
-          tempCommand = tempCommand.replace(
-            reg,
-            this.formData[this.activeTab].formDataDetail[x].value
-          );
+          var reg = new RegExp("%" + this.formData[this.activeTab].formDataDetail[x].label + "%", "g")
+          tempCommand = tempCommand.replace(reg, this.formData[this.activeTab].formDataDetail[x].value);
         }
-        command = tempCommand;
+        command = tempCommand
       }
       var temp = {
         command: command,
-        detail: detail
-      };
-      return temp;
+        detail: detail,
+      }
+      return (temp)
     },
     //关闭运行窗口
     outputDialogClose(done) {
