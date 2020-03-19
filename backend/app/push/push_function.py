@@ -175,10 +175,10 @@ class PushQueueData(object):
     def before_push(push_func):
 
         @wraps(push_func)
-        def inner(*args, **kwargs):
+        def inner(self):
             try:
                 push_queue.update(status=1).where(push_queue.id == id).execute()
-                push_func(*args, **kwargs)
+                push_func(self)
             except Exception as e:
                 print('修改id为%s推送队列任务的状态失败' % self.id + str(e))
                 return False
@@ -187,8 +187,8 @@ class PushQueueData(object):
     def after_push(push_func):
 
         @wraps(push_func)
-        def inner(*args, **kwargs):
-            push_func(*args, **kwargs)
+        def inner(self):
+            push_func(self)
             if self.log['code'] == 200:
                 push_queue.update(status=2, log=str(self.log)).where(push_queue.id == id).execute()
             else:
