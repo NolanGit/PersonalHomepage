@@ -13,7 +13,14 @@ from bs4 import BeautifulSoup
 from model.app_model import app as app_table
 from model.app_model import app_price
 
+from app_function import app_get, app_price_get
+from model.push_model import push
+from login.login_funtion import User
+from push.push_function import PushList, PushData
+
 count = 0
+APP_WIDGET_ID = 3
+
 
 
 class App(object):
@@ -64,7 +71,37 @@ class App(object):
         return (app_name, app_price)
 
 
+
+def app_price_push_generator():
+    '''
+        首先获取所有需要推送数据，然后去价格表查最新的一条，将要推送的数据写入队列
+    '''
+
+    app_push_data_list = PushList(APP_WIDGET_ID).push_list_get().push_list
+    for app_push_data in app_push_data_list:
+        user_id = app_push_data.user_id
+
+        content = ''
+        applist = app_get(app_push_data.user_id)
+        for app in applist:
+            current_price, update_time = app_price_get(app['id'])
+            if float(current_price) <= float(app['expect_price']):
+                content = content + '\n' + '[' + app['name'] + ']' + ' is ¥' + str(current_price) + ' now !(' + update_time + ')' + '\n'
+        if content != '':
+            if app_push_data.notify_method == 1:
+                address = User(user_id=user_id).wechat_key
+            elif app_push_data.notify_method == 2:
+                address = User(user_id=user_id).email
+            title = 'App Discount!'
+            if (app_push_data.add_to_push_queue(title, address, content)):
+                if (app_push_data.generate_next()):
+                    app_push_data.delete()
+
+# 爬取数据
 app_table_query = app_table.select().where(app_table.is_valid == 1).dicts()
 for single_app_table_query in app_table_query:
     app = App(single_app_table_query['url'])
     app_price.create(app_id=single_app_table_query['id'], price=app.price, update_time=datetime.datetime.now())
+
+#加入推送队列
+app_price_push_generator()
