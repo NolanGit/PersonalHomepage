@@ -273,9 +273,9 @@ export default {
     },
     appSortEditSetting(item, index) {
       this.edit.title = "编辑App";
-      this.edit.form.name = item[index].name;
-      this.edit.form.url = item[index].url;
-      this.edit.form.expect_price = item[index].expect_price;
+      this.edit.form.name = item.name;
+      this.edit.form.url = item.url;
+      this.edit.form.expect_price = item.expect_price;
       this.edit.form.index = index;
       this.edit.visible = true;
     },
