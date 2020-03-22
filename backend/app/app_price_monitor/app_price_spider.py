@@ -22,7 +22,6 @@ count = 0
 APP_WIDGET_ID = 3
 
 
-
 class App(object):
     price = 0.00
     name = '',
@@ -71,13 +70,12 @@ class App(object):
         return (app_name, app_price)
 
 
-
 def app_price_push_generator():
     '''
         首先获取所有需要推送数据，然后去价格表查最新的一条，将要推送的数据写入队列
     '''
 
-    app_push_data_list = PushList(APP_WIDGET_ID).push_list_get().push_list
+    app_push_data_list = PushList(widget_id = 0).push_list_get(is_need_2_push=True).push_list
     for app_push_data in app_push_data_list:
         user_id = app_push_data.user_id
 
@@ -96,6 +94,7 @@ def app_price_push_generator():
             if (app_push_data.add_to_push_queue(title, address, content)):
                 if (app_push_data.generate_next()):
                     app_push_data.delete()
+
 
 # 爬取数据
 app_table_query = app_table.select().where(app_table.is_valid == 1).dicts()
