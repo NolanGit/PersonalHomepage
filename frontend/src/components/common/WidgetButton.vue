@@ -29,7 +29,7 @@ export default {
   name: "WidgetButton",
   props: {
     user_id: Number,
-    button: Array
+    widget_id: Number
   },
   watch: {
     user_id(newValue, oldValue) {}
