@@ -1,8 +1,13 @@
 from ..login.login_funtion import User
 
+BUTTON = {
+    'weather': ['add', 'edit'],
+    'bookmarks': ['add', 'edit'],
+    'app': ['add', 'edit', 'notify'],
+}
+
 
 class MainUser(User):
-
     def get_widget(self):
         '''
 
@@ -30,7 +35,8 @@ class MainUser(User):
             'order': single_user_widget['order'],
             'name': cf.dict_list_get_single_element(widget_list, 'id', single_user_widget['widget_id'], 'name', single_user_widget['widget_id'] - 1),
             'is_login_needed': cf.dict_list_get_single_element(widget_list, 'id', single_user_widget['widget_id'], 'is_login_needed', single_user_widget['widget_id'] - 1),
-            'span': cf.dict_list_get_single_element(widget_list, 'id', single_user_widget['widget_id'], 'span', single_user_widget['widget_id'] - 1)
+            'span': cf.dict_list_get_single_element(widget_list, 'id', single_user_widget['widget_id'], 'span', single_user_widget['widget_id'] - 1),
+            'button': BUTTON[cf.dict_list_get_single_element(widget_list, 'id', single_user_widget['widget_id'], 'name', single_user_widget['widget_id'] - 1)]
         } for single_user_widget in user_widget_list]
         self.widget = result
         return self

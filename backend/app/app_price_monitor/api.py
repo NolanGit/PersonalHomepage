@@ -13,7 +13,6 @@ from ..privilege.privilege_control import permission_required
 from .app_function import app_get, app_del_all, app_price_get
 
 URL_PREFIX = '/app'
-DAY_HOUR = 24
 
 
 @app_price_monitor.route('/get', methods=['POST'])
