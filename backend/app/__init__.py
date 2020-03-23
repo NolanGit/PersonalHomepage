@@ -46,6 +46,6 @@ def create_app(config_name):
     app.register_blueprint(app_price_monitor_blueprint, url_prefix='/app')
     
     from .push import push as push_blueprint
-    app.register_blueprint(push_blueprint, url_prefix='/app')
+    app.register_blueprint(push_blueprint, url_prefix='/push')
 
     return app

@@ -21,21 +21,21 @@
             <weather
               v-if="singleWidget.name=='weather'"
               :user_id="user_id"
-              :widget_id="singleWidget.widget_id"
+              :widget_id="singleWidget.id"
               :buttons="singleWidget.buttons"
               @done="done(index)"
             />
             <bookmarks
               v-if="singleWidget.name=='bookmarks'"
               :user_id="user_id"
-              :widget_id="singleWidget.widget_id"
+              :widget_id="singleWidget.id"
               :buttons="singleWidget.buttons"
               @done="done(index)"
             />
             <appMonitor
               v-if="singleWidget.name=='app'"
               :user_id="user_id"
-              :widget_id="singleWidget.widget_id"
+              :widget_id="singleWidget.id"
               :buttons="singleWidget.buttons"
               @done="done(index)"
             />
