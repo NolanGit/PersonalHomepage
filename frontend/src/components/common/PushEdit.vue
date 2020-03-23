@@ -21,7 +21,7 @@
         </div>
       </el-form-item>
       <el-form-item label="推送方式" :v-show="notifyData.form.notify.select==1">
-        <div class="div-flex">
+        <div class="div-flex" style="width:162px">
           <el-select
             v-model="notifyData.form.notifyMethod.select"
             placeholder="请选择"
@@ -91,6 +91,13 @@
   </div>
 </template>
 <script>
+import axios from "axios";
+const api = {
+  get: "/push/get",
+  add: "/push/add",
+  edit: "/push/edit",
+  delete: "/push/delete"
+};
 export default {
   name: "PushEdit",
   props: {
@@ -149,7 +156,54 @@ export default {
       }
     };
   },
-  methods: {}
+  methods: {
+    async get() {
+      try {
+        const { data: res } = await axios.post(api.get, {
+          user_id: this.user_id,
+          widget_id: this.widget_id
+        });
+        if (res.data.length == 0) {
+          return;
+        }
+      } catch (e) {
+        console.log(e);
+        this.$message({
+          message: e.response.data.msg,
+          type: "error"
+        });
+      }
+    },
+    async add() {
+      try {
+        const { data: res } = await axios.post(api.get, {
+          user_id: this.user_id,
+          widget_id: this.widget_id
+        });
+      } catch (e) {
+        console.log(e);
+        this.$message({
+          message: e.response.data.msg,
+          type: "error"
+        });
+      }
+    },
+    async edit() {
+      try {
+        const { data: res } = await axios.post(api.edit, {
+          user_id: this.user_id,
+          widget_id: this.widget_id
+        });
+      } catch (e) {
+        console.log(e);
+        this.$message({
+          message: e.response.data.msg,
+          type: "error"
+        });
+      }
+    }
+  },
+  mounted: {}
 };
 </script>
 <style scoped>
