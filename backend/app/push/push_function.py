@@ -1,7 +1,7 @@
 import datetime
 import traceback
 from functools import wraps
-if __name__!='app.push.push_function':
+if __name__ != 'app.push.push_function':
     try:
         from ..tool.wechat_sender import Wechat
         from ..tool.mail_sender import Mail
@@ -164,20 +164,34 @@ class PushList(object):
             returns: self
             affects: self.push_list(List)[PushData...]
         '''
+        bool_user_id = (push.user_id == self.user_id)
+        bool_widget_id = (push.widget_id == self.widget_id)
+        bool_is_valid = (push.id_valid == 1)
+        bool_notify = (push.notify == 1)
+        bool_notify_trigger_time = (push.notify_trigger_time <= datetime.datetime.now())
+
         if is_need_2_push:
             if self.user_id != 0:
-                push_valids = push.select().where((push.user_id == self.user_id)
-                                                  & (push.widget_id == self.widget_id)
-                                                  & (push.is_valid == 1)
-                                                  & (push.notify == 1)
-                                                  & (push.notify_trigger_time <= datetime.datetime.now())).dicts()
+                if self.widget_id != 0:
+                    push_valids = push.select().where(bool_user_id & bool_widget_id & bool_is_valid & bool_notify & bool_notify_trigger_time).dicts()
+                else:
+                    push_valids = push.select().where(bool_user_id & bool_is_valid & bool_notify & bool_notify_trigger_time).dicts()
             else:
-                push_valids = push.select().where((push.widget_id == self.widget_id) & (push.is_valid == 1) & (push.notify == 1) & (push.notify_trigger_time <= datetime.datetime.now())).dicts()
+                if self.widget_id != 0:
+                    push_valids = push.select().where(bool_widget_id & bool_is_valid & bool_notify & bool_notify_trigger_time).dicts()
+                else:
+                    push_valids = push.select().where(bool_is_valid & bool_notify & bool_notify_trigger_time).dicts()
         else:
             if self.user_id != 0:
-                push_valids = push.select().where((push.user_id == self.user_id) & (push.widget_id == self.widget_id) & (push.is_valid == 1)).dicts()
+                if self.widget_id != 0:
+                    push_valids = push.select().where(bool_user_id & bool_widget_id & bool_is_valid).dicts()
+                else:
+                    push_valids = push.select().where(bool_user_id & bool_is_valid).dicts()
             else:
-                push_valids = push.select().where((push.widget_id == self.widget_id) & (push.is_valid == 1)).dicts()
+                if self.widget_id != 0:
+                    push_valids = push.select().where(bool_widget_id & bool_is_valid).dicts()
+                else:
+                    push_valids = push.select().where(bool_is_valid).dicts()
         self.push_list = [
             PushData(id=push_valid['id'],
                      user_id=push_valid['user_id'],
