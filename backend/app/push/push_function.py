@@ -166,7 +166,7 @@ class PushList(object):
         '''
         bool_user_id = (push.user_id == self.user_id)
         bool_widget_id = (push.widget_id == self.widget_id)
-        bool_is_valid = (push.id_valid == 1)
+        bool_is_valid = (push.is_valid == 1)
         bool_notify = (push.notify == 1)
         bool_notify_trigger_time = (push.notify_trigger_time <= datetime.datetime.now())
 
