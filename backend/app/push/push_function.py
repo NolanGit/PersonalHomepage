@@ -50,16 +50,16 @@ class PushData(object):
                 notify_trigger_time     default = None
                 update_time             default = None
         '''
-        self.id = id,
-        self.user_id = user_id,
-        self.widget_id = widget_id,
-        self.notify = notify,
-        self.notify_method = notify_method,
-        self.notify_interval_raw = notify_interval_raw,
-        self.notify_interval_unit = notify_interval_unit,
-        self.notify_interval = notify_interval,
-        self.notify_trigger_time = notify_trigger_time,
-        self.update_time = update_time,
+        self.id = id
+        self.user_id = user_id
+        self.widget_id = widget_id
+        self.notify = notify
+        self.notify_method = notify_method
+        self.notify_interval_raw = notify_interval_raw
+        self.notify_interval_unit = notify_interval_unit
+        self.notify_interval = notify_interval
+        self.notify_trigger_time = notify_trigger_time
+        self.update_time = update_time
 
     def save(self):
         '''
@@ -143,8 +143,8 @@ class PushData(object):
                 'notify_interval_raw': self.notify_interval_raw,
                 'notify_interval_unit': self.notify_interval_unit,
                 'notify_interval': self.notify_interval,
-                'notify_trigger_time': self.notify_trigger_time,
-                'update_time': self.update_time
+                'notify_trigger_time': self.notify_trigger_time.strftime("%Y-%m-%d %H:%M:%S"),
+                'update_time': self.update_time.strftime("%Y-%m-%d %H:%M:%S")
             }
         except Exception as e:
             traceback.print_exc()

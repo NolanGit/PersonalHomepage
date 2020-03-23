@@ -21,7 +21,7 @@
         </div>
       </el-form-item>
       <el-form-item label="推送方式" :v-show="notifyData.form.notify.select==1">
-        <div class="div-flex" style="width:162px">
+        <div class="div-flex" style="width:324px">
           <el-select
             v-model="notifyData.form.notifyMethod.select"
             placeholder="请选择"
@@ -123,14 +123,14 @@ export default {
             ]
           },
           notifyMethod: {
-            select: 0,
+            select: 1,
             options: [
               {
-                value: 0,
+                value: 1,
                 label: "微信"
               },
               {
-                value: 1,
+                value: 2,
                 label: "邮件"
               }
             ]
@@ -140,14 +140,14 @@ export default {
           interval: {
             value: "",
             unit: {
-              select: 0,
+              select: 1,
               options: [
                 {
-                  value: 0,
+                  value: 1,
                   label: "小时"
                 },
                 {
-                  value: 1,
+                  value: 2,
                   label: "天"
                 }
               ]
@@ -166,6 +166,14 @@ export default {
         });
         if (res.data.length == 0) {
           return;
+        }else{
+          this.id=res.data.id
+          this.notifyData.form.notify.select=res.data.notify
+          this.notifyData.form.notifyMethod.select=res.data.notify_method
+          this.notifyData.form.triggerDate=res.data.trigger_time.split(" ")[0]
+          this.notifyData.form.triggerTime=res.data.trigger_time.split(" ")[1].substr(0, 5)
+          this.notifyData.form.interval.value=res.data.notify_interval_raw
+          this.notifyData.form.interval.unit.select=res.data.notify_interval_unit
         }
       } catch (e) {
         console.log(e);
