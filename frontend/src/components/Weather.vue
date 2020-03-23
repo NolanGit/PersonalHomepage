@@ -70,7 +70,7 @@
 </template>
 <script>
 import axios from "axios";
-import Router from "vue-router";
+import WidgetButton from "./common/WidgetButton.vue";
 const api = {
   weatherData: "/weather/weatherData",
   locationAdd: "/weather/weatherPersonalizedSave",
@@ -83,6 +83,9 @@ export default {
     user_id: Number,
     user_id: Number,
     buttons: Array
+  },
+  components: {
+    WidgetButton
   },
   data() {
     return {

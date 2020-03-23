@@ -100,6 +100,7 @@ import axios from "axios";
 import Router from "vue-router";
 import IconComponet from "./common/Icon.vue";
 import SlickSort from "./common/SlickSort.vue";
+import WidgetButton from "./common/WidgetButton.vue";
 import { deepClone } from "../js/common";
 
 const api = {
@@ -117,7 +118,8 @@ export default {
   },
   components: {
     IconComponet,
-    SlickSort
+    SlickSort,
+    WidgetButton
   },
   data() {
     return {
