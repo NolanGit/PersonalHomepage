@@ -18,13 +18,27 @@
             v-show="singleWidget.show"
             class="margin_left-medium margin_right-medium"
           >
-            <weather v-if="singleWidget.name=='weather'" :user_id="user_id" @done="done(index)" />
+            <weather
+              v-if="singleWidget.name=='weather'"
+              :user_id="user_id"
+              :widget_id="singleWidget.widget_id"
+              :buttons="singleWidget.buttons"
+              @done="done(index)"
+            />
             <bookmarks
               v-if="singleWidget.name=='bookmarks'"
               :user_id="user_id"
+              :widget_id="singleWidget.widget_id"
+              :buttons="singleWidget.buttons"
               @done="done(index)"
             />
-            <appMonitor v-if="singleWidget.name=='app'" :user_id="user_id" @done="done(index)" />
+            <appMonitor
+              v-if="singleWidget.name=='app'"
+              :user_id="user_id"
+              :widget_id="singleWidget.widget_id"
+              :buttons="singleWidget.buttons"
+              @done="done(index)"
+            />
           </el-card>
         </transition>
       </el-col>

@@ -111,7 +111,9 @@ const api = {
 export default {
   name: "bookmarks",
   props: {
-    user_id: Number
+    user_id: Number,
+    user_id: Number,
+    buttons: Array
   },
   components: {
     IconComponet,

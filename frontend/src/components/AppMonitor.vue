@@ -15,27 +15,7 @@
       </el-carousel-item>
     </el-carousel>
     <el-row type="flex" justify="center" class="margin_top-medium" v-show="user_id!=0">
-      <el-button
-        class="margin_left-mini margin_right-mini"
-        size="small"
-        @click="add()"
-        icon="el-icon-plus"
-        circle
-      ></el-button>
-      <el-button
-        class="bmargin_left-mini margin_right-mini"
-        size="small"
-        @click="sort()"
-        icon="el-icon-setting"
-        circle
-      ></el-button>
-      <el-button
-        class="margin_left-mini margin_right-mini"
-        size="small"
-        @click="notify()"
-        icon="el-icon-bell"
-        circle
-      ></el-button>
+      <WidgetButton :user_id="user_id" :widget_id="widget_id" :buttons="buttons"></WidgetButton>
     </el-row>
 
     <!--编辑界面-->
@@ -175,6 +155,7 @@
 <script>
 import axios from "axios";
 import SlickSort from "./common/SlickSort.vue";
+import WidgetButton from "./common/WidgetButton.vue";
 import { deepClone } from "../js/common";
 const api = {
   get: "/app/get",
@@ -185,10 +166,13 @@ const api = {
 export default {
   name: "AppMonitor",
   props: {
-    user_id: Number
+    user_id: Number,
+    user_id: Number,
+    buttons: Array
   },
   components: {
-    SlickSort
+    SlickSort,
+    WidgetButton
   },
   data() {
     return {

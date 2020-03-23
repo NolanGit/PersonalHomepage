@@ -1,9 +1,9 @@
 from ..login.login_funtion import User
 
 BUTTON = {
-    'weather': ['add', 'edit'],
-    'bookmarks': ['add', 'edit'],
-    'app': ['add', 'edit', 'notify'],
+    'weather': ['add', 'sort'],
+    'bookmarks': ['add', 'sort'],
+    'app': ['add', 'sort', 'notify'],
 }
 
 

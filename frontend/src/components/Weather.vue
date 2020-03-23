@@ -80,8 +80,9 @@ const api = {
 export default {
   name: "weather",
   props: {
-    user: String,
-    user_id: Number
+    user_id: Number,
+    user_id: Number,
+    buttons: Array
   },
   data() {
     return {
