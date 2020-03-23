@@ -1,4 +1,4 @@
-// 拖动排序组件，接受一个Array，每一组数据必须有name参数，点击提交后返回带顺序的Array，点击编辑则返回目标组的数据和index
+// widget的按钮区域
 <template>
   <el-row type="flex" justify="center" class="margin_top-medium" v-show="user_id!=0">
     <el-button
@@ -42,14 +42,14 @@ export default {
     return {};
   },
   methods: {
-    edit(item, index) {
-      this.$emit("edit", item, index);
+    add() {
+      this.$emit("add");
     },
-    del(item, index) {
-      this.list.splice(index, 1);
+    sort() {
+      this.$emit("sort");
     },
-    submit() {
-      this.$emit("submit", this.list);
+    notify() {
+      this.$emit("notify");
     }
   }
 };
