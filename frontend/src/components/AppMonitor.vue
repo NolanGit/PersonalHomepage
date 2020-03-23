@@ -21,6 +21,7 @@
         :buttons="buttons"
         @add="add()"
         @sort="sort()"
+        @notify="notify()"
       ></WidgetButton>
     </el-row>
 
@@ -56,7 +57,7 @@
       </span>
     </el-dialog>
 
-    <PushEdit :user_id="user_id" :widget_id="widget_id" v-if="notify.visible"></PushEdit>
+    <PushEdit :user_id="user_id" :widget_id="widget_id" v-if="notifyVisible"></PushEdit>
 
     <!--编辑顺序界面-->
     <el-dialog title="编辑App" :visible.sync="appSortEdit.visible" width="40%">
@@ -100,9 +101,7 @@ export default {
         visible: false,
         list: []
       },
-      notify: {
-        visible: false,
-      },
+      notifyVisible: false,
       appRawData: [],
       appSuite: [],
       edit: {
@@ -123,7 +122,7 @@ export default {
       this.edit.visible = true;
     },
     notify() {
-      this.notify.visible = true;
+      this.notifyVisible = true;
     },
     sort() {
       this.appSortEdit.visible = true;
