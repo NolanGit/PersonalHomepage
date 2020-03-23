@@ -1,7 +1,7 @@
 import datetime
 import traceback
 from functools import wraps
-if __name__!='api.push':
+if __name__!='api.push.push_function':
     try:
         from ..tool.wechat_sender import Wechat
         from ..tool.mail_sender import Mail
