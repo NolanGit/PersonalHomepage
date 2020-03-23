@@ -57,7 +57,9 @@
       </span>
     </el-dialog>
 
-    <PushEdit :user_id="user_id" :widget_id="widget_id" v-if="notifyVisible"></PushEdit>
+    <el-dialog title="提醒" :visible.sync="notifyVisible" width="40%">
+      <PushEdit :user_id="user_id" :widget_id="widget_id" v-if="notifyVisible"></PushEdit>
+    </el-dialog>
 
     <!--编辑顺序界面-->
     <el-dialog title="编辑App" :visible.sync="appSortEdit.visible" width="40%">

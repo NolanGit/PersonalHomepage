@@ -1,7 +1,7 @@
 // 编辑推送dialog
 <template>
   <!--编辑提醒界面-->
-  <el-dialog title="提醒" width="50%">
+  <div>
     <el-form ref="form" :model="notifyData.form" size="mini">
       <el-form-item label="是否推送">
         <div class="div-flex">
@@ -88,7 +88,7 @@
     <span slot="footer" class="dialog-footer">
       <el-button type="primary" size="small" @click="editNotifySubmit()">确定</el-button>
     </span>
-  </el-dialog>
+  </div>
 </template>
 <script>
 export default {
