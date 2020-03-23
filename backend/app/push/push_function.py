@@ -164,7 +164,7 @@ class PushList(object):
             returns: self
             affects: self.push_list(List)[PushData...]
         '''
-        if not is_need_2_push:
+        if is_need_2_push:
             if self.user_id != 0:
                 push_valids = push.select().where((push.user_id == self.user_id)
                                                   & (push.widget_id == self.widget_id)
