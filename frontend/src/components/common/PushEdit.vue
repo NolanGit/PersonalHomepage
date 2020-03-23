@@ -1,7 +1,7 @@
-// 
+// 编辑推送dialog
 <template>
   <!--编辑提醒界面-->
-  <el-dialog title="提醒" :visible.sync="notifyData.visible" width="50%">
+  <el-dialog title="提醒" width="50%">
     <el-form ref="form" :model="notifyData.form" size="mini">
       <el-form-item label="是否推送">
         <div class="div-flex">
@@ -100,7 +100,6 @@ export default {
   data() {
     return {
       notifyData: {
-        visible: false,
         form: {
           notify: {
             select: 0,

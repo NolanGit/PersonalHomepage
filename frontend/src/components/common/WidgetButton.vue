@@ -1,6 +1,6 @@
 // widget的按钮区域
 <template>
-  <el-row type="flex" justify="center" class="margin_top-medium" v-show="user_id!=0">
+  <el-row type="flex" justify="center" class="margin_top-medium">
     <el-button
       class="margin_left-mini margin_right-mini"
       size="small"
@@ -31,12 +31,7 @@
 export default {
   name: "WidgetButton",
   props: {
-    user_id: Number,
-    widget_id: Number,
     buttons: Array
-  },
-  watch: {
-    user_id(newValue, oldValue) {}
   },
   data() {
     return {};
