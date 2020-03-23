@@ -1,4 +1,5 @@
 from flask import Blueprint
 
-push = Blueprint('push', __name__)
-from . import api
+if __name__=='app.push':
+    push = Blueprint('push', __name__)
+    from . import api
