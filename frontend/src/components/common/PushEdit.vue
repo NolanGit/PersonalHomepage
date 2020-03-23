@@ -170,8 +170,8 @@ export default {
           this.id=res.data.id
           this.notifyData.form.notify.select=res.data.notify
           this.notifyData.form.notifyMethod.select=res.data.notify_method
-          this.notifyData.form.triggerDate=res.data.trigger_time.split(" ")[0]
-          this.notifyData.form.triggerTime=res.data.trigger_time.split(" ")[1].substr(0, 5)
+          this.notifyData.form.triggerDate=res.data.notify_trigger_time.split(" ")[0]
+          this.notifyData.form.triggerTime=res.data.notify_trigger_time.split(" ")[1].substr(0, 5)
           this.notifyData.form.interval.value=res.data.notify_interval_raw
           this.notifyData.form.interval.unit.select=res.data.notify_interval_unit
         }
