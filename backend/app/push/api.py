@@ -24,7 +24,7 @@ def get():
         push_list = PushList(user_id=user_id, widget_id=widget_id).push_list_get().push_list
         if len(push_list) > 1:
             raise Exception('Bad Data Returned, Check The Parameter!')
-        response = {'code': 200, 'msg': '成功！', 'data': [] if len(push_list) == 0 else push_list[0].convert_to_dict}
+        response = {'code': 200, 'msg': '成功！', 'data': [] if len(push_list) == 0 else push_list[0].convert_to_dict()}
         return jsonify(response)
 
     except Exception as e:
