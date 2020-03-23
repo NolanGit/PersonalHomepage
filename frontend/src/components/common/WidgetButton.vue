@@ -7,7 +7,7 @@
       @click="add()"
       icon="el-icon-plus"
       circle
-      v-if="isExistInArray(buttons,'add')"
+      v-if="buttons.indexOf('add')!= -1"
     ></el-button>
     <el-button
       class="bmargin_left-mini margin_right-mini"
@@ -15,7 +15,7 @@
       @click="sort()"
       icon="el-icon-setting"
       circle
-      v-if="isExistInArray(buttons,'sort')"
+      v-if="buttons.indexOf('sort')!= -1"
     ></el-button>
     <el-button
       class="margin_left-mini margin_right-mini"
@@ -23,19 +23,17 @@
       @click="notify()"
       icon="el-icon-bell"
       circle
-      v-if="isExistInArray(buttons,'notify')"
+      v-if="buttons.indexOf('notify')!= -1"
     ></el-button>
   </el-row>
 </template>
 <script>
-import { isExistInArray } from "../../js/common";
-
 export default {
   name: "WidgetButton",
   props: {
     user_id: Number,
     widget_id: Number,
-    buttons: Array,
+    buttons: Array
   },
   watch: {
     user_id(newValue, oldValue) {}
