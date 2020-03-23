@@ -28,7 +28,7 @@
   </el-row>
 </template>
 <script>
-import { isExistInArray } from "../js/common";
+import { isExistInArray } from "../../js/common";
 
 export default {
   name: "WidgetButton",
