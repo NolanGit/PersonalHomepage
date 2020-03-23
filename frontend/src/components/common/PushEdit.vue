@@ -203,7 +203,9 @@ export default {
       }
     }
   },
-  mounted: {}
+  mounted() {
+    this.get();
+  }
 };
 </script>
 <style scoped>
