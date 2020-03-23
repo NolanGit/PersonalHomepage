@@ -86,7 +86,7 @@
       </el-form-item>
     </el-form>
     <span slot="footer" class="dialog-footer">
-      <el-button type="primary" size="small" @click="editNotifySubmit()">确定</el-button>
+      <el-button type="primary" size="small" @click="edit()">确定</el-button>
     </span>
   </div>
 </template>
@@ -106,6 +106,7 @@ export default {
   },
   data() {
     return {
+      id: 0,
       notifyData: {
         form: {
           notify: {
@@ -174,26 +175,19 @@ export default {
         });
       }
     },
-    async add() {
-      try {
-        const { data: res } = await axios.post(api.get, {
-          user_id: this.user_id,
-          widget_id: this.widget_id
-        });
-      } catch (e) {
-        console.log(e);
-        this.$message({
-          message: e.response.data.msg,
-          type: "error"
-        });
-      }
-    },
     async edit() {
       try {
-        const { data: res } = await axios.post(api.edit, {
-          user_id: this.user_id,
-          widget_id: this.widget_id
-        });
+        if (this.id != 0) {
+          const { data: res } = await axios.post(api.edit, {
+            user_id: this.user_id,
+            widget_id: this.widget_id
+          });
+        } else if (this.id == 0) {
+          const { data: res } = await axios.post(api.add, {
+            user_id: this.user_id,
+            widget_id: this.widget_id
+          });
+        }
       } catch (e) {
         console.log(e);
         this.$message({
