@@ -20,7 +20,10 @@
           </el-select>
         </div>
       </el-form-item>
-      <el-form-item label="推送方式" :v-show="notifyData.form.notify.select==1">
+      <el-form-item
+        label="推送方式"
+        v-show="notifyData.form.notify.select == 1"
+      >
         <div class="div-flex" style="width:324px">
           <el-select
             v-model="notifyData.form.notifyMethod.select"
@@ -37,7 +40,10 @@
           </el-select>
         </div>
       </el-form-item>
-      <el-form-item label="提醒时间" :v-show="notifyData.form.notify.select==1">
+      <el-form-item
+        label="提醒时间"
+        v-show="notifyData.form.notify.select == 1"
+      >
         <div class="div-flex">
           <el-date-picker
             v-model="notifyData.form.triggerDate"
@@ -60,7 +66,10 @@
           ></el-time-select>
         </div>
       </el-form-item>
-      <el-form-item label="提醒间隔" :v-show="notifyData.form.notify.select==1">
+      <el-form-item
+        label="提醒间隔"
+        v-show="notifyData.form.notify.select == 1"
+      >
         <div class="div-flex">
           <div>每</div>
           <el-input
@@ -166,14 +175,14 @@ export default {
         });
         if (res.data.length == 0) {
           return;
-        }else{
-          this.id=res.data.id
-          this.notifyData.form.notify.select=res.data.notify
-          this.notifyData.form.notifyMethod.select=res.data.notify_method
-          this.notifyData.form.triggerDate=res.data.notify_trigger_time.split(" ")[0]
-          this.notifyData.form.triggerTime=res.data.notify_trigger_time.split(" ")[1].substr(0, 5)
-          this.notifyData.form.interval.value=res.data.notify_interval_raw
-          this.notifyData.form.interval.unit.select=res.data.notify_interval_unit
+        } else {
+          this.id = res.data.id
+          this.notifyData.form.notify.select = res.data.notify
+          this.notifyData.form.notifyMethod.select = res.data.notify_method
+          this.notifyData.form.triggerDate = res.data.notify_trigger_time.split(" ")[0]
+          this.notifyData.form.triggerTime = res.data.notify_trigger_time.split(" ")[1].substr(0, 5)
+          this.notifyData.form.interval.value = res.data.notify_interval_raw
+          this.notifyData.form.interval.unit.select = res.data.notify_interval_unit
         }
       } catch (e) {
         console.log(e);
@@ -187,13 +196,33 @@ export default {
       try {
         if (this.id != 0) {
           const { data: res } = await axios.post(api.edit, {
+            id: this.id,
             user_id: this.user_id,
-            widget_id: this.widget_id
+            widget_id: this.widget_id,
+            notify: this.notifyData.form.notify.select,
+            notify_method: this.notifyData.form.notifyMethod.select,
+            notify_interval_raw: Number(this.notifyData.form.interval.value),
+            notify_interval_unit: this.notifyData.form.interval.unit.select,
+            notify_trigger_time: this.notifyData.form.triggerDate + " " + this.notifyData.form.triggerTime,
+          });
+          this.$message({
+            message: res.msg,
+            type: "success"
           });
         } else if (this.id == 0) {
           const { data: res } = await axios.post(api.add, {
+            id: this.id,
             user_id: this.user_id,
-            widget_id: this.widget_id
+            widget_id: this.widget_id,
+            notify: this.notifyData.form.notify.select,
+            notify_method: this.notifyData.form.notifyMethod.select,
+            notify_interval_raw: Number(this.notifyData.form.interval.value),
+            notify_interval_unit: this.notifyData.form.interval.unit.select,
+            notify_trigger_time: this.notifyData.form.triggerDate + " " + this.notifyData.form.triggerTime,
+          });
+          this.$message({
+            message: res.msg,
+            type: "success"
           });
         }
       } catch (e) {

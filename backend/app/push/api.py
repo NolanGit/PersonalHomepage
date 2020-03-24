@@ -12,6 +12,9 @@ from ..privilege.privilege_control import permission_required
 from .push_function import PushData, PushList, PushQueueList
 
 URL_PREFIX = '/push'
+CODE_HOUR = 1  # 小时
+CODE_DAY = 2  # 天
+DAY_HOURS = 24  # 每天有24小时
 
 
 @push.route('/get', methods=['POST'])
@@ -38,16 +41,24 @@ def get():
 @cross_origin()
 def add():
     try:
-        PushData(
-            user_id=request.get_json()['user_id'],
-            widget_id=request.get_json()['widget_id'],
-            notify=request.get_json()['notify'],
-            notify_method=request.get_json()['notify_method'],
-            notify_interval_raw=request.get_json()['notify_interval_raw'],
-            notify_interval_unit=request.get_json()['notify_interval_unit'],
-            notify_interval=request.get_json()['notify_interval'],
-            notify_trigger_time=request.get_json()['notify_trigger_time'],
-            update_time=request.get_json()['update_time']).save()
+        request_dict = request.get_json()
+
+        notify_interval_raw = request_dict['notify_interval_raw'],
+        notify_interval_unit = request_dict['notify_interval_unit'],
+        if notify_interval_unit == CODE_HOUR:
+            notify_interval = notify_interval_raw
+        elif notify_interval_unit == CODE_DAY:
+            notify_interval = notify_interval_raw * DAY_HOURS
+
+        PushData(user_id=request_dict['user_id'],
+                 widget_id=request_dict['widget_id'],
+                 notify=request_dict['notify'],
+                 notify_method=request_dict['notify_method'],
+                 notify_interval_raw=notify_interval_raw,
+                 notify_interval_unit=notify_interval_unit,
+                 notify_interval=notify_interval,
+                 notify_trigger_time=request_dict['notify_trigger_time'],
+                 update_time=datetime.datetime.now()).save()
         response = {'code': 200, 'msg': '成功！'}
         return jsonify(response)
 
@@ -77,17 +88,25 @@ def delete():
 @cross_origin()
 def edit():
     try:
-        PushData(id=request.get_json()['id']).delete()
-        PushData(
-            user_id=request.get_json()['user_id'],
-            widget_id=request.get_json()['widget_id'],
-            notify=request.get_json()['notify'],
-            notify_method=request.get_json()['notify_method'],
-            notify_interval_raw=request.get_json()['notify_interval_raw'],
-            notify_interval_unit=request.get_json()['notify_interval_unit'],
-            notify_interval=request.get_json()['notify_interval'],
-            notify_trigger_time=request.get_json()['notify_trigger_time'],
-            update_time=request.get_json()['update_time']).save()
+        request_dict = request.get_json()
+
+        notify_interval_raw = request_dict['notify_interval_raw'],
+        notify_interval_unit = request_dict['notify_interval_unit'],
+        if notify_interval_unit == CODE_HOUR:
+            notify_interval = notify_interval_raw
+        elif notify_interval_unit == CODE_DAY:
+            notify_interval = notify_interval_raw * DAY_HOURS
+
+        PushData(id=request_dict['id']).delete()
+        PushData(user_id=request_dict['user_id'],
+                 widget_id=request_dict['widget_id'],
+                 notify=request_dict['notify'],
+                 notify_method=request_dict['notify_method'],
+                 notify_interval_raw=notify_interval_raw,
+                 notify_interval_unit=notify_interval_unit,
+                 notify_interval=notify_interval,
+                 notify_trigger_time=request_dict['notify_trigger_time'],
+                 update_time=datetime.datetime.now()).save()
         response = {'code': 200, 'msg': '成功！'}
         return jsonify(response)
 
