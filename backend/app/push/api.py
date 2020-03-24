@@ -48,6 +48,14 @@ def add():
         elif notify_interval_unit == CODE_DAY:
             notify_interval = notify_interval_raw * DAY_HOURS
 
+        notify_trigger_time = datetime.datetime.strptime(request.get_json()['notify_trigger_time'], "%Y-%m-%d %H:%M")
+        if notify_trigger_time < datetime.datetime.now():
+            response = {
+                'code': 500,
+                'msg': '定时运行时间不可以小于当前时间',
+            }
+            return jsonify(response)
+
         PushData(user_id=request.get_json()['user_id'],
                  widget_id=request.get_json()['widget_id'],
                  notify=request.get_json()['notify'],
@@ -55,23 +63,8 @@ def add():
                  notify_interval_raw=notify_interval_raw,
                  notify_interval_unit=notify_interval_unit,
                  notify_interval=notify_interval,
-                 notify_trigger_time=request.get_json()['notify_trigger_time'],
+                 notify_trigger_time=notify_trigger_time,
                  update_time=datetime.datetime.now()).save()
-        response = {'code': 200, 'msg': '成功！'}
-        return jsonify(response)
-
-    except Exception as e:
-        traceback.print_exc()
-        response = {'code': 500, 'msg': '失败！错误信息：' + str(e) + '，请联系管理员。', 'data': []}
-        return jsonify(response), 500
-
-
-@push.route('/delete', methods=['POST'])
-@permission_required(URL_PREFIX + '/delete')
-@cross_origin()
-def delete():
-    try:
-        PushData(id=request.get_json()['id']).delete()
         response = {'code': 200, 'msg': '成功！'}
         return jsonify(response)
 
@@ -85,13 +78,21 @@ def delete():
 @permission_required(URL_PREFIX + '/edit')
 @cross_origin()
 def edit():
-    try: 
-        notify_interval_raw = request.get_json()['notify_interval_raw'],
-        notify_interval_unit = request.get_json()['notify_interval_unit'],
+    try:
+        notify_interval_raw = request.get_json()['notify_interval_raw']
+        notify_interval_unit = request.get_json()['notify_interval_unit']
         if notify_interval_unit == CODE_HOUR:
             notify_interval = notify_interval_raw
         elif notify_interval_unit == CODE_DAY:
             notify_interval = notify_interval_raw * DAY_HOURS
+
+        notify_trigger_time = datetime.datetime.strptime(request.get_json()['notify_trigger_time'], "%Y-%m-%d %H:%M")
+        if notify_trigger_time < datetime.datetime.now():
+            response = {
+                'code': 500,
+                'msg': '定时运行时间不可以小于当前时间',
+            }
+            return jsonify(response)
 
         PushData(id=request.get_json()['id']).delete()
         PushData(user_id=request.get_json()['user_id'],
@@ -101,7 +102,7 @@ def edit():
                  notify_interval_raw=notify_interval_raw,
                  notify_interval_unit=notify_interval_unit,
                  notify_interval=notify_interval,
-                 notify_trigger_time=request.get_json()['notify_trigger_time'],
+                 notify_trigger_time=notify_trigger_time,
                  update_time=datetime.datetime.now()).save()
         response = {'code': 200, 'msg': '成功！'}
         return jsonify(response)
