@@ -42,7 +42,7 @@ def get():
 def add():
     try:
         notify_interval_raw = request.get_json()['notify_interval_raw'],
-        notify_interval_unit = request.get_json()['notify_interval_unit'],
+        notify_interval_unit = request.get_json()['notify_interval_unit']
         if notify_interval_unit == CODE_HOUR:
             notify_interval = notify_interval_raw
         elif notify_interval_unit == CODE_DAY:
@@ -54,7 +54,7 @@ def add():
                 'code': 500,
                 'msg': '定时运行时间不可以小于当前时间',
             }
-            return jsonify(response)
+            return jsonify(response), 500
 
         PushData(user_id=request.get_json()['user_id'],
                  widget_id=request.get_json()['widget_id'],
@@ -92,7 +92,7 @@ def edit():
                 'code': 500,
                 'msg': '定时运行时间不可以小于当前时间',
             }
-            return jsonify(response)
+            return jsonify(response), 500
 
         PushData(id=request.get_json()['id']).delete()
         PushData(user_id=request.get_json()['user_id'],

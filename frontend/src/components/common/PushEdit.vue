@@ -209,6 +209,7 @@ export default {
             message: res.msg,
             type: "success"
           });
+          this.$emit('done')
         } else if (this.id == 0) {
           const { data: res } = await axios.post(api.add, {
             id: this.id,
@@ -224,6 +225,7 @@ export default {
             message: res.msg,
             type: "success"
           });
+          this.$emit('done')
         }
       } catch (e) {
         console.log(e);
