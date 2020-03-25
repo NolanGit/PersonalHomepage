@@ -1,45 +1,78 @@
 <template>
   <div class="weather">
-    <el-carousel height="250px" trigger="click" interval="5000" indicator-position="outside">
+    <el-carousel
+      height="250px"
+      trigger="click"
+      interval="5000"
+      indicator-position="outside"
+    >
       <el-carousel-item v-for="weather in weathers" :key="weather">
-        <el-row type="flex" justify="center" ref="weatherForm" :model="weather.weatherForm">
+        <el-row
+          type="flex"
+          justify="center"
+          ref="weatherForm"
+          :model="weather.weatherForm"
+        >
           <div>
             <td>
-              <div class="location">{{weather.location}}</div>
+              <div class="location">{{ weather.location }}</div>
             </td>
-            <td v-show="weather.id==0?false:true">
-              <i class="weatherDelete el-icon-delete" @click="weatherDelete(weather.location)"></i>
+            <td v-show="weather.id == 0 ? false : true">
+              <i
+                class="weatherDelete el-icon-delete"
+                @click="weatherDelete(weather.location)"
+              ></i>
             </td>
           </div>
         </el-row>
-        <el-row type="flex" justify="center" ref="weatherForm" :model="weather.weatherForm">
+        <el-row
+          type="flex"
+          justify="center"
+          ref="weatherForm"
+          :model="weather.weatherForm"
+        >
           <td>
             <el-row type="flex" justify="left">
               <td class="todayWeatherIcon">
-                <i :class="weather.iconfontWeatherClass" style="font-size:100px;"></i>
+                <i
+                  :class="weather.iconfontWeatherClass"
+                  style="font-size:100px;"
+                ></i>
               </td>
               <td class="todayWeatherText">
-                <div class="todayWeatherTextDiv">{{weather.weatherForm.tmp}}°C</div>
+                <div class="todayWeatherTextDiv">
+                  {{ weather.weatherForm.tmp }}°C
+                </div>
               </td>
             </el-row>
 
             <el-row type="flex" justify="left">
               <td class="todayAqiIcon">
-                <i :class="weather.iconfontAqiClass" style="font-size:50px;"></i>
+                <i
+                  :class="weather.iconfontAqiClass"
+                  style="font-size:50px;"
+                ></i>
               </td>
               <td class="todayAqiText">
-                <div class="todayAqiTextDiv">AQI:{{weather.weatherForm.aqi}}</div>
+                <div class="todayAqiTextDiv">
+                  AQI:{{ weather.weatherForm.aqi }}
+                </div>
               </td>
             </el-row>
 
             <el-row type="flex" justify="left">
               <td class="tomorrowWeatherIcon">
-                <i :class="weather.iconfontTomorrowWeatherClass" style="font-size:50px;"></i>
+                <i
+                  :class="weather.iconfontTomorrowWeatherClass"
+                  style="font-size:50px;"
+                ></i>
               </td>
               <td class="tomorrowWeatherText">
-                <div
-                  class="tomorrowWeatherTextDiv"
-                >明日:{{weather.weatherForm.tomorrow_tmp_min}}°C-{{weather.weatherForm.tomorrow_tmp_max}}°C</div>
+                <div class="tomorrowWeatherTextDiv">
+                  明日:{{ weather.weatherForm.tomorrow_tmp_min }}°C-{{
+                    weather.weatherForm.tomorrow_tmp_max
+                  }}°C
+                </div>
               </td>
             </el-row>
           </td>
@@ -48,24 +81,56 @@
           ></div>
           <div class="weatherSideText">
             <td>
-              <div
-                class="weatherSideTextDetail"
-              >今日: {{weather.weatherForm.tmp_min}}°C-{{weather.weatherForm.tmp_max}}°C</div>
-              <div class="weatherSideTextDetail">风力: {{weather.weatherForm.wind}}</div>
-              <div class="weatherSideTextDetail">体感: {{weather.weatherForm.fl}}°C</div>
+              <div class="weatherSideTextDetail">
+                今日: {{ weather.weatherForm.tmp_min }}°C-{{
+                  weather.weatherForm.tmp_max
+                }}°C
+              </div>
+              <div class="weatherSideTextDetail">
+                风力: {{ weather.weatherForm.wind }}
+              </div>
+              <div class="weatherSideTextDetail">
+                体感: {{ weather.weatherForm.fl }}°C
+              </div>
             </td>
           </div>
         </el-row>
       </el-carousel-item>
     </el-carousel>
-    <el-popover placement="top" width="160" v-model="popover.visible">
-      <p>添加城市：</p>
-      <el-input size="mini" v-model="popover.location" placeholder="城市名称，如：北京"></el-input>
-      <div style="text-align: right; margin: 0">
-        <el-button type="primary" size="mini" @click="locationAdd()">确定</el-button>
-      </div>
-      <el-button slot="reference" v-show="user_id!=0" icon="el-icon-plus" size="mini" circle></el-button>
-    </el-popover>
+
+    <el-row
+      type="flex"
+      justify="center"
+      class="margin_top-medium"
+      v-show="user_id != 0"
+    >
+      <WidgetButton
+        :user_id="user_id"
+        :widget_id="widget_id"
+        :buttons="buttons"
+        @add="add()"
+      ></WidgetButton>
+    </el-row>
+
+    <!--编辑界面-->
+    <el-dialog title="添加城市" :visible.sync="edit.visible" width="40%">
+      <el-form ref="form" :model="edit" size="mini">
+        <el-form-item label="城市名称">
+          <div class="div-flex">
+            <el-input
+              size="mini"
+              v-model="edit.location"
+              placeholder="城市名称，如：北京"
+            ></el-input>
+          </div>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" size="small" @click="locationAdd()"
+          >确定</el-button
+        >
+      </span>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -108,19 +173,22 @@ export default {
         }
       ],
       loading: true,
-      popover: {
+      edit: {
         visible: false,
         location: ""
       }
     };
   },
   methods: {
+    add() {
+      this.edit.visible = true
+    },
     async locationAdd() {
-      this.popover.visible = false;
+      this.edit.visible = false;
       try {
         const { data: res } = await axios.post(api.locationAdd, {
           user_id: this.user_id,
-          location: this.popover.location
+          location: this.edit.location
         });
         this.$message({
           message: res["msg"],
@@ -422,7 +490,7 @@ export default {
       }
     }
   },
-  created() {},
+  created() { },
   mounted() {
     this.locationGet();
   }
