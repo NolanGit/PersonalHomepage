@@ -27,6 +27,7 @@
         </el-table>
       </el-carousel-item>
     </el-carousel>
+    
     <el-row v-show="user_id != 0">
       <WidgetButton
         :user_id="user_id"

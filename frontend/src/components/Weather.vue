@@ -81,7 +81,7 @@ export default {
   name: "weather",
   props: {
     user_id: Number,
-    user_id: Number,
+    widget_id: Number,
     buttons: Array
   },
   components: {

@@ -30,20 +30,14 @@
     </div>
 
     <el-row type="flex" justify="center" class="margin_top-medium" v-show="user_id!=0">
-      <el-button
-        class="margin_left-mini margin_right-mini"
-        size="small"
-        @click="bookmarksOptionButtonAddClicked()"
-        icon="el-icon-plus"
-        circle
-      ></el-button>
-      <el-button
-        class="bmargin_left-mini margin_right-mini"
-        size="small"
-        @click="bookmarksOptionButtonSettingClicked()"
-        icon="el-icon-setting"
-        circle
-      ></el-button>
+      <WidgetButton
+        :user_id="user_id"
+        :widget_id="widget_id"
+        :buttons="buttons"
+        @add="add()"
+        @sort="sort()"
+        @notify="notify()"
+      ></WidgetButton>
     </el-row>
 
     <!--编辑界面-->
@@ -113,7 +107,7 @@ export default {
   name: "bookmarks",
   props: {
     user_id: Number,
-    user_id: Number,
+    widget_id: Number,
     buttons: Array
   },
   components: {
@@ -216,7 +210,7 @@ export default {
       }
       this.bookmarksEditForm.visible = false;
     },
-    bookmarksOptionButtonAddClicked() {
+    add() {
       this.bookmarksEditForm = {
         title: "新增书签",
         visible: true,
@@ -225,7 +219,7 @@ export default {
         icon: ""
       };
     },
-    bookmarksOptionButtonSettingClicked() {
+    sort() {
       this.bookmarksEdit.list = deepClone(this.bookmarksDataRaw);
       this.bookmarksEdit.visible = true;
     },
