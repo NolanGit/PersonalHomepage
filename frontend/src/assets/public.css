@@ -314,7 +314,7 @@ icon-medium::-webkit-scrollbar {
 }
 
 .slick_list {
-    max-height: 80vh;
+    max-height: 40vh;
     margin: 0 auto;
     padding: 0;
     overflow: auto;

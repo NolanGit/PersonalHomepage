@@ -159,11 +159,11 @@
               style="width: 100%"
               ref="privilegeTable"
             >
-              <el-table-column :key="Math.random()" prop="id" sortable label="ID" width="70"></el-table-column>
-              <el-table-column :key="Math.random()" prop="name" sortable label="名称" width="200"></el-table-column>
+              <el-table-column :key="Math.random()" prop="id" sortable label="ID" width="50"></el-table-column>
+              <el-table-column :key="Math.random()" prop="name" sortable label="名称" width="220"></el-table-column>
               <el-table-column :key="Math.random()" prop="mark" sortable label="标识" width="200"></el-table-column>
-              <el-table-column :key="Math.random()" prop="remark" label="备注" width="200"></el-table-column>
-              <el-table-column :key="Math.random()" prop="is_disabled" label="是否禁用" width="80"></el-table-column>
+              <el-table-column :key="Math.random()" prop="remark" label="备注" width="170"></el-table-column>
+              <el-table-column :key="Math.random()" prop="is_disabled" label="是否禁用" width="70"></el-table-column>
               <el-table-column :key="Math.random()" prop="update_time" sortable label="修改时间"></el-table-column>
               <el-table-column :key="Math.random()" label="操作">
                 <template slot-scope="scope">

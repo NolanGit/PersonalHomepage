@@ -1,76 +1,40 @@
 <template>
   <div class="weather">
-    <el-carousel
-      height="250px"
-      trigger="click"
-      interval="5000"
-      indicator-position="outside"
-    >
+    <el-carousel height="250px" trigger="click" interval="5000" indicator-position="outside">
       <el-carousel-item v-for="weather in weathers" :key="weather">
-        <el-row
-          type="flex"
-          justify="center"
-          ref="weatherForm"
-          :model="weather.weatherForm"
-        >
+        <el-row type="flex" justify="center" ref="weatherForm" :model="weather.weatherForm">
           <div>
-            <td>
-              <div class="location">{{ weather.location }}</div>
-            </td>
-            <td v-show="weather.id == 0 ? false : true">
-              <i
-                class="weatherDelete el-icon-delete"
-                @click="weatherDelete(weather.location)"
-              ></i>
-            </td>
+            <div class="location">{{ weather.location }}</div>
           </div>
         </el-row>
-        <el-row
-          type="flex"
-          justify="center"
-          ref="weatherForm"
-          :model="weather.weatherForm"
-        >
+        <el-row type="flex" justify="center" ref="weatherForm" :model="weather.weatherForm">
           <td>
             <el-row type="flex" justify="left">
               <td class="todayWeatherIcon">
-                <i
-                  :class="weather.iconfontWeatherClass"
-                  style="font-size:100px;"
-                ></i>
+                <i :class="weather.iconfontWeatherClass" style="font-size:100px;"></i>
               </td>
               <td class="todayWeatherText">
-                <div class="todayWeatherTextDiv">
-                  {{ weather.weatherForm.tmp }}°C
-                </div>
+                <div class="todayWeatherTextDiv">{{ weather.weatherForm.tmp }}°C</div>
               </td>
             </el-row>
 
             <el-row type="flex" justify="left">
               <td class="todayAqiIcon">
-                <i
-                  :class="weather.iconfontAqiClass"
-                  style="font-size:50px;"
-                ></i>
+                <i :class="weather.iconfontAqiClass" style="font-size:50px;"></i>
               </td>
               <td class="todayAqiText">
-                <div class="todayAqiTextDiv">
-                  AQI:{{ weather.weatherForm.aqi }}
-                </div>
+                <div class="todayAqiTextDiv">AQI:{{ weather.weatherForm.aqi }}</div>
               </td>
             </el-row>
 
             <el-row type="flex" justify="left">
               <td class="tomorrowWeatherIcon">
-                <i
-                  :class="weather.iconfontTomorrowWeatherClass"
-                  style="font-size:50px;"
-                ></i>
+                <i :class="weather.iconfontTomorrowWeatherClass" style="font-size:50px;"></i>
               </td>
               <td class="tomorrowWeatherText">
                 <div class="tomorrowWeatherTextDiv">
                   明日:{{ weather.weatherForm.tomorrow_tmp_min }}°C-{{
-                    weather.weatherForm.tomorrow_tmp_max
+                  weather.weatherForm.tomorrow_tmp_max
                   }}°C
                 </div>
               </td>
@@ -83,33 +47,19 @@
             <td>
               <div class="weatherSideTextDetail">
                 今日: {{ weather.weatherForm.tmp_min }}°C-{{
-                  weather.weatherForm.tmp_max
+                weather.weatherForm.tmp_max
                 }}°C
               </div>
-              <div class="weatherSideTextDetail">
-                风力: {{ weather.weatherForm.wind }}
-              </div>
-              <div class="weatherSideTextDetail">
-                体感: {{ weather.weatherForm.fl }}°C
-              </div>
+              <div class="weatherSideTextDetail">风力: {{ weather.weatherForm.wind }}</div>
+              <div class="weatherSideTextDetail">体感: {{ weather.weatherForm.fl }}°C</div>
             </td>
           </div>
         </el-row>
       </el-carousel-item>
     </el-carousel>
 
-    <el-row
-      type="flex"
-      justify="center"
-      class="margin_top-medium"
-      v-show="user_id != 0"
-    >
-      <WidgetButton
-        :user_id="user_id"
-        :widget_id="widget_id"
-        :buttons="buttons"
-        @add="add()"
-      ></WidgetButton>
+    <el-row type="flex" justify="center" class="margin_top-medium" v-show="user_id != 0">
+      <WidgetButton :user_id="user_id" :widget_id="widget_id" :buttons="buttons" @add="add()"></WidgetButton>
     </el-row>
 
     <!--编辑界面-->
@@ -117,18 +67,12 @@
       <el-form ref="form" :model="edit" size="mini">
         <el-form-item label="城市名称">
           <div class="div-flex">
-            <el-input
-              size="mini"
-              v-model="edit.location"
-              placeholder="城市名称，如：北京"
-            ></el-input>
+            <el-input size="mini" v-model="edit.location" placeholder="城市名称，如：北京"></el-input>
           </div>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" size="small" @click="locationAdd()"
-          >确定</el-button
-        >
+        <el-button type="primary" size="small" @click="locationAdd()">确定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -181,7 +125,7 @@ export default {
   },
   methods: {
     add() {
-      this.edit.visible = true
+      this.edit.visible = true;
     },
     async locationAdd() {
       this.edit.visible = false;
@@ -215,9 +159,6 @@ export default {
           type: "error"
         });
       }
-    },
-    weatherDelete(location) {
-      console.log(location);
     },
     async getWeatherDatafront(locations) {
       try {
@@ -490,7 +431,7 @@ export default {
       }
     }
   },
-  created() { },
+  created() {},
   mounted() {
     this.locationGet();
   }
