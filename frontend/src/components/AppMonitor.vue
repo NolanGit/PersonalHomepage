@@ -214,7 +214,7 @@ export default {
       }
       this.edit.visible = false;
     },
-    async appSortEditSubmit(list) {
+    async appSortEditSubmit(list){
       for (let x = 0; x < list.length; x++) {
         list[x].order = x + 1;
       }
