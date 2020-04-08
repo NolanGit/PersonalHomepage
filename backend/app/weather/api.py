@@ -46,47 +46,10 @@ URL_PREFIX = 'weather'
 @weather.route('/weatherData', methods=['POST'])
 @cross_origin()
 def weatherData():
-
     try:
-        r = requests.get('http://freeapi.ipip.net/' + request.remote_addr)
-        locations = ['北京'] if r.json()[1] == '局域网' else r.json()[1].strip().split()
-        try:
-            locations = locations + request.get_json()['locations']
-        except:
-            pass
-        url = 'https://free-api.heweather.net/s6/weather'
-        result = []
-
-        for single_location in locations:
-            response = {}
-            response['location'] = single_location
-            response['id'] = locations.index(single_location)
-
-            payload = {'location': single_location, 'key': KEY}
-            r = requests.post(url, params=payload)
-            request_result = r.json()
-            try:
-                response['fl'] = request_result['HeWeather6'][0]['now']['fl']
-            except:
-                response['fl'] = '暂无数据'
-            response['tmp'] = request_result['HeWeather6'][0]['now']['tmp']
-            response['wind'] = request_result['HeWeather6'][0]['now']['wind_dir'] + str(request_result['HeWeather6'][0]['now']['wind_sc']) + '级'
-            response['cond_code_d'] = request_result['HeWeather6'][0]['daily_forecast'][0]['cond_code_d']
-            response['cond_txt_d'] = request_result['HeWeather6'][0]['daily_forecast'][0]['cond_txt_d']
-            response['cond_code_n'] = request_result['HeWeather6'][0]['daily_forecast'][0]['cond_code_n']
-            response['cond_txt_n'] = request_result['HeWeather6'][0]['daily_forecast'][0]['cond_txt_n']
-            response['tmp_max'] = request_result['HeWeather6'][0]['daily_forecast'][0]['tmp_max']
-            response['tmp_min'] = request_result['HeWeather6'][0]['daily_forecast'][0]['tmp_min']
-            response['tomorrow_cond_code_d'] = request_result['HeWeather6'][0]['daily_forecast'][1]['cond_code_d']
-            response['tomorrow_cond_txt_d'] = request_result['HeWeather6'][0]['daily_forecast'][1]['cond_txt_d']
-            response['tomorrow_tmp_max'] = request_result['HeWeather6'][0]['daily_forecast'][1]['tmp_max']
-            response['tomorrow_tmp_min'] = request_result['HeWeather6'][0]['daily_forecast'][1]['tmp_min']
-            r = requests.get('https://free-api.heweather.net/s6/air/now', params=payload)
-            try:
-                response['aqi'] = r.json()['HeWeather6'][0]['air_now_city']['aqi']
-            except:
-                response['aqi'] = '暂无数据'
-            result.append(response), 500
+        result=[]
+        user_id = request.get_json()['user_id']
+        WeatherLocationList(user_id=user_id)
 
         return jsonify({'code': 200, 'msg': '成功！', 'data': result})
     except Exception as e:
