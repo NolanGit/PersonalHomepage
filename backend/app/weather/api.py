@@ -52,6 +52,9 @@ def ip_location_get(user_ip):
 @weather.route('/weatherData', methods=['POST'])
 @cross_origin()
 def weatherData():
+    '''
+        当未登陆时，应该显示ip所在地的天气，登陆后显示ip所在地加收藏的，但是显示ip所在地天气要考虑安全问题
+    '''
     try:
         result = []
         user_id = request.get_json()['user_id']
@@ -59,8 +62,11 @@ def weatherData():
         ip_location = ip_location_get(user_ip)
         weather_location_list = WeatherLocationList(user_id=user_id).get().list
         if len(weather_location_list) != 0:
+            weather_location_list = weather_location_list.append(ip_location)
+            weather_location_list[0], weather_location_list[-1] = weather_location_list[-1], weather_location_list[0]
             for weather_location in weather_location_list:
                 weather_data = WeatherData(weather_location.id, weather_location.location)
+
         return jsonify({'code': 200, 'msg': '成功！', 'data': result})
     except Exception as e:
         traceback.print_exc()
