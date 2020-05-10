@@ -66,6 +66,26 @@ class WeatherData(object):
             return {}
 
     def get_latest(self):
+        '''
+            从库里获取最新的数据
+            affects:
+                self.weather_data_id
+                self.aqi
+                self.cond_code_d
+                self.cond_code_n
+                self.cond_txt_d
+                self.cond_txt_n
+                self.fl
+                self.tmp
+                self.tmp_max
+                self.tmp_min
+                self.tomorrow_cond_code_d
+                self.tomorrow_cond_txt_d
+                self.tomorrow_tmp_max
+                self.tomorrow_tmp_min
+                self.wind
+                self.update_time
+        '''
         weather_data_query = weather_data.select().where(weather_data.location_id == self.location_id).order_by(-weather_data.update_time).limit(1).dicts()[0]
         if len(weather_data_query) != 0:
             self.weather_data_id = weather_data_query['weather_data_id']
@@ -89,6 +109,24 @@ class WeatherData(object):
             return False
 
     def update_self(self):
+        '''
+            从第三方接口获取数据
+            affects:
+                self.fl
+                self.tmp
+                self.wind
+                self.cond_code_d
+                self.cond_txt_d
+                self.cond_code_n
+                self.cond_txt_n
+                self.tmp_max
+                self.tmp_min
+                self.tomorrow_cond_code_d
+                self.tomorrow_cond_txt_d
+                self.tomorrow_tmp_max
+                self.tomorrow_tmp_min
+                self.aqi
+        '''
         result = self.get_weather_data_from_api()
 
         try:
@@ -114,6 +152,9 @@ class WeatherData(object):
             return False
 
     def save(self):
+        '''
+            新增一条数据，存储self
+        '''
         try:
             weather_data(location_id=self.location_id,
                          aqi=self.aqi,
@@ -147,9 +188,9 @@ class WeatherLocation(object):
         user_id=0,
     ):
         '''
-            id
-            location
-            user_id
+            id              default:0
+            location        default:None
+            user_id         defalut:0
         '''
         self.id = id
         self.location = location
@@ -162,10 +203,18 @@ class WeatherLocation(object):
 
 class WeatherLocationList(object):
     def __init__(self, user_id=0, is_valid=1):
+        '''
+            user_id         default:0
+            is_valid        default:0
+        '''
         self.user_id = user_id
         self.is_valid = is_valid
 
     def get(self):
+        '''
+            returns:self
+            affects:self.list(List:[WeatherLocation...])
+        '''
         if self.user_id == 0:
             if self.is_valid == 0:
                 weather_location_query = weather_location.select().dicts()
@@ -183,6 +232,9 @@ class WeatherLocationList(object):
         return self
 
     def delete(self):
+        '''
+            将weather_location表中self.user_id的数据置为无效
+        '''
         try:
             if self.user_id == 0 and self.is_valid != 0:
                 weather_location.update(is_valid=0).where((weather_location.user_id == self.user_id) & (weather_location.is_valid == self.is_valid)).execute()
