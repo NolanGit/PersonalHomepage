@@ -11,8 +11,12 @@ from ..model.bookmarks_model import icon
 from ..model.bookmarks_model import bookmarks as bookmarks_table
 from ..login.login_funtion import User
 from ..privilege.privilege_control import permission_required
+from ..response import Response
+
+rsp = Response()
 
 URL_PREFIX = 'bookmarks'
+
 
 @bookmarks.route('/get', methods=['POST'])
 #@permission_required(URL_PREFIX + '/get')
@@ -25,14 +29,11 @@ def userInfo():
             user_id = 0
 
         bookmarks_query = bookmarks_table.select().where((bookmarks_table.user_id == user_id) & (bookmarks_table.is_valid == 1)).order_by(bookmarks_table.order).dicts()
-        result=[{'id': row['id'], 'name': row['name'], 'url': row['url'], 'icon': row['icon'], 'update_time': row['update_time']} for row in bookmarks_query]
-
-        response = {'code': 200, 'msg': '成功！', 'data': result}
-        return jsonify(response)
+        result = [{'id': row['id'], 'name': row['name'], 'url': row['url'], 'icon': row['icon'], 'update_time': row['update_time']} for row in bookmarks_query]
+        return rsp.success(result)
     except Exception as e:
         traceback.print_exc()
-        response = {'code': 500, 'msg': '失败！错误信息：' + str(e) + '，请联系管理员。', 'data': []}
-        return jsonify(response), 500
+        return rsp.failed(e), 500
 
 
 @bookmarks.route('/bookmarksAdd', methods=['POST'])
@@ -46,11 +47,9 @@ def bookmarksAdd():
         bookmarks_query = bookmarks_table.select().where((bookmarks_table.user_id == user_id) & (bookmarks_table.is_valid == 1)).order_by(bookmarks_table.order).dicts()
         order = bookmarks_query[-1]['order'] + 1
         bookmarks_table.create(name=name, url=url, icon=icon, order=order, user_id=user_id, is_valid=1, update_time=datetime.datetime.now())
-        response = {'code': 200, 'msg': '成功！'}
-        return jsonify(response)
+        return rsp.success()
     except Exception as e:
-        response = {'code': 500, 'msg': '失败！错误信息：' + str(e) + '，请联系管理员。', 'data': []}
-        return jsonify(response), 500
+        return rsp.failed(e), 500
 
 
 @bookmarks.route('/bookmarksEdit', methods=['POST'])
@@ -62,8 +61,6 @@ def bookmarksEdit():
         bookmarks_table.update(is_valid=0, update_time=datetime.datetime.now()).where((bookmarks_table.user_id == user_id) & (bookmarks_table.is_valid == 1)).execute()
         for bookmark in bookmarks:
             bookmarks_table.create(name=bookmark['name'], url=bookmark['url'], icon=bookmark['icon'], order=bookmark['order'], user_id=user_id, is_valid=1, update_time=datetime.datetime.now())
-        response = {'code': 200, 'msg': '成功！', 'data': []}
-        return jsonify(response)
+        return rsp.success()
     except Exception as e:
-        response = {'code': 500, 'msg': '失败！错误信息：' + str(e) + '，请联系管理员。', 'data': []}
-        return jsonify(response), 500
+        return rsp.failed(e), 500

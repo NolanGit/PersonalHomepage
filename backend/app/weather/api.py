@@ -11,6 +11,9 @@ from ..model.weather_model import weather_personalized
 from ..login.login_funtion import User
 from ..privilege.privilege_control import permission_required
 from .weather_function import WeatherData, WeatherLocation, WeatherLocationList
+from ..response import Response
+
+rsp = Response()
 
 cf = configparser.ConfigParser()
 cf.read('app/homepage.config')
@@ -47,15 +50,13 @@ URL_PREFIX = 'weather'
 @cross_origin()
 def weatherData():
     try:
-        result=[]
+        result = []
         user_id = request.get_json()['user_id']
         WeatherLocationList(user_id=user_id)
-
-        return jsonify({'code': 200, 'msg': '成功！', 'data': result})
+        return rsp.success(result)
     except Exception as e:
         traceback.print_exc()
-        response = {'code': 500, 'msg': '失败！错误信息：' + str(e) + '，请联系管理员。', 'data': []}
-        return jsonify(response), 500
+        return rsp.failed(e), 500
 
 
 # @weather.route('/weatherPersonalizedSave', methods=['POST'])
