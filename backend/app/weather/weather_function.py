@@ -13,6 +13,7 @@ except:
 
 
 class WeatherData(object):
+
     def __init__(self, location_id, location):
         '''
             location_id
@@ -151,27 +152,28 @@ class WeatherData(object):
             print(e)
             return False
 
-    def save(self):
+    def create(self):
         '''
             新增一条数据，存储self
         '''
         try:
-            weather_data(location_id=self.location_id,
-                         aqi=self.aqi,
-                         cond_code_d=self.cond_code_d,
-                         cond_code_n=self.cond_code_n,
-                         cond_txt_d=self.cond_txt_d,
-                         cond_txt_n=self.cond_txt_n,
-                         fl=self.fl,
-                         tmp=self.tmp,
-                         tmp_max=self.tmp_max,
-                         tmp_min=self.tmp_min,
-                         tomorrow_cond_code_d=self.tomorrow_cond_code_d,
-                         tomorrow_cond_txt_d=self.tomorrow_cond_txt_d,
-                         tomorrow_tmp_max=self.tomorrow_tmp_max,
-                         tomorrow_tmp_min=self.tomorrow_tmp_min,
-                         wind=self.wind,
-                         update_time=datetime.datetime.now()).save()
+            weather_data(
+                location_id=self.location_id,
+                aqi=self.aqi,
+                cond_code_d=self.cond_code_d,
+                cond_code_n=self.cond_code_n,
+                cond_txt_d=self.cond_txt_d,
+                cond_txt_n=self.cond_txt_n,
+                fl=self.fl,
+                tmp=self.tmp,
+                tmp_max=self.tmp_max,
+                tmp_min=self.tmp_min,
+                tomorrow_cond_code_d=self.tomorrow_cond_code_d,
+                tomorrow_cond_txt_d=self.tomorrow_cond_txt_d,
+                tomorrow_tmp_max=self.tomorrow_tmp_max,
+                tomorrow_tmp_min=self.tomorrow_tmp_min,
+                wind=self.wind,
+                update_time=datetime.datetime.now()).save()
             return True
 
         except Exception as e:
@@ -181,20 +183,26 @@ class WeatherData(object):
 
 
 class WeatherLocation(object):
+
     def __init__(
-        self,
-        id=0,
-        location=None,
-        user_id=0,
+            self,
+            location=None,
+            user_id=0,
+            id=0,
     ):
         '''
             id              default:0
             location        default:None
             user_id         defalut:0
         '''
-        self.id = id
-        self.location = location
-        self.user_id = user_id
+        if id != 0:
+            self.id = id
+            self.location = location
+            self.user_id = user_id
+        else:
+            _ = weather_location(location=location, user_id=user_id, is_valid=1)
+            _.save()
+            self.id = _.id
 
     def add(self):
         weather_location(location=self.location, user_id=self.user_id, is_valid=1, update_time=datetime.datetime.now()).save()
@@ -202,6 +210,7 @@ class WeatherLocation(object):
 
 
 class WeatherLocationList(object):
+
     def __init__(self, user_id=0, is_valid=1):
         '''
             user_id         default:0
@@ -250,4 +259,4 @@ if __name__ == '__main__':
     for weather_location in weather_location_list:
         weather_data = WeatherData(weather_location.id, weather_location.location)
         weather_data.get_weather_data_from_api()
-        weather_data.save()
+        weather_data.create()

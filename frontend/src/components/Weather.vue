@@ -83,7 +83,6 @@ import WidgetButton from "./common/WidgetButton.vue";
 const api = {
   weatherData: "/weather/weatherData",
   locationAdd: "/weather/weatherPersonalizedSave",
-  locationGet: "/weather/get"
 };
 
 export default {
@@ -146,24 +145,10 @@ export default {
         });
       }
     },
-    async locationGet() {
-      try {
-        const { data: res } = await axios.post(api.locationGet, {
-          user_id: this.user_id
-        });
-        this.getWeatherDatafront(res.data.locations);
-      } catch (e) {
-        console.log(e);
-        this.$message({
-          message: e.response.data.msg,
-          type: "error"
-        });
-      }
-    },
-    async getWeatherDatafront(locations) {
+    async weatherData(locations) {
       try {
         const { data: res } = await axios.post(api.weatherData, {
-          locations: locations
+          user_id: user_id
         });
         this.weathers = [];
         for (
@@ -433,7 +418,7 @@ export default {
   },
   created() {},
   mounted() {
-    this.locationGet();
+    this.weatherData();
   }
 };
 </script>
