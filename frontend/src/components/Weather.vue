@@ -148,7 +148,7 @@ export default {
     async weatherData(locations) {
       try {
         const { data: res } = await axios.post(api.weatherData, {
-          user_id: user_id
+          user_id: this.user_id
         });
         this.weathers = [];
         for (
