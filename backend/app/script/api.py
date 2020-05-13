@@ -180,10 +180,31 @@ def runOutput():
         else:
             output = ''
             status = 1 if running_subprocess[process_id].poll() == None else 0
-            for x in range(2):
-                output = output + str(running_subprocess[process_id].stdout.readline(), encoding='utf-8')  #每次readline()后就会清理输出，见https://www.cnblogs.com/alan-babyblog/p/5261497.html
+            for _ in range(5):
+                # 此接口只会返回新增的输出，不会保存完成输出，运行日志中每个任务的完整输出是由前端保存新增输出后返回的，如果前端存的不完整，后端也就不完整了，建议修改成后端保存完整输出，运行结束后将完整输出返回并保存至数据库
+                try:
+                    output = output + str(running_subprocess[process_id].stdout.readline(), encoding='gbk')  #每次readline()后就会清理输出，见https://www.cnblogs.com/alan-babyblog/p/5261497.html
+                except:
+                    output = output + str(running_subprocess[process_id].stdout.readline(), encoding='utf-8')  #每次readline()后就会清理输出，见https://www.cnblogs.com/alan-babyblog/p/5261497.html
+            if status == 0:
+                while 1000:
+                    try:
+                        temp = running_subprocess[process_id].stdout.readline()
+                        try:
+                            output = output + str(temp, encoding='gbk')
+                        except:
+                            output = output + str(temp, encoding='utf-8')
+                        if temp == b"":
+                            break
+                    except Exception as e:
+                        print(e)
+                        traceback.print_exc()
+                        response = {
+                            'code': 500,
+                            'msg': str(e),
+                        }
+                        return jsonify(response)
             response = {'code': 200, 'msg': '成功！', 'data': {'output': output, 'status': status}}
-        return jsonify(response)
     except Exception as e:
         print(e)
         traceback.print_exc()
