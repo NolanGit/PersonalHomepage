@@ -179,9 +179,10 @@ def runOutput():
             response = {'code': 200, 'msg': '无运行中的任务。', 'data': {'output': '', 'status': -1}}
         else:
             output = ''
+            status = 1 if running_subprocess[process_id].poll() == None else 0
             for x in range(2):
                 output = output + str(running_subprocess[process_id].stdout.readline(), encoding='utf-8')  #每次readline()后就会清理输出，见https://www.cnblogs.com/alan-babyblog/p/5261497.html
-            response = {'code': 200, 'msg': '成功！', 'data': {'output': output, 'status': 1 if running_subprocess[process_id].poll() == None else 0}}
+            response = {'code': 200, 'msg': '成功！', 'data': {'output': output, 'status': status}}
         return jsonify(response)
     except Exception as e:
         print(e)
@@ -215,7 +216,16 @@ def edit():
             return jsonify(response)
         if script_id == 0:
             script_table_model.create(
-                name=name, sub_system_id=sub_system_id, start_folder=start_folder, start_script=start_script, type=type, runs=0, is_valid=1, version=1, user=user_name, update_time=datetime.datetime.now())
+                name=name,
+                sub_system_id=sub_system_id,
+                start_folder=start_folder,
+                start_script=start_script,
+                type=type,
+                runs=0,
+                is_valid=1,
+                version=1,
+                user=user_name,
+                update_time=datetime.datetime.now())
             script_table_model_query = script_table_model.select().order_by(-script_table_model.id).limit(1).dicts()
             for row in script_table_model_query:
                 script_id = row['id']
