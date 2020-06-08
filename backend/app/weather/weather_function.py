@@ -145,12 +145,12 @@ class WeatherData(object):
             self.tomorrow_tmp_max = result['tomorrow_tmp_max']
             self.tomorrow_tmp_min = result['tomorrow_tmp_min']
             self.aqi = result['aqi']
-            return True
+            return self
 
         except Exception as e:
             traceback.print_exc()
             print(e)
-            return False
+            return self
 
     def create(self):
         '''
@@ -174,12 +174,12 @@ class WeatherData(object):
                 tomorrow_tmp_min=self.tomorrow_tmp_min,
                 wind=self.wind,
                 update_time=datetime.datetime.now()).save()
-            return True
+            return self
 
         except Exception as e:
             traceback.print_exc()
             print(e)
-            return False
+            return self
 
 
 class WeatherLocation(object):
@@ -206,7 +206,7 @@ class WeatherLocation(object):
                 self.user_id = _.user_id
                 self.location=_.location
             else:
-                self.add(user_id=0)
+                self.add()
 
     def add(self):
         _ = weather_location(location=self.location, user_id=self.user_id, is_valid=1, update_time=datetime.datetime.now())

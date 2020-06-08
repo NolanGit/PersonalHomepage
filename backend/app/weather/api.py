@@ -43,8 +43,9 @@ def weatherData():
         weather_location_list.append(WeatherLocation(location=ip_location))
         for weather_location in weather_location_list:
             weather_data = WeatherData(weather_location.id, weather_location.location)
-            result.append(weather_data)
-        return rsp.success(cf.attr_to_dict(result))
+            weather_data.update_self().create()
+            result.append(cf.attr_to_dict(weather_data))
+        return rsp.success(result)
     except Exception as e:
         traceback.print_exc()
         return rsp.failed(e), 500
