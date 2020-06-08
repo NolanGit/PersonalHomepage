@@ -41,7 +41,7 @@ class WeatherData(object):
             try:
                 result['fl'] = request_result['HeWeather6'][0]['now']['fl']
             except:
-                result['fl'] = '暂无数据'
+                result['fl'] = 0
             result['tmp'] = request_result['HeWeather6'][0]['now']['tmp']
             result['wind'] = request_result['HeWeather6'][0]['now']['wind_dir'] + str(request_result['HeWeather6'][0]['now']['wind_sc']) + '级'
             result['cond_code_d'] = request_result['HeWeather6'][0]['daily_forecast'][0]['cond_code_d']
@@ -59,7 +59,7 @@ class WeatherData(object):
             try:
                 result['aqi'] = r.json()['HeWeather6'][0]['air_now_city']['aqi']
             except:
-                result['aqi'] = '暂无数据'
+                result['aqi'] = 0
             return result
         except Exception as e:
             traceback.print_exc()
