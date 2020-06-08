@@ -235,7 +235,7 @@ class WeatherLocationList(object):
             if self.is_valid != 0:
                 weather_location_query = weather_location.select().where((weather_location.user_id == self.user_id) & (weather_location.is_valid == self.is_valid)).dicts()
         self.list = [
-            WeatherLocation(single_weather_location_query['id'], single_weather_location_query['location'], single_weather_location_query['user_id'])
+            WeatherLocation(single_weather_location_query['location'], single_weather_location_query['user_id'], single_weather_location_query['id'])
             for single_weather_location_query in weather_location_query
         ]
         return self
