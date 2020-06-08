@@ -11,6 +11,8 @@ except:
     from model.weather_model import weather_location
     from model.weather_model import weather_data
 
+WEATHER_EXPIRE_HOUR = 3
+
 
 class WeatherData(object):
 
@@ -105,7 +107,10 @@ class WeatherData(object):
             self.tomorrow_tmp_min = weather_data_query['tomorrow_tmp_min']
             self.wind = weather_data_query['wind']
             self.update_time = weather_data_query['update_time']
-            return True
+            if (datetime.datetime.now() - self.update_time).seconds > WEATHER_EXPIRE_HOUR * 3600:
+                return True
+            else:
+                return False
         else:
             return False
 
@@ -204,7 +209,7 @@ class WeatherLocation(object):
             if _ != None:
                 self.id = _.id
                 self.user_id = _.user_id
-                self.location=_.location
+                self.location = _.location
             else:
                 self.add()
 
@@ -212,7 +217,7 @@ class WeatherLocation(object):
         _ = weather_location(location=self.location, user_id=self.user_id, is_valid=1, update_time=datetime.datetime.now())
         _.save()
         self.id = _.id
-        self.location=_.location
+        self.location = _.location
 
 
 class WeatherLocationList(object):
