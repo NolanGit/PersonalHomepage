@@ -11,12 +11,10 @@ from ..login.login_funtion import User
 from ..privilege.privilege_control import permission_required
 from .weather_function import WeatherData, WeatherLocation, WeatherLocationList
 from ..response import Response
+from ..common_func import CommonFunc 
 
 rsp = Response()
-
-cf = configparser.ConfigParser()
-cf.read('app/homepage.config')
-KEY = cf.get('config', 'KEY')
+cf=CommonFunc()
 
 URL_PREFIX = 'weather'
 
@@ -45,7 +43,8 @@ def weatherData():
         weather_location_list.append(WeatherLocation(location=ip_location))
         for weather_location in weather_location_list:
             weather_data = WeatherData(weather_location.id, weather_location.location)
-        return rsp.success(result)
+            result.append(weather_data)
+        return rsp.success(cf.attr_to_dict(result))
     except Exception as e:
         traceback.print_exc()
         return rsp.failed(e), 500

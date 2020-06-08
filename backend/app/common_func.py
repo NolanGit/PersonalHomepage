@@ -1,6 +1,7 @@
 import redis
 import random
 import hashlib
+import inspect
 
 
 class CommonFunc(object):
@@ -60,3 +61,15 @@ class CommonFunc(object):
     def is_data_existed_in_db(self, db_class, key, target):
         status = db_class.select().where(key == target).dicts()
         return True if len(status) != 0 else False
+
+    def attr_to_dict(self, instance):
+        aaa = inspect.getmembers(
+            instance, lambda a: not (inspect.isroutine(a)))
+        bbb = [
+            a for a in aaa
+            if not (a[0].startswith('__') and a[0].endswith('__'))
+        ]
+        ccc = {}
+        for b in bbb:
+            ccc[b[0]] = b[1]
+        return (ccc)
