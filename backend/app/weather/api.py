@@ -7,7 +7,6 @@ import configparser
 from . import weather
 from flask_cors import cross_origin
 from flask import render_template, session, redirect, url_for, current_app, flash, Response, request, jsonify
-from ..model.weather_model import weather_personalized
 from ..login.login_funtion import User
 from ..privilege.privilege_control import permission_required
 from .weather_function import WeatherData, WeatherLocation, WeatherLocationList
@@ -51,15 +50,3 @@ def weatherData():
         return rsp.failed(e), 500
 
 
-# @weather.route('/weatherPersonalizedSave', methods=['POST'])
-# @cross_origin()
-# def weatherPersonalizedSave():
-#     try:
-#         user_id = request.get_json()['user_id']
-#         location = request.get_json()['location']
-#         weather_personalized.create(location=location, user_id=user_id, is_valid=1, update_time=datetime.datetime.now())
-#         return jsonify({'code': 200, 'msg': '成功！', 'data': []})
-#     except Exception as e:
-#         traceback.print_exc()
-#         response = {'code': 500, 'msg': '失败！错误信息：' + str(e) + '，请联系管理员。', 'data': []}
-#         return jsonify(response), 500

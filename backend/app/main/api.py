@@ -8,7 +8,6 @@ from flask import render_template, session, redirect, url_for, current_app, requ
 from . import main
 from flask_cors import cross_origin
 from ..model.search_model import search_engines, search_engines_log
-from ..model.weather_model import weather_personalized
 from ..model.bookmarks_model import bookmarks as bookmarks_table
 from ..model.bookmarks_model import icon as icon_table
 from ..model.widget_model import widget as widget_table

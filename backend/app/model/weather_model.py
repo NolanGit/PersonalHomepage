@@ -6,16 +6,6 @@ from playhouse.pool import PooledMySQLDatabase
 from .model_function import BaseModel
 
 
-class weather_personalized(BaseModel):
-    location = CharField()
-    user_id = IntegerField()
-    is_valid = IntegerField()
-    update_time = DateTimeField()
-
-    class Meta:
-        table_name = 'weather_personalized'
-
-
 class weather_location(BaseModel):
     location = CharField()
     user_id = IntegerField()
@@ -48,6 +38,5 @@ class weather_data(BaseModel):
         table_name = 'weather_data'
 
 
-weather_personalized.create_table()
 weather_location.create_table()
 weather_data.create_table()
