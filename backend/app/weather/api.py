@@ -42,7 +42,7 @@ def weatherData():
             weather_location_list = _ if _ != None else []
         else:
             weather_location_list = []
-        weather_location_list = weather_location_list.append(WeatherLocation(location=ip_location))
+        weather_location_list.append(WeatherLocation(location=ip_location))
         for weather_location in weather_location_list:
             weather_data = WeatherData(weather_location.id, weather_location.location)
         return rsp.success(result)

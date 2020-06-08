@@ -204,6 +204,7 @@ class WeatherLocation(object):
             if _ != None:
                 self.id = _.id
                 self.user_id = _.user_id
+                self.location=_.location
             else:
                 self.add(user_id=0)
 
@@ -211,6 +212,7 @@ class WeatherLocation(object):
         _ = weather_location(location=self.location, user_id=self.user_id, is_valid=1, update_time=datetime.datetime.now())
         _.save()
         self.id = _.id
+        self.location=_.location
 
 
 class WeatherLocationList(object):
