@@ -200,13 +200,17 @@ class WeatherLocation(object):
             self.location = location
             self.user_id = user_id
         else:
-            _ = weather_location(location=location, user_id=user_id, is_valid=1)
-            _.save()
-            self.id = _.id
+            _ = weather_location.get(weather_location.location == location)
+            if _ != None:
+                self.id = _.id
+                self.user_id = _.user_id
+            else:
+                self.add(user_id=0)
 
     def add(self):
-        weather_location(location=self.location, user_id=self.user_id, is_valid=1, update_time=datetime.datetime.now()).save()
-        return self
+        _ = weather_location(location=self.location, user_id=self.user_id, is_valid=1, update_time=datetime.datetime.now())
+        _.save()
+        self.id = _.id
 
 
 class WeatherLocationList(object):

@@ -37,16 +37,16 @@ def weatherData():
         user_id = request.get_json()['user_id']
         user_ip = request.remote_addr
         ip_location = ip_location_get(user_ip)
-        weather_location_list = WeatherLocationList(user_id=user_id).get().list + WeatherLocation(location=ip_location)
-        print(weather_location_list)
-        if len(weather_location_list) != 0:
-            weather_location_list = weather_location_list.append(ip_location)
-            weather_location_list[0], weather_location_list[-1] = weather_location_list[-1], weather_location_list[0]
-            for weather_location in weather_location_list:
-                weather_data = WeatherData(weather_location.id, weather_location.location)
+        if user_id != 0:
+            _ = WeatherLocationList(user_id=user_id).get().list
+            weather_location_list = _ if _ != None else []
+        else:
+            weather_location_list = []
+        weather_location_list = weather_location_list.append(WeatherLocation(location=ip_location))
+        for weather_location in weather_location_list:
+            weather_data = WeatherData(weather_location.id, weather_location.location)
         return rsp.success(result)
     except Exception as e:
         traceback.print_exc()
         return rsp.failed(e), 500
-
 
