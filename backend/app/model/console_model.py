@@ -17,4 +17,11 @@ class console(BaseModel):
     class Meta:
         table_name = 'console'
 
+class icon(BaseModel):
+    name = CharField()
+
+    class Meta:
+        table_name = 'icon'
+
 console().create_table()
+icon().create_table()
