@@ -11,10 +11,10 @@ from ..login.login_funtion import User
 from ..privilege.privilege_control import permission_required
 from .weather_function import WeatherData, WeatherLocation, WeatherLocationList
 from ..response import Response
-from ..common_func import CommonFunc 
+from ..common_func import CommonFunc
 
 rsp = Response()
-cf=CommonFunc()
+cf = CommonFunc()
 
 URL_PREFIX = 'weather'
 
@@ -40,7 +40,7 @@ def weatherData():
             weather_location_list = _ if _ != None else []
         else:
             weather_location_list = []
-        weather_location_list.append(WeatherLocation(location=ip_location))
+        weather_location_list.append(WeatherLocation(location=ip_location,user_id=-1, create_if_not_exist=True))
         for weather_location in weather_location_list:
             weather_data = WeatherData(weather_location.id, weather_location.location)
             if not weather_data.get_latest():
@@ -50,4 +50,3 @@ def weatherData():
     except Exception as e:
         traceback.print_exc()
         return rsp.failed(e), 500
-

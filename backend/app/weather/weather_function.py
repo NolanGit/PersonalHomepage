@@ -189,12 +189,7 @@ class WeatherData(object):
 
 class WeatherLocation(object):
 
-    def __init__(
-            self,
-            location=None,
-            user_id=0,
-            id=0,
-    ):
+    def __init__(self, location=None, user_id=0, id=0, create_if_not_exist=False):
         '''
             id              default:0
             location        default:None
@@ -211,9 +206,14 @@ class WeatherLocation(object):
                 self.user_id = _.user_id
                 self.location = _.location
             else:
-                self.add()
+                if create_if_not_exist:
+                    self.create()
+                else:
+                    self.id = id
+                    self.location = location
+                    self.user_id = user_id
 
-    def add(self):
+    def create(self):
         _ = weather_location(location=self.location, user_id=self.user_id, is_valid=1, update_time=datetime.datetime.now())
         _.save()
         self.id = _.id
@@ -222,13 +222,15 @@ class WeatherLocation(object):
 
 class WeatherLocationList(object):
 
-    def __init__(self, user_id=0, is_valid=1):
+    def __init__(self, user_id=0, is_valid=1, limit_days_in=0):
         '''
             user_id         default:0
             is_valid        default:0
+            limit_days_in   default:0
         '''
         self.user_id = user_id
         self.is_valid = is_valid
+        self.limit_days_in = limit_days_in
 
     def get(self):
         '''
@@ -237,17 +239,19 @@ class WeatherLocationList(object):
         '''
         if self.user_id == 0:
             if self.is_valid == 0:
-                weather_location_query = weather_location.select().dicts()
+                weather_location_query = weather_location.select()
             if self.is_valid != 0:
-                weather_location_query = weather_location.select().where(weather_location.is_valid == self.is_valid).dicts()
+                weather_location_query = weather_location.select().where(weather_location.is_valid == self.is_valid)
         elif self.user_id != 0:
             if self.is_valid == 0:
-                weather_location_query = weather_location.select().where(weather_location.user_id == self.user_id).dicts()
+                weather_location_query = weather_location.select().where(weather_location.user_id == self.user_id)
             if self.is_valid != 0:
-                weather_location_query = weather_location.select().where((weather_location.user_id == self.user_id) & (weather_location.is_valid == self.is_valid)).dicts()
+                weather_location_query = weather_location.select().where((weather_location.user_id == self.user_id) & (weather_location.is_valid == self.is_valid))
+        weather_location_query.where(weather_location.update_time > datetime.datetime.now() + datetime.timedelta(days=limit_days_in))
+        weather_location_query_dicts = weather_location_query.dicts()
         self.list = [
             WeatherLocation(single_weather_location_query['location'], single_weather_location_query['user_id'], single_weather_location_query['id'])
-            for single_weather_location_query in weather_location_query
+            for single_weather_location_query in weather_location_query_dicts
         ]
         return self
 
