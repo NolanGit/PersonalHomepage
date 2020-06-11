@@ -92,7 +92,7 @@ class WeatherData(object):
         weather_data_query = weather_data.select().where(weather_data.location_id == self.location_id).order_by(-weather_data.update_time).limit(1).dicts()
         if len(weather_data_query) != 0:
             weather_data_query = weather_data_query[0]
-            self.weather_data_id = weather_data_query['weather_data_id']
+            self.weather_data_id = weather_data_query['id']
             self.aqi = weather_data_query['aqi']
             self.cond_code_d = weather_data_query['cond_code_d']
             self.cond_code_n = weather_data_query['cond_code_n']
