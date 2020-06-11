@@ -248,7 +248,8 @@ class WeatherLocationList(object):
                 weather_location_query = weather_location.select().where(weather_location.user_id == self.user_id)
             if self.is_valid != 0:
                 weather_location_query = weather_location.select().where((weather_location.user_id == self.user_id) & (weather_location.is_valid == self.is_valid))
-        weather_location_query.where(weather_location.update_time > datetime.datetime.now() + datetime.timedelta(days=limit_days_in))
+        if self.limit_days_in!=0:
+            weather_location_query.where(weather_location.update_time > datetime.datetime.now() + datetime.timedelta(days=self.limit_days_in))
         weather_location_query_dicts = weather_location_query.dicts()
         self.list = [
             WeatherLocation(single_weather_location_query['location'], single_weather_location_query['user_id'], single_weather_location_query['id'])
@@ -271,7 +272,7 @@ class WeatherLocationList(object):
 
 
 if __name__ == '__main__':
-    weather_location_list = WeatherLocationList().get().list
+    weather_location_list = WeatherLocationList(limit_days_in=3).get().list
     for weather_location in weather_location_list:
         weather_data = WeatherData(weather_location.id, weather_location.location)
         weather_data.get_weather_data_from_api()
