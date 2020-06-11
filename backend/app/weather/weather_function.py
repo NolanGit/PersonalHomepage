@@ -1,5 +1,6 @@
 import datetime
 import traceback
+from peewee import DoesNotExist
 
 try:
     from ..model.weather_model import weather_location
@@ -108,7 +109,7 @@ class WeatherData(object):
             self.tomorrow_tmp_min = weather_data_query['tomorrow_tmp_min']
             self.wind = weather_data_query['wind']
             self.update_time = weather_data_query['update_time']
-            if (datetime.datetime.now() - self.update_time).seconds > WEATHER_EXPIRE_HOUR * 3600:
+            if (datetime.datetime.now() - self.update_time).seconds < WEATHER_EXPIRE_HOUR * 3600:
                 return True
             else:
                 return False
@@ -201,12 +202,12 @@ class WeatherLocation(object):
             self.location = location
             self.user_id = user_id
         else:
-            _ = weather_location.get(weather_location.location == location)
-            if _ != None:
+            try:
+                _ = weather_location.get(weather_location.location == location)
                 self.id = _.id
                 self.user_id = _.user_id
                 self.location = _.location
-            else:
+            except DoesNotExist:
                 if create_if_not_exist:
                     self.create()
                 else:
