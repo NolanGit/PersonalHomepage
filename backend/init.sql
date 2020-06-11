@@ -341,3 +341,4 @@ INSERT INTO `PersonalHomepage`.`widget` (`id`, `name`, `is_valid`, `is_login_nee
 INSERT INTO `PersonalHomepage`.`widget_user` (`id`, `widget_id`, `user_id`, `order`, `is_valid`, `update_time`) VALUES ('1', '1', '1', '1', '1', '2019-10-28 11:35:37');
 INSERT INTO `PersonalHomepage`.`widget_user` (`id`, `widget_id`, `user_id`, `order`, `is_valid`, `update_time`) VALUES ('2', '2', '1', '2', '1', '2019-10-28 11:35:37');
 INSERT INTO `PersonalHomepage`.`widget_user` (`id`, `widget_id`, `user_id`, `order`, `is_valid`, `update_time`) VALUES ('3', '3', '1', '3', '1', '2019-10-28 11:35:37');
+INSERT INTO `PersonalHomepage`.`weather_location` (`id`, `location`, `user_id`, `is_valid`, `update_time`) VALUES ('1', '北京', '1', '1', '2019-10-28 11:35:37');
