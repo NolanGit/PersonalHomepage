@@ -202,17 +202,16 @@ class WeatherLocation(object):
             self.location = location
             self.user_id = user_id
         else:
+            self.location = location
             try:
                 _ = weather_location.get(weather_location.location == location)
                 self.id = _.id
                 self.user_id = _.user_id
-                self.location = _.location
             except DoesNotExist:
                 if create_if_not_exist:
                     self.create()
                 else:
                     self.id = id
-                    self.location = location
                     self.user_id = user_id
 
     def create(self):
