@@ -202,6 +202,7 @@ class WeatherLocation(object):
             self.location = location
             self.user_id = user_id
         else:
+            self.user_id = user_id
             self.location = location
             try:
                 _ = weather_location.get(weather_location.location == location)
