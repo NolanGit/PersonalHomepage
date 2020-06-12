@@ -36,7 +36,7 @@
 ![image](https://user-images.githubusercontent.com/27627484/71999000-90354d80-327b-11ea-8fe1-15c9901eb24d.png)
 ### 控制台：如需增加模块，需要配置数据库（console）
 ![image](https://user-images.githubusercontent.com/27627484/71999094-c4a90980-327b-11ea-97ae-7e683663aa50.png)
-### 脚本运行平台：可以通过配置生成前端页面表单，然后通过填写表单来提交脚本至后端运行并展示运行结果，可以定时运行、参数回放、记录运行时间、记录运行日志、通过配置生成运行结果表格、运行额外脚本动态参数化前端组件，用于后台程序的统一驱动，定时任务需要配置\backend\app\console\console_script_schedule_monitor.py为定时运行，步长需小于一小时
+### 脚本运行平台：可以通过配置生成前端页面表单，然后通过填写表单来提交脚本至后端运行并展示运行结果，可以定时运行、参数回放、记录运行时间、记录运行日志、通过配置生成运行结果表格、运行额外脚本动态参数化前端组件，用于后台程序的统一驱动，定时任务需要配置\backend\app\script\schedule_monitor.sh为定时运行，步长需小于一小时
 - 首页：左侧为脚本所属系统页，右侧为具体脚本，通过右上角的"+"可以增加脚本，增加脚本会增加tab
 ![image](https://user-images.githubusercontent.com/27627484/72076975-6dfe0700-3331-11ea-9253-717766654a2d.png)
 - 按钮区域：
