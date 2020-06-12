@@ -21,7 +21,7 @@ URL_PREFIX = 'weather'
 
 def ip_location_get(user_ip):
     r = requests.get('http://freeapi.ipip.net/' + str(user_ip))
-    return '北京' if r.json()[1] == '局域网' else r.json()[1]
+    return '北京' if r.json()[0] == '局域网' else r.json()[1]
 
 
 @weather.route('/weatherData', methods=['POST'])
@@ -35,6 +35,7 @@ def weatherData():
         user_id = request.get_json()['user_id']
         user_ip = request.remote_addr
         ip_location = ip_location_get(user_ip)
+        print(ip_location)
         if user_id != 0:
             _ = WeatherLocationList(user_id=user_id).get().list
             weather_location_list = _ if _ != None else []

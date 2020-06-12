@@ -57,11 +57,13 @@ class WeatherData(object):
             result['tomorrow_cond_txt_d'] = request_result['HeWeather6'][0]['daily_forecast'][1]['cond_txt_d']
             result['tomorrow_tmp_max'] = request_result['HeWeather6'][0]['daily_forecast'][1]['tmp_max']
             result['tomorrow_tmp_min'] = request_result['HeWeather6'][0]['daily_forecast'][1]['tmp_min']
-            result['r'] = requests.get('https://free-api.heweather.net/s6/air/now', params=payload)
+            r = requests.get('https://free-api.heweather.net/s6/air/now', params=payload)
             result['aqi'] = None
             try:
                 result['aqi'] = r.json()['HeWeather6'][0]['air_now_city']['aqi']
-            except:
+            except Exception as e:
+                print(r.json()['HeWeather6'])
+                print(e)
                 result['aqi'] = 0
             return result
         except Exception as e:
