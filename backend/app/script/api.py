@@ -12,6 +12,7 @@ from ..model.script_model import script as script_table_model
 from ..model.script_model import script_sub_system, script_detail, script_detail, script_log, script_schedule
 from ..privilege.privilege_control import permission_required
 from ..login.login_funtion import User
+from .model import ScriptSubSystem
 
 URL_PREFIX = '/script'
 running_subprocess = []
@@ -35,6 +36,21 @@ def subSystem():
         for row in script_sub_system_query:
             result.append({'id': row['id'], 'name': row['name'], 'user': row['user'], 'update_time': row['update_time']})
         response = {'code': 200, 'msg': '成功！', 'data': result}
+        return jsonify(response)
+    except Exception as e:
+        response = {'code': 500, 'msg': '失败！错误信息：' + str(e) + '，请联系管理员。', 'data': []}
+        return jsonify(response), 500
+
+
+@script.route('/subSystemAdd', methods=['POST'])
+@permission_required(URL_PREFIX + '/subSystemAdd')
+@cross_origin()
+def subSystemAdd():
+    try:
+        sub_system_name = request.get_json()['sub_system_name']
+        user = request.get_json()['user']
+        ScriptSubSystem(name=sub_system_name,user=user).create()
+        response = {'code': 200, 'msg': '成功！'}
         return jsonify(response)
     except Exception as e:
         response = {'code': 500, 'msg': '失败！错误信息：' + str(e) + '，请联系管理员。', 'data': []}
@@ -767,21 +783,3 @@ def extraButtonScriptRun():
             'msg': str(e),
         }
         return jsonify(response), 500
-
-
-# 权限初始化SQL
-# INSERT INTO "main"."privilege" ("id", "name", "mark", "remark", "is_valid", "update_time", "ROWID") VALUES (21, '控制台-脚本运行平台-子系统列表', '/script/subSystem', '', 1, '2019-10-28 11:35:37.428601', 21);
-# INSERT INTO "main"."privilege" ("id", "name", "mark", "remark", "is_valid", "update_time", "ROWID") VALUES (22, '控制台-脚本运行平台-子系统脚本', '/script/subSystemScript', '', 1, '2019-10-28 11:35:37.428601', 22);
-# INSERT INTO "main"."privilege" ("id", "name", "mark", "remark", "is_valid", "update_time", "ROWID") VALUES (23, '控制台-脚本运行平台-脚本运行', '/script/run', '', 1, '2019-10-28 11:35:37.428601', 23);
-# INSERT INTO "main"."privilege" ("id", "name", "mark", "remark", "is_valid", "update_time", "ROWID") VALUES (24, '控制台-脚本运行平台-脚本终止运行', '/script/terminate', '', 1, '2019-10-28 11:35:37.428601', 24);
-# INSERT INTO "main"."privilege" ("id", "name", "mark", "remark", "is_valid", "update_time", "ROWID") VALUES (25, '控制台-脚本运行平台-脚本运行输出获取', '/script/runOutput', '', 1, '2019-10-28 11:35:37.428601', 25);
-# INSERT INTO "main"."privilege" ("id", "name", "mark", "remark", "is_valid", "update_time", "ROWID") VALUES (26, '控制台-脚本运行平台-脚本编辑', '/script/edit', '', 1, '2019-10-28 11:35:37.428601', 26);
-# INSERT INTO "main"."privilege" ("id", "name", "mark", "remark", "is_valid", "update_time", "ROWID") VALUES (27, '控制台-脚本运行平台-脚本回放', '/script/replay', '', 1, '2019-10-28 11:35:37.428601', 27);
-# INSERT INTO "main"."privilege" ("id", "name", "mark", "remark", "is_valid", "update_time", "ROWID") VALUES (28, '控制台-脚本运行平台-脚本删除', '/script/delete', '', 1, '2019-10-28 11:35:37.428601', 28);
-# INSERT INTO "main"."privilege" ("id", "name", "mark", "remark", "is_valid", "update_time", "ROWID") VALUES (29, '控制台-脚本运行平台-脚本运行输出保存', '/script/saveOutput', '', 1, '2019-10-28 11:35:37.428601', 29);
-# INSERT INTO "main"."privilege" ("id", "name", "mark", "remark", "is_valid", "update_time", "ROWID") VALUES (30, '控制台-脚本运行平台-脚本运行记录获取', '/script/getLogs', '', 1, '2019-10-28 11:35:37.428601', 30);
-# INSERT INTO "main"."privilege" ("id", "name", "mark", "remark", "is_valid", "update_time", "ROWID") VALUES (31, '控制台-脚本运行平台-脚本最新运行记录获取', '/script/getNewestLog', '', 1, '2019-10-28 11:35:37.428601', 31);
-# INSERT INTO "main"."privilege" ("id", "name", "mark", "remark", "is_valid", "update_time", "ROWID") VALUES (32, '控制台-脚本运行平台-脚本额外按钮脚本运行', '/script/extraButtonScriptRun', '', 1, '2019-10-28 11:35:37.428601', 32);
-# INSERT INTO "main"."privilege" ("id", "name", "mark", "remark", "is_valid", "update_time", "ROWID") VALUES (33, '控制台-脚本运行平台-定时任务查看', '/script/schedule', '', 1, '2019-10-28 11:35:37.428601', 33);
-# INSERT INTO "main"."privilege" ("id", "name", "mark", "remark", "is_valid", "update_time", "ROWID") VALUES (34, '控制台-脚本运行平台-定时任务编辑', '/script/scheduleEdit', '', 1, '2019-10-28 11:35:37.428601', 34);
-# INSERT INTO "main"."privilege" ("id", "name", "mark", "remark", "is_valid", "update_time", "ROWID") VALUES (35, '控制台-脚本运行平台-定时任务删除', '/script/scheduleDelete', '', 1, '2019-10-28 11:35:37.428601', 35);

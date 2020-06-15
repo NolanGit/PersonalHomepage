@@ -14,10 +14,15 @@
                 class="collapse-div"
                 v-show="singleSystem.scriptText!=''"
               >包括：{{singleSystem.scriptText}}</div>
-              <div class="collapse-div" v-show="formData.length==0">本系统暂无脚本</div>
+              <div class="collapse-div" v-show="formData.length==0">本栏目暂无脚本</div>
               <el-button type="text" v-show="formData.length==0" size="small" @click="newTab">需要新增？</el-button>
             </el-collapse-item>
           </el-collapse>
+          <el-popover placement="right" trigger="hover">
+            <el-input size="mini" style="width: 170px" placeholder='请输入栏目名称' v-model="sub_system_name"></el-input>
+            <el-button class="margin_top-mini" size="mini" @click="newSubSystem">确定</el-button>
+            <el-button slot="reference" class="margin_top-medium" type="text" size="small">新增栏目</el-button>
+          </el-popover>
         </el-card>
       </el-col>
       <el-col :span="19" class="right-side-bar">
