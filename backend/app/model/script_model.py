@@ -8,7 +8,7 @@ from .model_function import BaseModel
 
 class script_sub_system(BaseModel):
     name = CharField()
-    user = CharField()
+    user_id = IntegerField()
     is_valid = IntegerField(null=True)
     update_time = DateTimeField(null=True)
 

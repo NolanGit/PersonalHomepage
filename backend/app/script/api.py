@@ -48,8 +48,8 @@ def subSystem():
 def subSystemAdd():
     try:
         sub_system_name = request.get_json()['sub_system_name']
-        user = request.get_json()['user']
-        ScriptSubSystem(name=sub_system_name,user=user).create()
+        user_id = request.get_json()['user_id']
+        ScriptSubSystem(name=sub_system_name,user_id=user_id).create()
         response = {'code': 200, 'msg': '成功！'}
         return jsonify(response)
     except Exception as e:

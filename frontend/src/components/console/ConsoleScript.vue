@@ -19,8 +19,8 @@
             </el-collapse-item>
           </el-collapse>
           <el-popover placement="right" trigger="hover">
-            <el-input size="mini" style="width: 170px" placeholder='请输入栏目名称' v-model="sub_system_name"></el-input>
-            <el-button class="margin_top-mini" size="mini" @click="newSubSystem">确定</el-button>
+            <el-input size="mini" style="width: 170px" placeholder='请输入栏目名称' v-model="subSystemName"></el-input>
+            <el-button class="margin_top-mini" size="mini" @click="subSystemAdd">确定</el-button>
             <el-button slot="reference" class="margin_top-medium" type="text" size="small">新增栏目</el-button>
           </el-popover>
         </el-card>
@@ -1031,7 +1031,8 @@ const api = {
   schedule: "/script/schedule",
   scheduleAdd: "/script/scheduleEdit",
   scheduleDelete: "/script/scheduleDelete",
-  extraButtonScriptRun: "/script/extraButtonScriptRun"
+  extraButtonScriptRun: "/script/extraButtonScriptRun",
+  subSystemAdd: "/script/subSystemAdd",
 };
 export default {
   name: "ConsoleScript",
@@ -1078,6 +1079,7 @@ export default {
       activedSystem: 0,
       activeSystem: [],
       subSystem: [],
+      subSystemName:[],
       formData: [],
       formDataLoading: false,
       submitButtonLoading: false,
@@ -1469,7 +1471,24 @@ export default {
         });
       }
     },
-    //展示子系统下的脚本
+    //添加栏目
+    async subSystemAdd() {
+      try {
+        const { data: res } = await axios.post(api.subSystemAdd, {
+          sub_system_name: this.subSystemName,
+          user_id: this.user_id,
+        });
+        this.subSystem=[]
+        this.subSystemScript()
+      } catch (e) {
+        console.log(e);
+        this.$message({
+          message: e.response.data.msg,
+          type: "error"
+        });
+      }
+    },
+    //展示栏目下的脚本
     async subSystemScript(sub_system_id) {
       this.formDataLoading = true;
       for (
