@@ -56,6 +56,22 @@ def subSystemAdd():
         response = {'code': 500, 'msg': '失败！错误信息：' + str(e) + '，请联系管理员。', 'data': []}
         return jsonify(response), 500
 
+@script.route('/subSystemDelete', methods=['POST'])
+@permission_required(URL_PREFIX + '/subSystemDelete')
+@cross_origin()
+def subSystemDelete():
+    try:
+        sub_system_id = request.get_json()['sub_system_id']
+        user_id = request.get_json()['user_id']
+        s=ScriptSubSystem(id=sub_system_id).complete()
+        s.is_valid=0
+        s.user_id=user_id
+        s.save()
+        response = {'code': 200, 'msg': '成功！'}
+        return jsonify(response)
+    except Exception as e:
+        response = {'code': 500, 'msg': '失败！错误信息：' + str(e) + '，请联系管理员。', 'data': []}
+        return jsonify(response), 500
 
 @script.route('/subSystemScript', methods=['POST'])
 @permission_required(URL_PREFIX + '/subSystemScript')

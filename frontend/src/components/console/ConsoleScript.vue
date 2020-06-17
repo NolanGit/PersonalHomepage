@@ -16,6 +16,7 @@
               >包括：{{singleSystem.scriptText}}</div>
               <div class="collapse-div" v-show="formData.length==0">本栏目暂无脚本</div>
               <el-button type="text" v-show="formData.length==0" size="small" @click="newTab">需要新增？</el-button>
+              <el-button class="noMargin" type="text" size="small" @click="subSystemDelete()">删除栏目</el-button>
             </el-collapse-item>
           </el-collapse>
           <el-popover placement="right" trigger="hover">
@@ -1033,6 +1034,7 @@ const api = {
   scheduleDelete: "/script/scheduleDelete",
   extraButtonScriptRun: "/script/extraButtonScriptRun",
   subSystemAdd: "/script/subSystemAdd",
+  subSystemDelete: "/script/subSystemDelete",
 };
 export default {
   name: "ConsoleScript",
@@ -1470,6 +1472,34 @@ export default {
           type: "error"
         });
       }
+    },
+    //删除栏目
+    async subSystemDelete() {
+      this.$confirm('确认删除吗?', '提示', {
+      }).then(async () => {
+        try {
+          for (var s = 0; s < this.subSystem.length; s++) {
+            if (this.activeSystem == this.subSystem[s].title) {
+              break
+            }
+          }
+          const { data: res } = await axios.post(api.subSystemDelete, {
+            sub_system_id: this.subSystem[s].id,
+            user: sessionStorage.getItem("user").replace(/\"/g, "")
+          });
+          this.$message({
+            message: '成功！',
+            type: "success"
+          });
+          this.getSubSystem()
+        } catch (e) {
+          console.log(e);
+          this.$message({
+            message: e.response.data.msg,
+            type: "error"
+          });
+        }
+      })
     },
     //添加栏目
     async subSystemAdd() {

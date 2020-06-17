@@ -17,8 +17,18 @@ class ScriptSubSystem(Base):
         self.is_valid = is_valid
         self.update_time = update_time
 
+    def complete(self):
+        s = script_sub_system.get(script_sub_system.id == self.id)
+        self.name = s.name
+        self.user_id = s.user_id
+        self.is_valid = s.is_valid
+        self.update_time = s.update_time
+        return self
+
     def create(self):
         self.base_create(script_sub_system)
+        return self
 
-    def delete(self):
-        pass
+    def save(self):
+        self.base_save(script_sub_system)
+        return self
