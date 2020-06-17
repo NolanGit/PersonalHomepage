@@ -20,9 +20,9 @@ import os
 
 current_running_path = os.path.abspath('.')
 init_sql_path = current_running_path + '/backend/init.sql'
-flask_config_demo_path = current_running_path + 'backend/app/config_demo.py'
-flask_config_path = current_running_path + 'backend/app/config.py'
-config_path = current_running_path + '/app/homapage_demo.config'
+flask_config_demo_path = current_running_path + '/backend/app/config_demo.py'
+flask_config_path = current_running_path + '/backend/app/config.py'
+config_path = current_running_path + '/app/homepage_demo.config'
 print('当前运行路径:%s' % current_running_path)
 
 admin_email = input('请输入管理员邮箱，用于接收推送邮件:')
@@ -52,7 +52,7 @@ def backup(path):
         if os.path.isfile(path + '.old'):
             print('%s删除' % path + '.old')
             os.remove(path + '.old')
-        os.rename(path, path + 'old')
+        os.rename(path, path + '.old')
         print('%s备份成功' % path)
 
 
