@@ -245,6 +245,8 @@ def runOutput():
             'msg': str(e),
         }
         return jsonify(response), 500
+    finally:
+        return jsonify(response)
 
 
 @script.route('/edit', methods=['POST'])
