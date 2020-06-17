@@ -1485,7 +1485,7 @@ export default {
           }
           const { data: res } = await axios.post(api.subSystemDelete, {
             sub_system_id: this.subSystem[s].id,
-            user: sessionStorage.getItem("user").replace(/\"/g, "")
+            user_id: this.user_id
           });
           this.$message({
             message: '成功！',
