@@ -34,7 +34,7 @@ def subSystem():
     try:
         script_sub_system_query = script_sub_system.select().where((script_sub_system.is_valid == 1)).dicts()
         for row in script_sub_system_query:
-            result.append({'id': row['id'], 'name': row['name'], 'user': row['user'], 'update_time': row['update_time']})
+            result.append({'id': row['id'], 'name': row['name'], 'user_id': row['user_id'], 'update_time': row['update_time']})
         response = {'code': 200, 'msg': '成功！', 'data': result}
         return jsonify(response)
     except Exception as e:
