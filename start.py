@@ -18,13 +18,21 @@ else:
 
 import os
 import traceback
+import subprocess
+import sys
+
+def install(requirements_path):
+    subprocess.check_call([sys.executable, "-m", "pip", "install","-r", requirements_path])
 
 current_running_path = os.path.abspath('.')
 init_sql_path = current_running_path + '/backend/init.sql'
 flask_config_demo_path = current_running_path + '/backend/app/config_demo.py'
 flask_config_path = current_running_path + '/backend/app/config.py'
 config_path = current_running_path + '/backend/app/homepage_demo.config'
+requirements_path = current_running_path + '/requirements.txt'
 print('当前运行路径:%s' % current_running_path)
+print('安装requirements.txt......')
+install(requirements_path)
 
 admin_email = input('请输入管理员邮箱，用于接收推送邮件:')
 print(admin_email)
@@ -71,7 +79,7 @@ def alter(file, alter_dict):
             f2.write(line)
     os.remove(file)
     os.rename("%s.bak" % file, file)
-
+    
 
 flag = True
 try:
