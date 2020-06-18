@@ -12,10 +12,13 @@ flask_config_demo_path = current_running_path + '/backend/app/config_demo.py'
 flask_config_path = current_running_path + '/backend/app/config.py'
 config_path = current_running_path + '/backend/app/homepage.config'
 requirements_path = current_running_path + '/requirements.txt'
+bye = ['海内存知己，天涯若比邻。', '何当重相见，樽酒慰离颜。', '日暮征帆何处泊？天涯一望断人肠。', '日暮酒醒人已远，满天风雨下西楼。', '离心不异西江水，直送征帆万里行。', '劝君更尽一杯酒，西出阳关无故人。', '人情却似杨柳絮，悠扬便逐春风去。', '衰兰送客咸阳道，天若有情天亦老。']
+
 print('当前运行路径:%s' % current_running_path)
 
 first_excution = input('请问是初次运行本脚本吗?(y/n):')
-if first_excution=='n' or first_excution == 'N':
+if first_excution == 'n' or first_excution == 'N':
+
     def executeScriptsFromFile(filename, db):
         cursor = db.cursor()
         fd = open(filename, 'r', encoding='utf-8')
@@ -39,8 +42,11 @@ if first_excution=='n' or first_excution == 'N':
         finally:
             db.close()
 
-
     first_excution = input('那么，需要执行初始化SQL吗? (需要初始化配置之后才能正确执行)(y/n):')
+    if first_excution != 'y':
+        print('告辞。')
+        print(bye[random.randint(0, len(bye) - 1)])
+        exit()
     print('开始执行初始化SQL')
 
     PATH = lambda p: os.path.abspath(os.path.join(os.path.dirname(__file__), p))
@@ -65,11 +71,8 @@ if iamready == 'y' or iamready == 'yes':
     print('\n让我们开始吧！')
 else:
     print('告辞。')
-    bye = ['海内存知己，天涯若比邻。', '何当重相见，樽酒慰离颜。', '日暮征帆何处泊？天涯一望断人肠。', '日暮酒醒人已远，满天风雨下西楼。', '离心不异西江水，直送征帆万里行。', '劝君更尽一杯酒，西出阳关无故人。', '人情却似杨柳絮，悠扬便逐春风去。', '衰兰送客咸阳道，天若有情天亦老。']
-
     print(bye[random.randint(0, len(bye) - 1)])
     exit()
-
 
 
 def install(requirements_path):
@@ -121,7 +124,6 @@ def alter(file, alter_dict):
             f2.write(line)
     os.remove(file)
     os.rename("%s.bak" % file, file)
-
 
 
 flag = True
