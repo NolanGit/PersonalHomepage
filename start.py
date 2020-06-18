@@ -80,6 +80,21 @@ def alter(file, alter_dict):
     os.rename("%s.bak" % file, file)
 
 
+def executeScriptsFromFile(filename, cursor):
+    fd = open(filename, 'r', encoding='utf-8')
+    sqlFile = fd.read()
+    fd.close()
+    sqlCommands = sqlFile.split(';')
+
+    for command in sqlCommands:
+        try:
+            cursor.execute(command)
+        except Exception as msg:
+            print(msg)
+
+    print('sql执行完成')
+
+
 flag = True
 try:
     print('%s开始配置' % config_path)
@@ -130,7 +145,13 @@ try:
     cur = con.cursor()
     cur.execute("drop database if exists PersonalHomepage;")
     cur.execute("create database PersonalHomepage character set utf8;")
+    con.close()
     print('数据库创建完成')
+    print('开始执行初始化SQL')
+    con = pymysql.connect(host='localhost', user='root', passwd=mysql_password, db='PersonalHomepage', charset='utf8')
+    executeScriptsFromFile(init_sql_path, con.cursor())
+    con.close()
+
 except Exception as e:
     traceback.print_exc()
     print('创建数据库失败！请手动确认。')
