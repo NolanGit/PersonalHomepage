@@ -49,11 +49,12 @@ print(weather_api_key)
 def backup(path):
     is_exist = os.path.isfile(path)
     if is_exist:
+        backup_name=path + '.old'
         print('%s开始备份' % path)
-        if os.path.isfile(path + '.old'):
-            print('%s删除' % path + '.old')
-            os.remove(path + '.old')
-        os.rename(path, path + '.old')
+        if os.path.isfile(backup_name):
+            print('%s删除' % backup_name)
+            os.remove(backup_name)
+        os.system('cp %s %s' %(path, backup_name))
         print('%s备份成功' % path)
 
 
