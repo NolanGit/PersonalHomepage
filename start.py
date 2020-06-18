@@ -185,6 +185,6 @@ except Exception as e:
 if flag:
     print('基本操作已经全部完成了，还有几个步骤需要手动完成:')
     print('- 首先，在"frontend"目录下使用"npm i"安装必需前端组件，使用"npm run build"打包前端代码')
-    print('- 接着，使用python3运行"backend/run.py"，此操作会自动建表')
-    print('- 然后，再次运行此脚本(python3 start.py)以执行初始化SQL')
-    print('- 最后，登录50000端口试试看吧！初始化的用户名为admin，密码为123456')
+    print('- 然后，使用python3在backend/目录下运行"run.py"（如不在此目录下运行会产生问题），此操作会启用服务并自动建表')
+    print('- 接着，停止服务后，再次运行此脚本(python3 start.py)以执行初始化SQL')
+    print('- 最后，使用python3在backend/目录下运行"run.py"打开服务，登录50000端口试试看吧！初始化的用户名为admin，密码为123456')
