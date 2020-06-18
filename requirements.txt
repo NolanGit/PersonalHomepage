@@ -1,0 +1,7 @@
+requests==2.21.0
+Flask==1.0.2
+beautifulsoup4==4.9.1
+flask_cors==3.0.8
+peewee==3.13.3
+pymysql==0.9.3
+redis==3.5.3
