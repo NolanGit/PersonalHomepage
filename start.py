@@ -16,17 +16,28 @@ print('当前运行路径:%s' % current_running_path)
 
 first_excution = input('请问是初次运行本脚本吗?(y/n):')
 if first_excution=='n' or first_excution == 'N':
-    def executeScriptsFromFile(filename, cursor):
+    def executeScriptsFromFile(filename, db):
+        cursor = db.cursor()
         fd = open(filename, 'r', encoding='utf-8')
         sqlFile = fd.read()
         fd.close()
         sqlCommands = sqlFile.split(';')
 
         for command in sqlCommands:
+            if len(command) == 0:
+                continue
             try:
+                print(command)
                 cursor.execute(command)
             except Exception as msg:
+                print(len(command))
                 print(msg)
+        try:
+            db.commit()
+        except:
+            db.rollback()
+        finally:
+            db.close()
 
 
     first_excution = input('那么，需要执行初始化SQL吗? (需要初始化配置之后才能正确执行)(y/n):')
@@ -36,9 +47,8 @@ if first_excution=='n' or first_excution == 'N':
     cf = configparser.ConfigParser()
     cf.read(config_path)
     DB_PASS = cf.get('config', 'DB_PASS')
-    con = pymysql.connect(host='localhost', user='root', passwd=DB_PASS, db='PersonalHomepage', charset='utf8')
-    executeScriptsFromFile(init_sql_path, con.cursor())
-    con.close()
+    db = pymysql.connect(host='localhost', user='root', passwd=DB_PASS, db='PersonalHomepage', charset='utf8')
+    executeScriptsFromFile(init_sql_path, db)
     print('初始化SQL执行完成')
     exit()
 
