@@ -22,7 +22,7 @@ import subprocess
 import sys
 
 def install(requirements_path):
-    subprocess.check_call(["pip3", "install","-r", requirements_path])
+    subprocess.check_call([sys.executable, "-m", "pip3", "install","-r", requirements_path])
 
 current_running_path = os.path.abspath('.')
 init_sql_path = current_running_path + '/backend/init.sql'
