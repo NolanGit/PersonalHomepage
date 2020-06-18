@@ -49,10 +49,10 @@ if first_excution=='n' or first_excution == 'N':
     DB_PASS = cf.get('config', 'DB_PASS')
     db = pymysql.connect(host='localhost', user='root', passwd=DB_PASS, db='PersonalHomepage', charset='utf8')
     executeScriptsFromFile(init_sql_path, db)
-    print('初始化SQL执行完成')
+    print('初始化SQL执行完成，默认用户名为：Admin，默认密码为：123456')
     exit()
 
-print('你好啊！欢迎使用我的项目，任何问题请提issue！\n\n那么，让我们开始吧！部署前您需要准备：')
+print('\n你好啊！欢迎使用我的项目，任何问题请提issue！\n\n那么，让我们开始吧！部署前您需要准备：')
 print('- 个人邮箱（用于接收推送信息）')
 print('- SeverChan的微信推送key，请参考http://sc.ftqq.com/')
 print('- 用于发送邮件的邮箱')
@@ -174,10 +174,6 @@ try:
     cur.execute("create database PersonalHomepage character set utf8;")
     con.close()
     print('数据库创建完成')
-    print('开始执行初始化SQL')
-    con = pymysql.connect(host='localhost', user='root', passwd=mysql_password, db='PersonalHomepage', charset='utf8')
-    executeScriptsFromFile(init_sql_path, con.cursor())
-    con.close()
 
 except Exception as e:
     traceback.print_exc()
@@ -187,6 +183,6 @@ except Exception as e:
 if flag:
     print('基本操作已经全部完成了，还有几个步骤需要手动完成:')
     print('- 首先，在"frontend"目录下使用"npm i"安装必需前端组件，使用"npm run build"打包前端代码')
-    print('- 接着，使用python3运行"backend/run.py"')
-    print('- 然后，再次运行此脚本以执行初始化SQL')
+    print('- 接着，使用python3运行"backend/run.py"，此操作会自动建表')
+    print('- 然后，再次运行此脚本(python3 start.py)以执行初始化SQL')
     print('- 最后，登录50000端口试试看吧！初始化的用户名为admin，密码为123456')
