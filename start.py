@@ -68,18 +68,13 @@ def backup(path):
         print('%s备份成功' % path)
 
 
-def replace_str(text, old, new):
-    if old in text:
-        text = text.replace(old, new)
-
-
 def alter(file, alter_dict):
     with open(file, "r", encoding="utf-8") as f1, open("%s.bak" % file, "w", encoding="utf-8") as f2:
         for line in f1:
             for k, v in alter_dict.items():
                 if k in line:
                     print('替换[%s]为[%s]' % (k, v))
-                    line = line.replace_str(line, k, v)
+                    line = line.replace(k, v)
             f2.write(line)
     os.remove(file)
     os.rename("%s.bak" % file, file)
