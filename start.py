@@ -28,7 +28,6 @@ if first_excution=='n' or first_excution == 'N':
             except Exception as msg:
                 print(msg)
 
-        print('sql执行完成')
 
     first_excution = input('那么，需要执行初始化SQL吗? (需要初始化配置之后才能正确执行)(y/n):')
     print('开始执行初始化SQL')
@@ -40,6 +39,8 @@ if first_excution=='n' or first_excution == 'N':
     con = pymysql.connect(host='localhost', user='root', passwd=DB_PASS, db='PersonalHomepage', charset='utf8')
     executeScriptsFromFile(init_sql_path, con.cursor())
     con.close()
+    print('初始化SQL执行完成')
+    exit()
 
 print('你好啊！欢迎使用我的项目，任何问题请提issue！\n\n那么，让我们开始吧！部署前您需要准备：')
 print('- 个人邮箱（用于接收推送信息）')
@@ -177,5 +178,5 @@ if flag:
     print('基本操作已经全部完成了，还有几个步骤需要手动完成:')
     print('- 首先，在"frontend"目录下使用"npm i"安装必需前端组件，使用"npm run build"打包前端代码')
     print('- 接着，使用python3运行"backend/run.py"')
-    print('- 然后，执行初始化SQL:"backend/init.sql"')
+    print('- 然后，再次运行此脚本以执行初始化SQL')
     print('- 最后，登录50000端口试试看吧！初始化的用户名为admin，密码为123456')
