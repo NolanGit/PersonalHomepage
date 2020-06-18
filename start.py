@@ -21,8 +21,10 @@ import traceback
 import subprocess
 import sys
 
+
 def install(requirements_path):
-    subprocess.check_call([sys.executable, "-m", "pip", "install","-r", requirements_path])
+    subprocess.check_call([sys.executable, "-m", "pip", "install", "-r", requirements_path])
+
 
 current_running_path = os.path.abspath('.')
 init_sql_path = current_running_path + '/backend/init.sql'
@@ -57,12 +59,12 @@ print(weather_api_key)
 def backup(path):
     is_exist = os.path.isfile(path)
     if is_exist:
-        backup_name=path + '.old'
+        backup_name = path + '.old'
         print('%s开始备份' % path)
         if os.path.isfile(backup_name):
             print('%s删除' % backup_name)
             os.remove(backup_name)
-        os.system('cp %s %s' %(path, backup_name))
+        os.system('cp %s %s' % (path, backup_name))
         print('%s备份成功' % path)
 
 
@@ -76,11 +78,12 @@ def alter(file, alter_dict):
         for line in f1:
             for k, v in alter_dict.items():
                 if k in line:
+                    print('替换[%s]为[%s]' % (k, v))
                     line = line.replace_str(line, k, v)
             f2.write(line)
     os.remove(file)
     os.rename("%s.bak" % file, file)
-    
+
 
 flag = True
 try:
@@ -128,8 +131,7 @@ print('开始创建数据库')
 try:
     import pymysql
 
-    con = pymysql.connect(host='localhost', user='root',
-                        passwd=mysql_password, charset='utf8')
+    con = pymysql.connect(host='localhost', user='root', passwd=mysql_password, charset='utf8')
     cur = con.cursor()
     cur.execute("drop database if exists PersonalHomepage;")
     cur.execute("create database PersonalHomepage character set utf8;")
