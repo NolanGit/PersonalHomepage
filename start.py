@@ -141,7 +141,7 @@ try:
     print('%s开始配置' % flask_config_path)
     backup(flask_config_path)
     print('%s使用默认配置' % flask_config_path)
-    os.rename(flask_config_demo_path, flask_config_path)
+    os.system('cp %s %s' % (flask_config_demo_path, flask_config_path))
     print('%s配置成功' % flask_config_path)
 except Exception as e:
     traceback.print_exc()
