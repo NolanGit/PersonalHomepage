@@ -17,12 +17,13 @@ else:
     exit()
 
 import os
+import traceback
 
 current_running_path = os.path.abspath('.')
 init_sql_path = current_running_path + '/backend/init.sql'
 flask_config_demo_path = current_running_path + '/backend/app/config_demo.py'
 flask_config_path = current_running_path + '/backend/app/config.py'
-config_path = current_running_path + '/app/homepage_demo.config'
+config_path = current_running_path + '/backend/app/homepage_demo.config'
 print('当前运行路径:%s' % current_running_path)
 
 admin_email = input('请输入管理员邮箱，用于接收推送邮件:')
@@ -64,7 +65,7 @@ def replace_str(text, old, new):
 def alter(file, alter_dict):
     with open(file, "r", encoding="utf-8") as f1, open("%s.bak" % file, "w", encoding="utf-8") as f2:
         for line in f1:
-            for k, v in alter_dict:
+            for k, v in alter_dict.items():
                 replace_str(line, k, v)
             f2.write(line)
     os.remove(file)
@@ -80,7 +81,7 @@ try:
         w.write(homepage_text)
         print('%s配置成功' % config_path)
 except Exception as e:
-    print(e)
+    traceback.print_exc()
     print('修改%s失败！请手动确认。' % config_path)
     flag = False
 
@@ -91,7 +92,7 @@ try:
     os.rename(flask_config_demo_path, flask_config_path)
     print('%s配置成功' % flask_config_path)
 except Exception as e:
-    print(e)
+    traceback.print_exc()
     print('修改%s失败！请手动确认。' % flask_config_path)
     flag = False
 
@@ -105,7 +106,7 @@ try:
     alter(init_sql_path, alter_dict)
     print('%s配置成功' % init_sql_path)
 except Exception as e:
-    print(e)
+    traceback.print_exc()
     print('修改%s失败！请手动确认。' % init_sql_path)
     flag = False
 
@@ -124,7 +125,7 @@ try:
     cur.execute("create database PersonalHomepage character set utf8;")
     print('数据库创建完成')
 except Exception as e:
-    print(e)
+    traceback.print_exc()
     print('创建数据库失败！请手动确认。')
     flag = False
 
