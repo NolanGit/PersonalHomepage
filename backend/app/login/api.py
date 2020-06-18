@@ -93,6 +93,12 @@ def userLoginSalt():
         login_name = request.get_json()['login_name']
         salt = cf.random_str(40)
         user_query = user.select().where(user.login_name == login_name).dicts()
+        if len(user_query) == 0:
+            response = {
+                'code': 403,
+                'msg': '用户名或密码错误！',
+            }
+            return jsonify(response), 403
         for row in user_query:
             stable_salt = row['stable_salt']
         user.update(salt=salt, salt_expire_time=(datetime.datetime.now() + datetime.timedelta(minutes=1))).where(user.login_name == login_name).execute()
@@ -114,7 +120,7 @@ def userChangePassword():
                 'code': 403,
                 'msg': '用户名或密码错误！',
             }
-            return (False, response)
+            return jsonify(response), 403
         else:
             for row in user_query:
                 salt_expire_time = row['salt_expire_time']
