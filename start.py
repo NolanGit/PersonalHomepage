@@ -28,7 +28,7 @@ current_running_path = os.path.abspath('.')
 init_sql_path = current_running_path + '/backend/init.sql'
 flask_config_demo_path = current_running_path + '/backend/app/config_demo.py'
 flask_config_path = current_running_path + '/backend/app/config.py'
-config_path = current_running_path + '/backend/app/homepage_demo.config'
+config_path = current_running_path + '/backend/app/homepage.config'
 requirements_path = current_running_path + '/requirements.txt'
 print('当前运行路径:%s' % current_running_path)
 print('安装requirements.txt......')
@@ -75,7 +75,8 @@ def alter(file, alter_dict):
     with open(file, "r", encoding="utf-8") as f1, open("%s.bak" % file, "w", encoding="utf-8") as f2:
         for line in f1:
             for k, v in alter_dict.items():
-                replace_str(line, k, v)
+                if k in line:
+                    line = line.replace_str(line, k, v)
             f2.write(line)
     os.remove(file)
     os.rename("%s.bak" % file, file)
