@@ -1,3 +1,46 @@
+import os
+import sys
+import random
+import pymysql
+import traceback
+import subprocess
+import configparser
+
+current_running_path = os.path.abspath('.')
+init_sql_path = current_running_path + '/backend/init.sql'
+flask_config_demo_path = current_running_path + '/backend/app/config_demo.py'
+flask_config_path = current_running_path + '/backend/app/config.py'
+config_path = current_running_path + '/backend/app/homepage.config'
+requirements_path = current_running_path + '/requirements.txt'
+print('当前运行路径:%s' % current_running_path)
+
+first_excution = input('请问是初次运行本脚本吗?(y/n):')
+if first_excution=='n' or first_excution == 'N':
+    def executeScriptsFromFile(filename, cursor):
+        fd = open(filename, 'r', encoding='utf-8')
+        sqlFile = fd.read()
+        fd.close()
+        sqlCommands = sqlFile.split(';')
+
+        for command in sqlCommands:
+            try:
+                cursor.execute(command)
+            except Exception as msg:
+                print(msg)
+
+        print('sql执行完成')
+
+    first_excution = input('那么，需要执行初始化SQL吗? (需要初始化配置之后才能正确执行)(y/n):')
+    print('开始执行初始化SQL')
+
+    PATH = lambda p: os.path.abspath(os.path.join(os.path.dirname(__file__), p))
+    cf = configparser.ConfigParser()
+    cf.read(config_path)
+    DB_PASS = cf.get('config', 'DB_PASS')
+    con = pymysql.connect(host='localhost', user='root', passwd=DB_PASS, db='PersonalHomepage', charset='utf8')
+    executeScriptsFromFile(init_sql_path, con.cursor())
+    con.close()
+
 print('你好啊！欢迎使用我的项目，任何问题请提issue！\n\n那么，让我们开始吧！部署前您需要准备：')
 print('- 个人邮箱（用于接收推送信息）')
 print('- SeverChan的微信推送key，请参考http://sc.ftqq.com/')
@@ -12,27 +55,16 @@ if iamready == 'y' or iamready == 'yes':
 else:
     print('告辞。')
     bye = ['海内存知己，天涯若比邻。', '何当重相见，樽酒慰离颜。', '日暮征帆何处泊？天涯一望断人肠。', '日暮酒醒人已远，满天风雨下西楼。', '离心不异西江水，直送征帆万里行。', '劝君更尽一杯酒，西出阳关无故人。', '人情却似杨柳絮，悠扬便逐春风去。', '衰兰送客咸阳道，天若有情天亦老。']
-    import random
+
     print(bye[random.randint(0, len(bye) - 1)])
     exit()
 
-import os
-import traceback
-import subprocess
-import sys
 
 
 def install(requirements_path):
     subprocess.check_call([sys.executable, "-m", "pip", "install", "-r", requirements_path])
 
 
-current_running_path = os.path.abspath('.')
-init_sql_path = current_running_path + '/backend/init.sql'
-flask_config_demo_path = current_running_path + '/backend/app/config_demo.py'
-flask_config_path = current_running_path + '/backend/app/config.py'
-config_path = current_running_path + '/backend/app/homepage.config'
-requirements_path = current_running_path + '/requirements.txt'
-print('当前运行路径:%s' % current_running_path)
 print('安装requirements.txt......')
 install(requirements_path)
 
@@ -80,20 +112,6 @@ def alter(file, alter_dict):
     os.rename("%s.bak" % file, file)
 
 
-def executeScriptsFromFile(filename, cursor):
-    fd = open(filename, 'r', encoding='utf-8')
-    sqlFile = fd.read()
-    fd.close()
-    sqlCommands = sqlFile.split(';')
-
-    for command in sqlCommands:
-        try:
-            cursor.execute(command)
-        except Exception as msg:
-            print(msg)
-
-    print('sql执行完成')
-
 
 flag = True
 try:
@@ -139,8 +157,6 @@ if not flag:
 
 print('开始创建数据库')
 try:
-    import pymysql
-
     con = pymysql.connect(host='localhost', user='root', passwd=mysql_password, charset='utf8')
     cur = con.cursor()
     cur.execute("drop database if exists PersonalHomepage;")
