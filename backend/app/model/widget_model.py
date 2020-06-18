@@ -11,7 +11,6 @@ from .model_function import BaseModel
 class widget(BaseModel):
     name = CharField()
     is_valid = IntegerField()
-    is_login_needed = IntegerField()
     span = IntegerField() # 页面一行的宽度为24
     update_time = DateTimeField()
 

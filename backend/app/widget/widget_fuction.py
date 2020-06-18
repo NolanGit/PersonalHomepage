@@ -21,7 +21,7 @@ def widget_get(is_valid=1):
         widget_table_query = widget_table.select().where(widget_table.is_valid == 1).dicts()
     else:
         widget_table_query = widget_table.select().dicts()
-    result = [{'id': row['id'], 'name': row['name'], 'is_login_needed': row['is_login_needed'], 'span': row['span'], 'update_time': row['update_time']} for row in widget_table_query]
+    result = [{'id': row['id'], 'name': row['name'], 'span': row['span'], 'update_time': row['update_time']} for row in widget_table_query]
     return result
 
 
