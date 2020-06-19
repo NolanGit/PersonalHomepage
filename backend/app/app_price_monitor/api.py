@@ -44,7 +44,7 @@ def add():
         expect_price = request.get_json()['expect_price']
 
         app_table_query = app_table.select().where((app_table.user_id == user_id) & (app_table.is_valid == 1)).order_by(app_table.order).dicts()
-        order = app_table_query[-1]['order'] + 1
+        order = app_table_query[-1]['order'] + 1 if len(app_table_query)!=0 else 1
 
         app_table.create(
             name=name,
