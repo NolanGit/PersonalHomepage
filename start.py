@@ -64,7 +64,9 @@ if first_excution == 'n' or first_excution == 'N':
     print('初始化SQL执行完成，默认用户名为：Admin，默认密码为：123456')
     exit()
 
-if iamready != 'y' and iamready != 'yes':
+if first_excution != 'y' and first_excution != 'yes':
+    print('告辞。')
+    print(BYE[random.randint(0, len(BYE) - 1)])
     exit()
 print('\n你好啊！欢迎使用我的项目，任何问题请提issue！\n\n那么，让我们开始吧！部署前您需要准备：')
 print('- 个人邮箱（用于接收推送信息）')
