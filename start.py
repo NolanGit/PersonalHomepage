@@ -8,7 +8,7 @@ import subprocess
 import configparser
 
 CURRENT_RUNNING_PATH = os.path.abspath('.')
-TOMORROW = datetime.datetime.today() + datetime.timedelta(days=1)
+TOMORROW = datetime.datetime.today().replace(hour=0, minute=0, second=0, microsecond=0) + datetime.timedelta(days=1)
 PYTHON_PATH = sys.executable
 INIT_SQL_PATH = CURRENT_RUNNING_PATH + '/backend/init.sql'
 FLASK_CONFIG_DEMO_PATH = CURRENT_RUNNING_PATH + '/backend/app/config_demo.py'
@@ -169,8 +169,8 @@ try:
         '/home/pi/Documents/GitHub/PersonalHomepage/backend/app/push': SQL_UPDATE_PUSH,
         '/home/pi/Documents/GitHub/PersonalHomepage/backend/app/app_price_monitor': SQL_UPDATE_APP,
         'python3': PYTHON_PATH,
-        '2020-06-20 00:00:00': TOMORROW,
-        '2020-06-20 00:15:00': TOMORROW + datetime.timedelta(minutes=15),
+        '2020-06-20 00:00:00': str(TOMORROW),
+        '2020-06-20 00:15:00': str(TOMORROW + datetime.timedelta(minutes=15)),
     }
     alter(INIT_SQL_PATH, alter_dict)
     print('%s配置成功' % INIT_SQL_PATH)
