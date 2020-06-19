@@ -5,29 +5,16 @@
         <div class="widget-label">APP</div>
       </div>
     </el-row>
-    <el-carousel
-      height="180px"
-      trigger="click"
-      interval="5000"
-      indicator-position="outside"
-    >
+    <el-carousel height="180px" trigger="click" interval="5000" indicator-position="outside">
       <el-carousel-item v-for="appData in appSuite" :key="appData">
         <el-table :data="appData" style="width: 100%" size="mini">
           <el-table-column prop="name" label="名称"></el-table-column>
-          <el-table-column
-            prop="price"
-            label="当前价格"
-            width="80"
-          ></el-table-column>
-          <el-table-column
-            prop="update_time"
-            label="更新时间"
-            width="180"
-          ></el-table-column>
+          <el-table-column prop="price" label="当前价格" width="80"></el-table-column>
+          <el-table-column prop="update_time" label="更新时间" width="180"></el-table-column>
         </el-table>
       </el-carousel-item>
     </el-carousel>
-    
+
     <el-row v-show="user_id != 0">
       <WidgetButton
         :user_id="user_id"
@@ -44,11 +31,7 @@
       <el-form ref="form" :model="edit.form" size="mini">
         <el-form-item label="App名称">
           <div class="div-flex">
-            <el-input
-              size="small"
-              v-model="edit.form.name"
-              placeholder="名称"
-            ></el-input>
+            <el-input size="small" v-model="edit.form.name" placeholder="名称"></el-input>
           </div>
         </el-form-item>
         <el-form-item label="AppURL">
@@ -71,19 +54,12 @@
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" size="small" @click="editSubmit()"
-          >确定</el-button
-        >
+        <el-button type="primary" size="small" @click="editSubmit()">确定</el-button>
       </span>
     </el-dialog>
 
     <el-dialog title="提醒" :visible.sync="notifyVisible" width="40%">
-      <PushEdit
-        :user_id="user_id"
-        :widget_id="widget_id"
-        v-if="notifyVisible"
-        @done="notify()"
-      ></PushEdit>
+      <PushEdit :user_id="user_id" :widget_id="widget_id" v-if="notifyVisible" @done="notify()"></PushEdit>
     </el-dialog>
 
     <!--编辑顺序界面-->
@@ -199,6 +175,7 @@ export default {
             expect_price: this.edit.form.expect_price
           });
           this.appGet();
+          this.edit.visible = false;
         } catch (e) {
           console.log(e);
           this.$message({
@@ -211,10 +188,10 @@ export default {
         this.appSortEdit.list[index].name = this.edit.form.name;
         this.appSortEdit.list[index].url = this.edit.form.url;
         this.appSortEdit.list[index].expect_price = this.edit.form.expect_price;
+        this.edit.visible = false;
       }
-      this.edit.visible = false;
     },
-    async appSortEditSubmit(list){
+    async appSortEditSubmit(list) {
       for (let x = 0; x < list.length; x++) {
         list[x].order = x + 1;
       }
