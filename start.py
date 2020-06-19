@@ -64,6 +64,8 @@ if first_excution == 'n' or first_excution == 'N':
     print('初始化SQL执行完成，默认用户名为：Admin，默认密码为：123456')
     exit()
 
+if iamready != 'y' and iamready != 'yes':
+    exit()
 print('\n你好啊！欢迎使用我的项目，任何问题请提issue！\n\n那么，让我们开始吧！部署前您需要准备：')
 print('- 个人邮箱（用于接收推送信息）')
 print('- SeverChan的微信推送key，请参考http://sc.ftqq.com/')
@@ -198,5 +200,6 @@ if flag:
     print('- 首先，在"frontend"目录下使用"npm i"安装必需前端组件，使用"npm run build"打包前端代码')
     print('- 然后，使用python3在backend/目录下运行"run.py"（如不在此目录下运行会产生问题），此操作会启用服务并自动建表')
     print('- 接着，停止服务后，再次运行此脚本(python3 start.py)以执行初始化SQL')
-    print('- 接着，使用crontab将%s加入定时任务，频率为每15分钟运行一次，可直接复制参数:"*/15 * * * * %s >>/data/log/PersonalHomepage.log"，配置完成后，应用内配置的脚本（获取App价格脚本、推送脚本）将在明天后被驱动运行，具体可在"控制台-运行脚本-定时任务"查看' % (SCHEDULE_SCRIPT_PATH, SCHEDULE_SCRIPT_PATH))
+    print('- 接着，使用crontab将%s加入定时任务，频率为每15分钟运行一次，可直接复制参数:"*/15 * * * * %s >>/data/log/PersonalHomepage.log"，配置完成后，应用内配置的脚本（获取App价格脚本、推送脚本）将在明天后被驱动运行，具体可在"控制台-运行脚本-定时任务"查看' % (SCHEDULE_SCRIPT_PATH,
+                                                                                                                                                                              SCHEDULE_SCRIPT_PATH))
     print('- 最后，使用python3在backend/目录下运行"run.py"打开服务，登录50000端口试试看吧！初始化的用户名为admin，密码为123456')
