@@ -251,7 +251,7 @@
                     >
                       <el-table :data="schedule.schedules" stripe v-loading="schedule.loading">
                         <el-table-column width="100" property="schedule_id" label="定时任务ID"></el-table-column>
-                        <el-table-column width="80" property="user" label="创建人"></el-table-column>
+                        <el-table-column width="80" property="user_name" label="创建人"></el-table-column>
                         <el-table-column width="50" property="is_automatic_text" label="重复"></el-table-column>
                         <el-table-column width="180" property="trigger_time" label="下次运行时间"></el-table-column>
                         <el-table-column width="180" property="update_time" label="创建时间"></el-table-column>
