@@ -628,6 +628,7 @@ def schedule():
         script_schedule_query = script_schedule.select().where((script_schedule.script_id == script_id) & (script_schedule.is_valid == 1)).order_by(script_schedule.id).dicts()
         result = []
         for row in script_schedule_query:
+            user_name = User(user_id=row['user_id']).user_name
             result.append({
                 'schedule_id': row['id'],
                 'script_id': row['script_id'],
@@ -635,6 +636,7 @@ def schedule():
                 'detail': eval(row['detail']),
                 'version': row['version'],
                 'user_id': row['user_id'],
+                'user_name': row['user_name'],
                 'is_automatic': row['is_automatic'],
                 'is_automatic_text': '是' if row['is_automatic'] else '否',
                 'interval': row['interval'],
