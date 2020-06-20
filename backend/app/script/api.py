@@ -636,7 +636,7 @@ def schedule():
                 'detail': eval(row['detail']),
                 'version': row['version'],
                 'user_id': row['user_id'],
-                'user_name': row['user_name'],
+                'user_name': user_name,
                 'is_automatic': row['is_automatic'],
                 'is_automatic_text': '是' if row['is_automatic'] else '否',
                 'interval': row['interval'],
