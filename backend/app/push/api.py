@@ -12,8 +12,8 @@ from ..privilege.privilege_control import permission_required
 from .push_function import PushData, PushList, PushQueueList
 
 URL_PREFIX = '/push'
-CODE_HOUR = 1  # 小时
-CODE_DAY = 2  # 天
+CODE_HOUR = 1  # 库中1代表小时
+CODE_DAY = 2  # 库中2代表天
 DAY_HOURS = 24  # 每天有24小时
 
 
@@ -41,7 +41,7 @@ def get():
 @cross_origin()
 def add():
     try:
-        notify_interval_raw = request.get_json()['notify_interval_raw'],
+        notify_interval_raw = request.get_json()['notify_interval_raw']
         notify_interval_unit = request.get_json()['notify_interval_unit']
         if notify_interval_unit == CODE_HOUR:
             notify_interval = notify_interval_raw

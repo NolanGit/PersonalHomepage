@@ -65,22 +65,17 @@ class PushData(object):
         '''
             新建一条数据到库中
         '''
-        try:
-            push.create(user_id=self.user_id,
-                        widget_id=self.widget_id,
-                        is_valid=1,
-                        notify=self.notify,
-                        notify_method=self.notify_method,
-                        notify_interval_raw=self.notify_interval_raw,
-                        notify_interval_unit=self.notify_interval_unit,
-                        notify_interval=self.notify_interval,
-                        notify_trigger_time=self.notify_trigger_time,
-                        update_time=datetime.datetime.now())
-            return True
-        except Exception as e:
-            traceback.print_exc()
-            print('保存推送记录失败' + str(e))
-            return False
+        push.create(user_id=self.user_id,
+                    widget_id=self.widget_id,
+                    is_valid=1,
+                    notify=self.notify,
+                    notify_method=self.notify_method,
+                    notify_interval_raw=self.notify_interval_raw,
+                    notify_interval_unit=self.notify_interval_unit,
+                    notify_interval=self.notify_interval,
+                    notify_trigger_time=self.notify_trigger_time,
+                    update_time=datetime.datetime.now())
+        return self
 
     def delete(self):
         '''
