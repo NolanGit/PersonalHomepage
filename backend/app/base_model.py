@@ -2,7 +2,10 @@ import time
 import json
 import datetime
 from functools import wraps
-from .common_func import CommonFunc
+try:
+    from .common_func import CommonFunc
+except:
+    from common_func import CommonFunc
 
 cf = CommonFunc()
 

@@ -12,7 +12,7 @@ from ..model.script_model import script as script_table_model
 from ..model.script_model import script_sub_system, script_detail, script_detail, script_log, script_schedule
 from ..privilege.privilege_control import permission_required
 from ..login.login_funtion import User
-from .model import ScriptSubSystem
+from .script_model import ScriptSubSystem
 
 URL_PREFIX = '/script'
 running_subprocess = []
