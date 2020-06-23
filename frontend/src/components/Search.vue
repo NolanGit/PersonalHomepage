@@ -96,7 +96,6 @@ export default {
         this.word
       );
       window.open(searchUrl);
-      this.word = "";
       this.autoComplete("");
       try {
         const { data: res } = await axios.post(api.searchLog, {
@@ -107,6 +106,7 @@ export default {
       } catch (e) {
         console.log(e);
       }
+      this.word = "";
     },
     async autoComplete(queryString, cb) {
       if (
