@@ -151,18 +151,17 @@ export default {
     },
     sort() {
       this.locationEdit.list = [];
-      for (let x = 1; x < this.weathers.length - 1; x++) {
+      for (let x = 1; x < this.weathers.length; x++) {
         this.locationEdit.list.push({
           name: this.weathers[x].location
         });
       }
-      console.log(this.locationEdit.list);
       this.locationEdit.visible = true;
     },
     async locationEditSubmit(list) {
       try {
         let tempList = [];
-        for (x = 0; x < list.length; x++) {
+        for (let x = 0; x < list.length; x++) {
           tempList.push(list[x].name);
         }
         const { data: res } = await axios.post(api.locationListEdit, {
