@@ -15,7 +15,7 @@ from ..response import Response
 
 rsp = Response()
 
-URL_PREFIX = 'bookmarks'
+URL_PREFIX = '/bookmarks'
 
 
 @bookmarks.route('/get', methods=['POST'])

@@ -44,7 +44,7 @@ def permission_required(privilege):
                 msg = ('[权限校验失败]cookie:%s,URL:%s,原因:ip不一致，现ip：%s，允许的ip：%s' % (user_key, privilege, str(ip), str(request.remote_addr)))
                 short_msg = '[权限校验失败]登录状态已失效，请刷新页面'
                 print(msg)
-                response = {'code': 401, 'msg': short_msg, 'message': msg}
+                response = {'code': 401, 'msg': short_msg}
                 return jsonify(response), 401
             user_key_in_redis = cf.md5_it(random_str + password)
 
@@ -53,7 +53,7 @@ def permission_required(privilege):
                 msg = ('[权限校验失败]cookie:%s,URL:%s,原因:重新加密后的user_key不相同' % (user_key, privilege))
                 short_msg = '[权限校验失败]登录状态已失效，请刷新页面'
                 print(msg)
-                response = {'code': 401, 'msg': short_msg, 'message': msg}
+                response = {'code': 401, 'msg': short_msg}
                 return jsonify(response), 401
 
             #是否存在角色
@@ -61,7 +61,7 @@ def permission_required(privilege):
                 msg = ('[权限校验失败]cookie:%s,URL:%s,原因:用户所属角色被删除或禁用' % (user_key, privilege))
                 short_msg = '[权限校验失败]用户所属角色被删除或禁用'
                 print(msg)
-                response = {'code': 403, 'msg': short_msg, 'message': msg}
+                response = {'code': 403, 'msg': short_msg}
                 return jsonify(response), 403
 
             #是否存在相应权限
@@ -70,7 +70,7 @@ def permission_required(privilege):
                 msg = ('[权限校验失败]cookie:%s,URL:%s,原因:不具有权限，用户具有的权限有：%s' % (user_key, privilege, str(privilege_list)))
                 short_msg = '[权限校验失败]用户不具有此功能权限'
                 print(msg)
-                response = {'code': 403, 'msg': short_msg, 'message': msg}
+                response = {'code': 403, 'msg': short_msg}
                 return jsonify(response), 403
             else:
                 return f(*args, **kwargs)

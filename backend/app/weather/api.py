@@ -16,7 +16,7 @@ from ..common_func import CommonFunc
 rsp = Response()
 cf = CommonFunc()
 
-URL_PREFIX = 'weather'
+URL_PREFIX = '/weather'
 
 
 def ip_location_get(user_ip):
