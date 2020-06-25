@@ -111,6 +111,7 @@ export default {
     buttons: Array
   },
   components: {
+    SlickSort,
     WidgetButton
   },
   data() {
