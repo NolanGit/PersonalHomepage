@@ -82,7 +82,7 @@ import axios from "axios";
 import WidgetButton from "./common/WidgetButton.vue";
 const api = {
   weatherData: "/weather/weatherData",
-  locationAdd: "/weather/weatherPersonalizedSave",
+  locationAdd: "/weather/weatherLocationCreate",
 };
 
 export default {

@@ -41,13 +41,41 @@ def weatherData():
             weather_location_list = _ if _ != None else []
         else:
             weather_location_list = []
-        weather_location_list.append(WeatherLocation(location=ip_location,user_id=-1, create_if_not_exist=True))
+        weather_location_list.append(WeatherLocation(location=ip_location, user_id=-1, create_if_not_exist=True))
         for weather_location in weather_location_list:
             weather_data = WeatherData(weather_location.id, weather_location.location)
             if not weather_data.get_latest():
                 weather_data.update_self().create()
             result.append(cf.attr_to_dict(weather_data))
         return rsp.success(result)
+    except Exception as e:
+        traceback.print_exc()
+        return rsp.failed(e), 500
+
+
+@weather.route('/weatherLocationCreate', methods=['POST'])
+@cross_origin()
+def weatherLocationCreate():
+    try:
+        user_id = request.get_json()['user_id']
+        location = request.get_json()['location']
+        WeatherLocation(location=location, user_id=user_id).create()
+        return rsp.success()
+    except Exception as e:
+        traceback.print_exc()
+        return rsp.failed(e), 500
+
+
+@weather.route('/weatherLocationDelete', methods=['POST'])
+@cross_origin()
+def weatherLocationDelete():
+    '''
+        当未登陆时，应该显示ip所在地的天气，登陆后显示ip所在地加收藏的，但是显示ip所在地天气要考虑安全问题
+    '''
+    try:
+        location_id = request.get_json()['location_id']
+        WeatherLocation(id=location_id).delete()
+        return rsp.success()
     except Exception as e:
         traceback.print_exc()
         return rsp.failed(e), 500
