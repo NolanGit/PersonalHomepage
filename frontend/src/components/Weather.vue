@@ -82,7 +82,7 @@ import axios from "axios";
 import WidgetButton from "./common/WidgetButton.vue";
 const api = {
   weatherData: "/weather/weatherData",
-  locationAdd: "/weather/weatherLocationCreate",
+  locationAdd: "/weather/weatherLocationCreate"
 };
 
 export default {
@@ -137,6 +137,7 @@ export default {
           message: res["msg"],
           type: "success"
         });
+        this.weatherData();
       } catch (e) {
         console.log(e);
         this.$message({

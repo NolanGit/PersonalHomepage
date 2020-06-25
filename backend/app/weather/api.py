@@ -41,7 +41,7 @@ def weatherData():
             weather_location_list = _ if _ != None else []
         else:
             weather_location_list = []
-        weather_location_list.append(WeatherLocation(location=ip_location, user_id=-1, create_if_not_exist=True))
+        weather_location_list.insert(0, WeatherLocation(location=ip_location, user_id=-1, create_if_not_exist=True))
         for weather_location in weather_location_list:
             weather_data = WeatherData(weather_location.id, weather_location.location)
             if not weather_data.get_latest():
@@ -52,6 +52,16 @@ def weatherData():
         traceback.print_exc()
         return rsp.failed(e), 500
 
+
+@weather.route('/weatherLocationListGet', methods=['POST'])
+@cross_origin()
+def weatherLocationListGet():
+    try:
+        user_id = request.get_json()['user_id']
+        return rsp.success(WeatherLocationList(user_id=user_id).get().list)
+    except Exception as e:
+        traceback.print_exc()
+        return rsp.failed(e), 500
 
 @weather.route('/weatherLocationCreate', methods=['POST'])
 @cross_origin()

@@ -231,15 +231,13 @@ class WeatherLocation(Base):
 
 class WeatherLocationList(Base):
 
-    def __init__(self, user_id=0, is_valid=1, limit_days_in=0):
+    def __init__(self, user_id=0, is_valid=1):
         '''
             user_id         default:0
             is_valid        default:0
-            limit_days_in   default:0
         '''
         self.user_id = user_id
         self.is_valid = is_valid
-        self.limit_days_in = limit_days_in
 
     def get(self):
         '''
@@ -256,8 +254,6 @@ class WeatherLocationList(Base):
                 weather_location_query = weather_location.select().where(weather_location.user_id == self.user_id)
             if self.is_valid != 0:
                 weather_location_query = weather_location.select().where((weather_location.user_id == self.user_id) & (weather_location.is_valid == self.is_valid))
-        if self.limit_days_in != 0:
-            weather_location_query.where(weather_location.update_time > datetime.datetime.now() + datetime.timedelta(days=self.limit_days_in))
         weather_location_query_dicts = weather_location_query.dicts()
         self.list = [
             WeatherLocation(single_weather_location_query['location'], single_weather_location_query['user_id'], single_weather_location_query['id'])
