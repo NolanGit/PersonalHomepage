@@ -70,7 +70,12 @@
 
     <!--编辑顺序界面-->
     <el-dialog title="编辑地区" :visible.sync="locationEdit.visible" width="40%">
-      <SlickSort v-if="locationEdit.visible" :list="locationEdit.list" :can_be_edit="false" @submit></SlickSort>
+      <SlickSort
+        v-if="locationEdit.visible"
+        :list="locationEdit.list"
+        :can_be_edit="false"
+        @submit="locationEditSubmit"
+      ></SlickSort>
     </el-dialog>
 
     <!--编辑界面-->
@@ -145,11 +150,12 @@ export default {
     },
     sort() {
       this.locationEdit.list = [];
-      for (let x = 0; x < this.weathers.length; x++) {
+      for (let x = 1; x < this.weathers.length - 1; x++) {
         this.locationEdit.list.push({
           name: this.weathers[x].location
         });
       }
+      console.log(this.locationEdit.list);
       this.locationEdit.visible = true;
     },
     async locationEditSubmit(list) {
