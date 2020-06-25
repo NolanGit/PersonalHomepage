@@ -59,8 +59,19 @@
     </el-carousel>
 
     <el-row type="flex" justify="center" class="margin_top-medium" v-show="user_id != 0">
-      <WidgetButton :user_id="user_id" :widget_id="widget_id" :buttons="buttons" @add="add()"></WidgetButton>
+      <WidgetButton
+        :user_id="user_id"
+        :widget_id="widget_id"
+        :buttons="buttons"
+        @add="add()"
+        @sort="sort()"
+      ></WidgetButton>
     </el-row>
+
+    <!--编辑顺序界面-->
+    <el-dialog title="编辑地区" :visible.sync="locationEdit.visible" width="40%">
+      <SlickSort v-if="locationEdit.visible" :list="locationEdit.list" :can_be_edit="false" @submit></SlickSort>
+    </el-dialog>
 
     <!--编辑界面-->
     <el-dialog title="添加城市" :visible.sync="edit.visible" width="40%">
@@ -83,7 +94,8 @@ import SlickSort from "./common/SlickSort.vue";
 import WidgetButton from "./common/WidgetButton.vue";
 const api = {
   weatherData: "/weather/weatherData",
-  locationAdd: "/weather/weatherLocationCreate"
+  locationAdd: "/weather/weatherLocationCreate",
+  locationListEdit: "/weather/weatherLocationListEdit"
 };
 
 export default {
@@ -98,6 +110,10 @@ export default {
   },
   data() {
     return {
+      locationEdit: {
+        list: [],
+        visible: false
+      },
       weathers: [
         {
           location: "",
@@ -126,6 +142,34 @@ export default {
   methods: {
     add() {
       this.edit.visible = true;
+    },
+    sort() {
+      this.locationEdit.list = [];
+      for (let x = 0; x < this.weathers.length; x++) {
+        this.locationEdit.list.push({
+          name: this.weathers[x].location
+        });
+      }
+      this.locationEdit.visible = true;
+    },
+    async locationEditSubmit(list) {
+      try {
+        const { data: res } = await axios.post(api.locationListEdit, {
+          user_id: this.user_id,
+          locations: list
+        });
+        this.$message({
+          message: res["msg"],
+          type: "success"
+        });
+        this.weatherData();
+      } catch (e) {
+        console.log(e);
+        this.$message({
+          message: e.response.data.msg,
+          type: "error"
+        });
+      }
     },
     async locationAdd() {
       this.edit.visible = false;

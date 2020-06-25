@@ -37,6 +37,7 @@ def userInfo():
 
 
 @bookmarks.route('/bookmarksAdd', methods=['POST'])
+@permission_required(URL_PREFIX + '/bookmarksAdd')
 @cross_origin()
 def bookmarksAdd():
     try:
@@ -53,6 +54,7 @@ def bookmarksAdd():
 
 
 @bookmarks.route('/bookmarksEdit', methods=['POST'])
+@permission_required(URL_PREFIX + '/bookmarksEdit')
 @cross_origin()
 def bookmarksEdit():
     try:

@@ -53,38 +53,41 @@ def weatherData():
         return rsp.failed(e), 500
 
 
-@weather.route('/weatherLocationListGet', methods=['POST'])
-@cross_origin()
-def weatherLocationListGet():
-    try:
-        user_id = request.get_json()['user_id']
-        return rsp.success(WeatherLocationList(user_id=user_id).get().list)
-    except Exception as e:
-        traceback.print_exc()
-        return rsp.failed(e), 500
+# @weather.route('/weatherLocationListGet', methods=['POST'])
+# @cross_origin()
+# def weatherLocationListGet():
+#     try:
+#         user_id = request.get_json()['user_id']
+#         return rsp.success(WeatherLocationList(user_id=user_id).get().list)
+#     except Exception as e:
+#         traceback.print_exc()
+#         return rsp.failed(e), 500
 
-@weather.route('/weatherLocationCreate', methods=['POST'])
+
+@weather.route('/weatherLocationListEdit', methods=['POST'])
+@permission_required(URL_PREFIX + '/weatherLocationListEdit')
 @cross_origin()
-def weatherLocationCreate():
+def weatherLocationListEdit():
     try:
         user_id = request.get_json()['user_id']
-        location = request.get_json()['location']
-        WeatherLocation(location=location, user_id=user_id).create()
+        locations = request.get_json()['locations']
+        WeatherLocationList(user_id=user_id).delete()
+        for location in locations:
+            WeatherLocation(location=location, user_id=user_id).create()
         return rsp.success()
     except Exception as e:
         traceback.print_exc()
         return rsp.failed(e), 500
 
 
-@weather.route('/weatherLocationDelete', methods=['POST'])
+@weather.route('/weatherLocationCreate', methods=['POST'])
+@permission_required(URL_PREFIX + '/weatherLocationCreate')
 @cross_origin()
-def weatherLocationDelete():
-    '''
-        当未登陆时，应该显示ip所在地的天气，登陆后显示ip所在地加收藏的，但是显示ip所在地天气要考虑安全问题
-    '''
+def weatherLocationCreate():
     try:
-        location_id = request.get_json()['location_id']
-        WeatherLocation(id=location_id).delete()
+        user_id = request.get_json()['user_id']
+        location = request.get_json()['location']
+        WeatherLocation(location=location, user_id=user_id).create()
         return rsp.success()
     except Exception as e:
         traceback.print_exc()
