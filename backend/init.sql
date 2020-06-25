@@ -299,8 +299,8 @@ INSERT INTO `privilege` (`id`, `name`, `mark`, `remark`, `is_valid`, `update_tim
 INSERT INTO `privilege` (`id`, `name`, `mark`, `remark`, `is_valid`, `update_time`) VALUES ('42', '推送-编辑', '/push/edit', '', '1', '2020-06-22 23:11:32');
 INSERT INTO `privilege` (`id`, `name`, `mark`, `remark`, `is_valid`, `update_time`) VALUES ('43', '书签-新增', '/bookmarks/bookmarksAdd', '', '1', '2020-06-25 23:41:13');
 INSERT INTO `privilege` (`id`, `name`, `mark`, `remark`, `is_valid`, `update_time`) VALUES ('44', '书签-编辑', '/bookmarks/bookmarksEdit', '', '1', '2020-06-25 23:41:29');
-INSERT INTO `privilege` (`id`, `name`, `mark`, `remark`, `is_valid`, `update_time`) VALUES ('45', '天气-增加位置', '/weatherLocation/weatherLocationCreate', '', '1', '2020-06-25 23:42:17');
-INSERT INTO `privilege` (`id`, `name`, `mark`, `remark`, `is_valid`, `update_time`) VALUES ('46', '天气-编辑', '/weatherLocation/weatherLocationListEdit', '', '1', '2020-06-25 23:42:33');
+INSERT INTO `privilege` (`id`, `name`, `mark`, `remark`, `is_valid`, `update_time`) VALUES ('45', '天气-增加位置', '/weather/weatherLocationCreate', '', '1', '2020-06-25 23:42:17');
+INSERT INTO `privilege` (`id`, `name`, `mark`, `remark`, `is_valid`, `update_time`) VALUES ('46', '天气-编辑', '/weather/weatherLocationListEdit', '', '1', '2020-06-25 23:42:33');
 INSERT INTO `privilege_role` (`id`, `privilege_id`, `role_id`, `is_valid`) VALUES ('1', '1', '1', '0');
 INSERT INTO `privilege_role` (`id`, `privilege_id`, `role_id`, `is_valid`) VALUES ('2', '2', '1', '0');
 INSERT INTO `privilege_role` (`id`, `privilege_id`, `role_id`, `is_valid`) VALUES ('3', '3', '1', '0');

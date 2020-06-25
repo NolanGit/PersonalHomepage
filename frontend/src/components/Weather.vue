@@ -161,9 +161,13 @@ export default {
     },
     async locationEditSubmit(list) {
       try {
+        let tempList = [];
+        for (x = 0; x < list.length; x++) {
+          tempList.push(list[x].name);
+        }
         const { data: res } = await axios.post(api.locationListEdit, {
           user_id: this.user_id,
-          locations: list
+          locations: tempList
         });
         this.$message({
           message: res["msg"],
