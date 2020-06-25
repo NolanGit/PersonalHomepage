@@ -195,29 +195,32 @@ class WeatherData(Base):
 
 class WeatherLocation(Base):
 
-    def __init__(self, location=None, user_id=0, id=0, create_if_not_exist=False):
+    def __init__(self, location=None, user_id=0, id=0, is_valid=1, create_if_not_exist=False):
         '''
             id              default:0
             location        default:None
-            user_id         defalut:0
+            user_id         default:0
+            is_valid        default:0
         '''
         if id != 0:
             self.id = id
             self.location = location
             self.user_id = user_id
+            self.is_valid = is_valid
         else:
             self.user_id = user_id
             self.location = location
+            self.is_valid = is_valid
             try:
                 _ = weather_location.get(weather_location.location == location)
                 self.id = _.id
                 self.user_id = _.user_id
+                self.is_valid = _.is_valid
             except DoesNotExist:
                 if create_if_not_exist:
                     self.create()
                 else:
                     self.id = id
-                    self.user_id = user_id
 
     def create(self):
         self.base_create(weather_location)
