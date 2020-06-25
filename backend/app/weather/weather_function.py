@@ -200,7 +200,7 @@ class WeatherLocation(Base):
             id              default:0
             location        default:None
             user_id         default:0
-            is_valid        default:0
+            is_valid        default:1
         '''
         if id != 0:
             self.id = id
@@ -237,7 +237,7 @@ class WeatherLocationList(Base):
     def __init__(self, user_id=0, is_valid=1):
         '''
             user_id         default:0
-            is_valid        default:0
+            is_valid        default:1
         '''
         self.user_id = user_id
         self.is_valid = is_valid
@@ -269,7 +269,7 @@ class WeatherLocationList(Base):
             将weather_location表中self.user_id的数据置为无效
         '''
         try:
-            if self.user_id == 0 and self.is_valid != 0:
+            if self.user_id != 0 and self.is_valid != 0:
                 weather_location.update(is_valid=0).where((weather_location.user_id == self.user_id) & (weather_location.is_valid == self.is_valid)).execute()
             return True
         except Exception as e:

@@ -172,6 +172,7 @@ export default {
           message: res["msg"],
           type: "success"
         });
+        this.locationEdit.visible = false;
         this.weatherData();
       } catch (e) {
         console.log(e);
