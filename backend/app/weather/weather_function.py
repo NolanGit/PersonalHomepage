@@ -17,7 +17,6 @@ WEATHER_EXPIRE_HOUR = 3
 
 
 class WeatherData(Base):
-
     def __init__(self, location_id, location):
         '''
             location_id
@@ -168,23 +167,22 @@ class WeatherData(Base):
             新增一条数据，存储self
         '''
         try:
-            weather_data(
-                location_id=self.location_id,
-                aqi=self.aqi,
-                cond_code_d=self.cond_code_d,
-                cond_code_n=self.cond_code_n,
-                cond_txt_d=self.cond_txt_d,
-                cond_txt_n=self.cond_txt_n,
-                fl=self.fl,
-                tmp=self.tmp,
-                tmp_max=self.tmp_max,
-                tmp_min=self.tmp_min,
-                tomorrow_cond_code_d=self.tomorrow_cond_code_d,
-                tomorrow_cond_txt_d=self.tomorrow_cond_txt_d,
-                tomorrow_tmp_max=self.tomorrow_tmp_max,
-                tomorrow_tmp_min=self.tomorrow_tmp_min,
-                wind=self.wind,
-                update_time=datetime.datetime.now()).save()
+            weather_data(location_id=self.location_id,
+                         aqi=self.aqi,
+                         cond_code_d=self.cond_code_d,
+                         cond_code_n=self.cond_code_n,
+                         cond_txt_d=self.cond_txt_d,
+                         cond_txt_n=self.cond_txt_n,
+                         fl=self.fl,
+                         tmp=self.tmp,
+                         tmp_max=self.tmp_max,
+                         tmp_min=self.tmp_min,
+                         tomorrow_cond_code_d=self.tomorrow_cond_code_d,
+                         tomorrow_cond_txt_d=self.tomorrow_cond_txt_d,
+                         tomorrow_tmp_max=self.tomorrow_tmp_max,
+                         tomorrow_tmp_min=self.tomorrow_tmp_min,
+                         wind=self.wind,
+                         update_time=datetime.datetime.now()).save()
             return self
 
         except Exception as e:
@@ -194,7 +192,6 @@ class WeatherData(Base):
 
 
 class WeatherLocation(Base):
-
     def __init__(self, location=None, user_id=0, id=0, is_valid=1, update_time=datetime.datetime.now(), create_if_not_exist=False):
         '''
             id              default:0
@@ -202,28 +199,25 @@ class WeatherLocation(Base):
             user_id         default:0
             is_valid        default:1
         '''
-        if id != 0:
-            self.id = id
-            self.location = location
-            self.user_id = user_id
-            self.is_valid = is_valid
-            self.update_time = update_time
-        else:
-            self.user_id = user_id
-            self.location = location
-            self.is_valid = is_valid
-            self.update_time = update_time
-            try:
-                _ = weather_location.get(weather_location.location == location)
-                self.id = _.id
-                self.user_id = _.user_id
-                self.is_valid = _.is_valid
-                self.update_time = update_time
-            except DoesNotExist:
-                if create_if_not_exist:
-                    self.create()
-                else:
-                    self.id = id
+        self.id = id
+        self.location = location
+        self.user_id = user_id
+        self.is_valid = is_valid
+        self.update_time = update_time
+        self.create_if_not_exist=create_if_not_exist
+
+    def complete(self):
+        try:
+            _ = weather_location.get(weather_location.location == self.location)
+            self.id = _.id
+            self.user_id = _.user_id
+            self.is_valid = _.is_valid
+            self.update_time = _.update_time
+        except DoesNotExist:
+            if self.create_if_not_exist:
+                self.create()
+        finally:
+            return self
 
     def create(self):
         self.base_create(weather_location)
@@ -233,7 +227,6 @@ class WeatherLocation(Base):
 
 
 class WeatherLocationList(Base):
-
     def __init__(self, user_id=0, is_valid=1):
         '''
             user_id         default:0
