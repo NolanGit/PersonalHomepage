@@ -1,6 +1,6 @@
 # 使用Vue.js+Flask实现的个人主页
 国内搜索引擎的信息流着实用不到，个人想关注的信息又过于分散，因此决定自己写一个主页，整合自己所需要的功能。
-采用前后端分离的架构，前端使用Vue.js、Element UI，后端使用Flask提供接口、Sqlite作为数据库、Peewee作为ORM。
+采用前后端分离的架构，前端使用Vue.js、Element UI，后端使用Flask提供接口、MariaDB作为数据库、Peewee作为ORM。
 ### Done：
 - 多用户登录
 - 搜索引擎
@@ -24,6 +24,7 @@
 ## 目录结构
 
   后端代码位于/backend，后端入口文件位于/backend/run.py，前端代码位于/frontend，前端编译的产物位于/dist
+  
   同时需要本地安装MySQL（测试时使用的是MariaDB）和Redis
 
 ## 介绍（更新于2020-1-9）
