@@ -207,15 +207,18 @@ class WeatherLocation(Base):
             self.location = location
             self.user_id = user_id
             self.is_valid = is_valid
+            self.update_time = update_time
         else:
             self.user_id = user_id
             self.location = location
             self.is_valid = is_valid
+            self.update_time = update_time
             try:
                 _ = weather_location.get(weather_location.location == location)
                 self.id = _.id
                 self.user_id = _.user_id
                 self.is_valid = _.is_valid
+                self.update_time = update_time
             except DoesNotExist:
                 if create_if_not_exist:
                     self.create()

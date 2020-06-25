@@ -71,7 +71,7 @@ def weatherLocationListEdit():
     try:
         user_id = request.get_json()['user_id']
         locations = request.get_json()['locations']
-        WeatherLocationList(user_id=user_id).delete()
+        WeatherLocationList(user_id=user_id,is_valid=1).delete()
         for location in locations:
             WeatherLocation(location=location, user_id=user_id).create()
         return rsp.success()
