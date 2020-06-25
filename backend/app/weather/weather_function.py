@@ -1,5 +1,6 @@
 import datetime
 import traceback
+from ..base_model import Base
 from peewee import DoesNotExist
 
 try:
@@ -15,7 +16,7 @@ except:
 WEATHER_EXPIRE_HOUR = 3
 
 
-class WeatherData(object):
+class WeatherData(Base):
 
     def __init__(self, location_id, location):
         '''
@@ -192,7 +193,7 @@ class WeatherData(object):
             return self
 
 
-class WeatherLocation(object):
+class WeatherLocation(Base):
 
     def __init__(self, location=None, user_id=0, id=0, create_if_not_exist=False):
         '''
@@ -219,13 +220,13 @@ class WeatherLocation(object):
                     self.user_id = user_id
 
     def create(self):
-        _ = weather_location(location=self.location, user_id=self.user_id, is_valid=1, update_time=datetime.datetime.now())
-        _.save()
-        self.id = _.id
-        self.location = _.location
+        self.base_create(weather_location)
+
+    def delete(self):
+        weather_location.update(is_valid=0).where(weather_location.id == self.id).execute()
 
 
-class WeatherLocationList(object):
+class WeatherLocationList(Base):
 
     def __init__(self, user_id=0, is_valid=1, limit_days_in=0):
         '''
@@ -252,7 +253,7 @@ class WeatherLocationList(object):
                 weather_location_query = weather_location.select().where(weather_location.user_id == self.user_id)
             if self.is_valid != 0:
                 weather_location_query = weather_location.select().where((weather_location.user_id == self.user_id) & (weather_location.is_valid == self.is_valid))
-        if self.limit_days_in!=0:
+        if self.limit_days_in != 0:
             weather_location_query.where(weather_location.update_time > datetime.datetime.now() + datetime.timedelta(days=self.limit_days_in))
         weather_location_query_dicts = weather_location_query.dicts()
         self.list = [
@@ -275,9 +276,10 @@ class WeatherLocationList(object):
             return False
 
 
-if __name__ == '__main__':
-    weather_location_list = WeatherLocationList(limit_days_in=3).get().list
-    for weather_location in weather_location_list:
-        weather_data = WeatherData(weather_location.id, weather_location.location)
-        weather_data.get_weather_data_from_api()
-        weather_data.create()
+# 本来想用定时任务自动刷天气数据，访问的时候可以快一点，但是后来感觉没必要，还是有效时间内实时获取，二次访问时候用缓存
+# if __name__ == '__main__':
+#     weather_location_list = WeatherLocationList(limit_days_in=3).get().list
+#     for weather_location in weather_location_list:
+#         weather_data = WeatherData(weather_location.id, weather_location.location)
+#         weather_data.get_weather_data_from_api()
+#         weather_data.create()

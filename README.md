@@ -4,20 +4,28 @@
 ### Done：
 - 多用户登录
 - 搜索引擎
--
+- 天气
 - 书签
 - 脚本管理（异步任务脚本统一驱动和管理）
 - 权限控制（包括用户新建修改、角色新建修改、权限新建修改、用户角色权限三者对应关系）
-### Working on:
 - AppStore价格监控
+### Working on:
+- 修bug，编写部署脚本
 ### To Do
 - 黄金
 - 股票
 - 基金
 - 新闻
 - 便签
-- 智能家居？
-- 常用ip绑定
+## 部署
+
+  使用python3运行根目录下的start.py并根据提示进行操作
+  
+## 目录结构
+
+  后端代码位于/backend，后端入口文件位于/backend/run.py，前端代码位于/frontend，前端编译的产物位于/dist
+  同时需要本地安装MySQL（测试时使用的是MariaDB）和Redis
+
 ## 介绍（更新于2020-1-9）
 ### 主页：
 ![image](https://user-images.githubusercontent.com/27627484/71998100-fae58980-3279-11ea-806e-8a1a9c09df51.png)
@@ -85,15 +93,3 @@
 - 定时任务：最小颗粒度为一小时，实际上更小也可以，但是没有试过，如果调小颗粒度，则需要减小定时任务扫库脚本的运行步长。定时任务驱动的脚本，在列表中会在运行人后方加上"(定时)"字样
 ![image](https://user-images.githubusercontent.com/27627484/72083322-90e1e880-333c-11ea-9995-774f0faeae73.png)
 
-
-## 目录结构和初始化
-### 目录结构：
-
-  后端代码位于/backend，后端入口文件位于/backend/run.py，前端代码位于/frontend，前端编译的产物位于/dist，clone项目后，首先在/frontend目录执行"npm i"来初始化前端环境，然后使用"npm run build"编译前端项目并生成压缩后代码到dist文件夹，但由于本项目未将dist加入gitignore，所以直接运行应该也没有问题
-  后端数据库为本地MariaDB
-### 配置文件：
-  项目顺利运行需要两个配置文件，"PersonalHomepage\backend\app\homepage.config"和"PersonalHomepage\backend\app\config.py"，已经上传了两个配置文件的demo，需要手动将“_demo”字样去掉即可，其中：
-    
-    KEY         天气api提供的key
-    SENDER      邮件发件的邮箱
-    PASSWORD    邮件发件邮箱的key
