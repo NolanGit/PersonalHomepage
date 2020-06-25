@@ -195,7 +195,7 @@ class WeatherData(Base):
 
 class WeatherLocation(Base):
 
-    def __init__(self, location=None, user_id=0, id=0, is_valid=1, create_if_not_exist=False):
+    def __init__(self, location=None, user_id=0, id=0, is_valid=1, update_time=datetime.datetime.now(), create_if_not_exist=False):
         '''
             id              default:0
             location        default:None

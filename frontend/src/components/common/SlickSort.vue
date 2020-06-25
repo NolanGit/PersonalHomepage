@@ -12,7 +12,7 @@
           <i class="el-icon-s-operation" style="color: #6a6c70;"></i>
           <span class="slick_list_item_span">{{ item.name }}</span>
           <div class="slick_list_item_button">
-            <el-button size="mini" class="el-icon-setting" @click="edit(item, index)"></el-button>
+            <el-button v-if="can_be_edit" size="mini" class="el-icon-setting" @click="edit(item, index)"></el-button>
             <el-button type="danger" size="mini" class="el-icon-delete" @click="del(item, index)"></el-button>
           </div>
         </SlickItem>
@@ -33,7 +33,8 @@ export default {
     SlickList
   },
   props: {
-    list: Array
+    list: Array,
+    can_be_edit: Boolean
   },
   watch: {
     list(newValue, oldValue) {},

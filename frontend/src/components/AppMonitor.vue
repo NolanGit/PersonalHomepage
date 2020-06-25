@@ -67,6 +67,7 @@
       <SlickSort
         v-if="appSortEdit.visible"
         :list="appSortEdit.list"
+        :can_be_edit="true"
         @submit="appSortEditSubmit"
         @edit="appSortEditSetting"
       ></SlickSort>

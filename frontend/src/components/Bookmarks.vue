@@ -78,6 +78,7 @@
       <SlickSort
         v-if="bookmarksEdit.visible"
         :list="bookmarksEdit.list"
+        :can_be_edit="true"
         @submit="bookmarksEditSubmit"
         @edit="bookmarksSetting"
       ></SlickSort>
