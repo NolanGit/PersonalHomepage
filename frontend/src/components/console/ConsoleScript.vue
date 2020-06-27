@@ -1654,7 +1654,7 @@ export default {
             type: "error"
           });
         }
-        if (this.formData[this.activeTab].version != res.data.version) {
+        else if (this.formData[this.activeTab].version != res.data.version) {
           this.$message({
             message:
               "检测到脚本配置发生过修改(" +
