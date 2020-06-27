@@ -102,6 +102,8 @@ mail_sender_password = input('请输入发送的邮件地址的口令:')
 print(mail_sender_password)
 mysql_password = input('请输入本地MySQL的root账号的密码:')
 print(mysql_password)
+weather_default_location = input('请输入您所在的位置，如：北京')
+print(weather_default_location)
 weather_api_key = input('请输入天气api的key:')
 print(weather_api_key)
 '''
@@ -140,7 +142,8 @@ flag = True
 try:
     print('%s开始配置' % CONFIG_PATH)
     backup(CONFIG_PATH)
-    homepage_text = '[config]\nADMIN_EMAIL = %s\nSENDER = %s\nPASSWORD = %s\nDB_PASS=%s\nKEY = %s\n' % (admin_email, mail_sender_address, mail_sender_password, mysql_password, weather_api_key)
+    homepage_text = '[config]\nADMIN_EMAIL = %s\nSENDER = %s\nPASSWORD = %s\nDB_PASS=%s\nKEY = %s\nLOCATION = %s\n' % (admin_email, mail_sender_address, mail_sender_password, mysql_password,
+                                                                                                                       weather_api_key, weather_default_location)
     with open(CONFIG_PATH, 'w') as w:
         w.write(homepage_text)
         print('%s配置成功' % CONFIG_PATH)
@@ -202,6 +205,5 @@ if flag:
     print('- 首先，在"frontend"目录下使用"npm i"安装必需前端组件，使用"npm run build"打包前端代码')
     print('- 然后，使用python3在backend/目录下运行"run.py"（如不在此目录下运行会产生问题），此操作会启用服务并自动建表')
     print('- 接着，停止服务后，再次运行此脚本(python3 start.py)以执行初始化SQL')
-    print('- 接着，使用crontab将%s加入定时任务，频率为每15分钟运行一次，可直接复制参数:"*/15 * * * * %s"，配置完成后，应用内配置的脚本（获取App价格脚本、推送脚本）将在明天后被驱动运行，具体可在"控制台-运行脚本-定时任务"查看' % (SCHEDULE_SCRIPT_PATH,
-                                                                                                                                                                              SCHEDULE_SCRIPT_PATH))
+    print('- 接着，使用crontab将%s加入定时任务，频率为每15分钟运行一次，可直接复制参数:"*/15 * * * * %s"，配置完成后，应用内配置的脚本（获取App价格脚本、推送脚本）将在明天后被驱动运行，具体可在"控制台-运行脚本-定时任务"查看' % (SCHEDULE_SCRIPT_PATH, SCHEDULE_SCRIPT_PATH))
     print('- 最后，使用python3在backend/目录下运行"run.py"打开服务，登录50000端口试试看吧！初始化的用户名为admin，密码为123456')

@@ -10,6 +10,7 @@ from flask import render_template, session, redirect, url_for, current_app, flas
 from ..login.login_funtion import User
 from ..privilege.privilege_control import permission_required
 from .weather_function import WeatherData, WeatherLocation, WeatherLocationList
+from .ip_location_function import IpLocation
 from ..response import Response
 from ..common_func import CommonFunc
 
@@ -17,11 +18,6 @@ rsp = Response()
 cf = CommonFunc()
 
 URL_PREFIX = '/weather'
-
-
-def ip_location_get(user_ip):
-    r = requests.get('http://freeapi.ipip.net/' + str(user_ip))
-    return '北京' if r.json()[0] == '局域网' else r.json()[1]
 
 
 @weather.route('/weatherData', methods=['POST'])
@@ -34,8 +30,7 @@ def weatherData():
         result = []
         user_id = request.get_json()['user_id']
         user_ip = request.remote_addr
-        ip_location = ip_location_get(user_ip)
-        print(ip_location)
+        ip_location = IpLocation(user_ip).get_location().location
         if user_id != 0:
             _ = WeatherLocationList(user_id=user_id).get().list
             weather_location_list = _ if _ != None else []
