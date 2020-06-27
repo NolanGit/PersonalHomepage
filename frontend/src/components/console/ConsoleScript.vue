@@ -20,7 +20,12 @@
             </el-collapse-item>
           </el-collapse>
           <el-popover placement="right" trigger="hover">
-            <el-input size="mini" style="width: 170px" placeholder='请输入栏目名称' v-model="subSystemName"></el-input>
+            <el-input
+              size="mini"
+              style="width: 170px"
+              placeholder="请输入栏目名称"
+              v-model="subSystemName"
+            ></el-input>
             <el-button class="margin_top-mini" size="mini" @click="subSystemAdd">确定</el-button>
             <el-button slot="reference" class="margin_top-medium" type="text" size="small">新增栏目</el-button>
           </el-popover>
@@ -1034,7 +1039,7 @@ const api = {
   scheduleDelete: "/script/scheduleDelete",
   extraButtonScriptRun: "/script/extraButtonScriptRun",
   subSystemAdd: "/script/subSystemAdd",
-  subSystemDelete: "/script/subSystemDelete",
+  subSystemDelete: "/script/subSystemDelete"
 };
 export default {
   name: "ConsoleScript",
@@ -1081,7 +1086,7 @@ export default {
       activedSystem: 0,
       activeSystem: [],
       subSystem: [],
-      subSystemName:[],
+      subSystemName: [],
       formData: [],
       formDataLoading: false,
       submitButtonLoading: false,
@@ -1475,12 +1480,11 @@ export default {
     },
     //删除栏目
     async subSystemDelete() {
-      this.$confirm('确认删除吗?', '提示', {
-      }).then(async () => {
+      this.$confirm("确认删除吗?", "提示", {}).then(async () => {
         try {
           for (var s = 0; s < this.subSystem.length; s++) {
             if (this.activeSystem == this.subSystem[s].title) {
-              break
+              break;
             }
           }
           const { data: res } = await axios.post(api.subSystemDelete, {
@@ -1488,10 +1492,10 @@ export default {
             user_id: this.user_id
           });
           this.$message({
-            message: '成功！',
+            message: "成功！",
             type: "success"
           });
-          this.getSubSystem()
+          this.getSubSystem();
         } catch (e) {
           console.log(e);
           this.$message({
@@ -1499,17 +1503,17 @@ export default {
             type: "error"
           });
         }
-      })
+      });
     },
     //添加栏目
     async subSystemAdd() {
       try {
         const { data: res } = await axios.post(api.subSystemAdd, {
           sub_system_name: this.subSystemName,
-          user_id: this.user_id,
+          user_id: this.user_id
         });
-        this.subSystem=[]
-        this.subSystemScript()
+        this.subSystem = [];
+        this.subSystemScript();
       } catch (e) {
         console.log(e);
         this.$message({
@@ -1644,6 +1648,12 @@ export default {
           script_id: this.formData[this.activeTab].id,
           user_id: this.user_id
         });
+        if (res.code != 200) {
+          this.$message({
+            message: res.msg,
+            type: "error"
+          });
+        }
         if (this.formData[this.activeTab].version != res.data.version) {
           this.$message({
             message:
@@ -2057,54 +2067,98 @@ export default {
     },
     //使用当前激活tab的detial，接收start_command和组装方式，组装好command和detail并返回，start_command在运行脚本时为打开文件夹的命令加上起始命令
     command_get(start_command, type) {
-      var command = ""
-      var detail = {}
+      var command = "";
+      var detail = {};
       //console.log(this.activeTab)
       if (type == "1") {
         //顺序模式
-        for (var x = 0; x < this.formData[this.activeTab].formDataDetail.length; x++) {
+        for (
+          var x = 0;
+          x < this.formData[this.activeTab].formDataDetail.length;
+          x++
+        ) {
           //console.log(this.formData[this.activeTab].formDataDetail[x].type)
-          detail[this.formData[this.activeTab].formDataDetail[x].label] = this.formData[this.activeTab].formDataDetail[x].value
-          if (this.formData[this.activeTab].formDataDetail[x].type == 'dateRange') {
-            if (this.formData[this.activeTab].formDataDetail[x].value == null) {//解决用户点击了组建上的清空按钮后导致前端报错的问题
-              continue
+          detail[
+            this.formData[this.activeTab].formDataDetail[x].label
+          ] = this.formData[this.activeTab].formDataDetail[x].value;
+          if (
+            this.formData[this.activeTab].formDataDetail[x].type == "dateRange"
+          ) {
+            if (this.formData[this.activeTab].formDataDetail[x].value == null) {
+              //解决用户点击了组建上的清空按钮后导致前端报错的问题
+              continue;
             }
-            for (let d = 0; d < this.formData[this.activeTab].formDataDetail[x].value.length; d++) {
-              command = command + " " + this.formData[this.activeTab].formDataDetail[x].value[d]
+            for (
+              let d = 0;
+              d < this.formData[this.activeTab].formDataDetail[x].value.length;
+              d++
+            ) {
+              command =
+                command +
+                " " +
+                this.formData[this.activeTab].formDataDetail[x].value[d];
             }
-            continue
+            continue;
           }
-          command = command + " " + this.formData[this.activeTab].formDataDetail[x].value
+          command =
+            command +
+            " " +
+            this.formData[this.activeTab].formDataDetail[x].value;
         }
-        command = start_command + command
+        command = start_command + command;
         //console.log(command)
       } else if (type == "2") {
         //替换模式
-        var tempCommand = start_command
-        for (var x = 0; x < this.formData[this.activeTab].formDataDetail.length; x++) {
-          detail[this.formData[this.activeTab].formDataDetail[x].label] = this.formData[this.activeTab].formDataDetail[x].value
-          if (this.formData[this.activeTab].formDataDetail[x].type == 'dateRange') {
-            if (this.formData[this.activeTab].formDataDetail[x].value == null) {//解决用户点击了组建上的清空按钮后导致前端报错的问题
-              continue
+        var tempCommand = start_command;
+        for (
+          var x = 0;
+          x < this.formData[this.activeTab].formDataDetail.length;
+          x++
+        ) {
+          detail[
+            this.formData[this.activeTab].formDataDetail[x].label
+          ] = this.formData[this.activeTab].formDataDetail[x].value;
+          if (
+            this.formData[this.activeTab].formDataDetail[x].type == "dateRange"
+          ) {
+            if (this.formData[this.activeTab].formDataDetail[x].value == null) {
+              //解决用户点击了组建上的清空按钮后导致前端报错的问题
+              continue;
             }
-            var tempDateRange = ""
-            for (let d = 0; d < this.formData[this.activeTab].formDataDetail[x].value.length; d++) {
-              tempDateRange = tempDateRange + " " + this.formData[this.activeTab].formDataDetail[x].value[d]
+            var tempDateRange = "";
+            for (
+              let d = 0;
+              d < this.formData[this.activeTab].formDataDetail[x].value.length;
+              d++
+            ) {
+              tempDateRange =
+                tempDateRange +
+                " " +
+                this.formData[this.activeTab].formDataDetail[x].value[d];
             }
-            var reg = new RegExp("%" + this.formData[this.activeTab].formDataDetail[x].label + "%", "g")
+            var reg = new RegExp(
+              "%" + this.formData[this.activeTab].formDataDetail[x].label + "%",
+              "g"
+            );
             tempCommand = tempCommand.replace(reg, tempDateRange);
-            continue
+            continue;
           }
-          var reg = new RegExp("%" + this.formData[this.activeTab].formDataDetail[x].label + "%", "g")
-          tempCommand = tempCommand.replace(reg, this.formData[this.activeTab].formDataDetail[x].value);
+          var reg = new RegExp(
+            "%" + this.formData[this.activeTab].formDataDetail[x].label + "%",
+            "g"
+          );
+          tempCommand = tempCommand.replace(
+            reg,
+            this.formData[this.activeTab].formDataDetail[x].value
+          );
         }
-        command = tempCommand
+        command = tempCommand;
       }
       var temp = {
         command: command,
-        detail: detail,
-      }
-      return (temp)
+        detail: detail
+      };
+      return temp;
     },
     //关闭运行窗口
     outputDialogClose(done) {
