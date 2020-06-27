@@ -23,8 +23,10 @@ class IpLocation(Base):
     def _get_location_from_db(self):
         try:
             _ = ip_location.select().where(ip_location.ip == self.ip).order_by(-ip_location.id).limit(1).dicts()
-            if (datetime.datetime.now() - _['update_time']).total_seconds() < IP_LOCATION_EXPIRE_TIME * 3600:
-                self.location = _['location']
+            if len(_) == 0:
+                raise DoesNotExist
+            elif (datetime.datetime.now() - _[0]['update_time']).total_seconds() < IP_LOCATION_EXPIRE_TIME * 3600:
+                self.location = _[0]['location']
             else:
                 raise DoesNotExist
         except DoesNotExist:
