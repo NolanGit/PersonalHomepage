@@ -2,7 +2,6 @@ import os
 import peewee
 import configparser
 from peewee import *
-from playhouse.pool import PooledMySQLDatabase
 from .model_function import BaseModel
 
 class role(BaseModel):

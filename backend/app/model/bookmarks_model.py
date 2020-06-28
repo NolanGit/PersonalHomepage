@@ -2,7 +2,6 @@ import os
 import peewee
 import configparser
 from peewee import *
-from playhouse.pool import PooledMySQLDatabase
 from .model_function import BaseModel
 
 
@@ -26,4 +25,5 @@ class bookmarks(BaseModel):
         table_name = 'bookmarks'
 
 
+icon.create_table()
 bookmarks.create_table()
