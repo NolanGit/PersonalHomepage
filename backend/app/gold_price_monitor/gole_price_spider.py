@@ -3,27 +3,17 @@ import os
 import sys
 import time
 import datetime
+import requests
 from bs4 import BeautifulSoup
-from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
-
 
 
 def get_gold_price():
     '''
     返回当前黄金价格
     '''
-
-    chrome_options = Options()
-    chrome_options.add_argument('--headless')
-    chrome_options.add_argument('--log-level=3')
-    driver = webdriver.Chrome(executable_path=('/usr/bin/chromedriver'), chrome_options=chrome_options)
-
     for x in range(5):
-        driver.get("http://www.dyhjw.com/hjtd")
-        time.sleep(5)
-        current_html = driver.page_source
-        soup = BeautifulSoup(current_html, 'lxml')
+        response = requests.get("http://www.dyhjw.com/hjtd")
+        soup = BeautifulSoup(response.text, 'lxml')
 
         divs = soup.find(class_='nom last green')
         if not divs:
