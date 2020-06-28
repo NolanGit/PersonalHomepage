@@ -59,6 +59,8 @@ const api = {
   userInfo: "/userInfo",
   widget: "/widget"
 };
+const UPDATE_INTERVAL = 1800000; //每半小时请求一次接口更新天气和App监控的数据
+
 export default {
   components: {
     search,
@@ -150,7 +152,7 @@ export default {
     this.userInfo();
     window.setInterval(() => {
       setTimeout((this.flush = true), 0);
-    }, 30000);
+    }, UPDATE_INTERVAL);
   }
 };
 </script>
