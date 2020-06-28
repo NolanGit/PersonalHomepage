@@ -20,9 +20,9 @@ cf = CommonFunc()
 URL_PREFIX = '/weather'
 
 
-@weather.route('/weatherData', methods=['POST'])
+@weather.route('/get', methods=['POST'])
 @cross_origin()
-def weatherData():
+def get():
     '''
         当未登陆时，应该显示ip所在地的天气，登陆后显示ip所在地加收藏的，但是显示ip所在地天气要考虑安全问题
     '''

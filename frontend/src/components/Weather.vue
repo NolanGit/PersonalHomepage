@@ -98,7 +98,7 @@ import axios from "axios";
 import SlickSort from "./common/SlickSort.vue";
 import WidgetButton from "./common/WidgetButton.vue";
 const api = {
-  weatherData: "/weather/weatherData",
+  weatherData: "/weather/get",
   locationAdd: "/weather/weatherLocationCreate",
   locationListEdit: "/weather/weatherLocationListEdit"
 };
