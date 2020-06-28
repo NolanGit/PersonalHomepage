@@ -76,7 +76,7 @@ def app_price_push_generator():
     '''
 
     app_push_data_list = PushList(widget_id=APP_WIDGET_ID).push_list_get(is_need_2_push=True).push_list
-    print('有%s条数据等待推送...' % str(len(app_push_data_list)))
+    print('有%s条数据到达推送时间，需要检测是否满足推送条件' % str(len(app_push_data_list)))
     for app_push_data in app_push_data_list:
         user_id = app_push_data.user_id
 
@@ -96,6 +96,8 @@ def app_price_push_generator():
                 print('已加入队列.')
                 if (app_push_data.generate_next()):
                     app_push_data.delete()
+        else:
+            print('不满足推送条件')
 
 
 # 爬取数据

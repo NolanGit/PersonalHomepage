@@ -108,11 +108,19 @@ export default {
   props: {
     user_id: Number,
     widget_id: Number,
-    buttons: Array
+    buttons: Array,
+    flush: Boolean
   },
   components: {
     SlickSort,
     WidgetButton
+  },
+  watch: {
+    flush(newVal, oldVal) {
+      if (newVal) {
+        this.weatherData();
+      }
+    }
   },
   data() {
     return {

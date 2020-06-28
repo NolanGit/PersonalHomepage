@@ -23,6 +23,7 @@
               :user_id="user_id"
               :widget_id="singleWidget.id"
               :buttons="singleWidget.buttons"
+              :flush="flush"
               @done="done(index)"
             />
             <bookmarks
@@ -37,6 +38,7 @@
               :user_id="user_id"
               :widget_id="singleWidget.id"
               :buttons="singleWidget.buttons"
+              :flush="flush"
               @done="done(index)"
             />
           </el-card>
@@ -69,7 +71,8 @@ export default {
     return {
       user: "",
       user_id: 0,
-      widget: []
+      widget: [],
+      flush: false
     };
   },
   methods: {
@@ -137,6 +140,7 @@ export default {
     },
     done(index) {
       this.widget[index].show = true;
+      this.flush = false;
     }
   },
   created() {
@@ -144,6 +148,9 @@ export default {
   },
   mounted() {
     this.userInfo();
+    window.setInterval(() => {
+      setTimeout((this.flush = true), 0);
+    }, 30000);
   }
 };
 </script>
