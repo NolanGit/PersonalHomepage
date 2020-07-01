@@ -47,5 +47,8 @@ def create_app(config_name):
     
     from .push import push as push_blueprint
     app.register_blueprint(push_blueprint, url_prefix='/push')
+    
+    from .gold_price_monitor import gold_price_monitor as gold_price_monitor_blueprint
+    app.register_blueprint(gold_price_monitor_blueprint, url_prefix='/gold')
 
     return app

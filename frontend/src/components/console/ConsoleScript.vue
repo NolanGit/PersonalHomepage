@@ -1832,6 +1832,10 @@ export default {
           interval_unit: this.schedule.scheduleData.interval.unit.select,
           schedule_id: this.schedule.scheduleData.schedule_id
         });
+        this.$message({
+          message: "成功！",
+          type: "success"
+        });
         this.schedule.dialogVisible = false;
         this.schedule.scheduleData.triggerDate = "";
         this.schedule.scheduleData.triggerTime = "";
