@@ -31,9 +31,10 @@ def get_gold_price():
                 break
         else:
             break
-    driver.quit()
     if divs:
         print('price:' + divs.get_text())
         return float(divs.get_text())
     else:
         return None
+
+print(get_gold_price())
