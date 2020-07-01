@@ -1,17 +1,13 @@
 <template>
-
+  <LineChart></LineChart>
 </template>
 <script>
 import axios from "axios";
-import Echarts from 'vue-echarts'
-import 'echarts/lib/chart/line'
-import 'echarts/lib/componet/title'
-import 'echarts/lib/componet/tooltip'
-import 'echarts/lib/componet/legent'
+import LineChart from "./common/LineChart.vue";
 import WidgetButton from "./common/WidgetButton.vue";
 
 const api = {
-  goldData: "/gold/get",
+  goldData: "/gold/get"
 };
 
 export default {
@@ -23,7 +19,8 @@ export default {
     flush: Boolean
   },
   components: {
-    WidgetButton
+    WidgetButton,
+    LineChart
   },
   watch: {
     flush(newVal, oldVal) {
@@ -32,13 +29,10 @@ export default {
       }
     }
   },
-  data() {
-  },
-  methods: {
-  },
+  data() {},
+  methods: {},
   created() {},
-  mounted() {
-  }
+  mounted() {}
 };
 </script>
 </style>

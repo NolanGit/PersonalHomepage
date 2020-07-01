@@ -9,7 +9,7 @@ import 'echarts/lib/component/legend'
 import 'echarts/lib/chart/line'
 
 export default {
-  name: "myLine",
+  name: "LineChart",
   props: {
     name: String,
     xdata: Array,
