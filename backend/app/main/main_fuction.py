@@ -4,10 +4,12 @@ BUTTONS = {
     'weather': ['add', 'sort'],
     'bookmarks': ['add', 'sort'],
     'app': ['add', 'sort', 'notify'],
+    'gold': ['notify'],
 }
 
 
 class MainUser(User):
+
     def get_widget(self):
         '''
 
