@@ -45,7 +45,7 @@ export default {
         for (let x = 0; x < res.data.length; x++) {
           for (var key in res.data[x]) {
             this.xdata.push(key);
-            this.ydata.push(raw[key]);
+            this.ydata.push(res.data[x][key]);
           }
         }
         this.$emit("done");
