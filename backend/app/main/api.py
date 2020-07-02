@@ -94,25 +94,25 @@ def icon():
         return jsonify(response), 500
 
 
-@main.route('/upload', methods=['POST'])
-@cross_origin()
-def upload():
-    f = request.files['file']
-    upload_path = os.path.join('/home/pi/Documents/Github/PersonalHomepage/upload', secure_filename(''.join(lazy_pinyin(f.filename))))  #注意：没有的文件夹一定要先创建，不然会提示没有该路径
-    f.save(upload_path)
-    response = {'code': 200, 'msg': '成功！', 'data': []}
-    upload_table.create(file_name=f.filename, file_path=upload_path, update_time=datetime.datetime.now())
-    return jsonify(response)
+# @main.route('/upload', methods=['POST'])
+# @cross_origin()
+# def upload():
+#     f = request.files['file']
+#     upload_path = os.path.join('/home/pi/Documents/Github/PersonalHomepage/upload', secure_filename(''.join(lazy_pinyin(f.filename))))  #注意：没有的文件夹一定要先创建，不然会提示没有该路径
+#     f.save(upload_path)
+#     response = {'code': 200, 'msg': '成功！', 'data': []}
+#     upload_table.create(file_name=f.filename, file_path=upload_path, update_time=datetime.datetime.now())
+#     return jsonify(response)
 
 
-@main.route('/download', methods=['POST'])
-@cross_origin()
-def download():
-    file_id = request.get_json()['file_id']
-    _ = upload_table.get(id=file_id)
-    file_path = _.file_path
-    file_name = _.file_name
-    response = make_response(send_file(file_path))
-    response.headers["content-disposition"] = "attachment"
-    response.headers["filename"] = file_name
-    return response
+# @main.route('/download', methods=['POST'])
+# @cross_origin()
+# def download():
+#     file_id = request.get_json()['file_id']
+#     _ = upload_table.get(id=file_id)
+#     file_path = _.file_path
+#     file_name = _.file_name
+#     response = make_response(send_file(file_path))
+#     response.headers["content-disposition"] = "attachment"
+#     response.headers["filename"] = file_name
+#     return response
