@@ -7,7 +7,7 @@ import traceback
 from pypinyin import lazy_pinyin
 from werkzeug.utils import secure_filename
 
-from flask import render_template, session, redirect, url_for, current_app, request, jsonify, Response
+from flask import render_template, session, redirect, url_for, current_app, request, jsonify, Response, send_file, make_response
 from . import main
 from flask_cors import cross_origin
 from ..model.search_model import search_engines, search_engines_log
@@ -103,3 +103,16 @@ def upload():
     response = {'code': 200, 'msg': '成功！', 'data': []}
     upload_table.create(file_name=f.filename, file_path=upload_path, update_time=datetime.datetime.now())
     return jsonify(response)
+
+
+@main.route('/download', methods=['POST'])
+@cross_origin()
+def download():
+    file_id = request.get_json()['file_id']
+    _ = upload_table.get(id=file_id)
+    file_path = _.file_path
+    file_name = _.file_name
+    response = make_response(send_file(file_path))
+    response.headers["content-disposition"] = "attachment"
+    response.headers["filename"] = file_name
+    return response
