@@ -43,10 +43,8 @@ export default {
         this.xdata = [];
         this.ydata = [];
         for (let x = 0; x < res.data.length; x++) {
-          for (var key in res.data[x]) {
-            this.xdata.push(key);
-            this.ydata.push(res.data[x][key]);
-          }
+          this.xdata.push(res.data[x]["update_time"]);
+          this.ydata.push(res.data[x]["price"]);
         }
         this.$emit("done");
       } catch (e) {
