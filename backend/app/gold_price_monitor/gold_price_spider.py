@@ -14,6 +14,7 @@ except:
     sys.path.append('../../')
     from model.gold_price_model import gold_price
 
+
 def get_gold_price():
     '''
     返回当前黄金价格
@@ -44,8 +45,10 @@ def get_gold_price():
     else:
         return None
 
-def save_2_db(price):
-    gold_price.create(price=price,update_time=datetime.datetime.now())
 
-if __name__=='__main__':
+def save_2_db(price):
+    gold_price.create(price=price, update_time=datetime.datetime.now())
+
+
+if __name__ == '__main__':
     save_2_db(get_gold_price())

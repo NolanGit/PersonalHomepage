@@ -41,6 +41,14 @@
               :flush="flush"
               @done="done(index)"
             />
+            <appMonitor
+              v-if="singleWidget.name=='gold'"
+              :user_id="user_id"
+              :widget_id="singleWidget.id"
+              :buttons="singleWidget.buttons"
+              :flush="flush"
+              @done="done(index)"
+            />
           </el-card>
         </transition>
       </el-col>
@@ -55,6 +63,8 @@ import login from "./components/Login.vue";
 import weather from "./components/Weather.vue";
 import bookmarks from "./components/Bookmarks.vue";
 import appMonitor from "./components/AppMonitor.vue";
+import gold from "./components/Gold.vue";
+
 const api = {
   userInfo: "/userInfo",
   widget: "/widget"
@@ -67,7 +77,8 @@ export default {
     login,
     weather,
     bookmarks,
-    appMonitor
+    appMonitor,
+    gold
   },
   data() {
     return {
