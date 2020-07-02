@@ -98,9 +98,7 @@ def icon():
 @cross_origin()
 def upload():
     f = request.files['file']
-    print(f.filename)
-    upload_path = os.path.join('/home/pi/upload/', secure_filename(''.join(lazy_pinyin(f.filename))))  #注意：没有的文件夹一定要先创建，不然会提示没有该路径
-    print(upload_path)
+    upload_path = os.path.join('/home/pi/Documents/Github/PersonalHomepage/upload', secure_filename(''.join(lazy_pinyin(f.filename))))  #注意：没有的文件夹一定要先创建，不然会提示没有该路径
     f.save(upload_path)
     response = {'code': 200, 'msg': '成功！', 'data': []}
     upload_table.create(file_name=f.file_name, file_path=upload_path, update_time=datetime.datetime.now())
