@@ -41,7 +41,7 @@
               :flush="flush"
               @done="done(index)"
             />
-            <appMonitor
+            <gold
               v-if="singleWidget.name=='gold'"
               :user_id="user_id"
               :widget_id="singleWidget.id"
