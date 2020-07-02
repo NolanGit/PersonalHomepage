@@ -174,6 +174,7 @@ try:
         'python3': PYTHON_PATH,
         '2020-06-20 00:00:00': str(TOMORROW),
         '2020-06-20 00:15:00': str(TOMORROW + datetime.timedelta(minutes=15)),
+        '2020-06-20 00:30:00': str(TOMORROW + datetime.timedelta(minutes=30)),
     }
     alter(INIT_SQL_PATH, alter_dict)
     print('%s配置成功' % INIT_SQL_PATH)
