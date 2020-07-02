@@ -5,7 +5,7 @@ from .model_function import BaseModel
 
 
 class gold_price(BaseModel):
-    price = peewee.CharField()
+    price = CharField()
     update_time = DateTimeField()
 
     class Meta:
