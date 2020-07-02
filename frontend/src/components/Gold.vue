@@ -40,12 +40,13 @@ export default {
     async goldPriceGet() {
       try {
         const { data: res } = await axios.post(api.goldData);
-        var raw = res.data;
         this.xdata = [];
         this.ydata = [];
-        for (var key in raw) {
-          this.xdata.push(key);
-          this.ydata.push(raw[key]);
+        for (let x = 0; x < res.data.length; x++) {
+          for (var key in res.data[x]) {
+            this.xdata.push(key);
+            this.ydata.push(raw[key]);
+          }
         }
         this.$emit("done");
       } catch (e) {
