@@ -94,25 +94,31 @@ def icon():
         return jsonify(response), 500
 
 
-# @main.route('/upload', methods=['POST'])
-# @cross_origin()
-# def upload():
-#     f = request.files['file']
-#     upload_path = os.path.join('/home/pi/Documents/Github/PersonalHomepage/upload', secure_filename(''.join(lazy_pinyin(f.filename))))  #注意：没有的文件夹一定要先创建，不然会提示没有该路径
-#     f.save(upload_path)
-#     response = {'code': 200, 'msg': '成功！', 'data': []}
-#     upload_table.create(file_name=f.filename, file_path=upload_path, update_time=datetime.datetime.now())
-#     return jsonify(response)
+@main.route('/upload', methods=['POST'])
+@cross_origin()
+def upload():
+    user_key = request.cookies.get('user_key')
+    redis_conn = privilegeFunction().get_redis_conn0()
+    if user_key == None or redis_conn.exists(user_key) == 0:
+        user_id = 0
+    user_id = redis_conn.get(user_key)
+
+    f = request.files['file']
+    upload_path = os.path.join('/home/pi/Documents/Github/PersonalHomepage/upload', secure_filename(''.join(lazy_pinyin(f.filename))))  #注意：没有的文件夹一定要先创建，不然会提示没有该路径
+    f.save(upload_path)
+    _ = upload_table(file_name=f.filename, file_path=upload_path, user_id=user_id, update_time=datetime.datetime.now())
+    _.save()
+    response = {'code': 200, 'msg': '成功！', 'data': {'id': _.id, 'name': f.filename}}
+    return jsonify(response)
 
 
-# @main.route('/download', methods=['POST'])
-# @cross_origin()
-# def download():
-#     file_id = request.get_json()['file_id']
-#     _ = upload_table.get(id=file_id)
-#     file_path = _.file_path
-#     file_name = _.file_name
-#     response = make_response(send_file(file_path))
-#     response.headers["content-disposition"] = "attachment"
-#     response.headers["filename"] = file_name
-#     return response
+@main.route('/download', methods=['GET'])
+@cross_origin()
+def download():
+    file_id = request.args.get('file_id')
+    _ = upload_table.get(id=file_id)
+    file_path = _.file_path
+    file_name = _.file_name
+    response = make_response(send_file(file_path, as_attachment=True, attachment_filename=file_name))
+    response.headers['filename'] = file_name.encode('utf-8')
+    return response
