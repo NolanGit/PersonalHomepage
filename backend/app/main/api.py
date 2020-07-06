@@ -17,6 +17,7 @@ from ..model.widget_model import widget as widget_table
 from ..model.widget_model import widget_user as widget_user
 from ..model.upload_model import upload as upload_table
 from ..login.login_funtion import User
+from ..privilege.privilege_control import privilegeFunction
 from ..privilege.privilege_control import permission_required
 from .main_fuction import MainUser
 
@@ -95,6 +96,7 @@ def icon():
 
 
 @main.route('/upload', methods=['POST'])
+@permission_required('/upload')
 @cross_origin()
 def upload():
     user_key = request.cookies.get('user_key')
@@ -113,6 +115,7 @@ def upload():
 
 
 @main.route('/download', methods=['GET'])
+@permission_required('/download')
 @cross_origin()
 def download():
     file_id = request.args.get('file_id')
