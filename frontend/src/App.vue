@@ -11,47 +11,53 @@
       <search :user_id="user_id" />
     </el-row>
     <div class="cardRow div-flex">
-      <el-col :span="singleWidget.span" v-for="(singleWidget,index) in widget" :key="singleWidget">
-        <transition name="el-zoom-in-top">
-          <el-card
-            shadow="hover"
-            v-show="singleWidget.show"
-            class="margin_left-medium margin_right-medium"
-          >
-            <weather
-              v-if="singleWidget.name=='weather'"
-              :user_id="user_id"
-              :widget_id="singleWidget.id"
-              :buttons="singleWidget.buttons"
-              :flush="flush"
-              @done="done(index)"
-            />
-            <bookmarks
-              v-if="singleWidget.name=='bookmarks'"
-              :user_id="user_id"
-              :widget_id="singleWidget.id"
-              :buttons="singleWidget.buttons"
-              @done="done(index)"
-            />
-            <appMonitor
-              v-if="singleWidget.name=='app'"
-              :user_id="user_id"
-              :widget_id="singleWidget.id"
-              :buttons="singleWidget.buttons"
-              :flush="flush"
-              @done="done(index)"
-            />
-            <gold
-              v-if="singleWidget.name=='gold'"
-              :user_id="user_id"
-              :widget_id="singleWidget.id"
-              :buttons="singleWidget.buttons"
-              :flush="flush"
-              @done="done(index)"
-            />
-          </el-card>
-        </transition>
-      </el-col>
+      <el-row v-for="singleWidgetSuite in widgetSuite" :key="singleWidgetSuite">
+        <el-col
+          :span="singleWidget.span"
+          v-for="(singleWidget,index) in singleWidgetSuite"
+          :key="singleWidget"
+        >
+          <transition name="el-zoom-in-top">
+            <el-card
+              shadow="hover"
+              v-show="singleWidget.show"
+              class="margin_left-medium margin_right-medium"
+            >
+              <weather
+                v-if="singleWidget.name=='weather'"
+                :user_id="user_id"
+                :widget_id="singleWidget.id"
+                :buttons="singleWidget.buttons"
+                :flush="flush"
+                @done="done(index)"
+              />
+              <bookmarks
+                v-if="singleWidget.name=='bookmarks'"
+                :user_id="user_id"
+                :widget_id="singleWidget.id"
+                :buttons="singleWidget.buttons"
+                @done="done(index)"
+              />
+              <appMonitor
+                v-if="singleWidget.name=='app'"
+                :user_id="user_id"
+                :widget_id="singleWidget.id"
+                :buttons="singleWidget.buttons"
+                :flush="flush"
+                @done="done(index)"
+              />
+              <gold
+                v-if="singleWidget.name=='gold'"
+                :user_id="user_id"
+                :widget_id="singleWidget.id"
+                :buttons="singleWidget.buttons"
+                :flush="flush"
+                @done="done(index)"
+              />
+            </el-card>
+          </transition>
+        </el-col>
+      </el-row>
     </div>
   </div>
 </template>
@@ -85,6 +91,7 @@ export default {
       user: "",
       user_id: 0,
       widget: [],
+      widgetSuite: [],
       flush: false
     };
   },
@@ -112,9 +119,9 @@ export default {
         }
       }
       this.userIdFlush();
-      this.widgetGet();
+      this.widgetGet(this.widgetSuiteGenerate);
     },
-    async widgetGet() {
+    async widgetGet(widgetSuiteGenerate) {
       try {
         const { data: res } = await axios.post(api.widget, {
           user_id: this.user_id
@@ -123,6 +130,7 @@ export default {
           res.data[x].show = false;
         }
         this.widget = res.data;
+        widgetSuiteGenerate();
       } catch (e) {
         console.log(e);
         this.$message({
@@ -130,6 +138,21 @@ export default {
           type: "error"
         });
       }
+    },
+    widgetSuiteGenerate() {
+      var count = 0;
+      this.widgetSuite = [];
+      this.widgetSuite.push([]);
+      for (let x = 0; x < this.widget.length; x++) {
+        if (count < 24) {
+          this.widgetSuite[-1].push(this.widget[x]);
+          count += this.widget[x].span;
+        } else {
+          this.widgetSuite.push([]);
+          this.count = 0;
+        }
+      }
+      console.log(this.widgetSuite);
     },
     userIdFlush() {
       try {

@@ -6,7 +6,7 @@
       </div>
     </el-row>
   <ve-line height=250px :settings="chartSettings" :data="chartData" ref="chart" :legend-visible="true" ></ve-line>
-    <el-row type="flex" justify="center" class="margin_top-medium" v-show="user_id!=0">
+    <el-row type="flex" justify="center" v-show="user_id!=0">
       <WidgetButton
         :user_id="user_id"
         :widget_id="widget_id"
