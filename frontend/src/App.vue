@@ -145,7 +145,7 @@ export default {
       this.widgetSuite.push([]);
       for (let x = 0; x < this.widget.length; x++) {
         if (count < 24) {
-          this.widgetSuite[-1].push(this.widget[x]);
+          this.widgetSuite[this.widgetSuite.length - 1].push(this.widget[x]);
           count += this.widget[x].span;
         } else {
           this.widgetSuite.push([]);
