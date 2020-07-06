@@ -1,5 +1,5 @@
 <template>
-  <ve-line :data="chartData" :legend-visible="false"></ve-line>
+  <ve-line :data="chartData" ref="chart" :legend-visible="false"></ve-line>
 </template>
 <script>
 import axios from "axios";
@@ -18,12 +18,14 @@ export default {
     flush: Boolean
   },
   components: {
-    WidgetButton,
+    WidgetButton
   },
   watch: {
     flush(newVal, oldVal) {
       if (newVal) {
-        this.weatherData();
+        this.$nextTick(_ => {
+          this.$refs[`chart`].echarts.resize();
+        });
       }
     }
   },
@@ -48,6 +50,7 @@ export default {
             "价格": res.data[x]["price"]
           });
         }
+        this.flush = true;
         this.$emit("done");
       } catch (e) {
         console.log(e);
