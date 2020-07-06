@@ -22,11 +22,16 @@
         @notify="notify()"
       ></WidgetButton>
     </el-row>
+
+    <el-dialog title="提醒" :visible.sync="notifyVisible" width="40%">
+      <PushEdit :user_id="user_id" :widget_id="widget_id" v-if="notifyVisible" @done="notify()"></PushEdit>
+    </el-dialog>
   </div>
 </template>
 <script>
 import axios from "axios";
 import WidgetButton from "./common/WidgetButton.vue";
+import PushEdit from "./common/PushEdit.vue";
 
 const api = {
   goldData: "/gold/get"
@@ -41,7 +46,8 @@ export default {
     flush: Boolean
   },
   components: {
-    WidgetButton
+    WidgetButton,
+    PushEdit
   },
   watch: {
     flush(newVal, oldVal) {
@@ -60,10 +66,14 @@ export default {
       chartData: {
         columns: [],
         rows: []
-      }
+      },
+      notifyVisible: false
     };
   },
   methods: {
+    notify() {
+      this.notifyVisible = !this.notifyVisible;
+    },
     async goldPriceGet() {
       try {
         const { data: res } = await axios.post(api.goldData);

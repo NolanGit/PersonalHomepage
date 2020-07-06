@@ -11,7 +11,11 @@
       <search :user_id="user_id" />
     </el-row>
     <div class="cardRow">
-      <el-row v-for="(singleWidgetSuite,suiteIndex) in widgetSuite" :key="singleWidgetSuite">
+      <el-row
+        class="margin_top-large"
+        v-for="(singleWidgetSuite,suiteIndex) in widgetSuite"
+        :key="singleWidgetSuite"
+      >
         <el-col
           :span="singleWidget.span"
           v-for="(singleWidget,index) in singleWidgetSuite"
@@ -151,7 +155,6 @@ export default {
         this.widgetSuite[this.widgetSuite.length - 1].push(this.widget[x]);
         count += this.widget[x].span;
       }
-      console.log(this.widgetSuite);
     },
     userIdFlush() {
       try {

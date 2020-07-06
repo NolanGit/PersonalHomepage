@@ -41,32 +41,6 @@
         </div>
       </el-form-item>
       <el-form-item
-        label="提醒时间"
-        v-show="notifyData.form.notify.select == 1"
-      >
-        <div class="div-flex">
-          <el-date-picker
-            v-model="notifyData.form.triggerDate"
-            type="date"
-            placeholder="选择日期"
-            value-format="yyyy-MM-dd"
-            size="small"
-            class="main_select--medium"
-          ></el-date-picker>
-          <el-time-select
-            v-model="notifyData.form.triggerTime"
-            :picker-options="{
-              start: '00:00',
-              step: '00:15',
-              end: '24:00'
-            }"
-            placeholder="选择时间"
-            size="small"
-            class="main_select--medium"
-          ></el-time-select>
-        </div>
-      </el-form-item>
-      <el-form-item
         label="提醒间隔"
         v-show="notifyData.form.notify.select == 1"
       >
@@ -91,6 +65,32 @@
               :value="item.value"
             ></el-option>
           </el-select>
+        </div>
+      </el-form-item>
+      <el-form-item
+        label="在此时间后开始推送"
+        v-show="notifyData.form.notify.select == 1"
+      >
+        <div class="div-flex">
+          <el-date-picker
+            v-model="notifyData.form.triggerDate"
+            type="date"
+            placeholder="选择日期"
+            value-format="yyyy-MM-dd"
+            size="small"
+            class="main_select--medium"
+          ></el-date-picker>
+          <el-time-select
+            v-model="notifyData.form.triggerTime"
+            :picker-options="{
+              start: '00:00',
+              step: '00:15',
+              end: '24:00'
+            }"
+            placeholder="选择时间"
+            size="small"
+            class="main_select--medium"
+          ></el-time-select>
         </div>
       </el-form-item>
     </el-form>
@@ -174,6 +174,8 @@ export default {
           widget_id: this.widget_id
         });
         if (res.data.length == 0) {
+          this.notifyData.form.triggerDate = new Date()
+          this.notifyData.form.triggerTime = new Date()
           return;
         } else {
           this.id = res.data.id

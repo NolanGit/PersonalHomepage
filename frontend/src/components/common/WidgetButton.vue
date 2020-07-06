@@ -18,6 +18,14 @@
       v-if="buttons.indexOf('sort')!= -1"
     ></el-button>
     <el-button
+      class="bmargin_left-mini margin_right-mini"
+      size="small"
+      @click="setting()"
+      icon="el-icon-setting"
+      circle
+      v-if="buttons.indexOf('setting')!= -1"
+    ></el-button>
+    <el-button
       class="margin_left-mini margin_right-mini"
       size="small"
       @click="notify()"

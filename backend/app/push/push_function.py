@@ -116,7 +116,7 @@ class PushData(object):
                         notify_interval_raw=self.notify_interval_raw,
                         notify_interval_unit=self.notify_interval_unit,
                         notify_interval=self.notify_interval,
-                        notify_trigger_time=self.notify_trigger_time + datetime.timedelta(hours=self.notify_interval),
+                        notify_trigger_time=datetime.datetime.now() + datetime.timedelta(hours=self.notify_interval),
                         update_time=datetime.datetime.now())
             return True
         except Exception as e:
