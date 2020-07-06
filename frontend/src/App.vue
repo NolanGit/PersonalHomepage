@@ -135,6 +135,7 @@ export default {
         for (let x = 0; x < res.data.length; x++) {
           res.data[x].show = false;
           res.data[x].flush = false;
+          res.data[x].flushCount = res.data[x].auto_update;
         }
         this.widget = res.data;
         widgetSuiteGenerate();
@@ -182,9 +183,10 @@ export default {
     done(suiteIndex, index) {
       this.widgetSuite[suiteIndex][index].show = true;
       this.flush = false;
+      this.widgetSuite[suiteIndex][index].flushCount = this.widgetSuite[suiteIndex][index].auto_update;
       window.setInterval(() => {
         setTimeout((this.widgetSuite[suiteIndex][index].flush = true), 0);
-      }, this.widgetSuite[suiteIndex][index].auto_update);
+      }, this.widgetSuite[suiteIndex][index].flushCount);
     }
   },
   created() {
