@@ -1,5 +1,7 @@
 <template>
-  <LineChart :name="name" :xdata="xdata" :ydata="ydata"></LineChart>
+  <div style="width: 100%; length: 100%">
+    <LineChart :name="name" :xdata="xdata" :ydata="ydata"></LineChart>
+  </div>
 </template>
 <script>
 import axios from "axios";
