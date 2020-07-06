@@ -1,16 +1,16 @@
 import os
 import peewee
 import configparser
-from peewee import *
+from peewee import CharField, IntegerField, DateTimeField
 from .model_function import BaseModel
-
-
 
 
 class widget(BaseModel):
     name = CharField()
     is_valid = IntegerField()
-    span = IntegerField() # 页面一行的宽度为24
+    span = IntegerField()  # 页面一行的宽度为24
+    buttons = CharField()  # 此组件具有的按钮
+    auto_update = IntegerField()  # 自动请求接口更新时间，为0时不自动更新，单位为秒
     update_time = DateTimeField()
 
     class Meta:

@@ -1,6 +1,6 @@
 import os
 import peewee
-from peewee import *
+from peewee import CharField, DateTimeField
 from .model_function import BaseModel
 
 

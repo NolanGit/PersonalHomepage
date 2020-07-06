@@ -1,7 +1,7 @@
 import os
 import peewee
 import configparser
-from peewee import *
+from peewee import CharField, IntegerField, DateTimeField
 from .model_function import BaseModel
 
 
