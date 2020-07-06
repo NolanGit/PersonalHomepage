@@ -8,8 +8,8 @@ class Config(object):
     def get(self, key):
         import configparser
         cf = configparser.ConfigParser()
-        cf.read('.homepage.config')
-        return cf.get('config', 'SENDER')
+        cf.read('../homepage.config')
+        return cf.get('config', key)
 
 
 class CommonFunc(object):
