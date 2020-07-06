@@ -10,7 +10,7 @@
     <el-row class="searchRow">
       <search :user_id="user_id" />
     </el-row>
-    <div class="cardRow div-flex">
+    <div class="cardRow">
       <el-row v-for="(singleWidgetSuite,suiteIndex) in widgetSuite" :key="singleWidgetSuite">
         <el-col
           :span="singleWidget.span"
