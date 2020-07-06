@@ -1,9 +1,8 @@
 <template>
-  <LineChart :name="name" :rows="rows" :columns="columns"></LineChart>
+  <ve-line :data="chartData" :legend-visible="false"></ve-line>
 </template>
 <script>
 import axios from "axios";
-import LineChart from "./common/LineChart.vue";
 import WidgetButton from "./common/WidgetButton.vue";
 
 const api = {
@@ -20,7 +19,6 @@ export default {
   },
   components: {
     WidgetButton,
-    LineChart
   },
   watch: {
     flush(newVal, oldVal) {
@@ -32,18 +30,20 @@ export default {
   data() {
     return {
       name: "黄金价格",
-      rows: [],
-      columns: []
+      chartData: {
+        columns: [],
+        rows: []
+      }
     };
   },
   methods: {
     async goldPriceGet() {
       try {
         const { data: res } = await axios.post(api.goldData);
-        this.rows = [];
-        this.columns = ["日期", "价格"];
+        this.chartData.rows = [];
+        this.chartData.columns = ["日期", "价格"];
         for (let x = 0; x < res.data.length; x++) {
-          this.rows.push({
+          this.chartData.rows.push({
             "日期": res.data[x]["update_time"],
             "价格": res.data[x]["price"]
           });
