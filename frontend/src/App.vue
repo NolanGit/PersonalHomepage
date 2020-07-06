@@ -165,7 +165,7 @@ export default {
         for (let y = 0; y < this.widgetSuite[x].length; y++) {
           window.setInterval(() => {
             setTimeout((this.widgetSuite[x][y].flush = true), 0);
-          }, this.widgetSuite[x][y].flushCount);
+          }, this.widgetSuite[x][y].auto_update);
         }
       }
     },
