@@ -135,10 +135,9 @@ export default {
         for (let x = 0; x < res.data.length; x++) {
           res.data[x].show = false;
           res.data[x].flush = false;
-          res.data[x].flushCount = res.data[x].auto_update;
         }
         this.widget = res.data;
-        widgetSuiteGenerate();
+        widgetSuiteGenerate(this.autoUpdate);
       } catch (e) {
         console.log(e);
         this.$message({
@@ -147,7 +146,7 @@ export default {
         });
       }
     },
-    widgetSuiteGenerate() {
+    widgetSuiteGenerate(autoUpdate) {
       var count = 0;
       this.widgetSuite = [];
       this.widgetSuite.push([]);
@@ -158,6 +157,16 @@ export default {
         }
         this.widgetSuite[this.widgetSuite.length - 1].push(this.widget[x]);
         count += this.widget[x].span;
+      }
+      autoUpdate();
+    },
+    autoUpdate() {
+      for (let x = 0; x < this.widgetSuite.length; x++) {
+        for (let y = 0; y < this.widgetSuite[x].length; y++) {
+          window.setInterval(() => {
+            setTimeout((this.widgetSuite[x][y].flush = true), 0);
+          }, this.widgetSuite[x][y].flushCount);
+        }
       }
     },
     userIdFlush() {
@@ -183,10 +192,6 @@ export default {
     done(suiteIndex, index) {
       this.widgetSuite[suiteIndex][index].show = true;
       this.widgetSuite[suiteIndex][index].flush = false;
-      this.widgetSuite[suiteIndex][index].flushCount = this.widgetSuite[suiteIndex][index].auto_update;
-      window.setInterval(() => {
-        setTimeout((this.widgetSuite[suiteIndex][index].flush = true), 0);
-      }, this.widgetSuite[suiteIndex][index].flushCount);
     }
   },
   created() {
