@@ -4,8 +4,15 @@ import hashlib
 import inspect
 
 
-class CommonFunc(object):
+class Config(object):
+    def get(self, key):
+        import configparser
+        cf = configparser.ConfigParser()
+        cf.read('.homepage.config')
+        return cf.get('config', 'SENDER')
 
+
+class CommonFunc(object):
     def random_str(self, num):
         H = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
 
@@ -24,11 +31,11 @@ class CommonFunc(object):
             获取字典列表中第一个key==value的target_key的值，index的传入可以加速
         '''
         # 不知道index情况下遍历
-        result=None
+        result = None
         if index == 0:
             for single_element in list:
                 if single_element[key] == value:
-                    result= single_element[target_key]
+                    result = single_element[target_key]
                     break
         # 知道index情况下加速结果返回速度
         else:
@@ -38,11 +45,11 @@ class CommonFunc(object):
             except Exception as e:
                 temp = False
             if temp:
-                result=list[index][target_key]
+                result = list[index][target_key]
             else:
                 for single_element in list:
                     if single_element[key] == value:
-                        result=single_element[target_key]
+                        result = single_element[target_key]
                         break
         return result
 
@@ -63,12 +70,8 @@ class CommonFunc(object):
         return True if len(status) != 0 else False
 
     def attr_to_dict(self, instance):
-        aaa = inspect.getmembers(
-            instance, lambda a: not (inspect.isroutine(a)))
-        bbb = [
-            a for a in aaa
-            if not (a[0].startswith('__') and a[0].endswith('__'))
-        ]
+        aaa = inspect.getmembers(instance, lambda a: not (inspect.isroutine(a)))
+        bbb = [a for a in aaa if not (a[0].startswith('__') and a[0].endswith('__'))]
         ccc = {}
         for b in bbb:
             ccc[b[0]] = b[1]

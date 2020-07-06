@@ -359,15 +359,17 @@ INSERT INTO `privilege_role` (`id`, `privilege_id`, `role_id`, `is_valid`) VALUE
 INSERT INTO `privilege_role` (`id`, `privilege_id`, `role_id`, `is_valid`) VALUES ('56', '46', '1', '1');
 INSERT INTO `user` (`id`, `name`, `login_name`, `password`, `stable_salt`, `salt`, `salt_expire_time`, `role_id`, `email`, `wechat_key`, `is_valid`, `create_time`, `update_time`) VALUES (1, '管理员', 'admin', '71f11204b9cbf6ef09e83e43dda7399e', 'fndTb5mWFA6JYtdW1AKJvQSzZ3ERpVt0YupukTjI', 'SX2JQywwb13zhlt7uPPXh8Bne6V40JL2RwD3L6Wh', '2019-10-28 11:35:37', 1, 'my_email@my_email.cn', 'my_wechat_key', 1, '2019-08-21 16:46:21.981898', '2019-08-21 16:46:21.981898');
 INSERT INTO `role` (`id`, `name`, `is_valid`, `update_time`) VALUES ('1', '管理员', '1', '2019-10-28 11:35:37');
-INSERT INTO `widget` (`id`, `name`, `is_valid`, `span`, `update_time`) VALUES ('1', 'weather', '1', '8', '2019-10-28 11:35:37');
-INSERT INTO `widget` (`id`, `name`, `is_valid`, `span`, `update_time`) VALUES ('2', 'bookmarks', '1', '8', '2019-10-28 11:35:37');
-INSERT INTO `widget` (`id`, `name`, `is_valid`, `span`, `update_time`) VALUES ('3', 'app', '1', '8', '2019-10-28 11:35:37');
+INSERT INTO `widget` (`id`, `name`, `is_valid`, `span`, `buttons`, `auto_update`, `update_time`) VALUES ('1', 'weather', '1', '8', '[\'add\', \'sort\']', '1800000', '2019-10-28 11:35:37');
+INSERT INTO `widget` (`id`, `name`, `is_valid`, `span`, `buttons`, `auto_update`, `update_time`) VALUES ('2', 'bookmarks', '1', '8', '[\'add\', \'sort\']', '0', '2019-10-28 11:35:37');
+INSERT INTO `widget` (`id`, `name`, `is_valid`, `span`, `buttons`, `auto_update`, `update_time`) VALUES ('3', 'app', '1', '8', '[\'add\', \'sort\', \'notify\']', '1800000', '2019-10-28 11:35:37');
+INSERT INTO `widget` (`id`, `name`, `is_valid`, `span`, `buttons`, `auto_update`, `update_time`) VALUES ('4', 'gold', '1', '8', '[\'setting\', \'notify\']', '1800000', '2019-10-28 11:35:37');
 INSERT INTO `widget_user` (`id`, `widget_id`, `user_id`, `order`, `is_valid`, `update_time`) VALUES ('1', '1', '1', '1', '1', '2019-10-28 11:35:37');
 INSERT INTO `widget_user` (`id`, `widget_id`, `user_id`, `order`, `is_valid`, `update_time`) VALUES ('2', '2', '1', '2', '1', '2019-10-28 11:35:37');
 INSERT INTO `widget_user` (`id`, `widget_id`, `user_id`, `order`, `is_valid`, `update_time`) VALUES ('3', '3', '1', '3', '1', '2019-10-28 11:35:37');
 INSERT INTO `widget_user` (`id`, `widget_id`, `user_id`, `order`, `is_valid`, `update_time`) VALUES ('4', '1', '0', '1', '1', '2019-10-28 11:35:37');
 INSERT INTO `widget_user` (`id`, `widget_id`, `user_id`, `order`, `is_valid`, `update_time`) VALUES ('5', '2', '0', '2', '1', '2019-10-28 11:35:37');
-INSERT INTO `weather_location` (`id`, `location`, `user_id`, `is_valid`, `update_time`) VALUES ('1', '长春', '1', '1', '2019-10-28 11:35:37');
+INSERT INTO `widget_user` (`id`, `widget_id`, `user_id`, `order`, `is_valid`, `update_time`) VALUES ('6', '4', '0', '3', '1', '2019-10-28 11:35:37');
+INSERT INTO `widget_user` (`id`, `widget_id`, `user_id`, `order`, `is_valid`, `update_time`) VALUES ('7', '4', '1', '4', '1', '2019-10-28 11:35:37');
 INSERT INTO `script_sub_system` (`id`, `name`, `user_id`, `is_valid`, `update_time`) VALUES ('1', '定时任务', '1', '1', '2020-06-17 11:44:00');
 INSERT INTO `script` (`id`, `name`, `sub_system_id`, `start_folder`, `start_script`, `type`, `runs`, `is_valid`, `version`, `user`, `update_time`) VALUES ('1', '推送', '1', '/home/pi/Documents/GitHub/PersonalHomepage/backend/app/push', 'python3 push_function.py', '1', '4', '1', '1', '管理员', '2020-06-17 16:27:03');
 INSERT INTO `script` (`id`, `name`, `sub_system_id`, `start_folder`, `start_script`, `type`, `runs`, `is_valid`, `version`, `user`, `update_time`) VALUES ('2', 'App价格获取', '1', '/home/pi/Documents/GitHub/PersonalHomepage/backend/app/app_price_monitor', 'python3 app_price_spider.py', '1', '4', '1', '1', '管理员', '2020-06-17 16:28:25');
@@ -378,4 +380,6 @@ INSERT INTO `script_detail` (`id`, `script_id`, `type`, `label`, `value`, `place
 INSERT INTO `script_schedule` (`id`, `script_id`, `command`, `detail`, `version`, `user_id`, `is_valid`, `is_automatic`, `interval`, `interval_raw`, `interval_unit`, `trigger_time`, `update_time`) VALUES ('1', '1', 'cd /home/pi/Documents/GitHub/PersonalHomepage/backend/app/push && python3 push_function.py 直接运行', '{\'无需参数\': \'直接运行\'}', '1', '1', '1', '1', '1', '1', '1', '2020-06-20 00:00:00', '2020-06-19 14:54:41');
 INSERT INTO `script_schedule` (`id`, `script_id`, `command`, `detail`, `version`, `user_id`, `is_valid`, `is_automatic`, `interval`, `interval_raw`, `interval_unit`, `trigger_time`, `update_time`) VALUES ('2', '2', 'cd /home/pi/Documents/GitHub/PersonalHomepage/backend/app/app_price_monitor && python3 app_price_spider.py 直接运行', '{\'无需参数\': \'直接运行\'}', '1', '1', '1', '1', '6', '6', '1', '2020-06-20 00:15:00', '2020-06-19 14:57:29');
 INSERT INTO `script_schedule` (`id`, `script_id`, `command`, `detail`, `version`, `user_id`, `is_valid`, `is_automatic`, `interval`, `interval_raw`, `interval_unit`, `trigger_time`, `update_time`) VALUES ('361', '3', 'cd /home/pi/Documents/Github/PersonalHomepage/backend/app/gold_price_monitor && python3 gold_price_spider.py 直接运行', '{\'无需参数\': \'直接运行\'}', '1', '1', '1', '1', '2', '2', '1', '2020-06-20 00:30:00', '2020-07-01 17:12:51');
+INSERT INTO `weather_location` (`id`, `location`, `user_id`, `is_valid`, `update_time`) VALUES ('1', '长春', '1', '1', '2019-10-28 11:35:37');
 INSERT INTO `app` (`id`, `name`, `url`, `user_id`, `expect_price`, `order`, `is_valid`, `update_time`) VALUES ('1', 'WebSSH Pro', 'webssh-pro-best-ssh-terminal/id497714887', '1', '0', '1', '1', '2020-06-20 22:01:47');
+INSERT INTO `gold_price` (`id`, `price`, `update_time`) VALUES ('1', '400.7', '2020-07-01 16:51:51');
