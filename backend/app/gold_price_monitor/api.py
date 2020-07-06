@@ -24,7 +24,7 @@ def get():
         result = []
         _ = gold_price_table.select().limit(10).order_by(-gold_price_table.update_time).dicts()
         for boo in _:
-            result.append({'price': boo['price'], 'update_time': boo['update_time'].strftime("%m-%d %H:%M")})
+            result.insert(0, {'price': boo['price'], 'update_time': boo['update_time'].strftime("%m-%d %H:%M")})
         return rsp.success(result)
     except Exception as e:
         traceback.print_exc()

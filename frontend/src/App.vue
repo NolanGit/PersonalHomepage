@@ -11,7 +11,7 @@
       <search :user_id="user_id" />
     </el-row>
     <div class="cardRow div-flex">
-      <el-row v-for="singleWidgetSuite in widgetSuite" :key="singleWidgetSuite">
+      <el-row v-for="(singleWidgetSuite,suiteIndex) in widgetSuite" :key="singleWidgetSuite">
         <el-col
           :span="singleWidget.span"
           v-for="(singleWidget,index) in singleWidgetSuite"
@@ -29,14 +29,14 @@
                 :widget_id="singleWidget.id"
                 :buttons="singleWidget.buttons"
                 :flush="flush"
-                @done="done(index)"
+                @done="done(suiteIndex,index)"
               />
               <bookmarks
                 v-if="singleWidget.name=='bookmarks'"
                 :user_id="user_id"
                 :widget_id="singleWidget.id"
                 :buttons="singleWidget.buttons"
-                @done="done(index)"
+                @done="done(suiteIndex,index)"
               />
               <appMonitor
                 v-if="singleWidget.name=='app'"
@@ -44,7 +44,7 @@
                 :widget_id="singleWidget.id"
                 :buttons="singleWidget.buttons"
                 :flush="flush"
-                @done="done(index)"
+                @done="done(suiteIndex,index)"
               />
               <gold
                 v-if="singleWidget.name=='gold'"
@@ -52,7 +52,7 @@
                 :widget_id="singleWidget.id"
                 :buttons="singleWidget.buttons"
                 :flush="flush"
-                @done="done(index)"
+                @done="done(suiteIndex,index)"
               />
             </el-card>
           </transition>
@@ -173,8 +173,8 @@ export default {
         this.login_name = "";
       }
     },
-    done(index) {
-      this.widget[index].show = true;
+    done(suiteIndex, index) {
+      this.widgetSuite[suiteIndex][index].show = true;
       this.flush = false;
     }
   },
