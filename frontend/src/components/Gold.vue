@@ -1,7 +1,5 @@
 <template>
-  <div style="width: 100%; length: 100%">
-    <LineChart :name="name" :xdata="xdata" :ydata="ydata"></LineChart>
-  </div>
+  <LineChart :name="name" :rows="rows" :columns="columns"></LineChart>
 </template>
 <script>
 import axios from "axios";
@@ -34,19 +32,21 @@ export default {
   data() {
     return {
       name: "黄金价格",
-      xdata: [],
-      ydata: []
+      rows: [],
+      columns: []
     };
   },
   methods: {
     async goldPriceGet() {
       try {
         const { data: res } = await axios.post(api.goldData);
-        this.xdata = [];
-        this.ydata = [];
+        this.rows = [];
+        this.columns = ["日期", "价格"];
         for (let x = 0; x < res.data.length; x++) {
-          this.xdata.push(res.data[x]["update_time"]);
-          this.ydata.push(res.data[x]["price"]);
+          this.rows.push({
+            "日期": res.data[x]["update_time"],
+            "价格": res.data[x]["price"]
+          });
         }
         this.$emit("done");
       } catch (e) {

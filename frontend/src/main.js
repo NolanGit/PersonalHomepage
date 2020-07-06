@@ -8,9 +8,11 @@ import './assets/iconfont/iconfont.css'
 import './assets/public.css'
 import 'font-awesome/css/font-awesome.min.css'
 import VueCookies from 'vue-cookies'
+import VCharts from 'v-charts'
 
 Vue.use(VueCookies)
 Vue.use(ElementUI)
+Vue.use(VCharts)
 Vue.use(Vuex)
 
 new Vue({
