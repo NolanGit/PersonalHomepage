@@ -101,6 +101,7 @@
 </template>
 <script>
 import axios from "axios";
+import { formatDate } from "../../js/common";
 const api = {
   get: "/push/get",
   add: "/push/add",
@@ -175,9 +176,8 @@ export default {
         });
         if (res.data.length == 0) {
           var today = new Date();
-          today.setDate(today.getDate() + 1);
-          this.notifyData.form.triggerDate = today.setDate(today.getDate() + 1);
-          this.notifyData.form.triggerTime = '08:00:00'
+          this.notifyData.form.triggerDate =  formatDate(new Date(today.getTime() + 24*60*60*1000));
+          this.notifyData.form.triggerTime = '08:00'
           return;
         } else {
           this.id = res.data.id
