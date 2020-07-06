@@ -182,7 +182,7 @@ export default {
     },
     done(suiteIndex, index) {
       this.widgetSuite[suiteIndex][index].show = true;
-      this.flush = false;
+      this.widgetSuite[suiteIndex][index].flush = false;
       this.widgetSuite[suiteIndex][index].flushCount = this.widgetSuite[suiteIndex][index].auto_update;
       window.setInterval(() => {
         setTimeout((this.widgetSuite[suiteIndex][index].flush = true), 0);
