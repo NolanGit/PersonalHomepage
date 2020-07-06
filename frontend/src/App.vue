@@ -13,7 +13,7 @@
     </el-row>
     <div class="cardRow">
       <el-row
-        class="margin_top-large"
+        class="margin_bottom-large"
         v-for="(singleWidgetSuite,suiteIndex) in widgetSuite"
         :key="singleWidgetSuite"
       >
