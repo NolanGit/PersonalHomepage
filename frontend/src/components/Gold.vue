@@ -48,6 +48,8 @@ export default {
             "价格": res.data[x]["price"]
           });
         }
+        console.log(this.rows)
+        console.log(this.columns)
         this.$emit("done");
       } catch (e) {
         console.log(e);

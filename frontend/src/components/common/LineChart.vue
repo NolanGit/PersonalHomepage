@@ -29,11 +29,15 @@ export default {
     dataInit(newVal) {
       this.chartData.columns = this.columns;
       this.chartData.rows = this.rows;
+      console.log(this.rows);
+      console.log(this.columns);
     }
   },
   mounted() {
     this.chartData.columns = this.columns;
     this.chartData.rows = this.rows;
+    console.log(this.rows);
+    console.log(this.columns);
   }
 };
 </script>
