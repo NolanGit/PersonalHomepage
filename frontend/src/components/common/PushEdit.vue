@@ -174,7 +174,9 @@ export default {
           widget_id: this.widget_id
         });
         if (res.data.length == 0) {
-          this.notifyData.form.triggerDate = new Date(curDate.getTime() + 24*60*60*1000)
+          var today = new Date();
+          today.setDate(today.getDate() + 1);
+          this.notifyData.form.triggerDate = today.setDate(today.getDate() + 1);
           this.notifyData.form.triggerTime = '08:00:00'
           return;
         } else {
