@@ -76,7 +76,7 @@ def app_price_push_generator():
     '''
     from common_func import Config
 
-    app_push_data_list = PushList(widget_id=Config('WIDGET_ID_APP').get()).push_list_get(is_need_2_push=True).push_list
+    app_push_data_list = PushList(widget_id=Config().get('WIDGET_ID_APP')).push_list_get(is_need_2_push=True).push_list
     print('有%s条数据到达推送时间，需要检测是否满足推送条件' % str(len(app_push_data_list)))
     for app_push_data in app_push_data_list:
         user_id = app_push_data.user_id

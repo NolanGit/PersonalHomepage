@@ -22,7 +22,7 @@ URL_PREFIX = '/gold'
 def get():
     try:
         result = []
-        _ = gold_price_table.select().limit(20).order_by(-gold_price_table.update_time).dicts()
+        _ = gold_price_table.select().limit(40).order_by(-gold_price_table.update_time).dicts()
         for boo in _:
             result.insert(0, {'price': boo['price'], 'update_time': boo['update_time'].strftime("%m-%d %H:%M")})
         return rsp.success(result)
