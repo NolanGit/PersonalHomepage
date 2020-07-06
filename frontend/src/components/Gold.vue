@@ -1,5 +1,22 @@
 <template>
-  <ve-line :data="chartData" ref="chart" :legend-visible="false"></ve-line>
+<div class="gold-main">
+    <el-row type="flex" justify="center">
+      <div>
+        <div class="widget-label">黄金</div>
+      </div>
+    </el-row>
+  <ve-line height=250px :settings="chartSettings" :data="chartData" ref="chart" :legend-visible="true" ></ve-line>
+    <el-row type="flex" justify="center" class="margin_top-medium" v-show="user_id!=0">
+      <WidgetButton
+        :user_id="user_id"
+        :widget_id="widget_id"
+        :buttons="buttons"
+        @add="add()"
+        @sort="sort()"
+        @notify="notify()"
+      ></WidgetButton>
+    </el-row>
+</div>
 </template>
 <script>
 import axios from "axios";
@@ -28,6 +45,10 @@ export default {
     }
   },
   data() {
+    this.chartSettings = {
+      min:['dataMin'],
+      max:['dataMax']
+    }
     return {
       name: "黄金价格",
       chartData: {
