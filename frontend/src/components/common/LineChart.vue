@@ -10,10 +10,10 @@ export default {
     columns: Array
   },
   watch: {
-    xdata(newVal, oldVal) {
+    rows(newVal, oldVal) {
       this.dataInit(newVal);
     },
-    ydata(newVal, oldVal) {
+    columns(newVal, oldVal) {
       this.dataInit(newVal);
     }
   },
@@ -29,15 +29,9 @@ export default {
     dataInit(newVal) {
       this.chartData.columns = this.columns;
       this.chartData.rows = this.rows;
-      console.log(this.rows);
-      console.log(this.columns);
     }
   },
   mounted() {
-    this.chartData.columns = this.columns;
-    this.chartData.rows = this.rows;
-    console.log(this.rows);
-    console.log(this.columns);
   }
 };
 </script>
