@@ -19,7 +19,7 @@ class gold_price_push_option(BaseModel):
     update_time = DateTimeField()
 
     class Meta:
-        table_name = 'gold_price'
+        table_name = 'gold_price_push_option'
 
 
 gold_price.create_table()
