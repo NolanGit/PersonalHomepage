@@ -33,7 +33,7 @@
                 :user_id="user_id"
                 :widget_id="singleWidget.id"
                 :buttons="singleWidget.buttons"
-                :flush="flush"
+                :flush="singleWidget.flush"
                 @done="done(suiteIndex,index)"
               />
               <bookmarks
@@ -48,7 +48,7 @@
                 :user_id="user_id"
                 :widget_id="singleWidget.id"
                 :buttons="singleWidget.buttons"
-                :flush="flush"
+                :flush="singleWidget.flush"
                 @done="done(suiteIndex,index)"
               />
               <gold
@@ -56,7 +56,7 @@
                 :user_id="user_id"
                 :widget_id="singleWidget.id"
                 :buttons="singleWidget.buttons"
-                :flush="flush"
+                :flush="singleWidget.flush"
                 @done="done(suiteIndex,index)"
               />
             </el-card>
@@ -81,7 +81,6 @@ const api = {
   userInfo: "/userInfo",
   widget: "/widget"
 };
-const UPDATE_INTERVAL = 1800000; //每半小时请求一次接口更新天气和App监控的数据
 
 export default {
   components: {
@@ -135,6 +134,7 @@ export default {
         });
         for (let x = 0; x < res.data.length; x++) {
           res.data[x].show = false;
+          res.data[x].flush = false;
         }
         this.widget = res.data;
         widgetSuiteGenerate();
@@ -182,6 +182,9 @@ export default {
     done(suiteIndex, index) {
       this.widgetSuite[suiteIndex][index].show = true;
       this.flush = false;
+      window.setInterval(() => {
+        setTimeout((this.widgetSuite[suiteIndex][index].flush = true), 0);
+      }, this.widgetSuite[suiteIndex][index].auto_update);
     }
   },
   created() {
@@ -189,9 +192,6 @@ export default {
   },
   mounted() {
     this.userInfo();
-    window.setInterval(() => {
-      setTimeout((this.flush = true), 0);
-    }, UPDATE_INTERVAL);
   }
 };
 </script>

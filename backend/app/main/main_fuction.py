@@ -1,12 +1,5 @@
 from ..login.login_funtion import User
 
-BUTTONS = {
-    'weather': ['add', 'sort'],
-    'bookmarks': ['add', 'sort'],
-    'app': ['add', 'sort', 'notify'],
-    'gold': ['notify'],
-}
-
 
 class MainUser(User):
 
