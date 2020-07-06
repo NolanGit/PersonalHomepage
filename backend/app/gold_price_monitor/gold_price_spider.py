@@ -50,6 +50,37 @@ def save_2_db(price):
     gold_price.create(price=price, update_time=datetime.datetime.now())
 
 
+def app_price_push_generator():
+    '''
+        首先获取所有需要推送数据，然后去价格表查最新的一条，将要推送的数据写入队列
+    '''
+    from common_func import Config
+
+    app_push_data_list = PushList(widget_id=Config().get('WIDGET_ID_APP')).push_list_get(is_need_2_push=True).push_list
+    print('有%s条数据到达推送时间，需要检测是否满足推送条件' % str(len(app_push_data_list)))
+    for app_push_data in app_push_data_list:
+        user_id = app_push_data.user_id
+
+        content = ''
+        applist = app_get(app_push_data.user_id)
+        for app in applist:
+            current_price, update_time = app_price_get(app['id'])
+            if float(current_price) <= float(app['expect_price']):
+                content = content + '\n' + '[' + app['name'] + ']' + ' is ¥' + str(current_price) + ' now !(' + update_time + ')' + '\n'
+        if content != '':
+            if app_push_data.notify_method == 1:
+                address = User(user_id=user_id).wechat_key
+            elif app_push_data.notify_method == 2:
+                address = User(user_id=user_id).email
+            title = 'App Discount!'
+            if (app_push_data.add_to_push_queue(title, address, content)):
+                print('已加入队列.')
+                if (app_push_data.generate_next()):
+                    app_push_data.delete()
+        else:
+            print('不满足推送条件')
+
+
 if __name__ == '__main__':
     current_hour = int(time.strftime('%H', time.localtime(time.time())))
     current_minute = int(time.strftime('%M', time.localtime(time.time())))
