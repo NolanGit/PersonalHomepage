@@ -4,7 +4,7 @@
 // 如果cookie过期则清空cookie，置相关字段为空或0，获取不登陆状态可以使用的组件列表并加载；如果有效，则获取用户的组件并加载
 <template>
   <div id="app">
-    <GithubConner />
+    <githubConner />
     <el-row class="loginRow">
       <login :user_id="user_id" :user_name="user_name" :login_name="login_name" />
     </el-row>
@@ -69,7 +69,7 @@
 
 <script>
 import axios from "axios";
-import GithubConner from "./components/common/GithubConner";
+import githubConner from "./components/common/GithubConner";
 import search from "./components/Search.vue";
 import login from "./components/Login.vue";
 import weather from "./components/Weather.vue";
@@ -85,6 +85,7 @@ const UPDATE_INTERVAL = 1800000; //每半小时请求一次接口更新天气和
 
 export default {
   components: {
+    githubConner,
     search,
     login,
     weather,

@@ -24,7 +24,7 @@
 </template>
 <script>
 export default {
-  name: "GithubConner"
+  name: "githubConner"
 };
 </script>
 <style>
