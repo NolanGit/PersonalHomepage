@@ -23,9 +23,7 @@ export default {
   watch: {
     flush(newVal, oldVal) {
       if (newVal) {
-        this.$nextTick(_ => {
-          this.$refs[`chart`].echarts.resize();
-        });
+        this.goldPriceGet();
       }
     }
   },
@@ -46,11 +44,13 @@ export default {
         this.chartData.columns = ["日期", "价格"];
         for (let x = 0; x < res.data.length; x++) {
           this.chartData.rows.push({
-            "日期": res.data[x]["update_time"],
-            "价格": res.data[x]["price"]
+            日期: res.data[x]["update_time"],
+            价格: res.data[x]["price"]
           });
         }
-        this.flush = true;
+        this.$nextTick(_ => {
+          this.$refs[`chart`].echarts.resize();
+        });
         this.$emit("done");
       } catch (e) {
         console.log(e);
