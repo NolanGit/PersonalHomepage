@@ -37,8 +37,8 @@ class MainUser(User):
             'order': single_user_widget['order'],
             'name': cf.dict_list_get_single_element(widget_list, 'id', single_user_widget['widget_id'], 'name', single_user_widget['widget_id'] - 1),
             'span': cf.dict_list_get_single_element(widget_list, 'id', single_user_widget['widget_id'], 'span', single_user_widget['widget_id'] - 1),
-            'buttons':  cf.dict_list_get_single_element(widget_list, 'id', single_user_widget['widget_id'], 'buttons', single_user_widget['widget_id'] - 1),
-            'auto_update':  cf.dict_list_get_single_element(widget_list, 'id', single_user_widget['widget_id'], 'auto_update', single_user_widget['widget_id'] - 1),]
+            'buttons': cf.dict_list_get_single_element(widget_list, 'id', single_user_widget['widget_id'], 'buttons', single_user_widget['widget_id'] - 1),
+            'auto_update': cf.dict_list_get_single_element(widget_list, 'id', single_user_widget['widget_id'], 'auto_update', single_user_widget['widget_id'] - 1),
         } for single_user_widget in user_widget_list]
         self.widget = result
         return self
