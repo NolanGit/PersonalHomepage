@@ -51,4 +51,10 @@ def save_2_db(price):
 
 
 if __name__ == '__main__':
-    save_2_db(get_gold_price())
+    current_hour = int(time.strftime('%H', time.localtime(time.time())))
+    current_minute = int(time.strftime('%M', time.localtime(time.time())))
+    current_time = current_hour + current_minute / 100
+    current_week = int(time.strftime('%w', time.localtime(time.time())))
+    if current_week != 0 and current_week != 6:
+        if 8 < current_time < 12 or 13.30 < current_time < 16 or 20 < current_time < 24:  # 仅在国内黄金市场开盘时间前后进行爬取，24点之后休息时间不爬
+            save_2_db(get_gold_price())
