@@ -2,7 +2,7 @@
   <div class="gold-main">
     <el-row type="flex" justify="center">
       <div>
-        <div class="widget-label">黄金</div>
+        <div class="widget-label">黄金价格</div>
       </div>
     </el-row>
     <ve-line
