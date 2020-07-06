@@ -76,6 +76,10 @@
     padding-left: 8px;
 }
 
+.padding_bottom-medium {
+    padding-left: 20px;
+}
+
 .min_width-small {
     min-width: 10px;
 }
@@ -217,6 +221,10 @@
 
 .max-height-medium {
     max-height: 40vh;
+}
+
+.margin_top-large {
+    margin-top: 40px;
 }
 
 .margin_top-medium {

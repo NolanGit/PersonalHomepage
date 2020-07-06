@@ -2,7 +2,7 @@
 <template>
   <!--编辑提醒界面-->
   <div>
-    <el-form ref="form" :model="notifyData.form" size="mini">
+    <el-form ref="form" :model="notifyData.form" size="mini" class="padding_bottom-medium">
       <el-form-item label="是否推送">
         <div class="div-flex">
           <el-select
@@ -174,8 +174,8 @@ export default {
           widget_id: this.widget_id
         });
         if (res.data.length == 0) {
-          this.notifyData.form.triggerDate = new Date()
-          this.notifyData.form.triggerTime = new Date()
+          this.notifyData.form.triggerDate = new Date(curDate.getTime() + 24*60*60*1000)
+          this.notifyData.form.triggerTime = '08:00:00'
           return;
         } else {
           this.id = res.data.id
