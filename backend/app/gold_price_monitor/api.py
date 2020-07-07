@@ -45,8 +45,8 @@ def get():
 def edit():
     try:
         user_id = request.get_json()['user_id']
-        threshold_min = request.get_json()['threshold_min']
-        threshold_max = request.get_json()['threshold_max']
+        threshold_min = float(request.get_json()['threshold_min'])
+        threshold_max = float(request.get_json()['threshold_max'])
 
         if threshold_min >= threshold_max:
             return rsp.failed('阈值最小值不能大于或等于阈值最大值'), 500

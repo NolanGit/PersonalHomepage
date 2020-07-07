@@ -66,8 +66,8 @@ def gold_price_push_generator(price):
         user_id = push_data.user_id
         try:
             _ = gold_price_push_option.get((gold_price_push_option.user_id == user_id) & (gold_price_push_option.is_valid == 1))
-            threshold_min = eval(_.push_threshold)[0]
-            threshold_max = eval(_.push_threshold)[1]
+            threshold_min = float(eval(_.push_threshold)[0])
+            threshold_max = float(eval(_.push_threshold)[1])
             if price < threshold_min or price > threshold_max:
                 content = 'Gold price is %s now!' % str(price)
                 title = 'Gold price monitor'

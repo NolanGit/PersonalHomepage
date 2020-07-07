@@ -107,7 +107,7 @@ export default {
           threshold_max: this.settingForm.pushThresholdMax
         });
         this.$message({
-          message: e.response.data.msg,
+          message: res.msg,
           type: "success"
         });
         this.settingForm.visible = false;
