@@ -17,6 +17,17 @@ class widget(BaseModel):
         table_name = 'widget'
 
 
+class widget_suite(BaseModel):
+    user_id = IntegerField()
+    order = IntegerField()
+    is_valid = IntegerField()
+    detail = CharField()
+    update_time = DateTimeField()
+
+    class Meta:
+        table_name = 'widget_suite'
+
+
 class widget_user(BaseModel):
     widget_id = IntegerField()
     user_id = IntegerField()
@@ -29,4 +40,5 @@ class widget_user(BaseModel):
 
 
 widget.create_table()
+widget_suite.create_table()
 widget_user.create_table()
