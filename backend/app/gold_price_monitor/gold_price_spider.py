@@ -70,7 +70,7 @@ def gold_price_push_generator(price):
             threshold_max = float(eval(_.push_threshold)[1])
             if price < threshold_min or price > threshold_max:
                 content = 'Gold price is %s now!' % str(price)
-                title = 'Gold price monitor'
+                title = 'GoldPriceMonitor'
                 if (push_data.add_to_push_queue(title, content)):
                     print('已加入队列.')
                     if (push_data.generate_next()):
