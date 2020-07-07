@@ -54,7 +54,7 @@ def edit():
             _.save()
         except DoesNotExist:
             pass
-        gold_price_push_option.create(user_id=user_id, is_valid=1, push_threshold=threshold, update_time=dateyime.datetime.now())
+        gold_price_push_option.create(user_id=user_id, is_valid=1, push_threshold=threshold, update_time=datetime.datetime.now())
         response = {'code': 200, 'msg': '成功！', 'data': []}
         return jsonify(response)
     except Exception as e:
