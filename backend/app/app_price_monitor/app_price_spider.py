@@ -89,7 +89,7 @@ def app_price_push_generator():
                 content = content + '\n' + '[' + app['name'] + ']' + ' is ¥' + str(current_price) + ' now !(' + update_time + ')' + '\n'
         if content != '':
             title = 'App Discount!'
-            if (app_push_data.add_to_push_queue(address, content)):
+            if (app_push_data.add_to_push_queue(title, content)):
                 print('已加入队列.')
                 if (app_push_data.generate_next()):
                     app_push_data.delete()
