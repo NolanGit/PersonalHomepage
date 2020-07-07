@@ -60,7 +60,7 @@ def edit():
             _.save()
         except DoesNotExist:
             pass
-        gold_price_push_option.create(user_id=user_id, is_valid=1, push_threshold=threshold, update_time=datetime.datetime.now())
+        gold_price_push_option.create(user_id=user_id, is_valid=1, push_threshold=str(threshold), update_time=datetime.datetime.now())
         return rsp.success()
     except Exception as e:
         traceback.print_exc()

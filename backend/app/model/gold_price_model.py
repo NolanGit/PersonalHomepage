@@ -15,7 +15,7 @@ class gold_price(BaseModel):
 class gold_price_push_option(BaseModel):
     user_id = IntegerField()
     is_valid = IntegerField()
-    push_threshold = IntegerField()
+    push_threshold = CharField()
     update_time = DateTimeField()
 
     class Meta:
