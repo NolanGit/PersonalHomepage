@@ -51,6 +51,9 @@ export default {
     sort() {
       this.$emit("sort");
     },
+    setting() {
+      this.$emit("setting");
+    },
     notify() {
       this.$emit("notify");
     }

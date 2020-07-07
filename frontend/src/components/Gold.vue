@@ -6,7 +6,7 @@
       </div>
     </el-row>
     <ve-line
-      height="250px"
+      height="210px"
       :settings="chartSettings"
       :data="chartData"
       ref="chart"
@@ -20,6 +20,7 @@
         @add="add()"
         @sort="sort()"
         @notify="notify()"
+        @setting="setting()"
       ></WidgetButton>
     </el-row>
 
@@ -67,12 +68,20 @@ export default {
         columns: [],
         rows: []
       },
-      notifyVisible: false
+      notifyVisible: false,
+      setting: {
+        visible: false,
+        pushThresholdMin: Number,
+        pushThresholdMax: Number
+      }
     };
   },
   methods: {
     notify() {
       this.notifyVisible = !this.notifyVisible;
+    },
+    setting() {
+      this.setting.visible = true;
     },
     async goldPriceGet() {
       try {
