@@ -88,12 +88,8 @@ def app_price_push_generator():
             if float(current_price) <= float(app['expect_price']):
                 content = content + '\n' + '[' + app['name'] + ']' + ' is ¥' + str(current_price) + ' now !(' + update_time + ')' + '\n'
         if content != '':
-            if app_push_data.notify_method == 1:
-                address = User(user_id=user_id).wechat_key
-            elif app_push_data.notify_method == 2:
-                address = User(user_id=user_id).email
             title = 'App Discount!'
-            if (app_push_data.add_to_push_queue(title, address, content)):
+            if (app_push_data.add_to_push_queue(address, content)):
                 print('已加入队列.')
                 if (app_push_data.generate_next()):
                     app_push_data.delete()
