@@ -76,7 +76,9 @@ export default {
     },
     async goldPriceGet() {
       try {
-        const { data: res } = await axios.post(api.goldData);
+        const { data: res } = await axios.post(api.goldData, {
+          user_id: this.user_id
+        });
         this.chartData.rows = [];
         this.chartData.columns = ["日期", "价格"];
         for (let x = 0; x < res.data.price_list.length; x++) {
