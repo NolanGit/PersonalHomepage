@@ -87,8 +87,8 @@ export default {
       notifyVisible: false,
       settingForm: {
         visible: false,
-        pushThresholdMin: Number,
-        pushThresholdMax: Number
+        pushThresholdMin: 0,
+        pushThresholdMax: 0
       }
     };
   },
@@ -103,8 +103,8 @@ export default {
       try {
         const { data: res } = await axios.post(api.edit, {
           user_id: this.user_id,
-          threshold_min: this.threshold_min,
-          threshold_max: this.threshold_max
+          threshold_min: this.settingForm.pushThresholdMin,
+          threshold_max: this.settingForm.pushThresholdMax
         });
         this.$message({
           message: e.response.data.msg,
