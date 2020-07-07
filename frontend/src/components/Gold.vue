@@ -29,12 +29,12 @@
     </el-dialog>
 
     <!--编辑界面-->
-    <el-dialog title="修改提醒阈值" :visible.sync="setting.visible" width="40%">
-      <el-form ref="form" :model="setting" size="mini">
+    <el-dialog title="修改提醒阈值" :visible.sync="settingForm.visible" width="40%">
+      <el-form ref="form" :model="settingForm" size="mini">
         <el-form-item label="当价格不在此范围内时提醒我">
           <div class="div-flex">
-            <el-input size="mini" v-model="setting.pushThresholdMin" placeholder="最小值"></el-input>~
-            <el-input size="mini" v-model="setting.pushThresholdMax" placeholder="最大值"></el-input>
+            <el-input size="mini" v-model="settingForm.pushThresholdMin" placeholder="最小值"></el-input>~
+            <el-input size="mini" v-model="settingForm.pushThresholdMax" placeholder="最大值"></el-input>
           </div>
         </el-form-item>
       </el-form>
@@ -85,7 +85,7 @@ export default {
         rows: []
       },
       notifyVisible: false,
-      setting: {
+      settingForm: {
         visible: false,
         pushThresholdMin: Number,
         pushThresholdMax: Number
@@ -97,7 +97,7 @@ export default {
       this.notifyVisible = !this.notifyVisible;
     },
     setting() {
-      this.setting.visible = true;
+      this.settingForm.visible = true;
     },
     async settingConfirm() {
       try {
@@ -110,7 +110,7 @@ export default {
           message: e.response.data.msg,
           type: "success"
         });
-        this.setting.visible = false;
+        this.settingForm.visible = false;
       } catch (e) {
         console.log(e);
         this.$message({
@@ -136,8 +136,8 @@ export default {
           this.$refs[`chart`].echarts.resize();
         });
         if (res.data.threshold.length != 0) {
-          this.setting.pushThresholdMin = res.data.threshold[0];
-          this.setting.pushThresholdMax = res.data.threshold[1];
+          this.settingForm.pushThresholdMin = res.data.threshold[0];
+          this.settingForm.pushThresholdMax = res.data.threshold[1];
         }
         this.$emit("done");
       } catch (e) {
