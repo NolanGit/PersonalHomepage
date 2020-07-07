@@ -47,8 +47,12 @@ def edit():
         user_id = request.get_json()['user_id']
         threshold_min = request.get_json()['threshold_min']
         threshold_max = request.get_json()['threshold_max']
+
         if threshold_min >= threshold_max:
             return rsp.failed('阈值最小值不能大于或等于阈值最大值'), 500
+        if user_id == 0:
+            return rsp.failed('无法为未登录用户设定阈值'), 500
+
         threshold = [threshold_min, threshold_max]
         try:
             _ = gold_price_push_option.get((gold_price_push_option.is_valid == 1) & (gold_price_push_option.user_id == user_id))
