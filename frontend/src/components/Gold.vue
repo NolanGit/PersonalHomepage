@@ -79,10 +79,10 @@ export default {
         const { data: res } = await axios.post(api.goldData);
         this.chartData.rows = [];
         this.chartData.columns = ["日期", "价格"];
-        for (let x = 0; x < res.data.length; x++) {
+        for (let x = 0; x < res.data.price_list.length; x++) {
           this.chartData.rows.push({
-            日期: res.data[x]["update_time"],
-            价格: res.data[x]["price"]
+            日期: res.data.price_list[x]["update_time"],
+            价格: res.data.price_list[x]["price"]
           });
         }
         this.$nextTick(_ => {

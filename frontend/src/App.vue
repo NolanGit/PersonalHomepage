@@ -209,6 +209,6 @@ export default {
   text-align: center;
 }
 .cardRow {
-  padding-top: 120px;
+  padding-top: 80px;
 }
 </style>
