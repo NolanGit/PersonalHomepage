@@ -27,6 +27,21 @@
     <el-dialog title="提醒" :visible.sync="notifyVisible" width="40%">
       <PushEdit :user_id="user_id" :widget_id="widget_id" v-if="notifyVisible" @done="notify()"></PushEdit>
     </el-dialog>
+
+    <!--编辑界面-->
+    <el-dialog title="修改提醒阈值" :visible.sync="setting.visible" width="40%">
+      <el-form ref="form" :model="setting" size="mini">
+        <el-form-item label="当价格不在此范围内时提醒我">
+          <div class="div-flex">
+            <el-input size="mini" v-model="setting.pushThresholdMin" placeholder="最小值"></el-input>~
+            <el-input size="mini" v-model="setting.pushThresholdMax" placeholder="最大值"></el-input>
+          </div>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" size="small" @click="settingConfirm()">确定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -35,7 +50,8 @@ import WidgetButton from "./common/WidgetButton.vue";
 import PushEdit from "./common/PushEdit.vue";
 
 const api = {
-  goldData: "/gold/get"
+  get: "/gold/get",
+  edit: "/gold/edit"
 };
 
 export default {
@@ -83,9 +99,29 @@ export default {
     setting() {
       this.setting.visible = true;
     },
+    async settingConfirm() {
+      try {
+        const { data: res } = await axios.post(api.edit, {
+          user_id: this.user_id,
+          threshold_min: this.threshold_min,
+          threshold_max: this.threshold_max
+        });
+        this.$message({
+          message: e.response.data.msg,
+          type: "success"
+        });
+        this.setting.visible = false;
+      } catch (e) {
+        console.log(e);
+        this.$message({
+          message: e.response.data.msg,
+          type: "error"
+        });
+      }
+    },
     async goldPriceGet() {
       try {
-        const { data: res } = await axios.post(api.goldData, {
+        const { data: res } = await axios.post(api.get, {
           user_id: this.user_id
         });
         this.chartData.rows = [];
@@ -99,6 +135,10 @@ export default {
         this.$nextTick(_ => {
           this.$refs[`chart`].echarts.resize();
         });
+        if (res.data.threshold.length != 0) {
+          this.setting.pushThresholdMin = res.data.threshold[0];
+          this.setting.pushThresholdMax = res.data.threshold[1];
+        }
         this.$emit("done");
       } catch (e) {
         console.log(e);

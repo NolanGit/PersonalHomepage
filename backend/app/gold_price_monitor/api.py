@@ -47,6 +47,8 @@ def edit():
         user_id = request.get_json()['user_id']
         threshold_min = request.get_json()['threshold_min']
         threshold_max = request.get_json()['threshold_max']
+        if threshold_min >= threshold_max:
+            return rsp.failed('阈值最小值不能大于或等于阈值最大值'), 500
         threshold = [threshold_min, threshold_max]
         try:
             _ = gold_price_push_option.get((gold_price_push_option.is_valid == 1) & (gold_price_push_option.user_id == user_id))
@@ -55,8 +57,7 @@ def edit():
         except DoesNotExist:
             pass
         gold_price_push_option.create(user_id=user_id, is_valid=1, push_threshold=threshold, update_time=datetime.datetime.now())
-        response = {'code': 200, 'msg': '成功！', 'data': []}
-        return jsonify(response)
+        return rsp.success()
     except Exception as e:
         traceback.print_exc()
         return rsp.failed(e), 500
