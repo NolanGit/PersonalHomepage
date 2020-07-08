@@ -1,13 +1,19 @@
 import datetime
-try:
-    from ..model.widget_model import widget as widget_table
-    from ..model.widget_model import widget_user as widget_user
-except:
-    import sys
-    sys.path.append('../')
-    sys.path.append('../../')
-    from model.widget_model import widget as widget_table
-    from model.widget_model import widget_user as widget_user
+from ..model.widget_model import widget as widget_table
+from ..model.widget_model import widget_user as widget_user
+from base_model import Base
+
+
+class Widget(Base):
+    id = None
+    name = None
+    span = None
+    buttons = None
+    auto_update = None
+    update_time = None
+
+    def __init__(self, id, name, span, buttons, auto_update, update_time):
+        pass
 
 
 def widget_get(is_valid=1):
