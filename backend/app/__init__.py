@@ -13,13 +13,16 @@ from playhouse.flask_utils import FlaskDB
 
 def create_app(config_name):
     app = Flask(__name__, static_folder="../../dist/static", template_folder="../../dist")
-    FlaskDB(app, db) # 解决peewee不自动关闭连接池连接，参见https://www.cnblogs.com/xueweihan/p/6698456.html
+    FlaskDB(app, db)  # 解决peewee不自动关闭连接池连接，参见https://www.cnblogs.com/xueweihan/p/6698456.html
     CORS(app, supports_credentials=True)
     app.config.from_object(config[config_name])
     config[config_name].init_app(app)
 
     from .main import main as main_blueprint
     app.register_blueprint(main_blueprint)
+
+    from .widget import widget as widget_blueprint
+    app.register_blueprint(widget_blueprint)
 
     from .search import search as search_blueprint
     app.register_blueprint(search_blueprint, url_prefix='/search')
@@ -44,10 +47,10 @@ def create_app(config_name):
 
     from .app_price_monitor import app_price_monitor as app_price_monitor_blueprint
     app.register_blueprint(app_price_monitor_blueprint, url_prefix='/app')
-    
+
     from .push import push as push_blueprint
     app.register_blueprint(push_blueprint, url_prefix='/push')
-    
+
     from .gold_price_monitor import gold_price_monitor as gold_price_monitor_blueprint
     app.register_blueprint(gold_price_monitor_blueprint, url_prefix='/gold')
 

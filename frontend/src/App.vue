@@ -12,7 +12,7 @@
       <search :user_id="user_id" />
     </el-row>
     <div class="cardRow">
-      <el-tabs v-model="activeName" @tab-click="handleClick" stretch="true" style="padding: 0px 20px 30px 20px;">
+      <el-tabs v-model="activeName" @tab-click="handleClick" stretch="true" style="padding-bottom: 30px; width: 70%; text-align: center; margin: 0 auto;">
         <el-tab-pane label="用户管理" name="first"></el-tab-pane>
         <el-tab-pane label="配置管理" name="second"></el-tab-pane>
       </el-tabs>
