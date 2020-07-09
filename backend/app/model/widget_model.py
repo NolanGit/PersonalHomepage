@@ -18,6 +18,7 @@ class widget(BaseModel):
 
 
 class widget_suite(BaseModel):
+    name = CharField()
     user_id = IntegerField()
     order = IntegerField()
     is_valid = IntegerField()
@@ -28,17 +29,5 @@ class widget_suite(BaseModel):
         table_name = 'widget_suite'
 
 
-class widget_user(BaseModel):
-    widget_id = IntegerField()
-    user_id = IntegerField()
-    order = IntegerField()
-    is_valid = IntegerField()
-    update_time = DateTimeField()
-
-    class Meta:
-        table_name = 'widget_user'
-
-
 widget.create_table()
 widget_suite.create_table()
-widget_user.create_table()

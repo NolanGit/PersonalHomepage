@@ -1,6 +1,5 @@
 import datetime
 from ..model.widget_model import widget as widget_table
-from ..model.widget_model import widget_user as widget_user
 from ..base_model import Base
 from ..login.login_funtion import User
 
@@ -31,3 +30,4 @@ class Widget(Base):
         self.buttons = _.buttons
         self.auto_update = _.auto_update
         self.update_time = _.update_time
+        return self

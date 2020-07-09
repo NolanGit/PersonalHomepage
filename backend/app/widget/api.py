@@ -9,7 +9,7 @@ from ..login.login_funtion import User
 from ..privilege.privilege_control import permission_required
 from .widget_fuction import Widget
 from ..model.widget_model import widget as widget_table
-from ..model.widget_model import widget_suite, widget_user
+from ..model.widget_model import widget_suite
 from ..common_func import CommonFunc
 
 cf = CommonFunc()

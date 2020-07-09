@@ -14,7 +14,6 @@ from ..model.search_model import search_engines, search_engines_log
 from ..model.bookmarks_model import bookmarks as bookmarks_table
 from ..model.bookmarks_model import icon as icon_table
 from ..model.widget_model import widget as widget_table
-from ..model.widget_model import widget_user as widget_user
 from ..model.upload_model import upload as upload_table
 from ..login.login_funtion import User
 from ..privilege.privilege_control import privilegeFunction
