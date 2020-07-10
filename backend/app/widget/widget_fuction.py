@@ -27,7 +27,7 @@ class Widget(Base):
         self.id = id
 
     def complete(self):
-        _ = widget_table.get(widget_table.id == id)
+        _ = widget_table.get(widget_table.id == self.id)
         self.name = _.name
         self.is_valid = _.is_valid
         self.span = _.span
