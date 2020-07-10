@@ -89,11 +89,6 @@ export default {
     appMonitor,
     gold
   },
-  watch: {
-    widgetSuiteLabelActiveName(newVal, oldVal) {
-      this.widgetGet(newVal);
-    }
-  },
   data() {
     return {
       widgetSuiteLabelActiveName: "",
@@ -109,8 +104,9 @@ export default {
           user_id: this.user_id
         });
         this.widgetSuiteLabels = res.data;
-        if (this.widgetSuiteLable.length != 0) {
+        if (this.widgetSuiteLabels.length != 0) {
           this.widgetSuiteLabelActiveName = this.widgetSuiteLabels[0].name;
+          this.widgetGet(this.widgetSuiteLabels[0].id);
         }
       } catch (e) {
         console.log(e);
@@ -120,18 +116,21 @@ export default {
         });
       }
     },
-    async widgetGet(widgetSuiteLabelActiveName) {
+    handleClick(tab) {
+      this.widgetGet(tab.name);
+    },
+    async widgetGet(widgetSuiteLabelActiveId) {
       try {
-        let widget_suite_id = 0;
-        for (let x = 0; x < this.widgetSuiteLabels.length; x++) {
-          if (this.widgetSuiteLabels[x].name == widgetSuiteLabelActiveName) {
-            widget_suite_id = this.widgetSuiteLabels[x].id;
-            break;
-          }
-        }
+        // let widget_suite_id = 0;
+        // for (let x = 0; x < this.widgetSuiteLabels.length; x++) {
+        //   if (this.widgetSuiteLabels[x].name == widgetSuiteLabelActiveId) {
+        //     widget_suite_id = this.widgetSuiteLabels[x].id;
+        //     break;
+        //   }
+        // }
         const { data: res } = await axios.post(api.get, {
           user_id: this.user_id,
-          widget_suite_id: widget_suite_id
+          widget_suite_id: widgetSuiteLabelActiveId
         });
         for (let x = 0; x < res.data.length; x++) {
           res.data[x].show = false;
