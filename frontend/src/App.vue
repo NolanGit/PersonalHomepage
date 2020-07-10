@@ -12,63 +12,7 @@
       <search :user_id="user_id" />
     </el-row>
     <div class="cardRow">
-      <el-tabs v-model="activeName" @tab-click="handleClick" stretch="true">
-        <el-tab-pane label="用户管理" name="first"></el-tab-pane>
-        <el-tab-pane label="配置管理" name="second"></el-tab-pane>
-        <el-tab-pane label="角色管理" name="third"></el-tab-pane>
-        <el-tab-pane label="定时任务补偿" name="fourth"></el-tab-pane>
-      </el-tabs>
-      <el-row
-        class="margin_bottom-large"
-        v-for="(singleWidgetSuite,suiteIndex) in widgetSuite"
-        :key="singleWidgetSuite"
-      >
-        <el-col
-          :span="singleWidget.span"
-          v-for="(singleWidget,index) in singleWidgetSuite"
-          :key="singleWidget"
-        >
-          <transition name="el-zoom-in-top">
-            <el-card
-              shadow="hover"
-              v-show="singleWidget.show"
-              class="margin_left-medium margin_right-medium"
-            >
-              <weather
-                v-if="singleWidget.name=='weather'"
-                :user_id="user_id"
-                :widget_id="singleWidget.id"
-                :buttons="singleWidget.buttons"
-                :flush="singleWidget.flush"
-                @done="done(suiteIndex,index)"
-              />
-              <bookmarks
-                v-if="singleWidget.name=='bookmarks'"
-                :user_id="user_id"
-                :widget_id="singleWidget.id"
-                :buttons="singleWidget.buttons"
-                @done="done(suiteIndex,index)"
-              />
-              <appMonitor
-                v-if="singleWidget.name=='app'"
-                :user_id="user_id"
-                :widget_id="singleWidget.id"
-                :buttons="singleWidget.buttons"
-                :flush="singleWidget.flush"
-                @done="done(suiteIndex,index)"
-              />
-              <gold
-                v-if="singleWidget.name=='gold'"
-                :user_id="user_id"
-                :widget_id="singleWidget.id"
-                :buttons="singleWidget.buttons"
-                :flush="singleWidget.flush"
-                @done="done(suiteIndex,index)"
-              />
-            </el-card>
-          </transition>
-        </el-col>
-      </el-row>
+      <widget :user_id="user_id" />
     </div>
   </div>
 </template>
@@ -78,14 +22,10 @@ import axios from "axios";
 import githubConner from "./components/common/GithubConner";
 import search from "./components/Search.vue";
 import login from "./components/Login.vue";
-import weather from "./components/Weather.vue";
-import bookmarks from "./components/Bookmarks.vue";
-import appMonitor from "./components/AppMonitor.vue";
-import gold from "./components/Gold.vue";
+import widget from "./components/Widget.vue";
 
 const api = {
   userInfo: "/userInfo",
-  widget: "/widget"
 };
 
 export default {
@@ -93,10 +33,7 @@ export default {
     githubConner,
     search,
     login,
-    weather,
-    bookmarks,
-    appMonitor,
-    gold
+    widget
   },
   data() {
     return {
@@ -132,49 +69,6 @@ export default {
         }
       }
       this.userIdFlush();
-      this.widgetGet(this.widgetSuiteGenerate);
-    },
-    async widgetGet(widgetSuiteGenerate) {
-      try {
-        const { data: res } = await axios.post(api.widget, {
-          user_id: this.user_id
-        });
-        for (let x = 0; x < res.data.length; x++) {
-          res.data[x].show = false;
-          res.data[x].flush = false;
-        }
-        this.widget = res.data;
-        widgetSuiteGenerate(this.autoUpdate);
-      } catch (e) {
-        console.log(e);
-        this.$message({
-          message: e.response.data.msg,
-          type: "error"
-        });
-      }
-    },
-    widgetSuiteGenerate(autoUpdate) {
-      var count = 0;
-      this.widgetSuite = [];
-      this.widgetSuite.push([]);
-      for (let x = 0; x < this.widget.length; x++) {
-        if (count >= 24) {
-          this.widgetSuite.push([]);
-          this.count = 0;
-        }
-        this.widgetSuite[this.widgetSuite.length - 1].push(this.widget[x]);
-        count += this.widget[x].span;
-      }
-      autoUpdate();
-    },
-    autoUpdate() {
-      for (let x = 0; x < this.widgetSuite.length; x++) {
-        for (let y = 0; y < this.widgetSuite[x].length; y++) {
-          window.setInterval(() => {
-            setTimeout((this.widgetSuite[x][y].flush = true), 0);
-          }, this.widgetSuite[x][y].auto_update);
-        }
-      }
     },
     userIdFlush() {
       try {
@@ -196,10 +90,6 @@ export default {
         this.login_name = "";
       }
     },
-    done(suiteIndex, index) {
-      this.widgetSuite[suiteIndex][index].show = true;
-      this.widgetSuite[suiteIndex][index].flush = false;
-    }
   },
   created() {
     this.userIdFlush();

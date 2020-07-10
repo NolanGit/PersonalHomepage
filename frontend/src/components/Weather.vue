@@ -109,19 +109,13 @@ export default {
     user_id: Number,
     widget_id: Number,
     buttons: Array,
-    flush: Boolean
+    flush: Number
   },
   components: {
     SlickSort,
     WidgetButton
   },
-  watch: {
-    flush(newVal, oldVal) {
-      if (newVal) {
-        this.weatherData();
-      }
-    }
-  },
+  watch: {},
   data() {
     return {
       locationEdit: {
@@ -484,6 +478,10 @@ export default {
   created() {},
   mounted() {
     this.weatherData();
+    this.timer = window.setInterval(this.weatherData, this.flush);
+  },
+  beforeDestroy() {
+    window.clearInterval(this.timer);
   }
 };
 </script>

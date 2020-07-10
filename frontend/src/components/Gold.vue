@@ -60,19 +60,13 @@ export default {
     user_id: Number,
     widget_id: Number,
     buttons: Array,
-    flush: Boolean
+    flush: Number
   },
   components: {
     WidgetButton,
     PushEdit
   },
-  watch: {
-    flush(newVal, oldVal) {
-      if (newVal) {
-        this.goldPriceGet();
-      }
-    }
-  },
+  watch: {},
   data() {
     this.chartSettings = {
       min: ["dataMin"],
@@ -151,6 +145,10 @@ export default {
   },
   mounted() {
     this.goldPriceGet();
+    this.timer = window.setInterval(this.goldPriceGet, this.flush);
+  },
+  beforeDestroy() {
+    window.clearInterval(this.timer);
   }
 };
 </script>
