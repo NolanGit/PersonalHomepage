@@ -5,6 +5,7 @@
       @tab-click="handleClick"
       stretch="true"
       style="padding-bottom: 30px; width: 70%; text-align: center; margin: 0 auto;"
+      v-if="widgetSuiteLabels.length>1"
     >
       <el-tab-pane
         v-for="(singleWidgetSuite) in widgetSuiteLabels"
@@ -121,13 +122,6 @@ export default {
     },
     async widgetGet(widgetSuiteLabelActiveId) {
       try {
-        // let widget_suite_id = 0;
-        // for (let x = 0; x < this.widgetSuiteLabels.length; x++) {
-        //   if (this.widgetSuiteLabels[x].name == widgetSuiteLabelActiveId) {
-        //     widget_suite_id = this.widgetSuiteLabels[x].id;
-        //     break;
-        //   }
-        // }
         const { data: res } = await axios.post(api.get, {
           user_id: this.user_id,
           widget_suite_id: widgetSuiteLabelActiveId
@@ -138,7 +132,6 @@ export default {
         }
         this.widget = res.data;
         await this.widgetSuiteGenerate();
-        //await this.autoUpdate();
       } catch (e) {
         console.log(e);
         this.$message({
@@ -158,21 +151,6 @@ export default {
         }
         this.widgetSuite[this.widgetSuite.length - 1].push(this.widget[x]);
         count += this.widget[x].span;
-      }
-    },
-    autoUpdate() {
-      for (let x = 0; x < this.widgetSuite.length; x++) {
-        for (let y = 0; y < this.widgetSuite[x].length; y++) {
-          window.clearInterval(this.widgetSuite[x][y].timer);
-        }
-      }
-      
-      for (let x = 0; x < this.widgetSuite.length; x++) {
-        for (let y = 0; y < this.widgetSuite[x].length; y++) {
-          this.widgetSuite[x][y].timer = window.setInterval(() => {
-            setTimeout(this.widgetSuite[x][y].flush = true);
-          }, this.widgetSuite[x][y].auto_update);
-        }
       }
     },
     done(suiteIndex, index) {
