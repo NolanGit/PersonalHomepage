@@ -137,7 +137,8 @@ export default {
           res.data[x].flush = false;
         }
         this.widget = res.data;
-        this.widgetSuiteGenerate(this.autoUpdate);
+        await this.widgetSuiteGenerate(this.autoUpdate);
+        await this.autoUpdate();
       } catch (e) {
         console.log(e);
         this.$message({
@@ -146,7 +147,7 @@ export default {
         });
       }
     },
-    widgetSuiteGenerate(autoUpdate) {
+    widgetSuiteGenerate() {
       var count = 0;
       this.widgetSuite = [];
       this.widgetSuite.push([]);
@@ -158,15 +159,17 @@ export default {
         this.widgetSuite[this.widgetSuite.length - 1].push(this.widget[x]);
         count += this.widget[x].span;
       }
-      this.$nextTick(() => {
-        autoUpdate();
-      });
     },
     autoUpdate() {
       for (let x = 0; x < this.widgetSuite.length; x++) {
         for (let y = 0; y < this.widgetSuite[x].length; y++) {
-          window.setInterval(() => {
-            setTimeout((this.widgetSuite[x][y].flush = true), 0);
+          window.clearInterval(this.widgetSuite[x][y].timer);
+        }
+      }
+      for (let x = 0; x < this.widgetSuite.length; x++) {
+        for (let y = 0; y < this.widgetSuite[x].length; y++) {
+          this.widgetSuite[x][y].timer = window.setInterval(() => {
+            setTimeout((this.widgetSuite[x][y].flush = true));
           }, this.widgetSuite[x][y].auto_update);
         }
       }
