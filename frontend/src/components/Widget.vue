@@ -117,8 +117,15 @@ export default {
         });
       }
     },
-    handleClick(tab) {
-      this.widgetGet(tab.name);
+    handleClick(activeTabName) {
+      let activeTabId = 0;
+      for (let x = 0; x < this.widgetSuiteLabels.length; x++) {
+        if (activeTabName == this.widgetSuiteLabels[x].name) {
+          activeTabId = this.widgetSuiteLabels[x].id;
+          break;
+        }
+      }
+      this.widgetGet(activeTabId);
     },
     async widgetGet(widgetSuiteLabelActiveId) {
       try {
