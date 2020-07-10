@@ -364,6 +364,8 @@ INSERT INTO `widget` (`id`, `name`, `is_valid`, `span`, `buttons`, `auto_update`
 INSERT INTO `widget` (`id`, `name`, `is_valid`, `span`, `buttons`, `auto_update`, `update_time`) VALUES ('3', 'app', '1', '8', '[\'add\', \'sort\', \'notify\']', '1800000', '2019-10-28 11:35:37');
 INSERT INTO `widget` (`id`, `name`, `is_valid`, `span`, `buttons`, `auto_update`, `update_time`) VALUES ('4', 'gold', '1', '8', '[\'setting\', \'notify\']', '1800000', '2019-10-28 11:35:37');
 INSERT INTO `widget_suite` (`id`, `name`, `user_id`, `order`, `is_valid`, `detail`, `update_time`) VALUES ('1', '基本组件', '0', '1', '1', '[1,2,4]', '2019-10-28 11:35:37');
+INSERT INTO `widget_suite` (`id`, `name`, `user_id`, `order`, `is_valid`, `detail`, `update_time`) VALUES ('2', '常用', '1', '1', '1', '[1,2]', '2019-10-28 11:35:37');
+INSERT INTO `widget_suite` (`id`, `name`, `user_id`, `order`, `is_valid`, `detail`, `update_time`) VALUES ('3', '其他', '1', '1', '1', '[3,4]', '2019-10-28 11:35:37');
 INSERT INTO `script_sub_system` (`id`, `name`, `user_id`, `is_valid`, `update_time`) VALUES ('1', '定时任务', '1', '1', '2020-06-17 11:44:00');
 INSERT INTO `script` (`id`, `name`, `sub_system_id`, `start_folder`, `start_script`, `type`, `runs`, `is_valid`, `version`, `user`, `update_time`) VALUES ('1', '推送', '1', '/home/pi/Documents/GitHub/PersonalHomepage/backend/app/push', 'python3 push_function.py', '1', '4', '1', '1', '管理员', '2020-06-17 16:27:03');
 INSERT INTO `script` (`id`, `name`, `sub_system_id`, `start_folder`, `start_script`, `type`, `runs`, `is_valid`, `version`, `user`, `update_time`) VALUES ('2', 'App价格获取', '1', '/home/pi/Documents/GitHub/PersonalHomepage/backend/app/app_price_monitor', 'python3 app_price_spider.py', '1', '4', '1', '1', '管理员', '2020-06-17 16:28:25');
