@@ -144,7 +144,8 @@ export default {
       edit: {
         visible: false,
         location: ""
-      }
+      },
+      timer: ""
     };
   },
   methods: {

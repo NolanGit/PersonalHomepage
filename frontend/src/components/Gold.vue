@@ -60,19 +60,13 @@ export default {
     user_id: Number,
     widget_id: Number,
     buttons: Array,
-    flush: Boolean
+    flush: Number
   },
   components: {
     WidgetButton,
     PushEdit
   },
-  watch: {
-    flush(newVal, oldVal) {
-      if (newVal) {
-        this.goldPriceGet();
-      }
-    }
-  },
+  watch: {},
   data() {
     this.chartSettings = {
       min: ["dataMin"],
@@ -89,7 +83,8 @@ export default {
         visible: false,
         pushThresholdMin: 0,
         pushThresholdMax: 0
-      }
+      },
+      timer:""
     };
   },
   methods: {
@@ -151,6 +146,12 @@ export default {
   },
   mounted() {
     this.goldPriceGet();
+    this.timer = window.setInterval(() => {
+      setTimeout(this.goldPriceGet());
+    }, this.flush);
+  },
+  beforeDestroy() {
+    window.clearInterval(this.timer);
   }
 };
 </script>
