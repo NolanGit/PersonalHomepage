@@ -478,9 +478,12 @@ export default {
   created() {},
   mounted() {
     this.weatherData();
-    window.setInterval(() => {
+    this.timer = window.setInterval(() => {
       setTimeout(this.weatherData());
     }, this.flush);
+  },
+  beforeDestroy() {
+    window.clearInterval(this.timer);
   }
 };
 </script>
