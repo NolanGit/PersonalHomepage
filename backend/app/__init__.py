@@ -22,7 +22,7 @@ def create_app(config_name):
     app.register_blueprint(main_blueprint)
 
     from .widget import widget as widget_blueprint
-    app.register_blueprint(widget_blueprint)
+    app.register_blueprint(widget_blueprint, url_prefix='/widget')
 
     from .search import search as search_blueprint
     app.register_blueprint(search_blueprint, url_prefix='/search')

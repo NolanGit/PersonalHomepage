@@ -74,8 +74,8 @@ import appMonitor from "./AppMonitor.vue";
 import gold from "./Gold.vue";
 
 const api = {
-  widget: "/widget",
-  widgetSuite: "/widgetSuite"
+  get: "/widget/get",
+  suiteGet: "/widget/suite/get"
 };
 
 export default {
@@ -105,7 +105,7 @@ export default {
   methods: {
     async widgetSuiteLableGet() {
       try {
-        const { data: res } = await axios.post(api.widgetSuite, {
+        const { data: res } = await axios.post(api.suiteGet, {
           user_id: this.user_id
         });
         this.widgetSuiteLabel = res.data;
@@ -122,9 +122,9 @@ export default {
     },
     async widgetGet(widgetSuiteLabelActiveId) {
       try {
-        const { data: res } = await axios.post(api.widget, {
+        const { data: res } = await axios.post(api.get, {
           user_id: this.user_id,
-          suite_id: widgetSuiteLabelActiveId
+          widget_suite_id: widgetSuiteLabelActiveId
         });
         for (let x = 0; x < res.data.length; x++) {
           res.data[x].show = false;

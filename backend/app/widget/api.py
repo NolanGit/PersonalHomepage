@@ -14,8 +14,8 @@ from ..model.widget_model import widget_suite
 URL_PREFIX = 'widget'
 
 
-@widget_blue_print.route('/widgetSuite', methods=['POST'])
-#@permission_required(URL_PREFIX + '/widgetSuite')
+@widget_blue_print.route('/suite/get', methods=['POST'])
+#@permission_required(URL_PREFIX + '/suite/get')
 @cross_origin()
 def widgetSuite():
     try:
@@ -31,8 +31,8 @@ def widgetSuite():
         return jsonify(response), 500
 
 
-@widget_blue_print.route('/widget', methods=['POST'])
-#@permission_required(URL_PREFIX + '/widget')
+@widget_blue_print.route('/get', methods=['POST'])
+#@permission_required(URL_PREFIX + '/get')
 @cross_origin()
 def widget():
     try:
