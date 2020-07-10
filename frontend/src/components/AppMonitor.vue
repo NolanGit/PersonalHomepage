@@ -226,6 +226,10 @@ export default {
   },
   mounted() {
     this.appGet();
+    this.timer = window.setInterval(this.appGet, this.flush);
+  },
+  beforeDestroy() {
+    window.clearInterval(this.timer);
   }
 };
 </script>

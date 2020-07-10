@@ -144,8 +144,7 @@ export default {
       edit: {
         visible: false,
         location: ""
-      },
-      timer: ""
+      }
     };
   },
   methods: {
@@ -479,9 +478,7 @@ export default {
   created() {},
   mounted() {
     this.weatherData();
-    this.timer = window.setInterval(() => {
-      setTimeout(this.weatherData());
-    }, this.flush);
+    this.timer = window.setInterval(this.weatherData, this.flush);
   },
   beforeDestroy() {
     window.clearInterval(this.timer);

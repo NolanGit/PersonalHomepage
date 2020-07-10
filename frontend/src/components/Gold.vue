@@ -83,8 +83,7 @@ export default {
         visible: false,
         pushThresholdMin: 0,
         pushThresholdMax: 0
-      },
-      timer:""
+      }
     };
   },
   methods: {
@@ -146,9 +145,7 @@ export default {
   },
   mounted() {
     this.goldPriceGet();
-    this.timer = window.setInterval(() => {
-      setTimeout(this.goldPriceGet());
-    }, this.flush);
+    this.timer = window.setInterval(this.goldPriceGet, this.flush);
   },
   beforeDestroy() {
     window.clearInterval(this.timer);
