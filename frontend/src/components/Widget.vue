@@ -158,7 +158,9 @@ export default {
         this.widgetSuite[this.widgetSuite.length - 1].push(this.widget[x]);
         count += this.widget[x].span;
       }
-      autoUpdate();
+      this.$nextTick(() => {
+        autoUpdate();
+      });
     },
     autoUpdate() {
       for (let x = 0; x < this.widgetSuite.length; x++) {
