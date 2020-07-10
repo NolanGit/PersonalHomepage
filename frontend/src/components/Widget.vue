@@ -1,13 +1,13 @@
 <template>
   <div>
     <el-tabs
-      v-model="widgetSuiteLabelActiveId"
+      v-model="widgetSuiteLabelActiveName"
       @tab-click="handleClick"
       stretch="true"
       style="padding-bottom: 30px; width: 70%; text-align: center; margin: 0 auto;"
     >
       <el-tab-pane
-        v-for="(singleWidgetSuite) in widgetSuiteLabel"
+        v-for="(singleWidgetSuite) in widgetSuiteLabels"
         :label="singleWidgetSuite.name"
         :name="singleWidgetSuite.id"
         :key="singleWidgetSuite"
@@ -90,16 +90,16 @@ export default {
     gold
   },
   watch: {
-    widgetSuiteLabelActiveId(newVal, oldVal) {
+    widgetSuiteLabelActiveName(newVal, oldVal) {
       this.widgetGet(newVal);
     }
   },
   data() {
     return {
-      widgetSuiteLabelActiveId: "",
-      widgetSuiteLabel: [],
+      widgetSuiteLabelActiveName: "",
+      widgetSuiteLabels: [],
       widgetSuite: [],
-      widget:[]
+      widget: []
     };
   },
   methods: {
@@ -108,9 +108,9 @@ export default {
         const { data: res } = await axios.post(api.suiteGet, {
           user_id: this.user_id
         });
-        this.widgetSuiteLabel = res.data;
+        this.widgetSuiteLabels = res.data;
         if (this.widgetSuiteLable.length != 0) {
-          this.widgetSuiteLabelActiveId = this.widgetSuiteLabel[0].id;
+          this.widgetSuiteLabelActiveName = this.widgetSuiteLabels[0].name;
         }
       } catch (e) {
         console.log(e);
@@ -120,11 +120,18 @@ export default {
         });
       }
     },
-    async widgetGet(widgetSuiteLabelActiveId) {
+    async widgetGet(widgetSuiteLabelActiveName) {
       try {
+        let widget_suite_id = 0;
+        for (let x = 0; x < this.widgetSuiteLabels.length; x++) {
+          if (this.widgetSuiteLabels[x].name == widgetSuiteLabelActiveName) {
+            widget_suite_id = this.widgetSuiteLabels[x].id;
+            break;
+          }
+        }
         const { data: res } = await axios.post(api.get, {
           user_id: this.user_id,
-          widget_suite_id: widgetSuiteLabelActiveId
+          widget_suite_id: widget_suite_id
         });
         for (let x = 0; x < res.data.length; x++) {
           res.data[x].show = false;
