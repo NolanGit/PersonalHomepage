@@ -36,8 +36,9 @@ def widgetSuite():
 @cross_origin()
 def widget():
     try:
+        user_id = request.get_json()['user_id']
         widget_suite_id = request.get_json()['widget_suite_id']
-        response = {'code': 200, 'msg': '成功！', 'data': widget_get(widget_suite_id)}
+        response = {'code': 200, 'msg': '成功！', 'data': widget_get(user_id, widget_suite_id)}
         return jsonify(response)
     except Exception as e:
         traceback.print_exc()
