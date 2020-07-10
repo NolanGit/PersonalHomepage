@@ -68,10 +68,10 @@
 </template>
 <script>
 import axios from "axios";
-import weather from "./components/Weather.vue";
-import bookmarks from "./components/Bookmarks.vue";
-import appMonitor from "./components/AppMonitor.vue";
-import gold from "./components/Gold.vue";
+import weather from "./Weather.vue";
+import bookmarks from "./Bookmarks.vue";
+import appMonitor from "./AppMonitor.vue";
+import gold from "./Gold.vue";
 
 const api = {
   widget: "/widget",
