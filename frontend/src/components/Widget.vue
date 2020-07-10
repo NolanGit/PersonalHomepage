@@ -117,10 +117,10 @@ export default {
         });
       }
     },
-    handleClick(activeTabName) {
+    handleClick(activeTab) {
       let activeTabId = 0;
       for (let x = 0; x < this.widgetSuiteLabels.length; x++) {
-        if (activeTabName == this.widgetSuiteLabels[x].name) {
+        if (activeTab.name == this.widgetSuiteLabels[x].name) {
           activeTabId = this.widgetSuiteLabels[x].id;
           break;
         }
