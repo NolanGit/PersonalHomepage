@@ -34,7 +34,7 @@
               :user_id="user_id"
               :widget_id="singleWidget.id"
               :buttons="singleWidget.buttons"
-              :flush="singleWidget.flush"
+              :flush="singleWidget.auto_update"
               @done="done(suiteIndex,index)"
             />
             <bookmarks
@@ -49,7 +49,7 @@
               :user_id="user_id"
               :widget_id="singleWidget.id"
               :buttons="singleWidget.buttons"
-              :flush="singleWidget.flush"
+              :flush="singleWidget.auto_update"
               @done="done(suiteIndex,index)"
             />
             <gold
@@ -57,7 +57,7 @@
               :user_id="user_id"
               :widget_id="singleWidget.id"
               :buttons="singleWidget.buttons"
-              :flush="singleWidget.flush"
+              :flush="singleWidget.auto_update"
               @done="done(suiteIndex,index)"
             />
           </el-card>
@@ -137,8 +137,8 @@ export default {
           res.data[x].flush = false;
         }
         this.widget = res.data;
-        await this.widgetSuiteGenerate(this.autoUpdate);
-        await this.autoUpdate();
+        await this.widgetSuiteGenerate();
+        //await this.autoUpdate();
       } catch (e) {
         console.log(e);
         this.$message({
@@ -166,10 +166,11 @@ export default {
           window.clearInterval(this.widgetSuite[x][y].timer);
         }
       }
+      
       for (let x = 0; x < this.widgetSuite.length; x++) {
         for (let y = 0; y < this.widgetSuite[x].length; y++) {
           this.widgetSuite[x][y].timer = window.setInterval(() => {
-            setTimeout((this.widgetSuite[x][y].flush = true));
+            setTimeout(this.widgetSuite[x][y].flush = true);
           }, this.widgetSuite[x][y].auto_update);
         }
       }
