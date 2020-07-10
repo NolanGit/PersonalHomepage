@@ -106,7 +106,7 @@ export default {
         });
         this.widgetSuiteLabels = res.data;
         if (this.widgetSuiteLabels.length != 0) {
-          this.widgetSuiteLabelActiveName = this.widgetSuiteLabels[0].name;
+          this.widgetSuiteLabelActiveName = this.widgetSuiteLabels[0].id;
           this.widgetGet(this.widgetSuiteLabels[0].id);
         }
       } catch (e) {
