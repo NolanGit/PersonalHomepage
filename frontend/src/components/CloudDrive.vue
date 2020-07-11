@@ -136,23 +136,25 @@ export default {
       }
     },
     async del(row_id) {
-      try {
-        const { data: res } = await axios.post(api.delete, {
-          user_id: this.user_id,
-          id: row_id
-        });
-        this.$message({
-          message: res.msg,
-          type: "success"
-        });
-        this.get();
-      } catch (e) {
-        console.log(e);
-        this.$message({
-          message: e.response.data.msg,
-          type: "error"
-        });
-      }
+      this.$confirm("确认删除吗？", "提示", {}).then(async () => {
+        try {
+          const { data: res } = await axios.post(api.delete, {
+            user_id: this.user_id,
+            id: row_id
+          });
+          this.$message({
+            message: res.msg,
+            type: "success"
+          });
+          this.get();
+        } catch (e) {
+          console.log(e);
+          this.$message({
+            message: e.response.data.msg,
+            type: "error"
+          });
+        }
+      });
     }
   },
   mounted() {
