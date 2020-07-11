@@ -8,3 +8,6 @@ class Response(object):
 
     def failed(self, msg=''):
         return jsonify({'code': 500, 'msg': '失败！错误信息：' + str(msg) + '，请联系管理员。'})
+
+    def refuse(self, msg=''):
+        return jsonify({'code': 403, 'msg': '失败！没有权限进行此操作。' + str(msg)})

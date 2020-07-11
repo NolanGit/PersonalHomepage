@@ -1,27 +1,29 @@
 <template>
   <el-col>
     <el-row class="margin_bottom-large">
-      <el-upload
-        class="upload-demo"
-        style="text-align: center;"
-        drag
-        action="/upload"
-        :on-preview="handlePreview"
-        :on-remove="handleRemove"
-        :on-progress="uploadProgress"
-        :on-success="uploadSuccess"
-        :before-remove="beforeRemove"
-        :before-upload="beforeUpload"
-        multiple
-        :limit="3"
-        :on-exceed="handleExceed"
-      >
-        <i class="el-icon-upload"></i>
-        <div class="el-upload__text">
-          将文件拖到此处，或
-          <em>点击上传</em>
-        </div>
-      </el-upload>
+      <div class="margin_left-medium margin_right-medium" style="text-align: center;">
+        <el-upload
+          class="upload-demo"
+          style="text-align: center;"
+          drag
+          action="/upload"
+          :on-preview="handlePreview"
+          :on-remove="handleRemove"
+          :on-progress="uploadProgress"
+          :on-success="uploadSuccess"
+          :before-remove="beforeRemove"
+          :before-upload="beforeUpload"
+          multiple
+          :limit="3"
+          :on-exceed="handleExceed"
+        >
+          <i class="el-icon-upload"></i>
+          <div class="el-upload__text">
+            将文件拖到此处，或
+            <em>点击上传</em>
+          </div>
+        </el-upload>
+      </div>
     </el-row>
     <el-row>
       <div class="margin_left-medium margin_right-medium">
@@ -47,6 +49,17 @@
             </template>
           </el-table-column>
         </el-table>
+        <el-pagination
+          class="margin_top-medium"
+          @size-change="paginationSizeChange"
+          @current-change="paginationCurrentChange"
+          :current-page="pagination.currentPage"
+          :page-sizes="[5, 10, 20, 30]"
+          :page-size="pagination.pageSize"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="pagination.total"
+          style="text-align:center"
+        ></el-pagination>
       </div>
     </el-row>
   </el-col>
@@ -72,10 +85,23 @@ export default {
   watch: {},
   data() {
     return {
-      tableData: []
+      tableData: [],
+      pagination: {
+        currentPage: 1,
+        pageSize: 10,
+        total: 0
+      }
     };
   },
   methods: {
+    paginationCurrentChange(currentPage) {
+      this.pagination.currentPage = currentPage;
+      this.get();
+    },
+    paginationSizeChange(pageSize) {
+      this.pagination.pageSize = pageSize;
+      this.get();
+    },
     uploadSuccess(response, file, fileList) {
       this.save(response.data.id);
       let loadingInstance = Loading.service({ fullscreen: true });
@@ -90,9 +116,12 @@ export default {
     async get() {
       try {
         const { data: res } = await axios.post(api.get, {
-          user_id: this.user_id
+          user_id: this.user_id,
+          pagination_size: this.pagination.pageSize,
+          current_page: this.pagination.currentPage
         });
-        this.tableData = res.data;
+        this.tableData = res.data.list;
+        this.pagination.total = res.data.total;
       } catch (e) {
         console.log(e);
         this.$message({
