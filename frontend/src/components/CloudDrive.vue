@@ -36,14 +36,14 @@
                 size="mini"
                 plain
                 type="primary"
-                @click="roleDisable(scope.row.id)"
+                @click="download(scope.row.file_id)"
               >下载</el-button>
               <el-button
                 class="noMargin"
                 size="mini"
                 plain
                 type="danger"
-                @click="roleDisable(scope.row.id)"
+                @click="del(scope.row.id)"
               >删除</el-button>
             </template>
           </el-table-column>
@@ -58,8 +58,10 @@ import { Loading } from "element-ui";
 
 const FLUSH_INTERVAL = 60000;
 const api = {
+  download: "/download",
   get: "/cloudDrive/get",
-  save: "/cloudDrive/save"
+  save: "/cloudDrive/save",
+  del: "/cloudDrive/delete"
 };
 
 export default {
@@ -105,6 +107,39 @@ export default {
         const { data: res } = await axios.post(api.save, {
           user_id: this.user_id,
           file_id: file_id
+        });
+        this.$message({
+          message: res.msg,
+          type: "success"
+        });
+        this.get();
+      } catch (e) {
+        console.log(e);
+        this.$message({
+          message: e.response.data.msg,
+          type: "error"
+        });
+      }
+    },
+    async download(fileId) {
+      try {
+        var elemIF = document.createElement("iframe");
+        elemIF.src = "/download?file_id=" + fileId;
+        elemIF.style.display = "none";
+        document.body.appendChild(elemIF);
+      } catch (e) {
+        console.log(e);
+        this.$message({
+          message: e.response.data.msg,
+          type: "error"
+        });
+      }
+    },
+    async del(row_id) {
+      try {
+        const { data: res } = await axios.post(api.delete, {
+          user_id: this.user_id,
+          id: row_id
         });
         this.$message({
           message: res.msg,

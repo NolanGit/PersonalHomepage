@@ -13,7 +13,7 @@ URL_PREFIX = 'cloudDrive'
 
 
 @cloud_drive_blue_print.route('/save', methods=['POST'])
-#@permission_required(URL_PREFIX + '/save')
+@permission_required(URL_PREFIX + '/save')
 @cross_origin()
 def save():
     try:
@@ -29,7 +29,7 @@ def save():
 
 
 @cloud_drive_blue_print.route('/get', methods=['POST'])
-#@permission_required(URL_PREFIX + '/get')
+@permission_required(URL_PREFIX + '/get')
 @cross_origin()
 def get():
     try:
@@ -39,12 +39,35 @@ def get():
             'code': 200,
             'msg': '成功！',
             'data': [{
+                'id': s_['id'],
                 'file_id': s_['file_id'],
                 'file_name': upload.get(upload.id == s_['file_id']).file_name,
                 'update_time': s_['update_time'].strftime("%Y-%m-%d %H:%M:%S"),
             } for s_ in _]
         }
         return jsonify(response)
+    except Exception as e:
+        traceback.print_exc()
+        response = {'code': 500, 'msg': '失败！错误信息：' + str(e) + '，请联系管理员。', 'data': []}
+        return jsonify(response), 500
+
+
+@cloud_drive_blue_print.route('/delete', methods=['POST'])
+@permission_required(URL_PREFIX + '/delete')
+@cross_origin()
+def delete():
+    try:
+        user_id = request.get_json()['user_id']
+        id = request.get_json()['id']
+        _ = cloud_drive.get(cloud_drive.id == id)
+        if _.user_id != user_id:
+            response = {'code': 403, 'msg': '文件归属错误！'}
+            return jsonify(response), 403
+        else:
+            _.is_valid = 0
+            _.save()
+            response = {'code': 200, 'msg': '成功！'}
+            return jsonify(response)
     except Exception as e:
         traceback.print_exc()
         response = {'code': 500, 'msg': '失败！错误信息：' + str(e) + '，请联系管理员。', 'data': []}
