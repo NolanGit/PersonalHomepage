@@ -53,6 +53,7 @@
 </template>
 <script>
 import axios from "axios";
+import { Loading } from "element-ui";
 
 const FLUSH_INTERVAL = 60000;
 const api = {
@@ -100,7 +101,7 @@ export default {
     },
     async save(file_id) {
       try {
-        const { data: res } = await axios.post(api.get, {
+        const { data: res } = await axios.post(api.save, {
           user_id: this.user_id,
           file_id: file_id
         });
