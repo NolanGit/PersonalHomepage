@@ -25,29 +25,24 @@
       </el-upload>
     </el-row>
     <el-row>
-      <el-table :data="tableData" style="text-align: center;">
-        <el-table-column prop="file_name" label="文件名称" width="180"></el-table-column>
-        <el-table-column prop="update_time" label="上传时间" width="180"></el-table-column>
-        <el-table-column :key="Math.random()" label="操作">
-          <template slot-scope="scope">
-            <el-button
-              v-show="scope.row.is_valid==1"
-              class="noMargin"
-              size="mini"
-              plain
-              @click="roleDisable(scope.row.id)"
-            >下载</el-button>
-            <el-button
-              v-show="scope.row.is_valid==1"
-              class="noMargin"
-              size="mini"
-              plain
-              type="danger"
-              @click="roleDisable(scope.row.id)"
-            >删除</el-button>
-          </template>
-        </el-table-column>
-      </el-table>
+      <div class="margin_left-medium margin_right-medium">
+        <el-table :data="tableData" style="text-align: center;" size="small">
+          <el-table-column prop="file_name" label="文件名称" width="180"></el-table-column>
+          <el-table-column prop="update_time" label="上传时间" width="180"></el-table-column>
+          <el-table-column :key="Math.random()" label="操作">
+            <template slot-scope="scope">
+              <el-button class="noMargin" size="mini" plain @click="roleDisable(scope.row.id)">下载</el-button>
+              <el-button
+                class="noMargin"
+                size="mini"
+                plain
+                type="danger"
+                @click="roleDisable(scope.row.id)"
+              >删除</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
     </el-row>
   </el-col>
 </template>
@@ -109,7 +104,7 @@ export default {
           message: res.msg,
           type: "success"
         });
-        this.tableData = res.data;
+        this.get();
       } catch (e) {
         console.log(e);
         this.$message({
