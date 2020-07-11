@@ -26,7 +26,10 @@
     </el-row>
     <el-row>
       <div class="margin_left-medium margin_right-medium">
-        <div class="scrollbar-div" style="max-height:calc(100vh - 350px);">
+        <div
+          class="scrollbar-div"
+          style="max-height:calc(100vh - 350px); height: calc(100vh - 350px);"
+        >
           <el-table :data="tableData" style="text-align: center;" size="small">
             <el-table-column prop="file_name" label="文件名称"></el-table-column>
             <el-table-column prop="update_time" label="上传时间"></el-table-column>
@@ -49,19 +52,19 @@
               </template>
             </el-table-column>
           </el-table>
-          <el-pagination
-            small
-            class="margin_top-medium"
-            @size-change="paginationSizeChange"
-            @current-change="paginationCurrentChange"
-            :current-page="pagination.currentPage"
-            :page-sizes="[5, 10, 20, 30]"
-            :page-size="pagination.pageSize"
-            layout="total, sizes, prev, pager, next"
-            :total="pagination.total"
-            style="text-align:center"
-          ></el-pagination>
         </div>
+        <el-pagination
+          small
+          class="margin_top-medium"
+          @size-change="paginationSizeChange"
+          @current-change="paginationCurrentChange"
+          :current-page="pagination.currentPage"
+          :page-sizes="[5, 10, 20, 30]"
+          :page-size="pagination.pageSize"
+          layout="total, sizes, prev, pager, next"
+          :total="pagination.total"
+          style="text-align:center"
+        ></el-pagination>
       </div>
     </el-row>
   </el-col>
