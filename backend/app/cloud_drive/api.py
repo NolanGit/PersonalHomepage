@@ -9,7 +9,7 @@ from flask import session, redirect, current_app, request, jsonify
 from ..model.upload_model import cloud_drive, upload
 from ..privilege.privilege_control import permission_required
 
-URL_PREFIX = 'cloudDrive'
+URL_PREFIX = '/cloudDrive'
 
 
 @cloud_drive_blue_print.route('/save', methods=['POST'])
