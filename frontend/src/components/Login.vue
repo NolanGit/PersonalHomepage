@@ -34,7 +34,8 @@
     <el-dropdown class="user-popover" trigger="hover" v-show="user_id!=0">
       <span class="el-dropdown-link userinfo-inner">{{user_name}}</span>
       <el-dropdown-menu slot="dropdown">
-        <el-dropdown-item @click.native="consoleSettingClicked">控制台</el-dropdown-item>
+        <el-dropdown-item @click.native="consoleClicked">控制台</el-dropdown-item>
+        <el-dropdown-item @click.native="cloudClicked">网盘</el-dropdown-item>
         <el-dropdown-item divided @click.native="logout">退出登录</el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
@@ -47,6 +48,7 @@
       :before-close="drawerBeforeClose"
     >
       <Console :user_id="user_id" :login_name="login_name" v-if="drawer.title=='控制台'" />
+      <CloudDrive :user_id="user_id" v-if="drawer.title=='控制台'" />
     </el-drawer>
   </div>
 </template>
@@ -55,6 +57,7 @@ import md5 from "js-md5";
 import axios from "axios";
 import Router from "vue-router";
 import Console from "./Console.vue";
+import CloudDrive from "./CloudDrive.vue";
 const api = {
   userLogin: "/login/userLogin",
   userLoginSalt: "/login/userLoginSalt"
@@ -62,7 +65,8 @@ const api = {
 export default {
   name: "login",
   components: {
-    Console
+    Console,
+    CloudDrive
   },
   props: {
     login_name: String,
@@ -151,11 +155,17 @@ export default {
       });
       location.reload();
     },
-    consoleSettingClicked() {
+    consoleClicked() {
       this.drawer.title = "控制台";
       this.drawer.size = "500";
       this.drawer.visible = true;
       this.drawer.direction = "ttb";
+    },
+    cloudClicked() {
+      this.drawer.title = "网盘";
+      this.drawer.size = "40%";
+      this.drawer.visible = true;
+      this.drawer.direction = "rtl";
     },
     //关闭窗口
     drawerBeforeClose(done) {

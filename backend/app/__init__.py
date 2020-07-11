@@ -24,6 +24,9 @@ def create_app(config_name):
     from .widget import widget as widget_blueprint
     app.register_blueprint(widget_blueprint, url_prefix='/widget')
 
+    from .cloud_drive import cloud_drive as cloud_drive_blueprint
+    app.register_blueprint(cloud_drive_blueprint, url_prefix='/cloudDrive')
+
     from .search import search as search_blueprint
     app.register_blueprint(search_blueprint, url_prefix='/search')
 
