@@ -15,7 +15,6 @@
         multiple
         :limit="3"
         :on-exceed="handleExceed"
-        :show-file-list="false"
       >
         <i class="el-icon-upload"></i>
         <div class="el-upload__text">
