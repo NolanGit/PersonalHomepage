@@ -15,7 +15,6 @@
         multiple
         :limit="3"
         :on-exceed="handleExceed"
-        :file-list="singleData.value"
         :show-file-list="false"
       >
         <i class="el-icon-upload"></i>
