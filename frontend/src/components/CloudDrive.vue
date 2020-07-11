@@ -1,7 +1,23 @@
 <template>
   <el-col>
     <el-row class="margin_bottom-large">
-      <el-upload class="upload" style="text-align: center;" drag action="/upload" multiple>
+      <el-upload
+        class="upload-demo"
+        style="text-align: center;"
+        drag
+        action="/upload"
+        :on-preview="handlePreview"
+        :on-remove="handleRemove"
+        :on-progress="uploadProgress"
+        :on-success="uploadSuccess"
+        :before-remove="beforeRemove"
+        :before-upload="beforeUpload"
+        multiple
+        :limit="3"
+        :on-exceed="handleExceed"
+        :file-list="singleData.value"
+        :show-file-list="false"
+      >
         <i class="el-icon-upload"></i>
         <div class="el-upload__text">
           将文件拖到此处，或
@@ -58,16 +74,42 @@ export default {
     };
   },
   methods: {
+    uploadSuccess(response, file, fileList) {
+      this.save(response.data.id);
+      let loadingInstance = Loading.service({ fullscreen: true });
+      this.$nextTick(() => {
+        // 以服务的方式调用的 Loading 需要异步关闭
+        loadingInstance.close();
+      });
+    },
+    uploadProgress() {
+      let loadingInstance = Loading.service({ fullscreen: true });
+    },
     async get() {
       try {
         const { data: res } = await axios.post(api.get, {
           user_id: this.user_id
         });
         this.tableData = res.data;
+      } catch (e) {
+        console.log(e);
         this.$message({
-          message: res["msg"],
+          message: e.response.data.msg,
+          type: "error"
+        });
+      }
+    },
+    async save(file_id) {
+      try {
+        const { data: res } = await axios.post(api.get, {
+          user_id: this.user_id,
+          file_id: file_id
+        });
+        this.$message({
+          message: res.msg,
           type: "success"
         });
+        this.tableData = res.data;
       } catch (e) {
         console.log(e);
         this.$message({
