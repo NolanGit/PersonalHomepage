@@ -4,6 +4,7 @@
       <div class="margin_left-medium margin_right-medium" style="text-align: center;">
         <el-upload
           class="upload-demo"
+          ref="upload"
           style="text-align: center;"
           drag
           action="/upload"
@@ -13,8 +14,6 @@
           :on-success="uploadSuccess"
           :before-remove="beforeRemove"
           :before-upload="beforeUpload"
-          multiple
-          :limit="3"
           :on-exceed="handleExceed"
         >
           <i class="el-icon-upload"></i>
@@ -109,6 +108,7 @@ export default {
         // 以服务的方式调用的 Loading 需要异步关闭
         loadingInstance.close();
       });
+      this.$refs.upload.clearFiles();
     },
     uploadProgress() {
       let loadingInstance = Loading.service({ fullscreen: true });
