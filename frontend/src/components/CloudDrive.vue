@@ -1,6 +1,6 @@
 <template>
-  <el-row>
-    <el-col>
+  <el-col>
+    <el-row class="margin_bottom-large">
       <el-upload
         class="upload-demo"
         drag
@@ -14,15 +14,15 @@
         </div>
         <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
       </el-upload>
-    </el-col>
-    <el-col>
+    </el-row>
+    <el-row>
       <el-table :data="tableData" style="width: 100%">
         <el-table-column prop="date" label="日期" width="180"></el-table-column>
         <el-table-column prop="name" label="姓名" width="180"></el-table-column>
         <el-table-column prop="address" label="地址"></el-table-column>
       </el-table>
-    </el-col>
-  </el-row>
+    </el-row>
+  </el-col>
 </template>
 <script>
 import axios from "axios";
@@ -33,9 +33,9 @@ const api = {
 };
 
 export default {
-  name: "cloudDrive",
+  name: "CloudDrive",
   props: {
-    user_id: Number,
+    user_id: Number
   },
   components: {},
   watch: {},
