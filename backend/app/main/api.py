@@ -18,7 +18,11 @@ from ..model.upload_model import upload as upload_table
 from ..login.login_funtion import User
 from ..privilege.privilege_control import privilegeFunction
 from ..privilege.privilege_control import permission_required
+import configparser
 
+cf = configparser.ConfigParser()
+cf.read('app/homepage.config')
+UPLOAD_FILE_PATH = cf.get('config', 'UPLOAD_FILE_PATH')
 URL_PREFIX = ''
 
 
@@ -47,7 +51,6 @@ def userInfo():
         traceback.print_exc()
         response = {'code': 500, 'msg': '失败！错误信息：' + str(e) + '，请联系管理员。', 'data': []}
         return jsonify(response), 500
-
 
 
 @main.route('/favicon.ico', methods=['GET'])
@@ -84,8 +87,11 @@ def upload():
         user_id = 0
     user_id = redis_conn.get(user_key)
 
+    folder_path = UPLOAD_FILE_PATH + time.strftime('%Y-%m-%d', time.localtime(time.time()))
+    if not os.path.exists(folder_path):
+        os.makedirs(folder_path)
     f = request.files['file']
-    upload_path = os.path.join('/home/pi/Documents/Github/PersonalHomepage/upload', secure_filename(''.join(lazy_pinyin(f.filename))))  #注意：没有的文件夹一定要先创建，不然会提示没有该路径
+    upload_path = os.path.join(folder_path, secure_filename(''.join(lazy_pinyin(str(time.time()) + '-' + f.filename))))  #注意：没有的文件夹一定要先创建，不然会提示没有该路径
     f.save(upload_path)
     _ = upload_table(file_name=f.filename, file_path=upload_path, user_id=user_id, update_time=datetime.datetime.now())
     _.save()

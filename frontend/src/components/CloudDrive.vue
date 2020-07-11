@@ -28,7 +28,7 @@
       <div class="margin_left-medium margin_right-medium">
         <div
           class="scrollbar-div"
-          style="max-height:calc(100vh - 350px); height: calc(100vh - 350px);"
+          style="max-height:calc(100vh - 400px); height: calc(100vh - 400px);"
         >
           <el-table :data="tableData" style="text-align: center;" size="small">
             <el-table-column prop="file_name" label="文件名称"></el-table-column>
