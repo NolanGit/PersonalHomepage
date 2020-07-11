@@ -34,7 +34,7 @@ def save():
 def get():
     try:
         user_id = request.get_json()['user_id']
-        _ = cloud_drive.select().where(cloud_drive.user_id == user_id & cloud_drive.is_valid == 1).order_by(cloud_drive.update_time).dicts()
+        _ = cloud_drive.select().where(cloud_drive.user_id == user_id & cloud_drive.is_valid == 1).order_by(-cloud_drive.update_time).dicts()
         response = {
             'code': 200,
             'msg': '成功！',
@@ -60,7 +60,7 @@ def delete():
         user_id = request.get_json()['user_id']
         id = request.get_json()['id']
         _ = cloud_drive.get(cloud_drive.id == id)
-        if _.user_id != user_id:
+        if int(_.user_id) != int(user_id):
             response = {'code': 403, 'msg': '文件归属错误！'}
             return jsonify(response), 403
         else:
