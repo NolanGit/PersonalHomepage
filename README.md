@@ -28,24 +28,29 @@
   同时需要本地安装MySQL（测试时使用的是MariaDB）和Redis
 
 ## 介绍（更新于2020-1-9）
-### 主页：
 ![image](https://user-images.githubusercontent.com/27627484/86606736-fa387080-bfda-11ea-8492-30457e57295f.png)
-### 搜索：使用百度的自动补全接口，增加引擎的话是在数据库中增加数据(search_engines)
+### 搜索
+使用百度的自动补全接口，增加引擎的话是在数据库中增加数据(search_engines)
 - 自动提示和切换搜索引擎
 ![image](https://user-images.githubusercontent.com/27627484/71998812-3f255980-327b-11ea-9e6d-7ad97cd5c18d.png)
-### 天气：登录后可以进行自定义，如不登录则展示IP所在地的天气信息
+### 天气
+如不登录则展示IP所在地的天气信息，登录后可以进行自定义，展示范围为IP+自定义位置的信息
+当请求数据时，为了保障速度，首先会使用缓存，缓存数据有效期为3小时（在\backend\app\weather\weather_function.py:16修改），如果没有有效缓存，则会请求外部API以获取数据
 - 增加城市
 ![image](https://user-images.githubusercontent.com/27627484/71998875-53695680-327b-11ea-99ce-28e75fd20675.png)
-### 书签：登陆后可以自定义，不登录时展示的书签是在数据库中修改（bookmarks.user_id==0）
+### 书签
+登陆后可以自定义，不登录时展示的书签是在数据库中修改（bookmarks.user_id==0）
 - 拖动修改展示顺序
 ![image](https://user-images.githubusercontent.com/27627484/71998914-6c720780-327b-11ea-84a1-d4c5efeceaee.png)
 - 修改书签详情
 ![image](https://user-images.githubusercontent.com/27627484/71998951-7ac02380-327b-11ea-8249-d48f6aa21adb.png)
 - 修改书签图标
 ![image](https://user-images.githubusercontent.com/27627484/71999000-90354d80-327b-11ea-8fe1-15c9901eb24d.png)
-### 控制台：如需增加模块，需要配置数据库（console）
+### 控制台
+如需增加模块，需要配置数据库（console）
 ![image](https://user-images.githubusercontent.com/27627484/71999094-c4a90980-327b-11ea-97ae-7e683663aa50.png)
-### 脚本运行平台：可以通过配置生成前端页面表单，然后通过填写表单来提交脚本至后端运行并展示运行结果，可以定时运行、参数回放、记录运行时间、记录运行日志、通过配置生成运行结果表格、运行额外脚本动态参数化前端组件，用于后台程序的统一驱动，定时任务需要配置\backend\app\script\schedule_monitor.sh为定时运行，步长需小于一小时
+### 脚本运行平台
+可以通过配置生成前端页面表单，然后通过填写表单来提交脚本至后端运行并展示运行结果，可以定时运行、参数回放、记录运行时间、记录运行日志、通过配置生成运行结果表格、运行额外脚本动态参数化前端组件，用于后台程序的统一驱动，定时任务需要配置\backend\app\script\schedule_monitor.sh为定时运行，步长需小于一小时
 - 首页：左侧为脚本所属系统页，右侧为具体脚本，通过右上角的"+"可以增加脚本，增加脚本会增加tab
 ![image](https://user-images.githubusercontent.com/27627484/72076975-6dfe0700-3331-11ea-9253-717766654a2d.png)
 - 按钮区域：
