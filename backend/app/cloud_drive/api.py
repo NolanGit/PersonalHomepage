@@ -22,10 +22,10 @@ def save():
         user_id = request.get_json()['user_id']
         file_id = request.get_json()['file_id']
         cloud_drive.create(file_id=file_id, user_id=user_id, is_valid=1, update_time=datetime.datetime.now()).save()
-        return jsonify(rsp.success())
+        return rsp.success()
     except Exception as e:
         traceback.print_exc()
-        return jsonify(rsp.failed(e)), 500
+        return rsp.failed(e), 500
 
 
 @cloud_drive_blue_print.route('/get', methods=['POST'])
@@ -46,10 +46,10 @@ def get():
             'file_name': upload.get(upload.id == s_['file_id']).file_name,
             'update_time': s_['update_time'].strftime("%Y-%m-%d %H:%M:%S"),
         } for s_ in _r]
-        return jsonify(rsp.success({'list': _list, 'total': _total}))
+        return rsp.success({'list': _list, 'total': _total})
     except Exception as e:
         traceback.print_exc()
-        return jsonify(rsp.failed(e)), 500
+        return rsp.failed(e), 500
 
 
 @cloud_drive_blue_print.route('/delete', methods=['POST'])
@@ -61,11 +61,11 @@ def delete():
         id = request.get_json()['id']
         _ = cloud_drive.get(cloud_drive.id == id)
         if int(_.user_id) != int(user_id):
-            return jsonify(rsp.refuse('文件归属错误！')), 403
+            return rsp.refuse('文件归属错误！'), 403
         else:
             _.is_valid = 0
             _.save()
-            return jsonify(rsp.success())
+            return rsp.success()
     except Exception as e:
         traceback.print_exc()
-        return jsonify(rsp.failed(e)), 500
+        return rsp.failed(e), 500
