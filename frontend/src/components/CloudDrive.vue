@@ -27,11 +27,17 @@
     <el-row>
       <div class="margin_left-medium margin_right-medium">
         <el-table :data="tableData" style="text-align: center;" size="small">
-          <el-table-column prop="file_name" label="文件名称" width="180"></el-table-column>
-          <el-table-column prop="update_time" label="上传时间" width="180"></el-table-column>
-          <el-table-column :key="Math.random()" label="操作">
+          <el-table-column prop="file_name" label="文件名称"></el-table-column>
+          <el-table-column prop="update_time" label="上传时间"></el-table-column>
+          <el-table-column :key="Math.random()" label="操作" width="150">
             <template slot-scope="scope">
-              <el-button class="noMargin" size="mini" plain @click="roleDisable(scope.row.id)">下载</el-button>
+              <el-button
+                class="noMargin"
+                size="mini"
+                plain
+                type="primary"
+                @click="roleDisable(scope.row.id)"
+              >下载</el-button>
               <el-button
                 class="noMargin"
                 size="mini"

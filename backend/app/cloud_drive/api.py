@@ -41,7 +41,7 @@ def get():
             'data': [{
                 'file_id': s_['file_id'],
                 'file_name': upload.get(upload.id == s_['file_id']).file_name,
-                'update_time': s_['update_time'],
+                'update_time': s_['update_time'].strftime("%Y-%m-%d %H:%M:%S"),
             } for s_ in _]
         }
         return jsonify(response)
