@@ -26,39 +26,41 @@
     </el-row>
     <el-row>
       <div class="margin_left-medium margin_right-medium">
-        <el-table :data="tableData" style="text-align: center;" size="small">
-          <el-table-column prop="file_name" label="文件名称"></el-table-column>
-          <el-table-column prop="update_time" label="上传时间"></el-table-column>
-          <el-table-column :key="Math.random()" label="操作" width="150">
-            <template slot-scope="scope">
-              <el-button
-                class="noMargin"
-                size="mini"
-                plain
-                type="primary"
-                @click="download(scope.row.file_id)"
-              >下载</el-button>
-              <el-button
-                class="noMargin"
-                size="mini"
-                plain
-                type="danger"
-                @click="del(scope.row.id)"
-              >删除</el-button>
-            </template>
-          </el-table-column>
-        </el-table>
-        <el-pagination
-          class="margin_top-medium"
-          @size-change="paginationSizeChange"
-          @current-change="paginationCurrentChange"
-          :current-page="pagination.currentPage"
-          :page-sizes="[5, 10, 20, 30]"
-          :page-size="pagination.pageSize"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="pagination.total"
-          style="text-align:center"
-        ></el-pagination>
+        <div class="scrollbar-div max-height-medium">
+          <el-table :data="tableData" style="text-align: center;" size="small">
+            <el-table-column prop="file_name" label="文件名称"></el-table-column>
+            <el-table-column prop="update_time" label="上传时间"></el-table-column>
+            <el-table-column :key="Math.random()" label="操作" width="150">
+              <template slot-scope="scope">
+                <el-button
+                  class="noMargin"
+                  size="mini"
+                  plain
+                  type="primary"
+                  @click="download(scope.row.file_id)"
+                >下载</el-button>
+                <el-button
+                  class="noMargin"
+                  size="mini"
+                  plain
+                  type="danger"
+                  @click="del(scope.row.id)"
+                >删除</el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+          <el-pagination
+            class="margin_top-medium"
+            @size-change="paginationSizeChange"
+            @current-change="paginationCurrentChange"
+            :current-page="pagination.currentPage"
+            :page-sizes="[5, 10, 20, 30]"
+            :page-size="pagination.pageSize"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="pagination.total"
+            style="text-align:center"
+          ></el-pagination>
+        </div>
       </div>
     </el-row>
   </el-col>
