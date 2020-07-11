@@ -61,7 +61,7 @@ const api = {
   download: "/download",
   get: "/cloudDrive/get",
   save: "/cloudDrive/save",
-  del: "/cloudDrive/delete"
+  delete: "/cloudDrive/delete"
 };
 
 export default {
