@@ -12,11 +12,15 @@ from ..model.login_model import user
 from ..model.privilege_model import role, privilege_role
 from ..model.privilege_model import privilege as privilege_model
 from ..common_func import CommonFunc
+from ..response import Response
+
+rsp = Response()
+cf = CommonFunc()
 
 pool0 = redis.ConnectionPool(host='localhost', port=6379, decode_responses=True, db=0)
 pool1 = redis.ConnectionPool(host='localhost', port=6379, decode_responses=True, db=1)
-cf = CommonFunc()
-LOGIN_STATUS_EXPIRE_TIME = 36000 # 登录状态过期时间
+LOGIN_STATUS_EXPIRE_TIME = 36000  # 登录状态过期时间
+
 
 # 权限装饰器
 def permission_required(privilege):
@@ -33,19 +37,17 @@ def permission_required(privilege):
                 msg = ('[权限校验失败]cookie:%s,URL:%s,原因:不存在cookie' % (user_key, privilege))
                 short_msg = '[权限校验失败]登录状态已失效，请刷新页面'
                 print(msg)
-                response = {'code': 401, 'msg': short_msg, 'message': msg}
-                return jsonify(response), 401
+                return rsp.failed(short_msg), 401
 
             user_id = redis_conn.get(user_key)
             password, ip, random_str, role_id = redis_conn.hmget(user_id, 'password', 'ip', 'random_str', 'role_id')
 
             #ip是否一致
             if ip != request.remote_addr:
-                msg = ('[权限校验失败]cookie:%s,URL:%s,原因:ip不一致，现ip：%s，允许的ip：%s' % (user_key, privilege, str(ip), str(request.remote_addr)))
+                msg = ('[权限校验失败]cookie:%s,URL:%s,原因:ip不一致，现ip：%s，允许的ip：%s' % (user_key, privilege, str(request.remote_addr), str(ip)))
                 short_msg = '[权限校验失败]登录状态已失效，请刷新页面'
                 print(msg)
-                response = {'code': 401, 'msg': short_msg}
-                return jsonify(response), 401
+                return rsp.failed(short_msg), 401
             user_key_in_redis = cf.md5_it(random_str + password)
 
             #cookie是否相同
@@ -53,16 +55,14 @@ def permission_required(privilege):
                 msg = ('[权限校验失败]cookie:%s,URL:%s,原因:重新加密后的user_key不相同' % (user_key, privilege))
                 short_msg = '[权限校验失败]登录状态已失效，请刷新页面'
                 print(msg)
-                response = {'code': 401, 'msg': short_msg}
-                return jsonify(response), 401
+                return rsp.failed(short_msg), 401
 
             #是否存在角色
             if privilegeFunction().get_redis_conn1().exists(role_id) == 0:
                 msg = ('[权限校验失败]cookie:%s,URL:%s,原因:用户所属角色被删除或禁用' % (user_key, privilege))
                 short_msg = '[权限校验失败]用户所属角色被删除或禁用'
                 print(msg)
-                response = {'code': 403, 'msg': short_msg}
-                return jsonify(response), 403
+                return rsp.failed(short_msg), 403
 
             #是否存在相应权限
             privilege_list = privilegeFunction().get_redis_conn1().lrange(role_id, 0, -1)
@@ -70,8 +70,7 @@ def permission_required(privilege):
                 msg = ('[权限校验失败]cookie:%s,URL:%s,原因:不具有权限，用户具有的权限有：%s' % (user_key, privilege, str(privilege_list)))
                 short_msg = '[权限校验失败]用户不具有此功能权限'
                 print(msg)
-                response = {'code': 403, 'msg': short_msg}
-                return jsonify(response), 403
+                return rsp.failed(short_msg), 403
             else:
                 return f(*args, **kwargs)
 
