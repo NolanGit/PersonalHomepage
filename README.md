@@ -5,13 +5,17 @@
 
 前端框架使用Element UI，后端框架使用Flask，后端ORM使用Peewee。
 
-## 截图
 ![image](https://user-images.githubusercontent.com/27627484/86606736-fa387080-bfda-11ea-8492-30457e57295f.png)
+
 ## 部署
 
-  使用python3运行根目录下的start.py并根据提示进行操作
- 
-## 进度
+  后端代码位于/backend，后端入口文件位于/backend/run.py，前端代码位于/frontend，前端编译的产物位于/dist
+  
+  同时需要本地安装MySQL（测试时使用的是MariaDB）和Redis
+  
+  在安装好环境后，使用python3运行根目录下的start.py并根据提示进行操作
+  
+## 开发进度
 ### Done：
 - 多用户登录
 - 搜索引擎（多搜索引擎的支持）
@@ -31,35 +35,53 @@
 - 股票
 - 新闻
   
-## 目录结构
-
-  后端代码位于/backend，后端入口文件位于/backend/run.py，前端代码位于/frontend，前端编译的产物位于/dist
-  
-  同时需要本地安装MySQL（测试时使用的是MariaDB）和Redis
+---------------------------------------------------------------------------------------------------------------------------------
 
 ## 介绍
 ### 搜索
-使用百度的自动补全接口，增加引擎的话是在数据库中增加数据(search_engines)
+入口：主页
+
+功能：输入内容后跳转到搜索网址，进入页面焦点自动置于搜索框内，输入文字可以带出提示（使用的百度的接口）增加引擎的话是在数据库中增加数据(search_engines)
+
 - 自动提示和切换搜索引擎
+
 ![image](https://user-images.githubusercontent.com/27627484/71998812-3f255980-327b-11ea-9e6d-7ad97cd5c18d.png)
 ### 天气
-如不登录则展示IP所在地的天气信息，登录后可以进行自定义，展示范围为IP+自定义位置的信息
-当请求数据时，为了保障速度，首先会使用缓存，缓存数据有效期为3小时（在\backend\app\weather\weather_function.py:16修改），如果没有有效缓存，则会请求外部API以获取数据
-- 增加城市
-![image](https://user-images.githubusercontent.com/27627484/71998875-53695680-327b-11ea-99ce-28e75fd20675.png)
+入口：主页小组件
+
+功能：如不登录则展示IP所在地的天气信息，登录后可以进行自定义，展示范围为IP+自定义位置的信息
+
+说明：当请求数据时，为了保障速度，首先会使用缓存，缓存数据有效期为3小时（在\backend\app\weather\weather_function.py:16修改），如果没有有效缓存，则会请求外部API以获取数据
+
+按钮：新增-登录后新增城市；排序-可拖动对自定义的城市进行排序或删除
+
+![image](https://user-images.githubusercontent.com/27627484/87287598-df12b700-c52c-11ea-9645-60418f048f45.png)
+
 ### 书签
-登陆后可以自定义，不登录时展示的书签是在数据库中修改（bookmarks.user_id==0）
+
+入口：主页小组件
+
+功能：登陆后可以自定义，不登录时展示的书签是在数据库中修改（bookmarks.user_id==0）
+
+按钮：新增-登陆后新增书签；设置：登陆后拖动排序、删除或修改书签的图标
+
 - 拖动修改展示顺序
-![image](https://user-images.githubusercontent.com/27627484/71998914-6c720780-327b-11ea-84a1-d4c5efeceaee.png)
+
+![image](https://user-images.githubusercontent.com/27627484/87288831-72002100-c52e-11ea-9fe1-aca28bfabe73.png)
 - 修改书签详情
-![image](https://user-images.githubusercontent.com/27627484/71998951-7ac02380-327b-11ea-8249-d48f6aa21adb.png)
+
+![image](https://user-images.githubusercontent.com/27627484/87288878-8512f100-c52e-11ea-8a2a-4c771ff32143.png)
 - 修改书签图标
-![image](https://user-images.githubusercontent.com/27627484/71999000-90354d80-327b-11ea-8fe1-15c9901eb24d.png)
+
+![image](https://user-images.githubusercontent.com/27627484/87288937-965bfd80-c52e-11ea-9ff2-e3d49c84d7b5.png)
 ### 控制台
-如需增加模块，需要在console表中增加一条记录
-![image](https://user-images.githubusercontent.com/27627484/71999094-c4a90980-327b-11ea-97ae-7e683663aa50.png)
+入口：登陆后左上角hover用户名
+
+功能：提供在console表中注册的前端组件入口，方便日后权限控制或进行排序等操作，如需增加前端模块，除了编写前端业务外，还需要在console表中增加一条记录
+
+![image](https://user-images.githubusercontent.com/27627484/87291915-a1b12800-c532-11ea-889c-d8ea54d2696b.png)
 ### 脚本运行平台
-入口：登陆后左上角hover用户名。
+入口：登陆后左上角hover用户名-控制台-脚本运行平台。
 
 功能描述：用于后台程序的统一驱动。可以通过配置生成前端页面表单，然后通过填写表单来提交脚本至后端运行并展示运行结果，并且可以定时运行脚本、对以前运行的任务进行回放、记录运行时间、记录运行日志、运行脚本来随时参数化前端组件。
 
@@ -116,11 +138,13 @@
 - 定时任务：最小颗粒度为一小时，实际上更小也可以，但是没有试过，如果调小颗粒度，则需要减小定时任务扫库脚本的运行步长。定时任务驱动的脚本，在列表中会在运行人后方加上"(定时)"字样
 ![image](https://user-images.githubusercontent.com/27627484/72083322-90e1e880-333c-11ea-9995-774f0faeae73.png)
 ### 网盘
-入口：登陆后左上角hover用户名。
+入口：登陆后左上角hover用户名
 功能描述：一个简易的网盘功能，文件上传不限制大小，下载不限制速度，但是大文件上传时需要多等一会直到loading结束，文件存储于根目录的upload文件夹，并建立名称为日期的子文件夹。
 ### 黄金价格
 功能描述：监控黄金价格，并且可以设定阈值，当价格超过阈值时发送提醒。需要在"脚本运行平台"中配置定时任务，爬虫内部会跳过国内黄金不开盘的时间。
 ### App Store应用价格监控
 功能描述：监控苹果软件商店应用的价格，当小于设定的阈值时，提醒用户。需要填写AppStore应用链接，此链接可以百度'想要关注的app名字+" site:apps.apple.com"'来获取，如"webssh pro site:apps.apple.com"，然后打开中文商店的页面(这样价格爬取到的才是中文)，此时的页面链接即为AppStore应用链接，如"https://apps.apple.com/cn/app/id958955657"。
 ### 权限控制
+入口：登陆后左上角hover用户名-控制台-账户和权限
+功能：使用"用户-角色-权限"模型编写的接口层级的权限控制系统
 
