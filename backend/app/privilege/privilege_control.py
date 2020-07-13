@@ -45,14 +45,13 @@ def permission_required(privilege):
             password, ip, random_str, role_id = redis_conn.hmget(user_id, 'password', 'ip', 'random_str', 'role_id')
 
             #ip是否一致
-            if ip != request.remote_addr:
-                if IS_STATIC_IP:
-                    if ip != request.remote_addr:
-                        msg = ('[权限校验失败]cookie:%s,URL:%s,原因:ip不一致，现ip：%s，允许的ip：%s' % (user_key, privilege, str(ip), str(request.remote_addr)))
-                        short_msg = '[权限校验失败]登录状态已失效，请刷新页面'
-                        print(msg)
-                        return rsp.failed(short_msg), 401
-                    user_key_in_redis = cf.md5_it(random_str + password)
+            if IS_STATIC_IP:
+                if ip != request.remote_addr:
+                    msg = ('[权限校验失败]cookie:%s,URL:%s,原因:ip不一致，现ip：%s，允许的ip：%s' % (user_key, privilege, str(ip), str(request.remote_addr)))
+                    short_msg = '[权限校验失败]登录状态已失效，请刷新页面'
+                    print(msg)
+                    return rsp.failed(short_msg), 401
+                user_key_in_redis = cf.md5_it(random_str + password)
 
             #cookie是否相同
             if user_key != user_key_in_redis:
