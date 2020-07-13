@@ -37,7 +37,7 @@ class App(object):
         global count
         count += 1
 
-        response = requests.get("https://itunes.apple.com/cn/app/" + app_url)
+        response = requests.get(app_url)
         soup = BeautifulSoup(response.text, 'lxml')
 
         app_name = soup.find(class_='product-header__title app-header__title')
