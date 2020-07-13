@@ -19,8 +19,10 @@ cf = CommonFunc()
 
 pool0 = redis.ConnectionPool(host='localhost', port=6379, decode_responses=True, db=0)
 pool1 = redis.ConnectionPool(host='localhost', port=6379, decode_responses=True, db=1)
-LOGIN_STATUS_EXPIRE_TIME = 36000  # 登录状态过期时间
 
+cf = CommonFunc()
+LOGIN_STATUS_EXPIRE_TIME = 36000 # 登录状态过期时间
+IS_STATIC_IP=True
 
 # 权限装饰器
 def permission_required(privilege):
@@ -44,11 +46,13 @@ def permission_required(privilege):
 
             #ip是否一致
             if ip != request.remote_addr:
-                msg = ('[权限校验失败]cookie:%s,URL:%s,原因:ip不一致，现ip：%s，允许的ip：%s' % (user_key, privilege, str(request.remote_addr), str(ip)))
-                short_msg = '[权限校验失败]登录状态已失效，请刷新页面'
-                print(msg)
-                return rsp.failed(short_msg), 401
-            user_key_in_redis = cf.md5_it(random_str + password)
+                if IS_STATIC_IP:
+                    if ip != request.remote_addr:
+                        msg = ('[权限校验失败]cookie:%s,URL:%s,原因:ip不一致，现ip：%s，允许的ip：%s' % (user_key, privilege, str(ip), str(request.remote_addr)))
+                        short_msg = '[权限校验失败]登录状态已失效，请刷新页面'
+                        print(msg)
+                        return rsp.failed(short_msg), 401
+                    user_key_in_redis = cf.md5_it(random_str + password)
 
             #cookie是否相同
             if user_key != user_key_in_redis:

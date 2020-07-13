@@ -9,6 +9,7 @@
               :key="singlePrivilegeData"
               :label="singlePrivilegeData.label"
               :value="singlePrivilegeData.id"
+              style="min-width: 300px;"
             ></el-checkbox>
           </el-checkbox-group>
         </div>
