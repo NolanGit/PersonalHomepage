@@ -39,7 +39,7 @@
             <el-input
               size="small"
               v-model="edit.form.url"
-              placeholder="App Store链接('https://apps.apple.com/cn/app/'后的字段)"
+              placeholder="App Store链接(如：'https://apps.apple.com/cn/app/id958955657')"
             ></el-input>
           </div>
         </el-form-item>
