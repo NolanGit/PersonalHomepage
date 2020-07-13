@@ -40,24 +40,39 @@
 ## 介绍
 ### 搜索
 入口：主页
+
 功能：输入内容后跳转到搜索网址，进入页面焦点自动置于搜索框内，输入文字可以带出提示（使用的百度的接口）增加引擎的话是在数据库中增加数据(search_engines)
+
 - 自动提示和切换搜索引擎
+
 ![image](https://user-images.githubusercontent.com/27627484/71998812-3f255980-327b-11ea-9e6d-7ad97cd5c18d.png)
 ### 天气
 入口：主页小组件
+
 功能：如不登录则展示IP所在地的天气信息，登录后可以进行自定义，展示范围为IP+自定义位置的信息
+
 说明：当请求数据时，为了保障速度，首先会使用缓存，缓存数据有效期为3小时（在\backend\app\weather\weather_function.py:16修改），如果没有有效缓存，则会请求外部API以获取数据
+
 按钮：新增-登录后新增城市；排序-可拖动对自定义的城市进行排序或删除
+
 ![image](https://user-images.githubusercontent.com/27627484/87287598-df12b700-c52c-11ea-9645-60418f048f45.png)
+
 ### 书签
+
 入口：主页小组件
+
 功能：登陆后可以自定义，不登录时展示的书签是在数据库中修改（bookmarks.user_id==0）
+
 按钮：新增-登陆后新增书签；设置：登陆后拖动排序、删除或修改书签的图标
+
 - 拖动修改展示顺序
+
 ![image](https://user-images.githubusercontent.com/27627484/87288831-72002100-c52e-11ea-9fe1-aca28bfabe73.png)
 - 修改书签详情
+
 ![image](https://user-images.githubusercontent.com/27627484/87288878-8512f100-c52e-11ea-8a2a-4c771ff32143.png)
 - 修改书签图标
+
 ![image](https://user-images.githubusercontent.com/27627484/87288937-965bfd80-c52e-11ea-9ff2-e3d49c84d7b5.png)
 ### 控制台
 入口：登陆后左上角hover用户名
