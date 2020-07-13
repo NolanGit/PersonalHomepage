@@ -164,7 +164,7 @@
 
 - 角色对应权限设置：新增角色、禁用角色、删除角色、修改角色名称、修改角色对应权限
 
-![image](https://user-images.githubusercontent.com/27627484/87305427-11321200-c549-11ea-855b-73950833fcf1.png)
+![image](https://user-images.githubusercontent.com/27627484/87307869-eea1f800-c54c-11ea-8862-ccc5503f333a.png)
 
 - 权限设置：新增权限、禁用权限、删除权限、修改权限
 
