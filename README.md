@@ -145,4 +145,6 @@
 ### App Store应用价格监控
 功能描述：监控苹果软件商店应用的价格，当小于设定的阈值时，提醒用户。需要填写AppStore应用链接，此链接可以百度'想要关注的app名字+" site:apps.apple.com"'来获取，如"webssh pro site:apps.apple.com"，然后打开中文商店的页面(这样价格爬取到的才是中文)，此时的页面链接即为AppStore应用链接，如"https://apps.apple.com/cn/app/id958955657"。
 ### 权限控制
+入口：登陆后左上角hover用户名-控制台-账户和权限
+功能：使用"用户-角色-权限"模型编写的接口层级的权限控制系统
 
