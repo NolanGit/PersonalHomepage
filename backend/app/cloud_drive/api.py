@@ -8,6 +8,7 @@ from flask import session, redirect, current_app, request, jsonify
 
 from ..response import Response
 from ..model.upload_model import cloud_drive, upload
+from ..privilege.privilege_control import privilegeFunction
 from ..privilege.privilege_control import permission_required
 
 rsp = Response()
@@ -37,7 +38,19 @@ def get():
         _current_page = request.get_json()['current_page']
         _pagination_size = request.get_json()['pagination_size']
 
-        _ = cloud_drive.select().where(cloud_drive.user_id == user_id & cloud_drive.is_valid == 1)
+        user_key = request.cookies.get('user_key')
+        redis_conn = privilegeFunction().get_redis_conn0()
+
+        # 判断user_key是否有效
+        if user_key == None or redis_conn.exists(user_key) == 0:
+            return rsp.failed('错误的用户信息'), 403
+
+        # 判断user_id是否一致
+        redis_user_id = redis_conn.get(user_key)
+        if int(redis_user_id) != int(user_id):
+            return rsp.failed('错误的用户信息'), 403
+
+        _ = cloud_drive.select().where((cloud_drive.user_id == user_id) & (cloud_drive.is_valid == 1))
         _total = _.count()
         _r = _.order_by(-cloud_drive.update_time).paginate(_current_page, _pagination_size).dicts()
         _list = [{
