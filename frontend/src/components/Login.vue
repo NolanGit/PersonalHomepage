@@ -48,7 +48,11 @@
       :before-close="drawerBeforeClose"
     >
       <Console :user_id="user_id" :login_name="login_name" v-if="drawer.title=='控制台'" />
-      <CloudDrive :user_id="user_id" v-if="drawer.title=='网盘'" />
+      <CloudDrive
+        :user_id="user_id"
+        v-if="drawer.title=='网盘'"
+        @cloudStatusChanged="cloudStatusChanged"
+      />
     </el-drawer>
   </div>
 </template>
@@ -79,6 +83,7 @@ export default {
       password: "",
       salt: "",
       user: "",
+      cloudStatus: 0,
       drawer: {
         title: "",
         size: "",
@@ -166,11 +171,27 @@ export default {
       this.drawer.size = "40%";
       this.drawer.visible = true;
       this.drawer.direction = "rtl";
+      this.cloudStatus = 0;
+    },
+    cloudStatusChanged(cloudStatus) {
+      this.cloudStatus = cloudStatus;
     },
     //关闭窗口
     drawerBeforeClose(done) {
-      this.drawer.title = "";
-      done();
+      if (this.cloudStatus == 1) {
+        this.$confirm(
+          "检测到您的文件仍在上传中，关闭页面会打断上传，仍然要关闭吗?",
+          "提示",
+          {}
+        ).then(_ => {
+          this.drawer.title = "";
+          done();
+          this.cloudStatus = 0;
+        });
+      } else {
+        this.drawer.title = "";
+        done();
+      }
     }
   },
   created() {},

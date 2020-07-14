@@ -109,15 +109,17 @@ export default {
     },
     uploadSuccess(response, file, fileList) {
       this.save(response.data.id);
-      let loadingInstance = Loading.service({ fullscreen: true });
-      this.$nextTick(() => {
-        // 以服务的方式调用的 Loading 需要异步关闭
-        loadingInstance.close();
-      });
+      this.$emit("cloudStatusChanged", 0);
+      // let loadingInstance = Loading.service({ fullscreen: true });
+      // this.$nextTick(() => {
+      //   // 以服务的方式调用的 Loading 需要异步关闭
+      //   loadingInstance.close();
+      // });
       this.$refs.upload.clearFiles();
     },
     uploadProgress() {
-      let loadingInstance = Loading.service({ fullscreen: true });
+      this.$emit("cloudStatusChanged", 1);
+      // let loadingInstance = Loading.service({ fullscreen: true });
     },
     async get() {
       try {
