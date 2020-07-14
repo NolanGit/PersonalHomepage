@@ -74,16 +74,43 @@
 - 修改书签图标
 
 ![image](https://user-images.githubusercontent.com/27627484/87288937-965bfd80-c52e-11ea-9ff2-e3d49c84d7b5.png)
+
+### 黄金价格
+
+入口：主页小组件
+
+功能描述：监控黄金价格，并且可以设定阈值，当价格超过阈值时发送提醒。需要在"脚本运行平台"中配置定时任务，爬虫内部会跳过国内黄金不开盘的时间。
+
+![image](https://user-images.githubusercontent.com/27627484/87305571-4b031880-c549-11ea-880a-115b891704db.png)
+
+![image](https://user-images.githubusercontent.com/27627484/87305626-62da9c80-c549-11ea-8bac-f33695ac4d71.png)
+
+### App Store应用价格监控
+
+入口：主页小组件
+
+功能：监控苹果软件商店应用的价格，当小于设定的阈值时，提醒用户。需要填写AppStore应用链接，此链接可以百度'想要关注的app名字+" site:apps.apple.com"'来获取，如"webssh pro site:apps.apple.com"，然后打开中文商店的页面(这样价格爬取到的才是中文)，此时的页面链接即为AppStore应用链接，如"https://apps.apple.com/cn/app/id958955657"。
+
+![image](https://user-images.githubusercontent.com/27627484/87305689-7a198a00-c549-11ea-9925-d944bdb839e5.png)
+
+### 网盘
+入口：登陆后左上角hover用户名-网盘
+
+功能：一个简易的网盘功能，文件上传不限制大小，下载不限制速度，但是大文件上传时需要多等一会直到loading结束，文件存储于根目录的upload文件夹，并建立名称为日期的子文件夹。
+
+![image](https://user-images.githubusercontent.com/27627484/87327430-a2fc4800-c566-11ea-8946-d24955d6448d.png)
+
 ### 控制台
-入口：登陆后左上角hover用户名
+入口：登陆后左上角hover用户名-控制台
 
 功能：提供在console表中注册的前端组件入口，方便日后权限控制或进行排序等操作，如需增加前端模块，除了编写前端业务外，还需要在console表中增加一条记录
 
 ![image](https://user-images.githubusercontent.com/27627484/87291915-a1b12800-c532-11ea-889c-d8ea54d2696b.png)
-### 脚本运行平台
+
+### 控制台-脚本运行平台
 入口：登陆后左上角hover用户名-控制台-脚本运行平台。
 
-功能：用于后台程序的统一驱动。可以通过配置生成前端页面表单，然后通过填写表单来提交脚本至后端运行并展示运行结果，并且可以定时运行脚本、对以前运行的任务进行回放、记录运行时间、记录运行日志、运行脚本来随时参数化前端组件。
+功能：用于后台程序的统一驱动。前端表单均由配置产生，无需接触前端代码，然后通过填写表单来提交脚本至后端运行并展示运行结果，并且可以定时运行脚本、对以前运行的任务进行回放、记录运行时间、记录运行日志、在脚本过程中参数化前端组件
 
 注意：
 1. 为了使作为html展示的运行结果正确展示空格数量，输出的所有空格都会被替换为"\&nbsp;"，如果需要在输出中真正输出空格，则脚本输出的空格必须使用"# "来代替空格，如：自己组装html标签并增加样式的时候，标签中就必须有空格，所以需要使用"\<table# border="1"\>"代替"\<table border="1"\>"
@@ -137,22 +164,8 @@
 ![image](https://user-images.githubusercontent.com/27627484/72077227-df3dba00-3331-11ea-9e03-b82439f5cda8.png)
 - 定时任务：最小颗粒度为一小时，实际上更小也可以，但是没有试过，如果调小颗粒度，则需要减小定时任务扫库脚本的运行步长。定时任务驱动的脚本，在列表中会在运行人后方加上"(定时)"字样
 ![image](https://user-images.githubusercontent.com/27627484/72083322-90e1e880-333c-11ea-9995-774f0faeae73.png)
-### 网盘
-入口：登陆后左上角hover用户名
-功能：一个简易的网盘功能，文件上传不限制大小，下载不限制速度，但是大文件上传时需要多等一会直到loading结束，文件存储于根目录的upload文件夹，并建立名称为日期的子文件夹。
-### 黄金价格
-功能描述：监控黄金价格，并且可以设定阈值，当价格超过阈值时发送提醒。需要在"脚本运行平台"中配置定时任务，爬虫内部会跳过国内黄金不开盘的时间。
 
-![image](https://user-images.githubusercontent.com/27627484/87305571-4b031880-c549-11ea-880a-115b891704db.png)
-
-![image](https://user-images.githubusercontent.com/27627484/87305626-62da9c80-c549-11ea-8bac-f33695ac4d71.png)
-
-### App Store应用价格监控
-功能：监控苹果软件商店应用的价格，当小于设定的阈值时，提醒用户。需要填写AppStore应用链接，此链接可以百度'想要关注的app名字+" site:apps.apple.com"'来获取，如"webssh pro site:apps.apple.com"，然后打开中文商店的页面(这样价格爬取到的才是中文)，此时的页面链接即为AppStore应用链接，如"https://apps.apple.com/cn/app/id958955657"。
-
-![image](https://user-images.githubusercontent.com/27627484/87305689-7a198a00-c549-11ea-9925-d944bdb839e5.png)
-
-### 权限控制
+### 控制台-权限控制
 入口：登陆后左上角hover用户名-控制台-账户和权限
 
 功能：使用"用户-角色-权限"模型编写的接口层级的权限控制系统，接口使用一个装饰器即可以对权限进行控制。默认用户请求接口时，请求IP必须与登录时使用的IP一致，这是一种较为严格的策略，在"/backend/app/privilege/privilege_control.py:20"可以关闭
