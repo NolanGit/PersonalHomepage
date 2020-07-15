@@ -326,11 +326,11 @@ export default {
       this.edit.userEditAction = "new";
     },
     //修改用户信息
-    userSetting(login_name) {
+    userSetting(row_login_name) {
       this.edit.title = "修改用户密码和角色";
       this.edit.visible = true;
       this.edit.type = "user";
-      this.edit.login_name = login_name;
+      this.edit.login_name = row_login_name;
       this.edit.userEditAction = "edit";
     },
     async userGet() {
