@@ -214,7 +214,7 @@
         <div v-if="edit.type=='user' & edit.visible">
           <ConsolePrivilegeEditUser
             :user_id="user_id"
-            :login_name="login_name"
+            :login_name="edit.login_name"
             :action="edit.userEditAction"
             @close="close()"
           />
@@ -327,10 +327,10 @@ export default {
     },
     //修改用户信息
     userSetting(row_login_name) {
+      this.edit.login_name = row_login_name;
       this.edit.title = "修改用户密码和角色";
       this.edit.visible = true;
       this.edit.type = "user";
-      this.edit.login_name = row_login_name;
       this.edit.userEditAction = "edit";
     },
     async userGet() {
