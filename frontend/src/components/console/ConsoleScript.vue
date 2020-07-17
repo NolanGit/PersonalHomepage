@@ -1478,50 +1478,50 @@ export default {
         });
       }
     },
-    //删除栏目
-    async subSystemDelete() {
-      this.$confirm("确认删除吗?", "提示", {}).then(async () => {
-        try {
-          for (var s = 0; s < this.subSystem.length; s++) {
-            if (this.activeSystem == this.subSystem[s].title) {
-              break;
-            }
-          }
-          const { data: res } = await axios.post(api.subSystemDelete, {
-            sub_system_id: this.subSystem[s].id,
-            user_id: this.user_id
-          });
-          this.$message({
-            message: "成功！",
-            type: "success"
-          });
-          this.getSubSystem();
-        } catch (e) {
-          console.log(e);
-          this.$message({
-            message: e.response.data.msg,
-            type: "error"
-          });
-        }
-      });
-    },
-    //添加栏目
-    async subSystemAdd() {
-      try {
-        const { data: res } = await axios.post(api.subSystemAdd, {
-          sub_system_name: this.subSystemName,
-          user_id: this.user_id
-        });
-        this.subSystem = [];
-        this.subSystemScript();
-      } catch (e) {
-        console.log(e);
-        this.$message({
-          message: e.response.data.msg,
-          type: "error"
-        });
-      }
-    },
+    // //删除栏目
+    // async subSystemDelete() {
+    //   this.$confirm("确认删除吗?", "提示", {}).then(async () => {
+    //     try {
+    //       for (var s = 0; s < this.subSystem.length; s++) {
+    //         if (this.activeSystem == this.subSystem[s].title) {
+    //           break;
+    //         }
+    //       }
+    //       const { data: res } = await axios.post(api.subSystemDelete, {
+    //         sub_system_id: this.subSystem[s].id,
+    //         user_id: this.user_id
+    //       });
+    //       this.$message({
+    //         message: "成功！",
+    //         type: "success"
+    //       });
+    //       this.getSubSystem();
+    //     } catch (e) {
+    //       console.log(e);
+    //       this.$message({
+    //         message: e.response.data.msg,
+    //         type: "error"
+    //       });
+    //     }
+    //   });
+    // },
+    // //添加栏目
+    // async subSystemAdd() {
+    //   try {
+    //     const { data: res } = await axios.post(api.subSystemAdd, {
+    //       sub_system_name: this.subSystemName,
+    //       user_id: this.user_id
+    //     });
+    //     this.subSystem = [];
+    //     this.subSystemScript();
+    //   } catch (e) {
+    //     console.log(e);
+    //     this.$message({
+    //       message: e.response.data.msg,
+    //       type: "error"
+    //     });
+    //   }
+    // },
     //展示栏目下的脚本
     async subSystemScript(sub_system_id) {
       this.formDataLoading = true;
