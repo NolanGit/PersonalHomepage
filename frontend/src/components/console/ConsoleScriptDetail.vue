@@ -118,13 +118,14 @@
                   </el-row>
                 </div>
               </div>
-              <ConsoleScriptButtons :user_id="user_id" />
+              <ConsoleScriptButtons :user_id="user_id" :scriptId="activeScriptId" />
             </div>
           </el-tab-pane>
         </el-tabs>
       </el-row>
       <!--底部按钮-->
       <el-row style="margin-top:60px;margin-left:10;margin-right:10px;">
+        <ConsoleScriptRun />
         <el-button
           :loading="submitButtonLoading"
           type="primary"
@@ -141,6 +142,7 @@
 import axios from "axios";
 import { deepClone } from "../../js/common";
 import ConsoleScriptButtons from "./ConsoleScriptButtons";
+import ConsoleScriptRun from "./ConsoleScriptRun";
 const api = {
   subSystemScript: "/script/subSystemScript",
   run: "/script/run",
@@ -159,6 +161,10 @@ const api = {
 };
 export default {
   name: "ConsoleScriptDetail",
+  components: {
+    ConsoleScriptButtons,
+    ConsoleScriptRun
+  },
   props: {
     user_id: Number,
     systemId: Number
@@ -166,10 +172,16 @@ export default {
   watch: {
     systemId(newVal, oldVal) {
       this.systemIdChanged(newVal);
+    },
+    activeTab(newVal, oldVal) {
+      this.activeTabChanged(newVal);
     }
   },
   data() {
     return {
+      activeTab: "", //当前触发的tab名称
+      activeTabIndex: 0, //当前触发的tab的index
+      activeScriptId: 0, //当前触发的脚本的id
       formData: [],
       extra_button: {
         visible: false,
@@ -181,6 +193,15 @@ export default {
     };
   },
   methods: {
+    activeTabChanged(newVal) {
+      for (let x = 0; x < this.formData.length; x++) {
+        if (this.formData[x].title == newVal) {
+          this.activeTabIndex = x;
+          this.activeScriptId = this.formData[x].id;
+          break;
+        }
+      }
+    },
     async systemIdChanged(val) {
       if (val == "") {
         return;

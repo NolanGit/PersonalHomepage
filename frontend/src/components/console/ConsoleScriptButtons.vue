@@ -189,6 +189,7 @@
 <script>
 import axios from "axios";
 import { deepClone } from "../../js/common";
+import ConsoleScriptRun from "./ConsoleScriptRun";
 const api = {
   subSystem: "/script/subSystem",
   subSystemAdd: "/script/subSystemAdd",
@@ -196,9 +197,12 @@ const api = {
 };
 export default {
   name: "ConsoleScriptButtons",
+  components: {
+    ConsoleScriptRun
+  },
   props: {
     user_id: Number,
-    scriptId: Number,
+    scriptId: Number
   },
   watch: {},
   data() {
@@ -244,91 +248,47 @@ export default {
       }
     };
   },
-  watch: {
-    activeSystem(newVal, oldVal) {
-      if (newVal == "") {
-        return;
-      }
-      for (var s = 0; s < this.subSystem.length; s++) {
-        if (newVal == this.subSystem[s].title) {
-          break;
-        }
-      }
-      this.$emit("subSystemClicked", this.subSystem[s].id);
-    }
-  },
+  watch: {},
   methods: {
-    scriptLabelClicked(scriptName) {
-      this.$emit("scriptNameClicked", scriptName);
-    },
-    //获取栏目
-    async subSystemGet() {
+    //展示最近一次由我运行的脚本日志
+    async singleDataLog() {
       try {
-        const { data: res } = await axios.get(api.subSystem, {
+        const { data: res } = await axios.post(api.getNewestLog, {
+          script_id: this.formData[this.activeTab].id,
           user_id: this.user_id
         });
-        for (let x = 0; x < res.data.length; x++) {
-          this.subSystem.push({
-            id: res.data[x]["id"],
-            title: res.data[x]["name"]
-          });
-        }
-      } catch (e) {
-        console.log(e);
-        this.$message({
-          message: e.response.data.msg,
-          type: "error"
-        });
-      }
-    },
-    //添加栏目
-    async subSystemAdd() {
-      try {
-        const { data: res } = await axios.post(api.subSystemAdd, {
-          sub_system_name: this.subSystemName,
-          user_id: this.user_id
-        });
-        this.subSystem = [];
-        this.subSystemGet();
-      } catch (e) {
-        console.log(e);
-        this.$message({
-          message: e.response.data.msg,
-          type: "error"
-        });
-      }
-    },
-    //删除栏目
-    async subSystemDelete() {
-      this.$confirm("确认删除吗?", "提示", {}).then(async () => {
-        try {
-          for (var s = 0; s < this.subSystem.length; s++) {
-            if (this.activeSystem == this.subSystem[s].title) {
-              break;
+        this.output.visible = true;
+        this.output.text = res.data[0].output;
+        if (this.bool.singleDataLog) {
+          this.$nextTick(() => {
+            try {
+              var scroll = new BScroll(this.$refs.outputDialog, {
+                scrollY: true,
+                scrollbar: {
+                  fade: true, // node_modules\better-scroll\dist\bscroll.esm.js:2345可以调时间，目前使用的是'var time = visible ? 500 : 5000;'
+                  interactive: true
+                },
+                momentumLimitDistance: 300,
+                mouseWheel: true,
+                preventDefault: false
+              });
+              scroll.refresh();
+            } catch (error) {
+              console.log("滚动条设置失败" + error);
             }
-          }
-          const { data: res } = await axios.post(api.subSystemDelete, {
-            sub_system_id: this.subSystem[s].id,
-            user_id: this.user_id
           });
-          this.$message({
-            message: "成功！",
-            type: "success"
-          });
-          this.subSystemGet();
-        } catch (e) {
-          console.log(e);
-          this.$message({
-            message: e.response.data.msg,
-            type: "error"
-          });
+          this.bool.singleDataLog = false;
         }
-      });
+      } catch (e) {
+        console.log(e);
+        this.$message({
+          message: e.response.data.msg,
+          type: "error"
+        });
+      }
     }
   },
-  mounted() {
-    this.subSystemGet();
-  }
+  mounted() {}
 };
 </script>
 
