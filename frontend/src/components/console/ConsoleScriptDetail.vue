@@ -123,6 +123,7 @@
                 :user_id="user_id"
                 :scriptId="activeScriptId"
                 :singleForm="singleForm"
+                @replay="singleDataReplay"
               />
             </div>
           </el-tab-pane>
@@ -175,9 +176,6 @@ export default {
     systemId: Number
   },
   watch: {
-    systemId(newVal, oldVal) {
-      this.systemIdChanged(newVal);
-    },
     activeTab(newVal, oldVal) {
       this.activeTabChanged(newVal);
     }
@@ -262,6 +260,59 @@ export default {
         this.formDataLoading = false;
         console.log(this.formData);
         return this.formData;
+      } catch (e) {
+        console.log(e);
+        this.$message({
+          message: e.response.data.msg,
+          type: "error"
+        });
+      }
+    },
+    //回放上一次由我运行的脚本参数
+    async singleDataReplay() {
+      try {
+        const { data: res } = await axios.post(api.replay, {
+          script_id: this.activeScriptId,
+          user_id: this.user_id
+        });
+        if (res.code != 200) {
+          this.$message({
+            message: res.msg,
+            type: "error"
+          });
+        } else if (this.formData[this.activeTab].version != res.data.version) {
+          this.$message({
+            message:
+              "检测到脚本配置发生过修改(" +
+              "V" +
+              res.data.version +
+              "→" +
+              "V" +
+              this.formData[this.activeTab].version +
+              ")，可能无法完美恢复上一次参数",
+            type: "info"
+          });
+        }
+        for (
+          var f = 0;
+          f < this.formData[this.activeTab].formDataDetail.length;
+          f++
+        ) {
+          try {
+            this.formData[this.activeTab].formDataDetail[f].value =
+              res.data.detail[
+                this.formData[this.activeTab].formDataDetail[f].label
+              ];
+          } catch (err) {
+            console.log(
+              "[" +
+                this.formData[this.activeTab].formDataDetail[f].label +
+                "]" +
+                "恢复失败：" +
+                err
+            );
+          }
+        }
       } catch (e) {
         console.log(e);
         this.$message({

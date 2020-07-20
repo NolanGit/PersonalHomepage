@@ -251,6 +251,9 @@ export default {
   },
   watch: {},
   methods: {
+    singleDataReplay(){
+      this.$emit('replay')
+    },
     //展示最近一次由我运行的脚本日志
     async singleDataLog() {
       try {
