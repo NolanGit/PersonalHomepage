@@ -62,91 +62,9 @@ export default {
       }
     };
   },
-  watch: {
-    activeSystem(newVal, oldVal) {
-      if (newVal == "") {
-        return;
-      }
-      for (var s = 0; s < this.subSystem.length; s++) {
-        if (newVal == this.subSystem[s].title) {
-          break;
-        }
-      }
-      this.$emit("subSystemClicked", this.subSystem[s].id);
-    }
-  },
-  methods: {
-    scriptLabelClicked(scriptName) {
-      this.$emit("scriptNameClicked", scriptName);
-    },
-    //获取栏目
-    async subSystemGet() {
-      try {
-        const { data: res } = await axios.get(api.subSystem, {
-          user_id: this.user_id
-        });
-        for (let x = 0; x < res.data.length; x++) {
-          this.subSystem.push({
-            id: res.data[x]["id"],
-            title: res.data[x]["name"]
-          });
-        }
-      } catch (e) {
-        console.log(e);
-        this.$message({
-          message: e.response.data.msg,
-          type: "error"
-        });
-      }
-    },
-    //添加栏目
-    async subSystemAdd() {
-      try {
-        const { data: res } = await axios.post(api.subSystemAdd, {
-          sub_system_name: this.subSystemName,
-          user_id: this.user_id
-        });
-        this.subSystem = [];
-        this.subSystemGet();
-      } catch (e) {
-        console.log(e);
-        this.$message({
-          message: e.response.data.msg,
-          type: "error"
-        });
-      }
-    },
-    //删除栏目
-    async subSystemDelete() {
-      this.$confirm("确认删除吗?", "提示", {}).then(async () => {
-        try {
-          for (var s = 0; s < this.subSystem.length; s++) {
-            if (this.activeSystem == this.subSystem[s].title) {
-              break;
-            }
-          }
-          const { data: res } = await axios.post(api.subSystemDelete, {
-            sub_system_id: this.subSystem[s].id,
-            user_id: this.user_id
-          });
-          this.$message({
-            message: "成功！",
-            type: "success"
-          });
-          this.subSystemGet();
-        } catch (e) {
-          console.log(e);
-          this.$message({
-            message: e.response.data.msg,
-            type: "error"
-          });
-        }
-      });
-    }
-  },
-  mounted() {
-    this.subSystemGet();
-  }
+  watch: {},
+  methods: {},
+  mounted() {}
 };
 </script>
 
