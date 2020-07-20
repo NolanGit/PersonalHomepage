@@ -202,6 +202,7 @@ export default {
   },
   props: {
     user_id: Number,
+    singleForm: Array,
     scriptId: Number
   },
   watch: {},

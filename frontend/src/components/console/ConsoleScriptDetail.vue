@@ -11,6 +11,7 @@
             v-for="(singleForm,singleFormIndex) in formData"
             :key="singleForm.key"
             :label="singleForm.title"
+            :name="singleSystem.title"
             :lazy="true"
           >
             <div class="div-flex">
@@ -118,7 +119,11 @@
                   </el-row>
                 </div>
               </div>
-              <ConsoleScriptButtons :user_id="user_id" :scriptId="activeScriptId" />
+              <ConsoleScriptButtons
+                :user_id="user_id"
+                :scriptId="activeScriptId"
+                :singleForm="singleForm"
+              />
             </div>
           </el-tab-pane>
         </el-tabs>
@@ -206,7 +211,6 @@ export default {
       if (val == "") {
         return;
       }
-      this.activedSystem = val;
       await this.subSystemScript(val);
       this.activeTab = this.formData[0]["title"];
     },
