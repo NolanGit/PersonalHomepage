@@ -2,7 +2,7 @@
   <section>
     <el-row class="main-row margin_bottom-medium" :gutter="20">
       <el-col :span="5" class="lift-side-bar">
-        <ConsoleScriptColumn :user_id="user_id" />
+        <ConsoleScriptColumn :user_id="user_id" :formData="[]" />
       </el-col>
       <el-col :span="19" class="right-side-bar"></el-col>
     </el-row>
