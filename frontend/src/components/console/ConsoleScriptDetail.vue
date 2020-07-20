@@ -340,12 +340,12 @@ export default {
   name: "ConsoleScriptDetail",
   props: {
     user_id: Number,
-    system_id: Number,
+    system_id: Number
   },
-  watch:{
-  systemId(newVal,oldVal){
-    this.systemIdChanged(newVal)
-  }
+  watch: {
+    systemId(newVal, oldVal) {
+      this.systemIdChanged(newVal);
+    }
   },
   data() {
     return {
@@ -361,7 +361,7 @@ export default {
       }
       this.activedSystem = val;
       await this.subSystemScript(val);
-      this.activeTab = this.formData[0]['title']
+      this.activeTab = this.formData[0]["title"];
     },
     //展示栏目下的脚本
     async subSystemScript(sub_system_id) {
@@ -420,7 +420,7 @@ export default {
           this.subSystem[subSystemIndex].script.push(res.data[d]["name"]);
         }
         this.formDataLoading = false;
-        console.log( this.formData);
+        console.log(this.formData);
         return this.formData;
       } catch (e) {
         console.log(e);
@@ -429,7 +429,7 @@ export default {
           type: "error"
         });
       }
-    },
+    }
   }
 };
 </script>

@@ -59,8 +59,11 @@ export default {
   name: "ConsoleScriptColumn",
   props: {
     user_id: Number,
-    formData: []
+    formData: {
+      default: []
+    }
   },
+  watch: {},
   data() {
     return {
       activeSystem: "",
