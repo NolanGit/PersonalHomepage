@@ -251,14 +251,62 @@ export default {
   },
   watch: {},
   methods: {
-    singleDataReplay(){
-      this.$emit('replay')
+    //回放上一次由我运行的脚本参数
+    async singleDataReplay() {
+      try {
+        const { data: res } = await axios.post(api.replay, {
+          script_id: singleForm.id,
+          user_id: this.user_id
+        });
+        if (res.code != 200) {
+          this.$message({
+            message: res.msg,
+            type: "error"
+          });
+        } else if (singleForm.version != res.data.version) {
+          this.$message({
+            message:
+              "检测到脚本配置发生过修改(" +
+              "V" +
+              res.data.version +
+              "→" +
+              "V" +
+              singleForm.version +
+              ")，可能无法完美恢复上一次参数",
+            type: "info"
+          });
+        }
+        for (var f = 0; f < singleForm.formDataDetail.length; f++) {
+          try {
+            singleForm.formDataDetail[f].value =
+              res.data.detail[singleForm.formDataDetail[f].label];
+          } catch (err) {
+            console.log(
+              "[" +
+                singleForm.formDataDetail[f].label +
+                "]" +
+                "恢复失败：" +
+                err
+            );
+          }
+        }
+        this.$emit('replay',singleForm)
+      } catch (e) {
+        console.log(e);
+        this.$message({
+          message: e.response.data.msg,
+          type: "error"
+        });
+      }
+    },
+    singleDataLog() {
+      this.$emit("singleLog");
     },
     //展示最近一次由我运行的脚本日志
     async singleDataLog() {
       try {
         const { data: res } = await axios.post(api.getNewestLog, {
-          script_id: this.formData[this.activeTab].id,
+          script_id: singleForm.id,
           user_id: this.user_id
         });
         this.output.visible = true;
