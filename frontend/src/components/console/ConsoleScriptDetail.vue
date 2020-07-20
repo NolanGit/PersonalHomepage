@@ -332,15 +332,26 @@
 import axios from "axios";
 import { deepClone } from "../../js/common";
 const api = {
-  subSystem: "/script/subSystem",
-  subSystemAdd: "/script/subSystemAdd",
-  subSystemDelete: "/script/subSystemDelete"
+  subSystemScript: "/script/subSystemScript",
+  run: "/script/run",
+  terminate: "/script/terminate",
+  runOutput: "/script/runOutput",
+  edit: "/script/edit",
+  replay: "/script/replay",
+  delete: "/script/delete",
+  saveOutput: "/script/saveOutput",
+  getLogs: "/script/getLogs",
+  getNewestLog: "/script/getNewestLog",
+  schedule: "/script/schedule",
+  scheduleAdd: "/script/scheduleEdit",
+  scheduleDelete: "/script/scheduleDelete",
+  extraButtonScriptRun: "/script/extraButtonScriptRun",
 };
 export default {
   name: "ConsoleScriptDetail",
   props: {
     user_id: Number,
-    system_id: Number
+    systemId: Number
   },
   watch: {
     systemId(newVal, oldVal) {
@@ -349,9 +360,7 @@ export default {
   },
   data() {
     return {
-      activeSystem: [],
-      subSystem: [],
-      subSystemName: ""
+      formData: [],
     };
   },
   methods: {
@@ -364,24 +373,14 @@ export default {
       this.activeTab = this.formData[0]["title"];
     },
     //展示栏目下的脚本
-    async subSystemScript(sub_system_id) {
+    async subSystemScript(systemId) {
       this.formDataLoading = true;
-      for (
-        var subSystemIndex = 0;
-        subSystemIndex < this.subSystem.length;
-        subSystemIndex++
-      ) {
-        if (Number(sub_system_id) == this.subSystem[subSystemIndex].id) {
-          break;
-        }
-      }
       try {
         const { data: res } = await axios.post(api.subSystemScript, {
           user_id: this.user_id,
-          sub_system_id: this.subSystem[subSystemIndex].id
+          sub_system_id: systemId
         });
         this.formData = [];
-        this.subSystem[subSystemIndex].script = [];
         for (let d = 0; d < res.data.length; d++) {
           this.formData.push({
             title: res.data[d]["name"],
@@ -417,7 +416,6 @@ export default {
               version: res.data[d]["detail"][t]["version"]
             });
           }
-          this.subSystem[subSystemIndex].script.push(res.data[d]["name"]);
         }
         this.formDataLoading = false;
         console.log(this.formData);
