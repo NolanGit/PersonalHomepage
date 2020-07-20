@@ -11,7 +11,7 @@
             v-for="(singleForm,singleFormIndex) in formData"
             :key="singleForm.key"
             :label="singleForm.title"
-            :name="singleSystem.title"
+            :name="singleForm.title"
             :lazy="true"
           >
             <div class="div-flex">
