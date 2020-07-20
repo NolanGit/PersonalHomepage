@@ -85,6 +85,43 @@ export default {
     scriptLabelClicked(scriptName) {
       this.$emit("scriptNameClicked", scriptName);
     },
+    //获取栏目
+    async getSubSystem() {
+      try {
+        const { data: res } = await axios.get(api.subSystem, {
+          user_id: this.user_id
+        });
+        for (let x = 0; x < res.data.length; x++) {
+          this.subSystem.push({
+            id: res.data[x]["id"],
+            title: res.data[x]["name"]
+          });
+        }
+      } catch (e) {
+        console.log(e);
+        this.$message({
+          message: e.response.data.msg,
+          type: "error"
+        });
+      }
+    },
+    //添加栏目
+    async subSystemAdd() {
+      try {
+        const { data: res } = await axios.post(api.subSystemAdd, {
+          sub_system_name: this.subSystemName,
+          user_id: this.user_id
+        });
+        this.subSystem = [];
+        this.subSystemScript();
+      } catch (e) {
+        console.log(e);
+        this.$message({
+          message: e.response.data.msg,
+          type: "error"
+        });
+      }
+    },
     //删除栏目
     async subSystemDelete() {
       this.$confirm("确认删除吗?", "提示", {}).then(async () => {
@@ -112,22 +149,8 @@ export default {
         }
       });
     },
-    //添加栏目
-    async subSystemAdd() {
-      try {
-        const { data: res } = await axios.post(api.subSystemAdd, {
-          sub_system_name: this.subSystemName,
-          user_id: this.user_id
-        });
-        this.subSystem = [];
-        this.subSystemScript();
-      } catch (e) {
-        console.log(e);
-        this.$message({
-          message: e.response.data.msg,
-          type: "error"
-        });
-      }
+    mounted() {
+      this.getSubSystem();
     }
   }
 };

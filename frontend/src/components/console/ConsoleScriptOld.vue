@@ -1458,26 +1458,26 @@ export default {
         }
       });
     },
-    //获取系统信息
-    async getSubSystem() {
-      try {
-        const { data: res } = await axios.get(api.subSystem, {
-          user_id: this.user_id
-        });
-        for (let x = 0; x < res.data.length; x++) {
-          this.subSystem.push({
-            id: res.data[x]["id"],
-            title: res.data[x]["name"]
-          });
-        }
-      } catch (e) {
-        console.log(e);
-        this.$message({
-          message: e.response.data.msg,
-          type: "error"
-        });
-      }
-    },
+    // //获取系统信息
+    // async getSubSystem() {
+    //   try {
+    //     const { data: res } = await axios.get(api.subSystem, {
+    //       user_id: this.user_id
+    //     });
+    //     for (let x = 0; x < res.data.length; x++) {
+    //       this.subSystem.push({
+    //         id: res.data[x]["id"],
+    //         title: res.data[x]["name"]
+    //       });
+    //     }
+    //   } catch (e) {
+    //     console.log(e);
+    //     this.$message({
+    //       message: e.response.data.msg,
+    //       type: "error"
+    //     });
+    //   }
+    // },
     // //删除栏目
     // async subSystemDelete() {
     //   this.$confirm("确认删除吗?", "提示", {}).then(async () => {
