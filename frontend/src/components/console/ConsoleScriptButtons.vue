@@ -191,9 +191,12 @@ import axios from "axios";
 import { deepClone } from "../../js/common";
 import ConsoleScriptRun from "./ConsoleScriptRun";
 const api = {
-  subSystem: "/script/subSystem",
-  subSystemAdd: "/script/subSystemAdd",
-  subSystemDelete: "/script/subSystemDelete"
+  replay: "/script/replay",
+  getLogs: "/script/getLogs",
+  getNewestLog: "/script/getNewestLog",
+  schedule: "/script/schedule",
+  scheduleAdd: "/script/scheduleEdit",
+  scheduleDelete: "/script/scheduleDelete",
 };
 export default {
   name: "ConsoleScriptButtons",
@@ -255,7 +258,7 @@ export default {
     async singleDataReplay() {
       try {
         const { data: res } = await axios.post(api.replay, {
-          script_id: singleForm.id,
+          script_id: this.singleForm.id,
           user_id: this.user_id
         });
         if (res.code != 200) {
@@ -299,8 +302,42 @@ export default {
         });
       }
     },
-    singleDataLog() {
-      this.$emit("singleLog");
+    //展示最近一次由我运行的脚本日志
+    async singleDataLog() {
+      try {
+        const { data: res } = await axios.post(api.getNewestLog, {
+          script_id: this.formData[this.activeTab].id,
+          user_id: this.user_id
+        });
+        this.output.visible = true;
+        this.output.text = res.data[0].output;
+        if (this.bool.singleDataLog) {
+          this.$nextTick(() => {
+            try {
+              var scroll = new BScroll(this.$refs.outputDialog, {
+                scrollY: true,
+                scrollbar: {
+                  fade: true, // node_modules\better-scroll\dist\bscroll.esm.js:2345可以调时间，目前使用的是'var time = visible ? 500 : 5000;'
+                  interactive: true
+                },
+                momentumLimitDistance: 300,
+                mouseWheel: true,
+                preventDefault: false
+              });
+              scroll.refresh();
+            } catch (error) {
+              console.log("滚动条设置失败" + error);
+            }
+          });
+          this.bool.singleDataLog = false;
+        }
+      } catch (e) {
+        console.log(e);
+        this.$message({
+          message: e.response.data.msg,
+          type: "error"
+        });
+      }
     },
     //展示最近一次由我运行的脚本日志
     async singleDataLog() {

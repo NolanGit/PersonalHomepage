@@ -35,9 +35,13 @@
 import axios from "axios";
 import { deepClone } from "../../js/common";
 const api = {
-  subSystem: "/script/subSystem",
-  subSystemAdd: "/script/subSystemAdd",
-  subSystemDelete: "/script/subSystemDelete"
+  run: "/script/run",
+  terminate: "/script/terminate",
+  runOutput: "/script/runOutput",
+  edit: "/script/edit",
+  delete: "/script/delete",
+  saveOutput: "/script/saveOutput",
+  extraButtonScriptRun: "/script/extraButtonScriptRun",
 };
 export default {
   name: "ConsoleScriptRun",
