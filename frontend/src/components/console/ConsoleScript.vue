@@ -2,7 +2,7 @@
   <section>
     <el-row class="main-row margin_bottom-medium" :gutter="20">
       <el-col :span="5" class="lift-side-bar">
-        <ConsoleScriptColumn />
+        <ConsoleScriptColumn :user_id="user_id" />
       </el-col>
       <el-col :span="19" class="right-side-bar"></el-col>
     </el-row>
@@ -13,6 +13,8 @@
 import axios from "axios";
 import { deepClone } from "../../js/common";
 import ConsoleScriptColumn from "./ConsoleScriptColumn";
+import ConsoleScriptDetail from "./ConsoleScriptDetail";
+
 const api = {
   subSystem: "/script/subSystem",
   subSystemAdd: "/script/subSystemAdd",
@@ -21,7 +23,8 @@ const api = {
 export default {
   name: "ConsoleScript",
   components: {
-    ConsoleScriptColumn
+    ConsoleScriptColumn,
+    ConsoleScriptDetail
   },
   props: {
     user_id: Number

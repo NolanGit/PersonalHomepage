@@ -86,7 +86,7 @@ export default {
       this.$emit("scriptNameClicked", scriptName);
     },
     //获取栏目
-    async getSubSystem() {
+    async subSystemGet() {
       try {
         const { data: res } = await axios.get(api.subSystem, {
           user_id: this.user_id
@@ -113,7 +113,7 @@ export default {
           user_id: this.user_id
         });
         this.subSystem = [];
-        this.subSystemScript();
+        this.subSystemGet();
       } catch (e) {
         console.log(e);
         this.$message({
@@ -139,7 +139,7 @@ export default {
             message: "成功！",
             type: "success"
           });
-          this.getSubSystem();
+          this.subSystemGet();
         } catch (e) {
           console.log(e);
           this.$message({
@@ -148,10 +148,10 @@ export default {
           });
         }
       });
-    },
-    mounted() {
-      this.getSubSystem();
     }
+  },
+  mounted() {
+    this.subSystemGet();
   }
 };
 </script>

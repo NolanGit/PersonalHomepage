@@ -337,10 +337,10 @@ const api = {
   subSystemDelete: "/script/subSystemDelete"
 };
 export default {
-  name: "ConsoleScriptColumn",
+  name: "ConsoleScriptDetail",
   props: {
     user_id: Number,
-    formData: Array
+    system_id: Number,
   },
   data() {
     return {
