@@ -59,7 +59,7 @@ export default {
   name: "ConsoleScriptColumn",
   props: {
     user_id: Number,
-    formData: Array
+    formData: []
   },
   data() {
     return {

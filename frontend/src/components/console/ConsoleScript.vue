@@ -2,9 +2,11 @@
   <section>
     <el-row class="main-row margin_bottom-medium" :gutter="20">
       <el-col :span="5" class="lift-side-bar">
-        <ConsoleScriptColumn :user_id="user_id" :formData="[]" />
+        <ConsoleScriptColumn :user_id="user_id" :formData="formData" @subSystemClicked="subSystemClicked" @scriptNameClicked="scriptNameClicked"/>
       </el-col>
-      <el-col :span="19" class="right-side-bar"></el-col>
+      <el-col :span="19" class="right-side-bar">
+      <ConsoleScriptDetail :systemId="systemId"/>
+      </el-col>
     </el-row>
   </section>
 </template>
@@ -30,10 +32,17 @@ export default {
     user_id: Number
   },
   data() {
-    return {};
+    return {
+    systemId:Number,
+    formData:[],
+    };
   },
   watch: {},
-  methods: {}
+  methods: {
+  subSystemClicked(systemId){
+  this.systemId=systemId
+  }
+  }
 };
 </script>
 

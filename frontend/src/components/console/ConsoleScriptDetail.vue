@@ -342,6 +342,11 @@ export default {
     user_id: Number,
     system_id: Number,
   },
+  watch:{
+  systemId(newVal,oldVal){
+    this.systemIdChanged(newVal)
+  }
+  },
   data() {
     return {
       activeSystem: [],
@@ -349,59 +354,74 @@ export default {
       subSystemName: ""
     };
   },
-  watch: {
-    activeSystem(newVal, oldVal) {
-      if (newVal == "") {
+  methods: {
+    async systemIdChanged(val) {
+      if (val == "") {
         return;
       }
-      for (var s = 0; s < this.subSystem.length; s++) {
-        if (newVal == this.subSystem[s].title) {
+      this.activedSystem = val;
+      await this.subSystemScript(val);
+      this.activeTab = this.formData[0]['title']
+    },
+    //展示栏目下的脚本
+    async subSystemScript(sub_system_id) {
+      this.formDataLoading = true;
+      for (
+        var subSystemIndex = 0;
+        subSystemIndex < this.subSystem.length;
+        subSystemIndex++
+      ) {
+        if (Number(sub_system_id) == this.subSystem[subSystemIndex].id) {
           break;
         }
       }
-      this.$emit("subSystemClicked", this.subSystem[s].id);
-    }
-  },
-  methods: {
-    scriptLabelClicked(scriptName) {
-      this.$emit("scriptNameClicked", scriptName);
-    },
-    //删除栏目
-    async subSystemDelete() {
-      this.$confirm("确认删除吗?", "提示", {}).then(async () => {
-        try {
-          for (var s = 0; s < this.subSystem.length; s++) {
-            if (this.activeSystem == this.subSystem[s].title) {
-              break;
-            }
-          }
-          const { data: res } = await axios.post(api.subSystemDelete, {
-            sub_system_id: this.subSystem[s].id,
-            user_id: this.user_id
-          });
-          this.$message({
-            message: "成功！",
-            type: "success"
-          });
-          this.getSubSystem();
-        } catch (e) {
-          console.log(e);
-          this.$message({
-            message: e.response.data.msg,
-            type: "error"
-          });
-        }
-      });
-    },
-    //添加栏目
-    async subSystemAdd() {
       try {
-        const { data: res } = await axios.post(api.subSystemAdd, {
-          sub_system_name: this.subSystemName,
-          user_id: this.user_id
+        const { data: res } = await axios.post(api.subSystemScript, {
+          user_id: this.user_id,
+          sub_system_id: this.subSystem[subSystemIndex].id
         });
-        this.subSystem = [];
-        this.subSystemScript();
+        this.formData = [];
+        this.subSystem[subSystemIndex].script = [];
+        for (let d = 0; d < res.data.length; d++) {
+          this.formData.push({
+            title: res.data[d]["name"],
+            id: res.data[d]["id"],
+            start_folder: res.data[d]["start_folder"],
+            start_script: res.data[d]["start_script"],
+            runs: res.data[d]["runs"],
+            user: res.data[d]["user"],
+            update_time: res.data[d]["update_time"],
+            version: res.data[d]["version"],
+            update_time: res.data[d]["update_time"],
+            type: res.data[d]["type"],
+            sub_system_id: res.data[d]["sub_system_id"],
+            formDataDetail: []
+          });
+          for (var t = 0; t < res.data[d]["detail"].length; t++) {
+            this.formData[this.formData.length - 1]["formDataDetail"].push({
+              type: res.data[d]["detail"][t]["type"],
+              label: res.data[d]["detail"][t]["label"],
+              value: res.data[d]["detail"][t]["value"],
+              placeHolder: res.data[d]["detail"][t]["place_holder"],
+              options: res.data[d]["detail"][t]["options"],
+              createable: res.data[d]["detail"][t]["createable"],
+              disabled: res.data[d]["detail"][t]["disabled"],
+              remark: res.data[d]["detail"][t]["remark"],
+              is_important: res.data[d]["detail"][t]["is_important"],
+              visible: res.data[d]["detail"][t]["visible"],
+              extra_button: res.data[d]["detail"][t]["extra_button"],
+              extra_button_label:
+                res.data[d]["detail"][t]["extra_button_label"],
+              extra_button_script:
+                res.data[d]["detail"][t]["extra_button_script"],
+              version: res.data[d]["detail"][t]["version"]
+            });
+          }
+          this.subSystem[subSystemIndex].script.push(res.data[d]["name"]);
+        }
+        this.formDataLoading = false;
+        console.log( this.formData);
+        return this.formData;
       } catch (e) {
         console.log(e);
         this.$message({
@@ -409,7 +429,7 @@ export default {
           type: "error"
         });
       }
-    }
+    },
   }
 };
 </script>
