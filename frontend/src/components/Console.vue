@@ -22,11 +22,14 @@
       :size="drawer.size"
     >
       <div class="margin-medium" v-if="drawer.visible==true">
-        <div v-if="activeComponent=='ConsoleScript'">
-          <ConsoleScript :user_id="user_id" />
-        </div>
         <div v-if="activeComponent=='ConsolePrivilege'">
           <ConsolePrivilege :user_id="user_id" :login_name="login_name" />
+        </div>
+        <div v-if="activeComponent=='ConsoleScript'">
+          <ConsoleScriptOld :user_id="user_id" />
+        </div>
+        <div v-if="activeComponent=='ConsoleScript'">
+          <ConsoleScript :user_id="user_id" />
         </div>
       </div>
     </el-drawer>
@@ -34,8 +37,9 @@
 </template>
 <script>
 import axios from "axios";
-import ConsoleScript from "./console/ConsoleScript.vue";
 import ConsolePrivilege from "./console/ConsolePrivilege.vue";
+import ConsoleScriptOld from "./console/ConsoleScriptOld.vue";
+import ConsoleScript from "./console/ConsoleScript.vue";
 const api = {
   get: "/console/get"
 };

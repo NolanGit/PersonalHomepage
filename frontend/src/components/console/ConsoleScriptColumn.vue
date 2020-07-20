@@ -7,13 +7,36 @@
         :title="singleSystem.title"
         :name="singleSystem.title"
       >
-        <div
+        <a
+          style="color: #606266; font-size: 12px; font-family: Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,SimSun,sans-serif;"
+        >包括：</a>
+        <a v-for="(singleForm,singleFormIndex) in formData" :key="singleForm.key">
+          <a
+            style="cursor: pointer; color: #0064a9; font-size: 12px; font-family: Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,SimSun,sans-serif;"
+            type="text"
+            size="small"
+            @click="scriptLabelClicked(singleForm.title)"
+          >{{singleForm.title}}</a>
+          <a
+            v-if="singleFormIndex!=formData.length-1"
+            style="color: #606266; font-size: 12px; font-family: Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,SimSun,sans-serif;"
+          >、</a>
+        </a>
+        <a
           class="collapse-div"
-          v-show="singleSystem.scriptText!=''"
-        >包括：{{singleSystem.scriptText}}</div>
-        <div class="collapse-div" v-show="formData.length==0">本栏目暂无脚本</div>
-        <el-button type="text" v-show="formData.length==0" size="small" @click="newTab">需要新增？</el-button>
-        <el-button class="noMargin" type="text" size="small" @click="subSystemDelete()">删除栏目</el-button>
+          style="color: #606266; font-size: 12px; font-family: Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,SimSun,sans-serif;"
+          v-show="formData.length==0"
+        >本栏目暂无脚本</a>
+        <div>
+          <el-button type="text" v-show="formData.length==0" size="small" @click="newTab">需要新增？</el-button>
+          <el-button
+            class="noMargin"
+            type="text"
+            style="color: #f56c6c;"
+            size="small"
+            @click="subSystemDelete()"
+          >删除栏目</el-button>
+        </div>
       </el-collapse-item>
     </el-collapse>
     <el-popover placement="right" trigger="hover">
@@ -33,9 +56,14 @@ const api = {
   subSystemDelete: "/script/subSystemDelete"
 };
 export default {
+  name: "ConsoleScriptColumn",
+  props: {
+    user_id: Number,
+    formData: Array
+  },
   data() {
     return {
-      activeSystem: [],
+      activeSystem: "",
       subSystem: [],
       subSystemName: ""
     };
@@ -50,10 +78,13 @@ export default {
           break;
         }
       }
-      this.$emit(this.subSystem[s].id);
+      this.$emit("subSystemClicked", this.subSystem[s].id);
     }
   },
   methods: {
+    scriptLabelClicked(scriptName) {
+      this.$emit("scriptNameClicked", scriptName);
+    },
     //删除栏目
     async subSystemDelete() {
       this.$confirm("确认删除吗?", "提示", {}).then(async () => {
