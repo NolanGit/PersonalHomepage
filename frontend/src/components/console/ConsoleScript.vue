@@ -10,7 +10,7 @@
         />
       </el-col>
       <el-col :span="19" class="right-side-bar">
-        <ConsoleScriptDetail :systemId="systemId" />
+        <ConsoleScriptDetail :systemId="systemId" :user_id="user_id" />
       </el-col>
     </el-row>
   </section>
