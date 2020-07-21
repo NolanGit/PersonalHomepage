@@ -271,6 +271,7 @@ export default {
       }
       await this.subSystemScript(val);
       this.activeTab = this.formData[0]["title"];
+      this.$emit("formData", this.formData);
     },
     //展示栏目下的脚本
     async subSystemScript(systemId) {
@@ -318,7 +319,6 @@ export default {
           }
         }
         this.formDataLoading = false;
-        console.log(this.formData);
         return this.formData;
       } catch (e) {
         console.log(e);

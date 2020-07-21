@@ -184,6 +184,89 @@
         <el-button type="danger" plain icon="el-icon-delete" circle @click="singleDataDelete()"></el-button>
       </el-tooltip>
     </div>
+
+    <!--编辑定时任务界面-->
+    <el-drawer
+      :title="schedule.label"
+      :visible.sync="schedule.dialogVisible"
+      :close-on-click-modal="false"
+      size="40%"
+      @closed="schedulenDialogClosed"
+    >
+      <div class="margin_left-medium margin_right-medium">
+        <div>
+          <td type="flex" class="td--label">
+            <p class="td__p--label">定时运行时间：</p>
+          </td>
+          <td>
+            <el-date-picker
+              v-model="schedule.scheduleData.triggerDate"
+              type="date"
+              placeholder="选择日期"
+              value-format="yyyy-MM-dd"
+              size="small"
+              class="main_select--medium"
+            ></el-date-picker>
+          </td>
+          <td>
+            <el-time-select
+              v-model="schedule.scheduleData.triggerTime"
+              :picker-options="{
+              start: '00:00',
+              step: '00:15',
+              end: '24:00'
+            }"
+              placeholder="选择时间"
+              size="small"
+              class="main_select--medium"
+            ></el-time-select>
+          </td>
+        </div>
+        <div>
+          <td type="flex" class="td--label">
+            <p class="td__p--label">重复：</p>
+          </td>
+          <td>
+            <el-switch
+              v-model="schedule.scheduleData.is_automatic"
+              false
+              active-color="#3383BA"
+              inactive-color="#80868C"
+            ></el-switch>
+          </td>
+          <td v-show="schedule.scheduleData.is_automatic==true">
+            <p class="inline_margin--medium">每</p>
+          </td>
+          <td v-show="schedule.scheduleData.is_automatic==true">
+            <el-input
+              v-model="schedule.scheduleData.interval.value"
+              placeholder="请输入"
+              size="small"
+              class="main_input--tiny inline_margin--small"
+            ></el-input>
+          </td>
+          <td v-show="schedule.scheduleData.is_automatic==true">
+            <el-select
+              v-model="schedule.scheduleData.interval.unit.select"
+              placeholder="请选择"
+              size="small"
+              class="main_select--medium"
+            >
+              <el-option
+                v-for="item in schedule.scheduleData.interval.unit.options"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              ></el-option>
+            </el-select>
+          </td>
+        </div>
+        <div class="dialog-footer">
+          <el-button size="small" @click="schedule.dialogVisible = false">关闭</el-button>
+          <el-button type="primary" size="small" @click="scheduleAdd()">提交</el-button>
+        </div>
+      </div>
+    </el-drawer>
   </section>
 </template>
 

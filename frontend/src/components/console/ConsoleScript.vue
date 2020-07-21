@@ -10,7 +10,7 @@
         />
       </el-col>
       <el-col :span="19" class="right-side-bar">
-        <ConsoleScriptDetail :systemId="systemId" :user_id="user_id" />
+        <ConsoleScriptDetail :systemId="systemId" :user_id="user_id" @formData="formDataChanged"/>
       </el-col>
     </el-row>
   </section>
@@ -46,6 +46,9 @@ export default {
   methods: {
     subSystemClicked(systemId) {
       this.systemId = systemId;
+    },
+    formDataChanged(formData){
+      this.formData=formData
     }
   }
 };

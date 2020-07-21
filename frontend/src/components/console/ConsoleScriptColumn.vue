@@ -63,7 +63,6 @@ export default {
       default: []
     }
   },
-  watch: {},
   data() {
     return {
       activeSystem: "",
