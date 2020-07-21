@@ -549,9 +549,7 @@ export default {
       this.singleDataOptionDialog.index = index;
       this.singleDataOptionDialog.visible = true;
       this.singleDataOptionDialog.data =
-        singleDataOptions == undefined ? [] : deepClone(singleDataOptions);
-      console.log(singleDataOptions);
-      console.log(this.singleDataOptionDialog.data);
+        singleDataOptions.length == 0 ? [] : deepClone(singleDataOptions);
     },
     //选择器组件关闭
     singleDataOptionDialogClosed() {

@@ -318,6 +318,7 @@ export default {
         if (this.formData[x].title == newVal) {
           this.activeTabIndex = x;
           this.activeScriptId = this.formData[x].id;
+          this.activeScript = this.formData[x];
           break;
         }
       }
@@ -444,87 +445,69 @@ export default {
     command_get(start_command, type) {
       var command = "";
       var detail = {};
-      //console.log(this.activeTab)
       if (type == "1") {
         //顺序模式
-        for (
-          var x = 0;
-          x < this.formData[this.activeTab].formDataDetail.length;
-          x++
-        ) {
-          //console.log(this.formData[this.activeTab].formDataDetail[x].type)
+        for (var x = 0; x < this.activeScript.formDataDetail.length; x++) {
+          //console.log(this.activeScript.formDataDetail[x].type)
           detail[
-            this.formData[this.activeTab].formDataDetail[x].label
-          ] = this.formData[this.activeTab].formDataDetail[x].value;
-          if (
-            this.formData[this.activeTab].formDataDetail[x].type == "dateRange"
-          ) {
-            if (this.formData[this.activeTab].formDataDetail[x].value == null) {
+            this.activeScript.formDataDetail[x].label
+          ] = this.activeScript.formDataDetail[x].value;
+          if (this.activeScript.formDataDetail[x].type == "dateRange") {
+            if (this.activeScript.formDataDetail[x].value == null) {
               //解决用户点击了组建上的清空按钮后导致前端报错的问题
               continue;
             }
             for (
               let d = 0;
-              d < this.formData[this.activeTab].formDataDetail[x].value.length;
+              d < this.activeScript.formDataDetail[x].value.length;
               d++
             ) {
               command =
-                command +
-                " " +
-                this.formData[this.activeTab].formDataDetail[x].value[d];
+                command + " " + this.activeScript.formDataDetail[x].value[d];
             }
             continue;
           }
-          command =
-            command +
-            " " +
-            this.formData[this.activeTab].formDataDetail[x].value;
+          command = command + " " + this.activeScript.formDataDetail[x].value;
         }
         command = start_command + command;
         //console.log(command)
       } else if (type == "2") {
         //替换模式
         var tempCommand = start_command;
-        for (
-          var x = 0;
-          x < this.formData[this.activeTab].formDataDetail.length;
-          x++
-        ) {
+        for (var x = 0; x < this.activeScript.formDataDetail.length; x++) {
           detail[
-            this.formData[this.activeTab].formDataDetail[x].label
-          ] = this.formData[this.activeTab].formDataDetail[x].value;
-          if (
-            this.formData[this.activeTab].formDataDetail[x].type == "dateRange"
-          ) {
-            if (this.formData[this.activeTab].formDataDetail[x].value == null) {
+            this.activeScript.formDataDetail[x].label
+          ] = this.activeScript.formDataDetail[x].value;
+          if (this.activeScript.formDataDetail[x].type == "dateRange") {
+            if (this.activeScript.formDataDetail[x].value == null) {
               //解决用户点击了组建上的清空按钮后导致前端报错的问题
               continue;
             }
             var tempDateRange = "";
             for (
               let d = 0;
-              d < this.formData[this.activeTab].formDataDetail[x].value.length;
+              d < this.activeScript.formDataDetail[x].value.length;
               d++
             ) {
               tempDateRange =
                 tempDateRange +
                 " " +
-                this.formData[this.activeTab].formDataDetail[x].value[d];
+                this.activeScript.formDataDetail[x].value[d];
             }
             var reg = new RegExp(
-              "%" + this.formData[this.activeTab].formDataDetail[x].label + "%",
+              "%" + this.activeScript.formDataDetail[x].label + "%",
               "g"
             );
             tempCommand = tempCommand.replace(reg, tempDateRange);
             continue;
           }
           var reg = new RegExp(
-            "%" + this.formData[this.activeTab].formDataDetail[x].label + "%",
+            "%" + this.activeScript.formDataDetail[x].label + "%",
             "g"
           );
           tempCommand = tempCommand.replace(
             reg,
-            this.formData[this.activeTab].formDataDetail[x].value
+            this.activeScript.formDataDetail[x].value
           );
         }
         command = tempCommand;
