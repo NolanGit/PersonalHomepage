@@ -174,14 +174,8 @@ const api = {
   terminate: "/script/terminate",
   runOutput: "/script/runOutput",
   edit: "/script/edit",
-  replay: "/script/replay",
-  delete: "/script/delete",
   saveOutput: "/script/saveOutput",
   getLogs: "/script/getLogs",
-  getNewestLog: "/script/getNewestLog",
-  schedule: "/script/schedule",
-  scheduleAdd: "/script/scheduleEdit",
-  scheduleDelete: "/script/scheduleDelete",
   extraButtonScriptRun: "/script/extraButtonScriptRun"
 };
 export default {

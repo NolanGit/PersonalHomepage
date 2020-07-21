@@ -185,6 +185,17 @@
       </el-tooltip>
     </div>
 
+    <!--编辑界面-->
+    <el-drawer
+      :title="edit.dialogTitle"
+      :visible.sync="edit.visible"
+      :close-on-click-modal="false"
+      size="60%"
+      @closed="editFormClosed"
+    >
+      <ConsoleScriptEdit />
+    </el-drawer>
+
     <!--编辑定时任务界面-->
     <el-drawer
       :title="schedule.label"
@@ -273,8 +284,10 @@
 <script>
 import axios from "axios";
 import { deepClone } from "../../js/common";
+import ConsoleScriptEdit from "./ConsoleScriptEdit";
 const api = {
   replay: "/script/replay",
+  delete: "/script/delete",
   getLogs: "/script/getLogs",
   getNewestLog: "/script/getNewestLog",
   schedule: "/script/schedule",
@@ -579,6 +592,20 @@ export default {
             type: "error"
           });
         }
+      });
+    },
+    //展示编辑脚本dialog
+    singleDataSetting() {
+      this.subSystemScript(this.activedSystem).then(data => {
+        this.edit.dialogTitle = "编辑脚本";
+        this.edit.title = data[this.activeTab].title;
+        this.edit.id = data[this.activeTab].id;
+        this.edit.start_folder = data[this.activeTab].start_folder;
+        this.edit.start_script = data[this.activeTab].start_script;
+        this.edit.type = String(data[this.activeTab].type);
+        this.edit.formData = data[this.activeTab].formDataDetail;
+        this.edit.sub_system_id = data[this.activeTab].sub_system_id;
+        this.edit.visible = true;
       });
     },
     //删除脚本

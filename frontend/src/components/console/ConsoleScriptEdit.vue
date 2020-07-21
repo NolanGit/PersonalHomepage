@@ -530,7 +530,7 @@ const api = {
   subSystemDelete: "/script/subSystemDelete"
 };
 export default {
-  name: "ConsoleScriptColumn",
+  name: "ConsoleScriptEdit",
   props: {
     user_id: Number,
     formData: Array
