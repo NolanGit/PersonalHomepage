@@ -715,5 +715,8 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+.noMargin {
+  margin: 0;
+}
 </style>
