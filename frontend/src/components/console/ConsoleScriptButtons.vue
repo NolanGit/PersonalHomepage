@@ -387,6 +387,119 @@ export default {
         });
         this.$emit("replay", this.singleForm);
       }
+    },
+    //展示定时任务列表
+    async scheduleShow() {
+      this.schedule.loading = true;
+      this.schedule.schedules = [];
+      try {
+        const { data: res } = await axios.post(api.schedule, {
+          script_id: this.formData[this.activeTab].id,
+          user_id: this.user_id
+        });
+        this.schedule.loading = false;
+        this.schedule.schedules = res.data;
+        this.schedule.popoverVisible = true;
+      } catch (e) {
+        console.log(e);
+        this.$message({
+          message: e.response.data.msg,
+          type: "error"
+        });
+      }
+    },
+    //点击提交定时任务按钮
+    async scheduleAdd() {
+      var start_folder_with_start_script =
+        "cd " +
+        this.formData[this.activeTab].start_folder +
+        " && " +
+        this.formData[this.activeTab].start_script;
+      var command_get_result = this.command_get(
+        start_folder_with_start_script,
+        this.formData[this.activeTab].type
+      );
+      var command = command_get_result.command;
+      var detail = command_get_result.detail;
+      try {
+        const { data: res } = await axios.post(api.scheduleAdd, {
+          user_id: this.user_id,
+          script_id: this.formData[this.activeTab].id,
+          command: command,
+          detail: detail,
+          version: this.formData[this.activeTab].version,
+          trigger_time:
+            this.schedule.scheduleData.triggerDate +
+            " " +
+            this.schedule.scheduleData.triggerTime,
+          is_automatic: this.schedule.scheduleData.is_automatic == true ? 1 : 0,
+          interval_raw: Number(this.schedule.scheduleData.interval.value),
+          interval_unit: this.schedule.scheduleData.interval.unit.select,
+          schedule_id: this.schedule.scheduleData.schedule_id
+        });
+        this.$message({
+          message: "成功！",
+          type: "success"
+        });
+        this.schedule.dialogVisible = false;
+        this.schedule.scheduleData.triggerDate = "";
+        this.schedule.scheduleData.triggerTime = "";
+        this.schedule.scheduleData.is_automatic = false;
+        this.schedule.scheduleData.schedule_id = 0;
+        this.schedule.scheduleData.interval.value = "";
+        this.schedule.scheduleData.interval.unit.select = 2;
+      } catch (e) {
+        console.log(e);
+        this.$message({
+          message: e.response.data.msg,
+          type: "error"
+        });
+      }
+    },
+    //删除定时任务
+    async scheduleDelete(schedule_id) {
+      this.$confirm("确认停止并删除定时任务吗?", "提示", {}).then(async () => {
+        try {
+          const { data: res } = await axios.post(api.scheduleDelete, {
+            user_id: this.user_id,
+            schedule_id: schedule_id
+          });
+          this.$message({
+            message: data["msg"],
+            type: "success"
+          });
+        } catch (e) {
+          console.log(e);
+          this.$message({
+            message: e.response.data.msg,
+            type: "error"
+          });
+        }
+      });
+    },
+    //删除脚本
+    async singleDataDelete() {
+      this.$confirm("确认删除吗?", "提示", {})
+        .then(async () => {
+          try {
+            const { data: res } = await axios.post(api.delete, {
+              script_id: this.formData[this.activeTab].id,
+              user_id: this.user_id
+            });
+            this.$message({
+              message: res.msg,
+              type: "success"
+            });
+            this.subSystemScript(this.activedSystem);
+          } catch (e) {
+            console.log(e);
+            this.$message({
+              message: e.response.data.msg,
+              type: "error"
+            });
+          }
+        })
+        .catch(() => {});
     }
   },
   mounted() {}
