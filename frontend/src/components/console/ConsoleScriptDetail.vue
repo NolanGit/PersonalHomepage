@@ -396,7 +396,6 @@ export default {
         this.edit.type = String(data[this.activeTabIndex].type);
         this.edit.formData = data[this.activeTabIndex].formDataDetail;
         this.edit.sub_system_id = data[this.activeTabIndex].sub_system_id;
-        console.log(this.edit);
         this.edit.visible = true;
       });
     },
