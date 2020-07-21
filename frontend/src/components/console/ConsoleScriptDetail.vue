@@ -441,6 +441,70 @@ export default {
         });
       }
     },
+
+    //额外脚本输出
+    extraButtonFlushOutput(singleFormIndex, singleDataIndex, process_id) {
+      try {
+        axios
+          .post(api.extraButtonScriptRun, {
+            process_id: process_id,
+            user_id: this.user_id
+          })
+          .then(res => {
+            if (res.data.data["status"] == -1) {
+              this.$message({
+                message: data["msg"],
+                type: "error"
+              });
+              this.extra_button.loading = false;
+              this.extra_button.buttonLoading = false;
+              return;
+            } else if (res.data.data["status"] == 0) {
+              try {
+                var dataTemp = JSON.parse(
+                  this.extra_button.output_temp + res.data.data["output"]
+                );
+                this.extra_button.output = dataTemp.data.msg
+                  .replace(/\n/g, "<br>")
+                  .replace(/\s/g, "&nbsp;");
+                if (dataTemp.data.value != undefined) {
+                  this.formData[singleFormIndex].formDataDetail[
+                    singleDataIndex
+                  ].value = dataTemp.data.value;
+                }
+                if (dataTemp.data.options != undefined) {
+                  this.formData[singleFormIndex].formDataDetail[
+                    singleDataIndex
+                  ].options = dataTemp.data.options;
+                }
+              } catch (err) {
+                this.extra_button.output = (
+                  this.extra_button.output_temp + res.data.data["output"]
+                )
+                  .replace(/\n/g, "<br>")
+                  .replace(/\s/g, "&nbsp;");
+              }
+              this.extra_button.loading = false;
+              this.extra_button.buttonLoading = false;
+              return;
+            } else if (res.data.data["status"] == 1) {
+              this.extra_button.output_temp =
+                this.extra_button.output_temp + res.data.data["output"];
+              this.extraButtonFlushOutput(
+                singleFormIndex,
+                singleDataIndex,
+                process_id
+              );
+            }
+          });
+      } catch (e) {
+        console.log(e);
+        this.$message({
+          message: e.response.data.msg,
+          type: "error"
+        });
+      }
+    },
     //使用当前激活tab的detial，接收start_command和组装方式，组装好command和detail并返回，start_command在运行脚本时为打开文件夹的命令加上起始命令
     command_get(start_command, type) {
       var command = "";
