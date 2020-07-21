@@ -202,6 +202,7 @@ export default {
       this.activeTabChanged(newVal);
     },
     scriptName(newVal, oldVal) {
+      console.log(newVal);
       this.activeTab = newVal;
     }
   },

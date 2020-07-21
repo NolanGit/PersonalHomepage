@@ -44,6 +44,7 @@ export default {
   data() {
     return {
       systemId: Number,
+      scriptName: String,
       formData: []
     };
   },
