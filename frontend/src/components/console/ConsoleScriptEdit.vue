@@ -544,6 +544,35 @@ export default {
   },
   watch: {},
   methods: {
+    //选择器组件点击
+    singleDataOptionDialogClicked(index, singleDataOptions) {
+      this.singleDataOptionDialog.index = index;
+      this.singleDataOptionDialog.visible = true;
+      this.singleDataOptionDialog.data =
+        singleDataOptions == "" ? [] : deepClone(singleDataOptions);
+    },
+    //选择器组件关闭
+    singleDataOptionDialogClosed() {
+      this.singleDataOptionDialog.data = [];
+    },
+    //选择器组件删除
+    singleDataOptionDialogDeleted(index) {
+      this.singleDataOptionDialog.data.splice(index, 1);
+    },
+    //选择器组件增加
+    singleDataOptionDialogAddSingleData() {
+      this.singleDataOptionDialog.data.push({
+        label: "",
+        value: ""
+      });
+    },
+    //选择器组件提交
+    singleDataOptionDialogSubmited() {
+      this.edit.formData[
+        this.singleDataOptionDialog.index
+      ].options = this.singleDataOptionDialog.data;
+      this.singleDataOptionDialog.visible = false;
+    },
     //编辑脚本提交
     async editFormSubmited() {
       this.edit.buttonLoading = true;
