@@ -342,6 +342,46 @@ export default {
         text: "",
         important_fields: [],
         isAlert: false
+      },
+      edit: {
+        buttonLoading: false,
+        dialogTitle: "编辑",
+        id: 0,
+        sub_system_id: 0,
+        title: "",
+        start_folder: "",
+        start_script: "",
+        type: 0,
+        visible: false,
+        typeOptions: [
+          {
+            label: "输入框",
+            value: "input"
+          },
+          {
+            label: "选择器",
+            value: "select"
+          },
+          {
+            label: "日期",
+            value: "date"
+          },
+          {
+            label: "日期范围",
+            value: "dateRange"
+          }
+        ],
+        boolOptions: [
+          {
+            label: "是",
+            value: 1
+          },
+          {
+            label: "否",
+            value: 0
+          }
+        ],
+        formData: []
       }
     };
   },
