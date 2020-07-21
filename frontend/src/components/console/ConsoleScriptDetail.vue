@@ -227,7 +227,8 @@ export default {
       },
       bool: {
         singleDataLog: true
-      }
+      },
+      submitButtonLoading: false
     };
   },
   methods: {

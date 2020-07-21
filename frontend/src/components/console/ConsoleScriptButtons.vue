@@ -195,12 +195,11 @@ const api = {
   getNewestLog: "/script/getNewestLog",
   schedule: "/script/schedule",
   scheduleAdd: "/script/scheduleEdit",
-  scheduleDelete: "/script/scheduleDelete",
+  scheduleDelete: "/script/scheduleDelete"
 };
 export default {
   name: "ConsoleScriptButtons",
-  components: {
-  },
+  components: {},
   props: {
     user_id: Number,
     singleForm: Array,
@@ -237,6 +236,16 @@ export default {
             }
           }
         }
+      },
+      output: {
+        canBeTerminate: false,
+        loading: false,
+        log_id: 0,
+        logs: [],
+        visible: false,
+        text: "",
+        important_fields: [],
+        isAlert: false
       }
     };
   },
@@ -285,7 +294,7 @@ export default {
           message: "参数填充成功",
           type: "success"
         });
-        this.$emit('replay',this.singleForm)
+        this.$emit("replay", this.singleForm);
       } catch (e) {
         console.log(e);
         this.$message({
@@ -301,7 +310,7 @@ export default {
           script_id: this.formData[this.activeTab].id,
           user_id: this.user_id
         });
-        this.$emit('output',res.data[0].output)
+        this.$emit("output", res.data[0].output);
       } catch (e) {
         console.log(e);
         this.$message({
