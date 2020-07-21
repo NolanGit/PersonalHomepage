@@ -172,7 +172,7 @@
       size="60%"
       @closed="editFormClosed"
     >
-      <ConsoleScriptEdit :edit="edit" @done="flush" />
+      <ConsoleScriptEdit :user_id="user_id" :edit="edit" @done="flush" />
     </el-drawer>
   </section>
 </template>
