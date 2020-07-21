@@ -544,12 +544,48 @@ export default {
   },
   watch: {},
   methods: {
+    //增加组件
+    editFormAddSingleData() {
+      this.edit.formData.push({
+        type: "",
+        label: "",
+        value: "",
+        placeHolder: "",
+        options: "",
+        createable: "",
+        disabled: "",
+        is_important: "",
+        remark: ""
+      });
+    },
+    //删除组件
+    editFormDeleted(index) {
+      this.edit.formData.splice(index, 1);
+    },
+    //上移
+    editFormMoveUp(index) {
+      if (index > 0) {
+        this.swapItem(this.edit.formData, index, index - 1);
+      } else {
+        this.$message({
+          message: "已经是第一位，不能再上移了哦",
+          type: "info"
+        });
+      }
+    },
+    //下移
+    editFormMoveDown(index) {
+      if (index < this.edit.formData.length - 1) {
+        this.swapItem(this.edit.formData, index, index + 1);
+      } else {
+        this.$message({
+          message: "已经是最后一位，不能再下移了哦",
+          type: "info"
+        });
+      }
+    },
     //选择器组件点击
     singleDataOptionDialogClicked(index, singleDataOptions) {
-      console.log(singleDataOptions);
-      console.log(singleDataOptions.length == 0);
-      console.log(singleDataOptions == []);
-      console.log(singleDataOptions == {});
       this.singleDataOptionDialog.index = index;
       this.singleDataOptionDialog.visible = true;
       this.singleDataOptionDialog.data =

@@ -400,6 +400,16 @@ export default {
         this.edit.visible = true;
       });
     },
+    //编辑窗口关闭
+    editFormClosed() {
+      this.edit.dialogTitle = "编辑";
+      this.edit.id = 0;
+      this.edit.title = "";
+      this.edit.start_folder = "";
+      this.edit.start_script = "";
+      this.edit.type = 1;
+      this.edit.formData = [];
+    },
     //额外脚本提交
     extraButtonClicked(singleFormIndex, singleDataIndex, extra_button_command) {
       if (this.extra_button.visible) {
