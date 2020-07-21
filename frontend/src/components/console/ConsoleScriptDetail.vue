@@ -124,7 +124,7 @@
                 :singleForm="singleForm"
                 @replay="singleDataReplay"
                 @output="singleDataLog"
-                @deleted="singleDataDeleted"
+                @deleted="flush"
                 @edit="singleDataSetting"
               />
             </div>
@@ -172,7 +172,7 @@
       size="60%"
       @closed="editFormClosed"
     >
-      <ConsoleScriptEdit :edit="edit" />
+      <ConsoleScriptEdit :edit="edit" @done="flush" />
     </el-drawer>
   </section>
 </template>
@@ -310,7 +310,7 @@ export default {
         this.output.scrollInit = false;
       }
     },
-    singleDataDeleted() {
+    flush() {
       this.systemIdChanged(this.systemId);
     },
     activeTabChanged(newVal) {
@@ -396,7 +396,7 @@ export default {
         this.edit.type = String(data[this.activeTabIndex].type);
         this.edit.formData = data[this.activeTabIndex].formDataDetail;
         this.edit.sub_system_id = data[this.activeTabIndex].sub_system_id;
-        console.log(this.edit)
+        console.log(this.edit);
         this.edit.visible = true;
       });
     },

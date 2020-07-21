@@ -543,7 +543,37 @@ export default {
     };
   },
   watch: {},
-  methods: {}
+  methods: {
+    //编辑脚本提交
+    async editFormSubmited() {
+      this.edit.buttonLoading = true;
+      try {
+        const { data: res } = await axios.post(api.edit, {
+          sub_system_id: this.edit.sub_system_id,
+          script_id: this.edit.id,
+          name: this.edit.title,
+          start_folder: this.edit.start_folder,
+          start_script: this.edit.start_script,
+          type: Number(this.edit.type),
+          detail: this.edit.formData,
+          user_id: this.user_id
+        });
+        this.$message({
+          message: res.msg,
+          type: "success"
+        });
+        this.edit.visible = false;
+        this.$emit("done");
+      } catch (e) {
+        console.log(e);
+        this.$message({
+          message: e.response.data.msg,
+          type: "error"
+        });
+      }
+      this.edit.buttonLoading = false;
+    }
+  }
 };
 </script>
 
