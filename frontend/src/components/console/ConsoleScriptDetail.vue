@@ -125,6 +125,7 @@
                 @replay="singleDataReplay"
                 @output="singleDataLog"
                 @deleted="singleDataDeleted"
+                @edit="singleDataSetting"
               />
             </div>
           </el-tab-pane>
@@ -162,6 +163,17 @@
         <el-button size="small" plain type="danger" @click.native="terminate()">停止运行</el-button>
       </div>
     </el-drawer>
+
+    <!--编辑界面-->
+    <el-drawer
+      :title="edit.dialogTitle"
+      :visible.sync="edit.visible"
+      :close-on-click-modal="false"
+      size="60%"
+      @closed="editFormClosed"
+    >
+      <ConsoleScriptEdit :edit="edit" />
+    </el-drawer>
   </section>
 </template>
 
@@ -169,6 +181,7 @@
 import axios from "axios";
 import { deepClone } from "../../js/common";
 import ConsoleScriptButtons from "./ConsoleScriptButtons";
+import ConsoleScriptEdit from "./ConsoleScriptEdit";
 const api = {
   subSystemScript: "/script/subSystemScript",
   run: "/script/run",
@@ -224,6 +237,46 @@ export default {
         important_fields: [],
         isAlert: false,
         scrollInit: true
+      },
+      edit: {
+        buttonLoading: false,
+        dialogTitle: "编辑",
+        id: 0,
+        sub_system_id: 0,
+        title: "",
+        start_folder: "",
+        start_script: "",
+        type: 0,
+        visible: false,
+        typeOptions: [
+          {
+            label: "输入框",
+            value: "input"
+          },
+          {
+            label: "选择器",
+            value: "select"
+          },
+          {
+            label: "日期",
+            value: "date"
+          },
+          {
+            label: "日期范围",
+            value: "dateRange"
+          }
+        ],
+        boolOptions: [
+          {
+            label: "是",
+            value: 1
+          },
+          {
+            label: "否",
+            value: 0
+          }
+        ],
+        formData: []
       },
       submitButtonLoading: false
     };
@@ -330,6 +383,20 @@ export default {
           type: "error"
         });
       }
+    },
+    //展示编辑脚本dialog
+    singleDataSetting() {
+      this.subSystemScript(this.systemId).then(data => {
+        this.edit.dialogTitle = "编辑脚本";
+        this.edit.title = data[this.activeTabIndex].title;
+        this.edit.id = data[this.activeTabIndex].id;
+        this.edit.start_folder = data[this.activeTabIndex].start_folder;
+        this.edit.start_script = data[this.activeTabIndex].start_script;
+        this.edit.type = String(data[this.activeTabIndex].type);
+        this.edit.formData = data[this.activeTabIndex].formDataDetail;
+        this.edit.sub_system_id = data[this.activeTabIndex].sub_system_id;
+        this.edit.visible = true;
+      });
     },
     //使用当前激活tab的detial，接收start_command和组装方式，组装好command和detail并返回，start_command在运行脚本时为打开文件夹的命令加上起始命令
     command_get(start_command, type) {

@@ -185,16 +185,6 @@
       </el-tooltip>
     </div>
 
-    <!--编辑界面-->
-    <el-drawer
-      :title="edit.dialogTitle"
-      :visible.sync="edit.visible"
-      :close-on-click-modal="false"
-      size="60%"
-      @closed="editFormClosed"
-    >
-      <ConsoleScriptEdit />
-    </el-drawer>
 
     <!--编辑定时任务界面-->
     <el-drawer
@@ -343,46 +333,6 @@ export default {
         important_fields: [],
         isAlert: false
       },
-      edit: {
-        buttonLoading: false,
-        dialogTitle: "编辑",
-        id: 0,
-        sub_system_id: 0,
-        title: "",
-        start_folder: "",
-        start_script: "",
-        type: 0,
-        visible: false,
-        typeOptions: [
-          {
-            label: "输入框",
-            value: "input"
-          },
-          {
-            label: "选择器",
-            value: "select"
-          },
-          {
-            label: "日期",
-            value: "date"
-          },
-          {
-            label: "日期范围",
-            value: "dateRange"
-          }
-        ],
-        boolOptions: [
-          {
-            label: "是",
-            value: 1
-          },
-          {
-            label: "否",
-            value: 0
-          }
-        ],
-        formData: []
-      }
     };
   },
   watch: {},
@@ -636,17 +586,7 @@ export default {
     },
     //展示编辑脚本dialog
     singleDataSetting() {
-      this.subSystemScript(this.activedSystem).then(data => {
-        this.edit.dialogTitle = "编辑脚本";
-        this.edit.title = data[this.activeTab].title;
-        this.edit.id = data[this.activeTab].id;
-        this.edit.start_folder = data[this.activeTab].start_folder;
-        this.edit.start_script = data[this.activeTab].start_script;
-        this.edit.type = String(data[this.activeTab].type);
-        this.edit.formData = data[this.activeTab].formDataDetail;
-        this.edit.sub_system_id = data[this.activeTab].sub_system_id;
-        this.edit.visible = true;
-      });
+      this.$emit("edit");
     },
     //删除脚本
     async singleDataDelete() {
@@ -661,7 +601,7 @@ export default {
               message: res.msg,
               type: "success"
             });
-            this.$emit('deleted')
+            this.$emit("deleted");
           } catch (e) {
             console.log(e);
             this.$message({
