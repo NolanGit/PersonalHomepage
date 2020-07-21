@@ -349,7 +349,7 @@ export default {
     },
     //展示日志中的输出
     log_output(output) {
-      this.$emit("output", res.data[0].output);
+      this.$emit("output", output);
     },
     //回放日志中的参数
     log_replay(version, detail) {
