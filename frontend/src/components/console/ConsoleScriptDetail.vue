@@ -256,7 +256,7 @@ export default {
         this.output.scrollInit = false;
       }
     },
-    singleDataDeleted(){
+    async singleDataDeleted(){
       await this.subSystemScript(val);
       this.activeTab = this.formData[0]["title"];
       this.$emit("formData", this.formData);
