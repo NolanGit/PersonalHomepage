@@ -8,16 +8,17 @@
           icon="el-icon-refresh-left"
           circle
           @click="singleDataReplay()"
+          class="noMargin"
         ></el-button>
       </el-tooltip>
-      <el-tooltip class="noMargin" effect="dark" content="查看最近一次由我运行的日志" placement="top">
+      <el-tooltip effect="dark" content="查看最近一次由我运行的日志" placement="top">
         <el-button
-          class="noMargin"
           type="primary"
           plain
           icon="el-icon-tickets"
           circle
           @click="singleDataLog()"
+          class="noMargin"
         ></el-button>
       </el-tooltip>
       <el-tooltip class="question-mark" effect="dark" content="查看最近50次运行记录" placement="top">
@@ -346,6 +347,47 @@ export default {
       }
       this.output.loading = false;
     },
+    //展示日志中的输出
+    log_output(output) {
+      this.$emit("output", res.data[0].output);
+    },
+    //回放日志中的参数
+    log_replay(version, detail) {
+      for (var f = 0; f < this.singleForm.formDataDetail.length; f++) {
+        try {
+          this.singleForm.formDataDetail[f].value =
+            detail[this.singleForm.formDataDetail[f].label];
+        } catch (err) {
+          console.log(
+            "[" +
+              this.singleForm.formDataDetail[f].label +
+              "]" +
+              "恢复失败：" +
+              err
+          );
+        }
+      }
+      if (this.singleForm.version != version) {
+        this.$message({
+          message:
+            "参数填充成功，但是检测到脚本配置发生过修改(" +
+            "V" +
+            version +
+            "→" +
+            "V" +
+            this.singleForm.version +
+            ")，可能无法完美恢复上一次参数，请关闭列表弹出框后查看",
+          type: "info",
+          duration: 4000
+        });
+      } else {
+        this.$message({
+          message: "参数填充成功，请关闭列表弹出框后点击提交按钮以运行",
+          type: "success"
+        });
+        this.$emit("replay", this.singleForm);
+      }
+    }
   },
   mounted() {}
 };
