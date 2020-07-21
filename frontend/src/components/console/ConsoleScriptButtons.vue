@@ -455,6 +455,28 @@ export default {
         });
       }
     },
+    //编辑定时任务
+    scheduleEdit(schedule) {
+      console.log(schedule);
+      this.schedule.label = "编辑定时任务";
+      this.schedule.scheduleData.schedule_id = schedule.schedule_id;
+      this.schedule.scheduleData.is_automatic = schedule.is_automatic
+        ? true
+        : false;
+      this.schedule.scheduleData.triggerDate = schedule.trigger_time.split(
+        " "
+      )[0];
+      this.schedule.scheduleData.triggerTime = schedule.trigger_time
+        .split(" ")[1]
+        .substr(0, 5);
+      this.schedule.scheduleData.interval.unit.select = schedule.is_automatic
+        ? schedule.interval_unit
+        : 2;
+      this.schedule.scheduleData.interval.value = schedule.is_automatic
+        ? schedule.interval_raw
+        : 1;
+      this.schedule.dialogVisible = true;
+    },
     //删除定时任务
     async scheduleDelete(schedule_id) {
       this.$confirm("确认停止并删除定时任务吗?", "提示", {}).then(async () => {
