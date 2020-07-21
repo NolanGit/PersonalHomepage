@@ -266,7 +266,7 @@ export default {
             message: res.msg,
             type: "error"
           });
-        } else if (singleForm.version != res.data.version) {
+        } else if (this.singleForm.version != res.data.version) {
           this.$message({
             message:
               "检测到脚本配置发生过修改(" +
@@ -274,26 +274,26 @@ export default {
               res.data.version +
               "→" +
               "V" +
-              singleForm.version +
+              this.singleForm.version +
               ")，可能无法完美恢复上一次参数",
             type: "info"
           });
         }
-        for (var f = 0; f < singleForm.formDataDetail.length; f++) {
+        for (var f = 0; f < this.singleForm.formDataDetail.length; f++) {
           try {
-            singleForm.formDataDetail[f].value =
-              res.data.detail[singleForm.formDataDetail[f].label];
+            this.singleForm.formDataDetail[f].value =
+              res.data.detail[this.singleForm.formDataDetail[f].label];
           } catch (err) {
             console.log(
               "[" +
-                singleForm.formDataDetail[f].label +
+                this.singleForm.formDataDetail[f].label +
                 "]" +
                 "恢复失败：" +
                 err
             );
           }
         }
-        this.$emit('replay',singleForm)
+        this.$emit('replay',this.singleForm)
       } catch (e) {
         console.log(e);
         this.$message({
