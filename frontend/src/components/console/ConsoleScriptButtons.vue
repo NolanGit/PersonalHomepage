@@ -189,7 +189,6 @@
 <script>
 import axios from "axios";
 import { deepClone } from "../../js/common";
-import ConsoleScriptRun from "./ConsoleScriptRun";
 const api = {
   replay: "/script/replay",
   getLogs: "/script/getLogs",
@@ -201,7 +200,6 @@ const api = {
 export default {
   name: "ConsoleScriptButtons",
   components: {
-    ConsoleScriptRun
   },
   props: {
     user_id: Number,
@@ -211,16 +209,6 @@ export default {
   watch: {},
   data() {
     return {
-      output: {
-        canBeTerminate: false,
-        loading: false,
-        log_id: 0,
-        logs: [],
-        visible: false,
-        text: "",
-        important_fields: [],
-        isAlert: false
-      },
       schedule: {
         label: "新建定时任务",
         popoverVisible: false,
@@ -293,6 +281,10 @@ export default {
             );
           }
         }
+        this.$message({
+          message: "参数填充成功",
+          type: "success"
+        });
         this.$emit('replay',this.singleForm)
       } catch (e) {
         console.log(e);
@@ -309,28 +301,7 @@ export default {
           script_id: this.formData[this.activeTab].id,
           user_id: this.user_id
         });
-        this.output.visible = true;
-        this.output.text = res.data[0].output;
-        if (this.bool.singleDataLog) {
-          this.$nextTick(() => {
-            try {
-              var scroll = new BScroll(this.$refs.outputDialog, {
-                scrollY: true,
-                scrollbar: {
-                  fade: true, // node_modules\better-scroll\dist\bscroll.esm.js:2345可以调时间，目前使用的是'var time = visible ? 500 : 5000;'
-                  interactive: true
-                },
-                momentumLimitDistance: 300,
-                mouseWheel: true,
-                preventDefault: false
-              });
-              scroll.refresh();
-            } catch (error) {
-              console.log("滚动条设置失败" + error);
-            }
-          });
-          this.bool.singleDataLog = false;
-        }
+        this.$emit('output',res.data[0].output)
       } catch (e) {
         console.log(e);
         this.$message({
@@ -343,7 +314,7 @@ export default {
     async singleDataLog() {
       try {
         const { data: res } = await axios.post(api.getNewestLog, {
-          script_id: singleForm.id,
+          script_id: this.singleForm.id,
           user_id: this.user_id
         });
         this.output.visible = true;

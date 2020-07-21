@@ -123,7 +123,8 @@
                 :user_id="user_id"
                 :scriptId="activeScriptId"
                 :singleForm="singleForm"
-                :replay="singleDataReplay"
+                @replay="singleDataReplay"
+                @output="singleDataLog"
               />
             </div>
           </el-tab-pane>
@@ -131,7 +132,6 @@
       </el-row>
       <!--底部按钮-->
       <el-row style="margin-top:60px;margin-left:10;margin-right:10px;">
-        <ConsoleScriptRun />
         <el-button
           :loading="submitButtonLoading"
           type="primary"
@@ -141,6 +141,27 @@
         >提交</el-button>
       </el-row>
     </el-card>
+
+    <!--运行界面-->
+    <el-drawer
+      title="输出"
+      :v-if="output.visible"
+      :visible.sync="output.visible"
+      size="70%"
+      direction="btt"
+      :before-close="outputDialogClose"
+    >
+      <div class="margin_left-medium margin_right-medium">
+        <el-card shadow="hover">
+          <div class="output-div" ref="outputDialog">
+            <div class="output-html" v-html="output.text"></div>
+          </div>
+        </el-card>
+      </div>
+      <div class="dialog-footer" v-show="output.canBeTerminate">
+        <el-button size="small" plain type="danger" @click.native="terminate()">停止运行</el-button>
+      </div>
+    </el-drawer>
   </section>
 </template>
 
@@ -148,7 +169,6 @@
 import axios from "axios";
 import { deepClone } from "../../js/common";
 import ConsoleScriptButtons from "./ConsoleScriptButtons";
-import ConsoleScriptRun from "./ConsoleScriptRun";
 const api = {
   subSystemScript: "/script/subSystemScript",
   run: "/script/run",
@@ -168,8 +188,7 @@ const api = {
 export default {
   name: "ConsoleScriptDetail",
   components: {
-    ConsoleScriptButtons,
-    ConsoleScriptRun
+    ConsoleScriptButtons
   },
   props: {
     user_id: Number,
@@ -195,12 +214,49 @@ export default {
         buttonLoading: false,
         loading: false,
         output_temp: ""
+      },
+      output: {
+        canBeTerminate: false,
+        loading: false,
+        log_id: 0,
+        logs: [],
+        visible: false,
+        text: "",
+        important_fields: [],
+        isAlert: false
+      },
+      bool: {
+        singleDataLog: true
       }
     };
   },
   methods: {
     singleDataReplay(singleForm) {
       this.formData[this.activeTabIndex] = singleForm;
+    },
+    singleDataLog(output) {
+      this.output.visible = true;
+      this.output.text = output;
+      if (this.bool.singleDataLog) {
+        this.$nextTick(() => {
+          try {
+            var scroll = new BScroll(this.$refs.outputDialog, {
+              scrollY: true,
+              scrollbar: {
+                fade: true, // node_modules\better-scroll\dist\bscroll.esm.js:2345可以调时间，目前使用的是'var time = visible ? 500 : 5000;'
+                interactive: true
+              },
+              momentumLimitDistance: 300,
+              mouseWheel: true,
+              preventDefault: false
+            });
+            scroll.refresh();
+          } catch (error) {
+            console.log("滚动条设置失败" + error);
+          }
+        });
+        this.bool.singleDataLog = false;
+      }
     },
     activeTabChanged(newVal) {
       for (let x = 0; x < this.formData.length; x++) {
