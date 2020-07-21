@@ -399,6 +399,47 @@ export default {
         this.edit.visible = true;
       });
     },
+    //额外脚本提交
+    extraButtonClicked(singleFormIndex, singleDataIndex, extra_button_command) {
+      if (this.extra_button.visible) {
+        this.extra_button.visible = false;
+        return;
+      }
+      this.extra_button.output = "";
+      this.extra_button.output_temp = "";
+      this.extra_button.buttonLoading = true;
+      var command_get_result = this.command_get(extra_button_command, 2);
+      var command = command_get_result.command;
+      this.extra_button.loading = true;
+      try {
+        axios
+          .post(api.extraButtonScriptRun, {
+            user_id: this.user_id,
+            command: command
+          })
+          .then(res => {
+            if (res.data.data["process_id"] == -1) {
+              this.$message({
+                message: "任务创建错误，请联系管理员！",
+                type: "error"
+              });
+            } else {
+              var process_id = res.data.data["process_id"];
+            }
+            this.extraButtonFlushOutput(
+              singleFormIndex,
+              singleDataIndex,
+              process_id
+            );
+          });
+      } catch (e) {
+        console.log(e);
+        this.$message({
+          message: e.response.data.msg,
+          type: "error"
+        });
+      }
+    },
     //使用当前激活tab的detial，接收start_command和组装方式，组装好command和detail并返回，start_command在运行脚本时为打开文件夹的命令加上起始命令
     command_get(start_command, type) {
       var command = "";
