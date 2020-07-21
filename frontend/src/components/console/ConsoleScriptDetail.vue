@@ -223,10 +223,8 @@ export default {
         visible: false,
         text: "",
         important_fields: [],
-        isAlert: false
-      },
-      bool: {
-        singleDataLog: true
+        isAlert: false,
+        scrollInit:true
       },
       submitButtonLoading: false
     };
@@ -238,7 +236,7 @@ export default {
     singleDataLog(output) {
       this.output.visible = true;
       this.output.text = output;
-      if (this.bool.singleDataLog) {
+      if (this.output.scrollInit) {
         this.$nextTick(() => {
           try {
             var scroll = new BScroll(this.$refs.outputDialog, {
@@ -256,7 +254,7 @@ export default {
             console.log("滚动条设置失败" + error);
           }
         });
-        this.bool.singleDataLog = false;
+        this.output.scrollInit = false;
       }
     },
     activeTabChanged(newVal) {

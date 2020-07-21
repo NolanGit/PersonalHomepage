@@ -355,7 +355,34 @@ export default {
           type: "error"
         });
       }
-    }
+    },
+    //展示脚本的运行日志
+    async singleDataShowLogs() {
+      this.output.loading = true;
+      this.output.logs = [];
+      try {
+        const { data: res } = await axios.post(api.getLogs, {
+          script_id: this.formData[this.activeTab].id,
+          user_id: this.user_id
+        });
+        this.output.logs = res.data.logs;
+        this.output.important_fields = res.data.important_fields;
+        for (let o = 0; o < this.output.logs.length; o++) {
+          for (let i = 0; i < this.output.important_fields.length; i++) {
+            this.output.logs[o][
+              this.output.important_fields[i]
+            ] = this.output.logs[o].detail[this.output.important_fields[i]];
+          }
+        }
+      } catch (e) {
+        console.log(e);
+        this.$message({
+          message: e.response.data.msg,
+          type: "error"
+        });
+      }
+      this.output.loading = false;
+    },
   },
   mounted() {}
 };
