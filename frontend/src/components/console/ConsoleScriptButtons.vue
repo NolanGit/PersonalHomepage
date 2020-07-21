@@ -661,7 +661,7 @@ export default {
               message: res.msg,
               type: "success"
             });
-            this.subSystemScript(this.activedSystem);
+            this.$emit('deleted')
           } catch (e) {
             console.log(e);
             this.$message({

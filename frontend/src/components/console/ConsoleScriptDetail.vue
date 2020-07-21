@@ -124,6 +124,7 @@
                 :singleForm="singleForm"
                 @replay="singleDataReplay"
                 @output="singleDataLog"
+                @deleted="singleDataDeleted"
               />
             </div>
           </el-tab-pane>
@@ -254,6 +255,11 @@ export default {
         });
         this.output.scrollInit = false;
       }
+    },
+    singleDataDeleted(){
+      await this.subSystemScript(val);
+      this.activeTab = this.formData[0]["title"];
+      this.$emit("formData", this.formData);
     },
     activeTabChanged(newVal) {
       for (let x = 0; x < this.formData.length; x++) {
