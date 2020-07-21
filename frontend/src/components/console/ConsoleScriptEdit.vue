@@ -424,25 +424,25 @@
                   </div>
                 </el-col>
                 <el-col :span="3">
-                  <div class="editFormRightButtons">
-                    <td>
+                  <div class="div-flex">
+                    <div>
                       <i
                         class="editFormRightButton editFormMoveUp el-icon-top"
                         @click="editFormMoveUp(edit.formData.indexOf(singleData))"
                       ></i>
-                    </td>
-                    <td>
+                    </div>
+                    <div>
                       <i
                         class="editFormRightButton editFormMoveDown el-icon-bottom"
                         @click="editFormMoveDown(edit.formData.indexOf(singleData))"
                       ></i>
-                    </td>
-                    <td>
+                    </div>
+                    <div>
                       <i
                         class="editFormRightButton editFormDeleted el-icon-close"
                         @click="editFormDeleted(edit.formData.indexOf(singleData))"
                       ></i>
-                    </td>
+                    </div>
                   </div>
                 </el-col>
               </el-card>

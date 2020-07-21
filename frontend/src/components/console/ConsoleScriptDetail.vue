@@ -283,6 +283,13 @@ export default {
     };
   },
   methods: {
+    //新增脚本
+    newTab() {
+      this.edit.dialogTitle = "新增脚本";
+      this.edit.sub_system_id = this.subSystem[this.activedSystem - 1].id;
+      this.edit.id = 0;
+      this.edit.visible = true;
+    },
     singleDataReplay(singleForm) {
       this.formData[this.activeTabIndex] = singleForm;
     },
