@@ -12,7 +12,7 @@
         >包括：</a>
         <a v-for="(singleForm,singleFormIndex) in formData" :key="singleForm.key">
           <a
-            style="cursor: pointer; color: #0064a9; font-size: 12px; font-family: Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,SimSun,sans-serif;"
+            style="cursor: pointer; color: #409EFF; font-size: 12px; font-family: Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,SimSun,sans-serif;"
             type="text"
             size="small"
             @click="scriptLabelClicked(singleForm.title)"
