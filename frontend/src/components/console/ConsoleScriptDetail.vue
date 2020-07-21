@@ -195,7 +195,8 @@ const api = {
 export default {
   name: "ConsoleScriptDetail",
   components: {
-    ConsoleScriptButtons
+    ConsoleScriptButtons,
+    ConsoleScriptEdit
   },
   props: {
     user_id: Number,
