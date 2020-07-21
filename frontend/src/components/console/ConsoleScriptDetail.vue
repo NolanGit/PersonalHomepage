@@ -121,7 +121,6 @@
               </div>
               <ConsoleScriptButtons
                 :user_id="user_id"
-                :scriptId="activeScriptId"
                 :singleForm="singleForm"
                 @replay="singleDataReplay"
                 @output="singleDataLog"

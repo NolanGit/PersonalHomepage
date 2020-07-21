@@ -203,8 +203,7 @@ export default {
   components: {},
   props: {
     user_id: Number,
-    singleForm: Array,
-    scriptId: Number
+    singleForm: Array
   },
   watch: {},
   data() {
@@ -308,7 +307,7 @@ export default {
     async singleDataLog() {
       try {
         const { data: res } = await axios.post(api.getNewestLog, {
-          script_id: this.scriptId,
+          script_id: this.singleForm.id,
           user_id: this.user_id
         });
         this.$emit("output", res.data[0].output);
@@ -326,7 +325,7 @@ export default {
       this.output.logs = [];
       try {
         const { data: res } = await axios.post(api.getLogs, {
-          script_id: this.scriptId,
+          script_id: this.singleForm.id,
           user_id: this.user_id
         });
         this.output.logs = res.data.logs;
@@ -394,7 +393,7 @@ export default {
       this.schedule.schedules = [];
       try {
         const { data: res } = await axios.post(api.schedule, {
-          script_id: this.formData[this.activeTab].id,
+          script_id: this.singleForm.id,
           user_id: this.user_id
         });
         this.schedule.loading = false;
@@ -412,22 +411,22 @@ export default {
     async scheduleAdd() {
       var start_folder_with_start_script =
         "cd " +
-        this.formData[this.activeTab].start_folder +
+        this.singleForm.start_folder +
         " && " +
-        this.formData[this.activeTab].start_script;
+        this.singleForm.start_script;
       var command_get_result = this.command_get(
         start_folder_with_start_script,
-        this.formData[this.activeTab].type
+        this.singleForm.type
       );
       var command = command_get_result.command;
       var detail = command_get_result.detail;
       try {
         const { data: res } = await axios.post(api.scheduleAdd, {
           user_id: this.user_id,
-          script_id: this.formData[this.activeTab].id,
+          script_id: this.singleForm.id,
           command: command,
           detail: detail,
-          version: this.formData[this.activeTab].version,
+          version: this.singleForm.version,
           trigger_time:
             this.schedule.scheduleData.triggerDate +
             " " +
@@ -483,7 +482,7 @@ export default {
         .then(async () => {
           try {
             const { data: res } = await axios.post(api.delete, {
-              script_id: this.formData[this.activeTab].id,
+              script_id: this.singleForm.id,
               user_id: this.user_id
             });
             this.$message({
