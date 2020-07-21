@@ -446,7 +446,7 @@ export default {
     extraButtonFlushOutput(singleFormIndex, singleDataIndex, process_id) {
       try {
         axios
-          .post(api.extraButtonScriptRun, {
+          .post(api.runOutput, {
             process_id: process_id,
             user_id: this.user_id
           })

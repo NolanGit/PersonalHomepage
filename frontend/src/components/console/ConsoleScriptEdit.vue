@@ -546,6 +546,10 @@ export default {
   methods: {
     //选择器组件点击
     singleDataOptionDialogClicked(index, singleDataOptions) {
+      console.log(singleDataOptions);
+      console.log(singleDataOptions.length == 0);
+      console.log(singleDataOptions == []);
+      console.log(singleDataOptions == {});
       this.singleDataOptionDialog.index = index;
       this.singleDataOptionDialog.visible = true;
       this.singleDataOptionDialog.data =
