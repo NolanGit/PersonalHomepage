@@ -307,47 +307,10 @@ export default {
     async singleDataLog() {
       try {
         const { data: res } = await axios.post(api.getNewestLog, {
-          script_id: this.formData[this.activeTab].id,
+          script_id: this.scriptId,
           user_id: this.user_id
         });
         this.$emit("output", res.data[0].output);
-      } catch (e) {
-        console.log(e);
-        this.$message({
-          message: e.response.data.msg,
-          type: "error"
-        });
-      }
-    },
-    //展示最近一次由我运行的脚本日志
-    async singleDataLog() {
-      try {
-        const { data: res } = await axios.post(api.getNewestLog, {
-          script_id: this.singleForm.id,
-          user_id: this.user_id
-        });
-        this.output.visible = true;
-        this.output.text = res.data[0].output;
-        if (this.bool.singleDataLog) {
-          this.$nextTick(() => {
-            try {
-              var scroll = new BScroll(this.$refs.outputDialog, {
-                scrollY: true,
-                scrollbar: {
-                  fade: true, // node_modules\better-scroll\dist\bscroll.esm.js:2345可以调时间，目前使用的是'var time = visible ? 500 : 5000;'
-                  interactive: true
-                },
-                momentumLimitDistance: 300,
-                mouseWheel: true,
-                preventDefault: false
-              });
-              scroll.refresh();
-            } catch (error) {
-              console.log("滚动条设置失败" + error);
-            }
-          });
-          this.bool.singleDataLog = false;
-        }
       } catch (e) {
         console.log(e);
         this.$message({
@@ -362,7 +325,7 @@ export default {
       this.output.logs = [];
       try {
         const { data: res } = await axios.post(api.getLogs, {
-          script_id: this.formData[this.activeTab].id,
+          script_id: this.scriptId,
           user_id: this.user_id
         });
         this.output.logs = res.data.logs;
