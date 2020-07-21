@@ -6,7 +6,7 @@
           <i class="el-icon-back"></i>
           <div>请选择左侧系统</div>
         </div>
-        <el-tabs v-model="activeTab" addable @tab-add="newTab" v-show="formData.length!=0">
+        <el-tabs v-model="activeScriptName" addable @tab-add="newTab" v-show="formData.length!=0">
           <el-tab-pane
             v-for="(singleForm,singleFormIndex) in formData"
             :key="singleForm.key"
@@ -191,19 +191,20 @@ export default {
   },
   props: {
     user_id: Number,
-    systemId: Number
+    systemId: Number,
+    activeScriptName: String
   },
   watch: {
     systemId(newVal, oldVal) {
       this.systemIdChanged(newVal);
     },
-    activeTab(newVal, oldVal) {
+    activeScriptName(newVal, oldVal) {
       this.activeTabChanged(newVal);
     }
   },
   data() {
     return {
-      activeTab: "", //当前触发的tab名称
+      activeScriptName: "", //当前触发的tab名称
       activeTabIndex: 0, //当前触发的tab的index
       activeScriptId: 0, //当前触发的脚本的id
       formData: [],
@@ -270,7 +271,7 @@ export default {
         return;
       }
       await this.subSystemScript(val);
-      this.activeTab = this.formData[0]["title"];
+      this.activeScriptName = this.formData[0]["title"];
       this.$emit("formData", this.formData);
     },
     //展示栏目下的脚本
@@ -332,41 +333,43 @@ export default {
     command_get(start_command, type) {
       var command = "";
       var detail = {};
-      //console.log(this.activeTab)
+      //console.log(this.activeScriptName)
       if (type == "1") {
         //顺序模式
         for (
           var x = 0;
-          x < this.formData[this.activeTab].formDataDetail.length;
+          x < this.formData[this.activeScriptName].formDataDetail.length;
           x++
         ) {
-          //console.log(this.formData[this.activeTab].formDataDetail[x].type)
+          //console.log(this.formData[this.activeScriptName].formDataDetail[x].type)
           detail[
-            this.formData[this.activeTab].formDataDetail[x].label
-          ] = this.formData[this.activeTab].formDataDetail[x].value;
+            this.formData[this.activeScriptName].formDataDetail[x].label
+          ] = this.formData[this.activeScriptName].formDataDetail[x].value;
           if (
-            this.formData[this.activeTab].formDataDetail[x].type == "dateRange"
+            this.formData[this.activeScriptName].formDataDetail[x].type == "dateRange"
           ) {
-            if (this.formData[this.activeTab].formDataDetail[x].value == null) {
+            if (
+              this.formData[this.activeScriptName].formDataDetail[x].value == null
+            ) {
               //解决用户点击了组建上的清空按钮后导致前端报错的问题
               continue;
             }
             for (
               let d = 0;
-              d < this.formData[this.activeTab].formDataDetail[x].value.length;
+              d < this.formData[this.activeScriptName].formDataDetail[x].value.length;
               d++
             ) {
               command =
                 command +
                 " " +
-                this.formData[this.activeTab].formDataDetail[x].value[d];
+                this.formData[this.activeScriptName].formDataDetail[x].value[d];
             }
             continue;
           }
           command =
             command +
             " " +
-            this.formData[this.activeTab].formDataDetail[x].value;
+            this.formData[this.activeScriptName].formDataDetail[x].value;
         }
         command = start_command + command;
         //console.log(command)
@@ -375,44 +378,48 @@ export default {
         var tempCommand = start_command;
         for (
           var x = 0;
-          x < this.formData[this.activeTab].formDataDetail.length;
+          x < this.formData[this.activeScriptName].formDataDetail.length;
           x++
         ) {
           detail[
-            this.formData[this.activeTab].formDataDetail[x].label
-          ] = this.formData[this.activeTab].formDataDetail[x].value;
+            this.formData[this.activeScriptName].formDataDetail[x].label
+          ] = this.formData[this.activeScriptName].formDataDetail[x].value;
           if (
-            this.formData[this.activeTab].formDataDetail[x].type == "dateRange"
+            this.formData[this.activeScriptName].formDataDetail[x].type == "dateRange"
           ) {
-            if (this.formData[this.activeTab].formDataDetail[x].value == null) {
+            if (
+              this.formData[this.activeScriptName].formDataDetail[x].value == null
+            ) {
               //解决用户点击了组建上的清空按钮后导致前端报错的问题
               continue;
             }
             var tempDateRange = "";
             for (
               let d = 0;
-              d < this.formData[this.activeTab].formDataDetail[x].value.length;
+              d < this.formData[this.activeScriptName].formDataDetail[x].value.length;
               d++
             ) {
               tempDateRange =
                 tempDateRange +
                 " " +
-                this.formData[this.activeTab].formDataDetail[x].value[d];
+                this.formData[this.activeScriptName].formDataDetail[x].value[d];
             }
             var reg = new RegExp(
-              "%" + this.formData[this.activeTab].formDataDetail[x].label + "%",
+              "%" +
+                this.formData[this.activeScriptName].formDataDetail[x].label +
+                "%",
               "g"
             );
             tempCommand = tempCommand.replace(reg, tempDateRange);
             continue;
           }
           var reg = new RegExp(
-            "%" + this.formData[this.activeTab].formDataDetail[x].label + "%",
+            "%" + this.formData[this.activeScriptName].formDataDetail[x].label + "%",
             "g"
           );
           tempCommand = tempCommand.replace(
             reg,
-            this.formData[this.activeTab].formDataDetail[x].value
+            this.formData[this.activeScriptName].formDataDetail[x].value
           );
         }
         command = tempCommand;

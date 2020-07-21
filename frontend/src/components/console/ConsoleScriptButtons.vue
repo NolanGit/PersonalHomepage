@@ -230,7 +230,7 @@
             <el-switch
               v-model="schedule.scheduleData.is_automatic"
               false
-              active-color="#3383BA"
+              active-color="#409EFF"
               inactive-color="#80868C"
             ></el-switch>
           </td>
