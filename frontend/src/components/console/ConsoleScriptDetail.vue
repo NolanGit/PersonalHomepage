@@ -192,7 +192,7 @@ export default {
   props: {
     user_id: Number,
     systemId: Number,
-    scriptName: String
+    activeScriptName: String
   },
   watch: {
     systemId(newVal, oldVal) {
@@ -201,7 +201,7 @@ export default {
     activeTab(newVal, oldVal) {
       this.activeTabChanged(newVal);
     },
-    scriptName(newVal, oldVal) {
+    activeScriptName(newVal, oldVal) {
       console.log(newVal);
       this.activeTab = newVal;
     }
