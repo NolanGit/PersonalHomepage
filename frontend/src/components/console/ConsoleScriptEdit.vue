@@ -534,7 +534,13 @@ export default {
     edit: Array
   },
   data() {
-    return {};
+    return {
+      singleDataOptionDialog: {
+        visible: false,
+        index: 0,
+        data: []
+      }
+    };
   },
   watch: {},
   methods: {}
