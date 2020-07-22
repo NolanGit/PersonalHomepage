@@ -574,6 +574,27 @@ export default {
         });
       }
     },
+    //运行中途停止运行
+    async terminate() {
+      this.$confirm("确定要停止运行吗?", "提示", {}).then(async () => {
+        try {
+          const { data: res } = await axios.post(api.terminate, {
+            user_id: this.user_id,
+            process_id: this.output.process_id
+          });
+          this.$message({
+            message: res.msg,
+            type: "success"
+          });
+        } catch (e) {
+          console.log(e);
+          this.$message({
+            message: e.response.data.msg,
+            type: "error"
+          });
+        }
+      });
+    },
     //更新输出
     flushOutput(process_id) {
       this.output.isAlert = true;
