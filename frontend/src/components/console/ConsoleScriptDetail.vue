@@ -202,7 +202,7 @@ export default {
   props: {
     user_id: Number,
     systemId: Number,
-    newTab: Boolean,
+    newTabBool: Boolean,
     activeScriptName: String
   },
   watch: {
@@ -216,7 +216,7 @@ export default {
       console.log(newVal);
       this.activeTab = newVal;
     },
-    newTab(newVal, oldVal) {
+    newTabBool(newVal, oldVal) {
       if (newVal && !oldVal) {
         this.newScript();
       }

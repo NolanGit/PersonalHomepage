@@ -15,7 +15,7 @@
           :activeScriptName="scriptName"
           :systemId="systemId"
           :user_id="user_id"
-          :newTab="newTab"
+          :newTabBool="newTabBool"
           @formData="formDataChanged"
         />
       </el-col>
@@ -47,7 +47,7 @@ export default {
     return {
       systemId: Number,
       scriptName: String,
-      newTab: false,
+      newTabBool: false,
       formData: []
     };
   },
