@@ -185,7 +185,6 @@
       </el-tooltip>
     </div>
 
-
     <!--编辑定时任务界面-->
     <el-drawer
       :title="schedule.label"
@@ -332,7 +331,7 @@ export default {
         text: "",
         important_fields: [],
         isAlert: false
-      },
+      }
     };
   },
   watch: {},
@@ -361,6 +360,11 @@ export default {
               ")，可能无法完美恢复上一次参数",
             type: "info"
           });
+        } else {
+          this.$message({
+            message: "参数填充成功",
+            type: "success"
+          });
         }
         for (var f = 0; f < this.singleForm.formDataDetail.length; f++) {
           try {
@@ -376,10 +380,6 @@ export default {
             );
           }
         }
-        this.$message({
-          message: "参数填充成功",
-          type: "success"
-        });
         this.$emit("replay", this.singleForm);
       } catch (e) {
         console.log(e);
