@@ -49,12 +49,13 @@ def subSystemAdd():
     try:
         sub_system_name = request.get_json()['sub_system_name']
         user_id = request.get_json()['user_id']
-        ScriptSubSystem(name=sub_system_name,user_id=user_id).create()
+        ScriptSubSystem(name=sub_system_name, user_id=user_id).create()
         response = {'code': 200, 'msg': '成功！'}
         return jsonify(response)
     except Exception as e:
         response = {'code': 500, 'msg': '失败！错误信息：' + str(e) + '，请联系管理员。', 'data': []}
         return jsonify(response), 500
+
 
 @script.route('/subSystemDelete', methods=['POST'])
 @permission_required(URL_PREFIX + '/subSystemDelete')
@@ -63,15 +64,16 @@ def subSystemDelete():
     try:
         sub_system_id = request.get_json()['sub_system_id']
         user_id = request.get_json()['user_id']
-        s=ScriptSubSystem(id=sub_system_id).complete()
-        s.is_valid=0
-        s.user_id=user_id
+        s = ScriptSubSystem(id=sub_system_id).complete()
+        s.is_valid = 0
+        s.user_id = user_id
         s.save()
         response = {'code': 200, 'msg': '成功！'}
         return jsonify(response)
     except Exception as e:
         response = {'code': 500, 'msg': '失败！错误信息：' + str(e) + '，请联系管理员。', 'data': []}
         return jsonify(response), 500
+
 
 @script.route('/subSystemScript', methods=['POST'])
 @permission_required(URL_PREFIX + '/subSystemScript')
@@ -106,7 +108,7 @@ def subSystemScript():
                     data[-1]['detail'][-1]['label'] = row2['label']
                     data[-1]['detail'][-1]['value'] = row2['value']
                     data[-1]['detail'][-1]['place_holder'] = row2['place_holder']
-                    data[-1]['detail'][-1]['options'] = eval(row2['options']) if row2['options'] != '' else {}
+                    data[-1]['detail'][-1]['options'] = eval(row2['options']) if row2['options'] != '' else []
                     data[-1]['detail'][-1]['createable'] = row2['createable']
                     data[-1]['detail'][-1]['disabled'] = row2['disabled']
                     data[-1]['detail'][-1]['remark'] = row2['remark']

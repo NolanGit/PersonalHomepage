@@ -9,7 +9,9 @@ except:
 
 cf = CommonFunc()
 
+
 class Base(object):
+
     def base_create(self, table):
         self_dict = cf.attr_to_dict(self)
         if 'id' in self_dict:
@@ -21,6 +23,7 @@ class Base(object):
     def base_save(self, table):
         self_dict = cf.attr_to_dict(self)
         _id = self_dict.pop('id')
-        self_dict['create_time'] = datetime.datetime.now()
+        if 'create_time' in self_dict:
+            self_dict['create_time'] = datetime.datetime.now()
         table.update(**self_dict).where(table.id == _id).execute()
         return self
