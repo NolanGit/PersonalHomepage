@@ -1,4 +1,8 @@
 # -*- coding:utf-8 -*-
+
+'''
+    iTunes 有提供接口：https://itunes.apple.com/search?term=Gorogoa &country=cn&media=software，后期可以改
+'''
 import re
 import sys
 import time
@@ -99,8 +103,11 @@ def app_price_push_generator():
 # 爬取数据
 app_table_query = app_table.select().where(app_table.is_valid == 1).dicts()
 for single_app_table_query in app_table_query:
-    app = App(single_app_table_query['url'])
-    app_price.create(app_id=single_app_table_query['id'], price=app.price, update_time=datetime.datetime.now())
+    try:
+        app = App(single_app_table_query['url'])
+        app_price.create(app_id=single_app_table_query['id'], price=app.price, update_time=datetime.datetime.now())
+    except:
+        continue
 
 #加入推送队列
 app_price_push_generator()
