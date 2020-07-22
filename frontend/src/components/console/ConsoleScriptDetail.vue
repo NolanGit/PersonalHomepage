@@ -528,20 +528,20 @@ export default {
       this.submitButtonLoading = true;
       var start_folder_with_start_script =
         "cd " +
-        this.formData[this.activeTab].start_folder +
+        this.formData[singleFormIndex].start_folder +
         " && " +
-        this.formData[this.activeTab].start_script;
+        this.formData[singleFormIndex].start_script;
       var command_get_result = this.command_get(
         start_folder_with_start_script,
-        this.formData[this.activeTab].type
+        this.formData[singleFormIndex].type
       );
       var command = command_get_result.command;
       try {
         axios
           .post(api.run, {
-            id: this.formData[this.activeTab].id,
+            id: this.formData[singleFormIndex].id,
             command: command,
-            version: this.formData[this.activeTab].version,
+            version: this.formData[singleFormIndex].version,
             detail: command_get_result.detail,
             user_id: this.user_id
           })
