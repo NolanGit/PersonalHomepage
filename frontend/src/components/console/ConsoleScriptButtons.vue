@@ -572,7 +572,7 @@ export default {
             schedule_id: schedule_id
           });
           this.$message({
-            message: data["msg"],
+            message: res.msg,
             type: "success"
           });
         } catch (e) {

@@ -80,7 +80,6 @@
                         end-placeholder="结束日期"
                         :placeholder="singleData.placeHolder"
                         :disabled="singleData.disabled!=0"
-                        :picker-options="pickerOptions"
                         class="main_select--large"
                       ></el-date-picker>
                     </td>
