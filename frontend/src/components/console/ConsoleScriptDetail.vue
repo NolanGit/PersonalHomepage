@@ -179,6 +179,7 @@
 
 <script>
 import axios from "axios";
+import BScroll from "better-scroll";
 import { deepClone } from "../../js/common";
 import ConsoleScriptButtons from "./ConsoleScriptButtons";
 import ConsoleScriptEdit from "./ConsoleScriptEdit";
@@ -512,6 +513,149 @@ export default {
                 singleDataIndex,
                 process_id
               );
+            }
+          });
+      } catch (e) {
+        console.log(e);
+        this.$message({
+          message: e.response.data.msg,
+          type: "error"
+        });
+      }
+    },
+    //提交
+    submit() {
+      this.submitButtonLoading = true;
+      var start_folder_with_start_script =
+        "cd " +
+        this.formData[this.activeTab].start_folder +
+        " && " +
+        this.formData[this.activeTab].start_script;
+      var command_get_result = this.command_get(
+        start_folder_with_start_script,
+        this.formData[this.activeTab].type
+      );
+      var command = command_get_result.command;
+      try {
+        axios
+          .post(api.run, {
+            id: this.formData[this.activeTab].id,
+            command: command,
+            version: this.formData[this.activeTab].version,
+            detail: command_get_result.detail,
+            user_id: this.user_id
+          })
+          .then(res => {
+            if (res.data.data["process_id"] == -1) {
+              this.$message({
+                message: "任务创建错误，请联系管理员！",
+                type: "error"
+              });
+            } else {
+              this.output.log_id = res.data.data["log_id"];
+              this.output.visible = true;
+              this.output.text = command + "<br>";
+              this.output.process_id = res.data.data["process_id"];
+              this.output.canBeTerminate = true;
+              this.flushOutput(res.data.data["process_id"]);
+            }
+          });
+      } catch (e) {
+        console.log(e);
+        this.$message({
+          message: e.response.data.msg,
+          type: "error"
+        });
+      }
+    },
+    //更新输出
+    flushOutput(process_id) {
+      this.output.isAlert = true;
+      try {
+        axios
+          .post(api.runOutput, {
+            process_id: process_id,
+            user_id: this.user_id
+          })
+          .then(res => {
+            if (res.data.data["status"] == -1) {
+              this.$message({
+                message: data["msg"],
+                type: "error"
+              });
+              this.submitButtonLoading = false;
+              return;
+            } else if (res.data.data["status"] == 0) {
+              this.output.canBeTerminate = false;
+              this.output.isAlert = false;
+              this.output.text =
+                "<div>" +
+                this.output.text +
+                "</div>" +
+                res.data.data["output"]
+                  .replace(/\n/g, "<br>")
+                  .replace(/\s/g, "&nbsp;");
+              this.output.text = this.output.text.replace(/#&nbsp;/g, " ");
+              this.$message({
+                message: "运行结束，请查看输出。",
+                type: "success"
+              });
+              this.$nextTick(() => {
+                let scroll = new BScroll(this.$refs.outputDialog, {
+                  scrollY: true,
+                  scrollbar: {
+                    fade: true, // node_modules\better-scroll\dist\bscroll.esm.js:2345可以调时间，目前使用的是'var time = visible ? 500 : 5000;'
+                    interactive: true
+                  },
+                  momentumLimitDistance: 300,
+                  mouseWheel: true,
+                  preventDefault: false
+                });
+                scroll.scrollTo(0, scroll.maxScrollY);
+              });
+              try {
+                axios
+                  .post(api.saveOutput, {
+                    log_id: this.output.log_id,
+                    output: this.output.text
+                  })
+                  .then(res => {
+                    this.submitButtonLoading = false;
+                  });
+              } catch (e) {
+                console.log(e);
+                this.$message({
+                  message:
+                    "记录运行日志错误！请联系管理员" + e.response.data.msg,
+                  type: "error"
+                });
+              }
+              return;
+            } else if (res.data.data["status"] == 1) {
+              this.output.text =
+                this.output.text +
+                res.data.data["output"]
+                  .replace(/\n/g, "<br>")
+                  .replace(/\s/g, "&nbsp;");
+              this.$nextTick(() => {
+                try {
+                  let scroll = new BScroll(this.$refs.outputDialog, {
+                    scrollY: true,
+                    scrollbar: {
+                      fade: true, // node_modules\better-scroll\dist\bscroll.esm.js:2345可以调时间，目前使用的是'var time = visible ? 500 : 5000;'
+                      interactive: true
+                    },
+                    momentumLimitDistance: 300,
+                    mouseWheel: true,
+                    preventDefault: false
+                  });
+                  scroll.scrollTo(0, scroll.maxScrollY);
+                  scroll.destroy();
+                } catch (error) {
+                  console.log("滚动条设置失败" + error);
+                }
+              });
+              this.flushOutput(process_id);
             }
           });
       } catch (e) {
