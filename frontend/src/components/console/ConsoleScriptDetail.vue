@@ -178,6 +178,7 @@
 
 <script>
 import axios from "axios";
+import md5 from "js-md5";
 import BScroll from "better-scroll";
 import { deepClone } from "../../js/common";
 import ConsoleScriptButtons from "./ConsoleScriptButtons";
@@ -542,6 +543,7 @@ export default {
         this.formData[this.activeTabIndex].type
       );
 
+      var command = command_get_result.command;
       var salt = Math.floor(Math.random() * 100000000000000);
       var sign = md5(
         this.formData[this.activeTabIndex].id +
