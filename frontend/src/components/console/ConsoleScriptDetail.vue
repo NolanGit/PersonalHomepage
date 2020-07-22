@@ -541,7 +541,16 @@ export default {
         start_folder_with_start_script,
         this.formData[this.activeTabIndex].type
       );
-      var command = command_get_result.command;
+
+      var salt = Math.floor(Math.random() * 100000000000000);
+      var sign = md5(
+        this.formData[this.activeTabIndex].id +
+          this.$cookies.get("user_id") +
+          this.$cookies.get("user_key") +
+          salt +
+          command
+      );
+
       try {
         axios
           .post(api.run, {
@@ -549,7 +558,9 @@ export default {
             command: command,
             version: this.formData[this.activeTabIndex].version,
             detail: command_get_result.detail,
-            user_id: this.user_id
+            user_id: this.user_id,
+            salt: salt,
+            sign: sign
           })
           .then(res => {
             if (res.data.data["process_id"] == -1) {
