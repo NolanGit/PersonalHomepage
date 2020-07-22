@@ -544,6 +544,10 @@ export default {
   },
   watch: {},
   methods: {
+    swapItem(arr, index1, index2) {
+      arr[index1] = arr.splice(index2, 1, arr[index1])[0];
+      return arr;
+    },
     //增加组件
     editFormAddSingleData() {
       this.edit.formData.push({
