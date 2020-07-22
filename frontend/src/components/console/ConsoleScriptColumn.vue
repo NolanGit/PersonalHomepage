@@ -96,6 +96,7 @@ export default {
         const { data: res } = await axios.get(api.subSystem, {
           user_id: this.user_id
         });
+        this.subSystem = [];
         for (let x = 0; x < res.data.length; x++) {
           this.subSystem.push({
             id: res.data[x]["id"],
