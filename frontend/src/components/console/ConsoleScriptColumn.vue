@@ -84,6 +84,9 @@ export default {
     }
   },
   methods: {
+    newTab() {
+      this.$emit("newTab");
+    },
     scriptLabelClicked(scriptName) {
       this.$emit("scriptNameClicked", scriptName);
     },

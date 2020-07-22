@@ -6,7 +6,7 @@
           <i class="el-icon-back"></i>
           <div>请选择左侧系统</div>
         </div>
-        <el-tabs v-model="activeTab" addable @tab-add="newTab" v-show="formData.length!=0">
+        <el-tabs v-model="activeTab" addable @tab-add="newScript" v-show="formData.length!=0">
           <el-tab-pane
             v-for="(singleForm,singleFormIndex) in formData"
             :key="singleForm.key"
@@ -202,6 +202,7 @@ export default {
   props: {
     user_id: Number,
     systemId: Number,
+    newTab: Boolean,
     activeScriptName: String
   },
   watch: {
@@ -214,6 +215,11 @@ export default {
     activeScriptName(newVal, oldVal) {
       console.log(newVal);
       this.activeTab = newVal;
+    },
+    newTab(newVal, oldVal) {
+      if (newVal && !oldVal) {
+        this.newScript();
+      }
     }
   },
   data() {
@@ -285,9 +291,9 @@ export default {
   },
   methods: {
     //新增脚本
-    newTab() {
+    newScript() {
       this.edit.dialogTitle = "新增脚本";
-      this.edit.sub_system_id = this.subSystem[this.activedSystem - 1].id;
+      this.edit.sub_system_id = this.systemId;
       this.edit.id = 0;
       this.edit.visible = true;
     },

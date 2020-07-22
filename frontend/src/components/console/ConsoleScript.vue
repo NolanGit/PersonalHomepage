@@ -5,6 +5,7 @@
         <ConsoleScriptColumn
           :user_id="user_id"
           :formData="formData"
+          @newTab="newTab"
           @subSystemClicked="subSystemClicked"
           @scriptNameClicked="scriptNameClicked"
         />
@@ -14,6 +15,7 @@
           :activeScriptName="scriptName"
           :systemId="systemId"
           :user_id="user_id"
+          :newTab="newTab"
           @formData="formDataChanged"
         />
       </el-col>
@@ -45,11 +47,15 @@ export default {
     return {
       systemId: Number,
       scriptName: String,
+      newTab: false,
       formData: []
     };
   },
   watch: {},
   methods: {
+    newTab() {
+      this.newTab = true;
+    },
     subSystemClicked(systemId) {
       this.systemId = systemId;
     },
