@@ -335,7 +335,9 @@ export default {
         return;
       }
       await this.subSystemScript(val);
-      this.activeTab = this.formData[0]["title"];
+      if (this.formData.length != 0) {
+        this.activeTab = this.formData[0]["title"];
+      }
       this.$emit("formData", this.formData);
     },
     //展示栏目下的脚本
