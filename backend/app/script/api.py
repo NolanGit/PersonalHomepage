@@ -146,7 +146,7 @@ def run():
     user_id = redis_conn.get(user_key)
     sign = cf.md5_it(str(id) + str(user_id) + user_key + str(salt) + command)
     if sign != request.get_json()['sign']:
-        return jsonify(rsp.failed('错误的签名')), 403
+        return rsp.failed('错误的签名'), 403
 
     global running_subprocess
 
@@ -193,11 +193,7 @@ def run():
     except Exception as e:
         print(e)
         traceback.print_exc()
-        response = {
-            'code': 500,
-            'msg': str(e),
-        }
-        return jsonify(response), 500
+        return rsp.failed(e), 500
 
 
 @script.route('/terminate', methods=['POST'])
@@ -213,11 +209,7 @@ def terminate():
     except Exception as e:
         print(e)
         traceback.print_exc()
-        response = {
-            'code': 500,
-            'msg': str(e),
-        }
-        return jsonify(response), 500
+        return rsp.failed(e), 500
 
 
 @script.route('/runOutput', methods=['POST'])
@@ -260,11 +252,7 @@ def runOutput():
     except Exception as e:
         print(e)
         traceback.print_exc()
-        response = {
-            'code': 500,
-            'msg': str(e),
-        }
-        return jsonify(response), 500
+        return rsp.failed(e), 500
     finally:
         return jsonify(response)
 
@@ -487,11 +475,7 @@ def edit():
     except Exception as e:
         print(e)
         traceback.print_exc()
-        response = {
-            'code': 500,
-            'msg': str(e),
-        }
-        return jsonify(response), 500
+        return rsp.failed(e), 500
 
 
 @script.route('/replay', methods=['POST'])
@@ -517,11 +501,7 @@ def replay():
     except Exception as e:
         print(e)
         traceback.print_exc()
-        response = {
-            'code': 500,
-            'msg': str(e),
-        }
-        return jsonify(response), 500
+        return rsp.failed(e), 500
 
 
 @script.route('/delete', methods=['POST'])
@@ -538,11 +518,7 @@ def delete():
     except Exception as e:
         print(e)
         traceback.print_exc()
-        response = {
-            'code': 500,
-            'msg': str(e),
-        }
-        return jsonify(response), 500
+        return rsp.failed(e), 500
 
 
 @script.route('/saveOutput', methods=['POST'])
@@ -558,11 +534,7 @@ def saveOutput():
     except Exception as e:
         print(e)
         traceback.print_exc()
-        response = {
-            'code': 500,
-            'msg': str(e),
-        }
-        return jsonify(response), 500
+        return rsp.failed(e), 500
 
 
 @script.route('/getLogs', methods=['POST'])
@@ -596,11 +568,7 @@ def getLogs():
     except Exception as e:
         print(e)
         traceback.print_exc()
-        response = {
-            'code': 500,
-            'msg': str(e),
-        }
-        return jsonify(response), 500
+        return rsp.failed(e), 500
 
 
 @script.route('/getNewestLog', methods=['POST'])
@@ -631,11 +599,7 @@ def getNewestLog():
     except Exception as e:
         print(e)
         traceback.print_exc()
-        response = {
-            'code': 500,
-            'msg': str(e),
-        }
-        return jsonify(response), 500
+        return rsp.failed(e), 500
 
 
 @script.route('/schedule', methods=['POST'])
@@ -670,11 +634,7 @@ def schedule():
     except Exception as e:
         print(e)
         traceback.print_exc()
-        response = {
-            'code': 500,
-            'msg': str(e),
-        }
-        return jsonify(response), 500
+        return rsp.failed(e), 500
 
 
 @script.route('/scheduleEdit', methods=['POST'])
@@ -768,11 +728,7 @@ def scheduleEdit():
     except Exception as e:
         print(e)
         traceback.print_exc()
-        response = {
-            'code': 500,
-            'msg': str(e),
-        }
-        return jsonify(response), 500
+        return rsp.failed(e), 500
 
 
 @script.route('/scheduleDelete', methods=['POST'])
@@ -789,11 +745,7 @@ def scheduleDelete():
     except Exception as e:
         print(e)
         traceback.print_exc()
-        response = {
-            'code': 500,
-            'msg': str(e),
-        }
-        return jsonify(response), 500
+        return rsp.failed(e), 500
 
 
 @script.route('/extraButtonScriptRun', methods=['POST'])
@@ -818,8 +770,4 @@ def extraButtonScriptRun():
     except Exception as e:
         print(e)
         traceback.print_exc()
-        response = {
-            'code': 500,
-            'msg': str(e),
-        }
-        return jsonify(response), 500
+        return rsp.failed(e), 500
