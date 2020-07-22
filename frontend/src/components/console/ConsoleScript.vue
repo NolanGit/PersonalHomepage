@@ -54,7 +54,7 @@ export default {
   watch: {},
   methods: {
     newTab() {
-      this.newTab = true;
+      this.newTabBool = true;
     },
     subSystemClicked(systemId) {
       this.systemId = systemId;
