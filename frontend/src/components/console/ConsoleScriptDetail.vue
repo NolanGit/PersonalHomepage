@@ -486,12 +486,12 @@ export default {
                   .replace(/\n/g, "<br>")
                   .replace(/\s/g, "&nbsp;");
                 if (dataTemp.data.value != undefined) {
-                  this.formData[singleFormIndex].formDataDetail[
+                  this.formData[this.singleFormIndex].formDataDetail[
                     singleDataIndex
                   ].value = dataTemp.data.value;
                 }
                 if (dataTemp.data.options != undefined) {
-                  this.formData[singleFormIndex].formDataDetail[
+                  this.formData[this.singleFormIndex].formDataDetail[
                     singleDataIndex
                   ].options = dataTemp.data.options;
                 }
@@ -528,20 +528,20 @@ export default {
       this.submitButtonLoading = true;
       var start_folder_with_start_script =
         "cd " +
-        this.formData[singleFormIndex].start_folder +
+        this.formData[this.singleFormIndex].start_folder +
         " && " +
-        this.formData[singleFormIndex].start_script;
+        this.formData[this.singleFormIndex].start_script;
       var command_get_result = this.command_get(
         start_folder_with_start_script,
-        this.formData[singleFormIndex].type
+        this.formData[this.singleFormIndex].type
       );
       var command = command_get_result.command;
       try {
         axios
           .post(api.run, {
-            id: this.formData[singleFormIndex].id,
+            id: this.formData[this.singleFormIndex].id,
             command: command,
-            version: this.formData[singleFormIndex].version,
+            version: this.formData[this.singleFormIndex].version,
             detail: command_get_result.detail,
             user_id: this.user_id
           })
