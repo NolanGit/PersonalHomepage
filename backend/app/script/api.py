@@ -9,7 +9,7 @@ from . import script
 from flask_cors import cross_origin
 from flask import render_template, session, redirect, url_for, current_app, flash, Response, request, jsonify
 from ..model.script_model import script as script_table_model
-from ..model.script_model import script_sub_system, script_detail, script_detail, script_log, script_schedule
+from ..model.script_model import script_sub_system, script_detail, script_log, script_schedule
 from ..privilege.privilege_control import permission_required
 from ..privilege.privilege_control import privilegeFunction
 from ..login.login_funtion import User
@@ -771,3 +771,67 @@ def extraButtonScriptRun():
         print(e)
         traceback.print_exc()
         return rsp.failed(e), 500
+
+@script.route('/scriptAll', methods=['POST'])
+@permission_required(URL_PREFIX + '/scriptAll')
+@cross_origin()
+def scriptAll():
+    data = []
+    try:
+        script_table_model_query = script_table_model.select().where(
+            (script_table_model.is_valid == 1)).order_by(
+                script_table_model.sub_system_id).dicts()
+        if len(script_table_model_query) == 0:
+            response = {'code': 200, 'msg': '成功！', 'data': []}
+            return jsonify(response)
+        else:
+            for row in script_table_model_query:
+                script_detail_query = script_detail.select(
+                ).where((script_detail.script_id == row['id'])
+                        & (script_detail.is_valid == 1)).dicts()
+                data.append({})
+                data[-1]["id"] = row['id']
+                data[-1]["sub_system_id"] = row['sub_system_id']
+                data[-1]["name"] = row['name']
+                data[-1]['start_folder'] = row['start_folder']
+                data[-1]['start_script'] = row['start_script']
+                data[-1]["type"] = row['type']
+                data[-1]["runs"] = row['runs']
+                data[-1]["version"] = row['version']
+                data[-1]["user"] = row['user']
+                data[-1]["update_time"] = row['update_time'].strftime(
+                    "%Y-%m-%d %H:%M:%S")
+                data[-1]['detail'] = []
+                for row2 in script_detail_query:
+                    data[-1]['detail'].append({})
+                    data[-1]['detail'][-1]['script_id'] = row2['script_id']
+                    data[-1]['detail'][-1]['type'] = row2['type']
+                    data[-1]['detail'][-1]['label'] = row2['label']
+                    data[-1]['detail'][-1]['value'] = row2['value']
+                    data[-1]['detail'][-1]['place_holder'] = row2[
+                        'place_holder']
+                    data[-1]['detail'][-1]['options'] = eval(
+                        row2['options']) if row2['options'] != '' else {}
+                    data[-1]['detail'][-1]['createable'] = row2['createable']
+                    data[-1]['detail'][-1]['disabled'] = row2['disabled']
+                    data[-1]['detail'][-1]['remark'] = row2['remark']
+                    data[-1]['detail'][-1]['is_important'] = row2[
+                        'is_important']
+                    data[-1]['detail'][-1]['visible'] = row2['visible']
+                    data[-1]['detail'][-1]['extra_button'] = row2[
+                        'extra_button']
+                    data[-1]['detail'][-1]['extra_button_label'] = row2[
+                        'extra_button_label']
+                    data[-1]['detail'][-1]['extra_button_script'] = row2[
+                        'extra_button_script']
+                    data[-1]['detail'][-1]['version'] = row2['version']
+    except Exception as e:
+        traceback.print_exc()
+        response = {
+            'code': 500,
+            'msg': '失败！错误信息：' + str(e) + '，请联系管理员。',
+            'data': []
+        }
+        return jsonify(response)
+    response = {'code': 200, 'msg': '成功！', 'data': data}
+    return jsonify(response)

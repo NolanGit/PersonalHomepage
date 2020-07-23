@@ -273,7 +273,6 @@
 <script>
 import axios from "axios";
 import { deepClone } from "../../js/common";
-import ConsoleScriptEdit from "./ConsoleScriptEdit";
 const api = {
   replay: "/script/replay",
   delete: "/script/delete",

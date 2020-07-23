@@ -46,7 +46,7 @@ const api = {
   roleEdit: "/privilege/roleEdit"
 };
 export default {
-  name: "ConsolePrivilegeEditRole",
+  name: "PrivilegeEditRole",
   props: {
     action: String, // action=='edit':加载编辑角色和权限对应关系页面; action=='new':新增角色页面
     roleId: Number,

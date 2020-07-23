@@ -118,7 +118,7 @@
                   </el-row>
                 </div>
               </div>
-              <ConsoleScriptButtons
+              <ScriptButtons
                 :user_id="user_id"
                 :singleForm="singleForm"
                 @replay="singleDataReplay"
@@ -171,7 +171,7 @@
       size="60%"
       @closed="editFormClosed"
     >
-      <ConsoleScriptEdit :user_id="user_id" :edit="edit" @done="flush" />
+      <ScriptEdit :user_id="user_id" :edit="edit" @done="flush" />
     </el-drawer>
   </section>
 </template>
@@ -181,8 +181,8 @@ import axios from "axios";
 import md5 from "js-md5";
 import BScroll from "better-scroll";
 import { deepClone } from "../../js/common";
-import ConsoleScriptButtons from "./ConsoleScriptButtons";
-import ConsoleScriptEdit from "./ConsoleScriptEdit";
+import ScriptButtons from "./ScriptButtons";
+import ScriptEdit from "./ScriptEdit";
 const api = {
   subSystemScript: "/script/subSystemScript",
   run: "/script/run",
@@ -196,8 +196,8 @@ const api = {
 export default {
   name: "ConsoleScriptDetail",
   components: {
-    ConsoleScriptButtons,
-    ConsoleScriptEdit
+    ScriptButtons,
+    ScriptEdit
   },
   props: {
     user_id: Number,

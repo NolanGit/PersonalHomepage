@@ -212,7 +212,7 @@
         direction="btt"
       >
         <div v-if="edit.type=='user' & edit.visible">
-          <ConsolePrivilegeEditUser
+          <PrivilegeEditUser
             :user_id="user_id"
             :login_name="edit.login_name"
             :action="edit.userEditAction"
@@ -220,7 +220,7 @@
           />
         </div>
         <div v-if="edit.type=='role' & edit.visible">
-          <ConsolePrivilegeEditRole
+          <PrivilegeEditRole
             :action="edit.roleEditAction"
             :checkedPrivilege="edit.checkedPrivilege"
             :privilegeData="edit.privilegeData"
@@ -231,7 +231,7 @@
           />
         </div>
         <div v-if="edit.type=='privilege' & edit.visible">
-          <ConsolePrivilegeEditPrivilege
+          <PrivilegeEditPrivilege
             :action="edit.privilegeEditAction"
             :privilegeId="edit.privilegeEditPrivilegeId"
             :privilegeName="edit.privilegeEditPrivilegeName"
@@ -247,9 +247,9 @@
 
 <script>
 import axios from "axios";
-import ConsolePrivilegeEditUser from "./ConsolePrivilegeEditUser";
-import ConsolePrivilegeEditRole from "./ConsolePrivilegeEditRole";
-import ConsolePrivilegeEditPrivilege from "./ConsolePrivilegeEditPrivilege";
+import PrivilegeEditUser from "./PrivilegeEditUser";
+import PrivilegeEditRole from "./PrivilegeEditRole";
+import PrivilegeEditPrivilege from "./PrivilegeEditPrivilege";
 const api = {
   userGet: "/privilege/userGet",
   userDisable: "/privilege/userDisable",
@@ -268,9 +268,9 @@ const api = {
 export default {
   name: "ConsolePrivilege",
   components: {
-    ConsolePrivilegeEditUser,
-    ConsolePrivilegeEditRole,
-    ConsolePrivilegeEditPrivilege
+    PrivilegeEditUser,
+    PrivilegeEditRole,
+    PrivilegeEditPrivilege
   },
   props: {
     user_id: Number,
