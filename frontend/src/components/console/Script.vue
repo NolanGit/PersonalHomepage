@@ -35,7 +35,7 @@ const api = {
   subSystemDelete: "/script/subSystemDelete"
 };
 export default {
-  name: "ConsoleScript",
+  name: "Script",
   components: {
     ScriptColumn,
     ScriptDetail
