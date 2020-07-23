@@ -20,8 +20,8 @@ INSERT INTO `bookmarks` (`id`, `name`, `url`, `icon`, `order`, `user_id`, `is_va
 INSERT INTO `bookmarks` (`id`, `name`, `url`, `icon`, `order`, `user_id`, `is_valid`, `update_time`) VALUES (18, '知乎', 'https://www.zhihu.com', 'iconfont icon-ai-book', 4, 1, 1, '2019-12-30 10:49:32.869960');
 INSERT INTO `bookmarks` (`id`, `name`, `url`, `icon`, `order`, `user_id`, `is_valid`, `update_time`) VALUES (19, '地图', 'https://map.baidu.com/', 'iconfont icon-ditu', 5, 1, 1, '2019-12-30 10:49:32.927004');
 INSERT INTO `bookmarks` (`id`, `name`, `url`, `icon`, `order`, `user_id`, `is_valid`, `update_time`) VALUES (20, '京东', 'https://jd.com', 'iconfont icon-31gouwuchexuanzhong', 6, 1, 1, '2019-12-30 10:49:32.982482');
-INSERT INTO `console` (`id`, `name`, `order`, `icon`, `component_name`, `is_valid`, `update_time`) VALUES (1, '运行脚本', 1, 'iconfont icon-ai-code', 'ConsoleScript', 1, '2019-10-28 11:35:37.428601');
-INSERT INTO `console` (`id`, `name`, `order`, `icon`, `component_name`, `is_valid`, `update_time`) VALUES (2, '账户和权限', 2, 'iconfont icon-ai-user', 'ConsolePrivilege', 1, '2019-10-28 11:35:37.428601');
+INSERT INTO `console` (`id`, `name`, `order`, `icon`, `component_name`, `is_valid`, `update_time`) VALUES ('1', '运行脚本', '1', 'iconfont icon-ai-code', 'Script', '1', '2019-10-28 11:35:37');
+INSERT INTO `console` (`id`, `name`, `order`, `icon`, `component_name`, `is_valid`, `update_time`) VALUES ('2', '账户和权限', '2', 'iconfont icon-ai-user', 'Privilege', '1', '2019-10-28 11:35:37');
 INSERT INTO `icon` (`id`, `name`) VALUES (1, 'iconfont icon-tianmaochaoshigouwuche');
 INSERT INTO `icon` (`id`, `name`) VALUES (2, 'iconfont icon-31gouwuchexuanzhong');
 INSERT INTO `icon` (`id`, `name`) VALUES (3, 'iconfont icon-ai-module');
@@ -387,5 +387,5 @@ INSERT INTO `script_schedule` (`id`, `script_id`, `command`, `detail`, `version`
 INSERT INTO `script_schedule` (`id`, `script_id`, `command`, `detail`, `version`, `user_id`, `is_valid`, `is_automatic`, `interval`, `interval_raw`, `interval_unit`, `trigger_time`, `update_time`) VALUES ('2', '2', 'cd /home/pi/Documents/GitHub/PersonalHomepage/backend/app/app_price_monitor && python3 app_price_spider.py 直接运行', '{\'无需参数\': \'直接运行\'}', '1', '1', '1', '1', '6', '6', '1', '2020-06-20 00:15:00', '2020-06-19 14:57:29');
 INSERT INTO `script_schedule` (`id`, `script_id`, `command`, `detail`, `version`, `user_id`, `is_valid`, `is_automatic`, `interval`, `interval_raw`, `interval_unit`, `trigger_time`, `update_time`) VALUES ('361', '3', 'cd /home/pi/Documents/Github/PersonalHomepage/backend/app/gold_price_monitor && python3 gold_price_spider.py 直接运行', '{\'无需参数\': \'直接运行\'}', '1', '1', '1', '1', '2', '2', '1', '2020-06-20 00:30:00', '2020-07-01 17:12:51');
 INSERT INTO `weather_location` (`id`, `location`, `user_id`, `is_valid`, `update_time`) VALUES ('1', '长春', '1', '1', '2019-10-28 11:35:37');
-INSERT INTO `app` (`id`, `name`, `url`, `user_id`, `expect_price`, `order`, `is_valid`, `update_time`) VALUES ('1', 'WebSSH Pro', 'webssh-pro-best-ssh-terminal/id497714887', '1', '0', '1', '1', '2020-06-20 22:01:47');
+INSERT INTO `PersonalHomepage`.`app` (`id`, `name`, `url`, `user_id`, `expect_price`, `order`, `is_valid`, `update_time`) VALUES ('1', 'gorogoa', 'https://apps.apple.com/cn/app/gorogoa/id1269225754?ign-mpt=uo%3D4', '1', '0', '1', '1', '2020-07-22 15:20:46');
 INSERT INTO `gold_price` (`id`, `price`, `update_time`) VALUES ('1', '400.7', '2020-07-01 16:51:51');
