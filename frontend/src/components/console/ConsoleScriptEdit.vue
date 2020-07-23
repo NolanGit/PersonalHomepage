@@ -473,44 +473,49 @@
       @closed="singleDataOptionDialogClosed"
     >
       <div class="margin_left-medium margin_right-medium">
-        <div v-for="singleDataOption in singleDataOptionDialog.data" :key="singleDataOption.key">
-          <div>
-            <td type="flex" class="td--label--short">
-              <p class="td__p--label">标签：</p>
-            </td>
-            <td>
-              <el-tooltip
-                open-delay="1000"
-                effect="dark"
-                :content="singleDataOption.label"
-                placement="top"
-              >
-                <el-input size="small" v-model="singleDataOption.label" placeholder="请输入选项展示文字"></el-input>
-              </el-tooltip>
-            </td>
-            <td type="flex" class="td--label--short">
-              <p class="singleDataOptionDialogValue">值：</p>
-            </td>
-            <td>
-              <el-tooltip
-                open-delay="1000"
-                effect="dark"
-                :content="singleDataOption.value"
-                placement="top"
-              >
-                <el-input size="small" v-model="singleDataOption.value" placeholder="请输入选项实际的值"></el-input>
-              </el-tooltip>
-            </td>
-            <td>
-              <i
-                class="singleDataOptionDialogDeleted el-icon-delete"
-                @click="singleDataOptionDialogDeleted(singleDataOptionDialog.data.indexOf(singleDataOption))"
-              ></i>
-            </td>
+        <div
+          class="scrollbar-div max-height-large padding-right-19 padding_bottom-medium"
+          ref="scrollbarDiv"
+        >
+          <div v-for="singleDataOption in singleDataOptionDialog.data" :key="singleDataOption.key">
+            <div>
+              <td type="flex" class="td--label--short">
+                <p class="td__p--label">标签：</p>
+              </td>
+              <td>
+                <el-tooltip
+                  open-delay="1000"
+                  effect="dark"
+                  :content="singleDataOption.label"
+                  placement="top"
+                >
+                  <el-input size="small" v-model="singleDataOption.label" placeholder="请输入选项展示文字"></el-input>
+                </el-tooltip>
+              </td>
+              <td type="flex" class="td--label--short">
+                <p class="singleDataOptionDialogValue">值：</p>
+              </td>
+              <td>
+                <el-tooltip
+                  open-delay="1000"
+                  effect="dark"
+                  :content="singleDataOption.value"
+                  placement="top"
+                >
+                  <el-input size="small" v-model="singleDataOption.value" placeholder="请输入选项实际的值"></el-input>
+                </el-tooltip>
+              </td>
+              <td>
+                <i
+                  class="singleDataOptionDialogDeleted el-icon-delete"
+                  @click="singleDataOptionDialogDeleted(singleDataOptionDialog.data.indexOf(singleDataOption))"
+                ></i>
+              </td>
+            </div>
           </div>
-        </div>
-        <div class="add" style="width: 99.87%;" @click="singleDataOptionDialogAddSingleData()">
-          <span>+ 添加选项</span>
+          <div class="add" style="width: 99.87%;" @click="singleDataOptionDialogAddSingleData()">
+            <span>+ 添加选项</span>
+          </div>
         </div>
         <div class="dialog-footer">
           <el-button size="small" @click="singleDataOptionDialog.visible = false">关闭</el-button>

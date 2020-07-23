@@ -11,9 +11,14 @@ from flask import render_template, session, redirect, url_for, current_app, flas
 from ..model.script_model import script as script_table_model
 from ..model.script_model import script_sub_system, script_detail, script_detail, script_log, script_schedule
 from ..privilege.privilege_control import permission_required
+from ..privilege.privilege_control import privilegeFunction
 from ..login.login_funtion import User
 from .script_model import ScriptSubSystem
+from ..response import Response
+from ..common_func import CommonFunc
 
+rsp = Response()
+cf = CommonFunc()
 URL_PREFIX = '/script'
 running_subprocess = []
 
@@ -130,6 +135,19 @@ def subSystemScript():
 @permission_required(URL_PREFIX + '/run')
 @cross_origin()
 def run():
+    # 校验sign值，防止接口模拟参数
+    id = request.get_json()['id']
+    salt = request.get_json()['salt']
+    command = request.get_json()['command']
+    user_key = request.cookies.get('user_key')
+    redis_conn = privilegeFunction().get_redis_conn0()
+    if user_key == None or redis_conn.exists(user_key) == 0:
+        user_id = 0
+    user_id = redis_conn.get(user_key)
+    sign = cf.md5_it(str(id) + str(user_id) + user_key + str(salt) + command)
+    if sign != request.get_json()['sign']:
+        return rsp.failed('错误的签名'), 403
+
     global running_subprocess
 
     # 解决多人协作输出混乱问题，如果输出仍然混乱，不得已的情况下可以删除下方7行代码，但可能会有资源的耗费
@@ -175,11 +193,7 @@ def run():
     except Exception as e:
         print(e)
         traceback.print_exc()
-        response = {
-            'code': 500,
-            'msg': str(e),
-        }
-        return jsonify(response), 500
+        return rsp.failed(e), 500
 
 
 @script.route('/terminate', methods=['POST'])
@@ -195,11 +209,7 @@ def terminate():
     except Exception as e:
         print(e)
         traceback.print_exc()
-        response = {
-            'code': 500,
-            'msg': str(e),
-        }
-        return jsonify(response), 500
+        return rsp.failed(e), 500
 
 
 @script.route('/runOutput', methods=['POST'])
@@ -242,11 +252,7 @@ def runOutput():
     except Exception as e:
         print(e)
         traceback.print_exc()
-        response = {
-            'code': 500,
-            'msg': str(e),
-        }
-        return jsonify(response), 500
+        return rsp.failed(e), 500
     finally:
         return jsonify(response)
 
@@ -469,11 +475,7 @@ def edit():
     except Exception as e:
         print(e)
         traceback.print_exc()
-        response = {
-            'code': 500,
-            'msg': str(e),
-        }
-        return jsonify(response), 500
+        return rsp.failed(e), 500
 
 
 @script.route('/replay', methods=['POST'])
@@ -499,11 +501,7 @@ def replay():
     except Exception as e:
         print(e)
         traceback.print_exc()
-        response = {
-            'code': 500,
-            'msg': str(e),
-        }
-        return jsonify(response), 500
+        return rsp.failed(e), 500
 
 
 @script.route('/delete', methods=['POST'])
@@ -520,11 +518,7 @@ def delete():
     except Exception as e:
         print(e)
         traceback.print_exc()
-        response = {
-            'code': 500,
-            'msg': str(e),
-        }
-        return jsonify(response), 500
+        return rsp.failed(e), 500
 
 
 @script.route('/saveOutput', methods=['POST'])
@@ -540,11 +534,7 @@ def saveOutput():
     except Exception as e:
         print(e)
         traceback.print_exc()
-        response = {
-            'code': 500,
-            'msg': str(e),
-        }
-        return jsonify(response), 500
+        return rsp.failed(e), 500
 
 
 @script.route('/getLogs', methods=['POST'])
@@ -578,11 +568,7 @@ def getLogs():
     except Exception as e:
         print(e)
         traceback.print_exc()
-        response = {
-            'code': 500,
-            'msg': str(e),
-        }
-        return jsonify(response), 500
+        return rsp.failed(e), 500
 
 
 @script.route('/getNewestLog', methods=['POST'])
@@ -613,11 +599,7 @@ def getNewestLog():
     except Exception as e:
         print(e)
         traceback.print_exc()
-        response = {
-            'code': 500,
-            'msg': str(e),
-        }
-        return jsonify(response), 500
+        return rsp.failed(e), 500
 
 
 @script.route('/schedule', methods=['POST'])
@@ -652,11 +634,7 @@ def schedule():
     except Exception as e:
         print(e)
         traceback.print_exc()
-        response = {
-            'code': 500,
-            'msg': str(e),
-        }
-        return jsonify(response), 500
+        return rsp.failed(e), 500
 
 
 @script.route('/scheduleEdit', methods=['POST'])
@@ -750,11 +728,7 @@ def scheduleEdit():
     except Exception as e:
         print(e)
         traceback.print_exc()
-        response = {
-            'code': 500,
-            'msg': str(e),
-        }
-        return jsonify(response), 500
+        return rsp.failed(e), 500
 
 
 @script.route('/scheduleDelete', methods=['POST'])
@@ -771,11 +745,7 @@ def scheduleDelete():
     except Exception as e:
         print(e)
         traceback.print_exc()
-        response = {
-            'code': 500,
-            'msg': str(e),
-        }
-        return jsonify(response), 500
+        return rsp.failed(e), 500
 
 
 @script.route('/extraButtonScriptRun', methods=['POST'])
@@ -800,8 +770,4 @@ def extraButtonScriptRun():
     except Exception as e:
         print(e)
         traceback.print_exc()
-        response = {
-            'code': 500,
-            'msg': str(e),
-        }
-        return jsonify(response), 500
+        return rsp.failed(e), 500
