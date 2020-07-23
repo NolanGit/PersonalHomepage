@@ -454,6 +454,11 @@
         </el-card>
       </div>
       <div class="dialog-footer">
+        <el-button
+          slot="reference"
+          size="small"
+          @click.native="editFormCloneButtonActive()"
+        >复制现有脚本的组件配置</el-button>
         <el-button size="small" @click.native="edit.visible=false">关闭</el-button>
         <el-button
           type="primary"
@@ -463,6 +468,25 @@
         >提交</el-button>
       </div>
     </div>
+
+    <!--复制现有脚本的组件配置界面-->
+    <el-drawer
+      title="选择想要复制的配置"
+      :visible.sync="cloneSettings.visible"
+      :close-on-click-modal="false"
+      size="25%"
+    >
+      <div class="min_height-medium scrollbar-div margin_left-medium margin_right-medium">
+        <el-table :data="cloneSettings.script.data" size="mini">
+          <el-table-column label="名称" width="250" prop="name"></el-table-column>
+          <el-table-column label="操作">
+            <template slot-scope="scope">
+              <el-button size="mini" @click="editFormClone(scope.$index, scope.row)">选择</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
+    </el-drawer>
 
     <!--选择器编辑选项界面-->
     <el-drawer
@@ -530,7 +554,8 @@
 import axios from "axios";
 import { deepClone } from "../../js/common";
 const api = {
-  edit: "/script/edit"
+  edit: "/script/edit",
+  scriptAll: "/script/scriptAll"
 };
 export default {
   name: "ConsoleScriptEdit",
@@ -544,6 +569,13 @@ export default {
         visible: false,
         index: 0,
         data: []
+      },
+      cloneSettings: {
+        visible: false,
+        script: {
+          value: "",
+          data: []
+        }
       }
     };
   },
@@ -621,6 +653,34 @@ export default {
         this.singleDataOptionDialog.index
       ].options = this.singleDataOptionDialog.data;
       this.singleDataOptionDialog.visible = false;
+    },
+    //编辑脚本复制
+    async editFormCloneButtonActive() {
+      try {
+        const { data: res } = await axios.post(api.scriptAll);
+        if (res["code"] !== 200) {
+          this.$message({
+            message: res["msg"],
+            type: "error"
+          });
+        } else {
+          this.cloneSettings.script.data = res.data;
+          this.cloneSettings.visible = true;
+        }
+      } catch (e) {
+        console.log(e);
+        this.$message({
+          message: e.response.data.msg,
+          type: "error"
+        });
+      }
+    },
+    editFormClone(index, row) {
+      this.edit.formData = row.detail;
+      this.$message({
+        message: "成功",
+        type: "success"
+      });
     },
     //编辑脚本提交
     async editFormSubmited() {
