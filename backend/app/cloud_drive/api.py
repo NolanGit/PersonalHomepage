@@ -57,6 +57,7 @@ def get():
             'id': s_['id'],
             'file_id': s_['file_id'],
             'file_name': upload.get(upload.id == s_['file_id']).file_name,
+            'size': upload.get(upload.id == s_['file_id']).size,
             'update_time': s_['update_time'].strftime("%Y-%m-%d %H:%M:%S"),
         } for s_ in _r]
         return rsp.success({'list': _list, 'total': _total})

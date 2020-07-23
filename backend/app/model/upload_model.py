@@ -7,6 +7,7 @@ from .model_function import BaseModel
 class upload(BaseModel):
     file_name = CharField()
     file_path = CharField()
+    size = CharField()
     user_id = IntegerField()
     update_time = DateTimeField()
 
