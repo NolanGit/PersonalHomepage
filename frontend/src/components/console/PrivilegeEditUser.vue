@@ -108,7 +108,7 @@ const api = {
   userAdd: "/login/userAdd"
 };
 export default {
-  name: "ConsolePrivilegeEditUser",
+  name: "PrivilegeEditUser",
   props: {
     user_id: Number,
     login_name: String,

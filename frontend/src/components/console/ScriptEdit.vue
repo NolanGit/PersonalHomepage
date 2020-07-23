@@ -476,15 +476,17 @@
       :close-on-click-modal="false"
       size="25%"
     >
-      <div class="min_height-medium scrollbar-div margin_left-medium margin_right-medium">
-        <el-table :data="cloneSettings.script.data" size="mini">
-          <el-table-column label="名称" width="250" prop="name"></el-table-column>
-          <el-table-column label="操作">
-            <template slot-scope="scope">
-              <el-button size="mini" @click="editFormClone(scope.$index, scope.row)">选择</el-button>
-            </template>
-          </el-table-column>
-        </el-table>
+      <div class="margin_left-medium margin_right-medium">
+        <div class="min_height-medium scrollbar-div">
+          <el-table :data="cloneSettings.script.data" size="mini">
+            <el-table-column label="名称" width="250" prop="name"></el-table-column>
+            <el-table-column label="操作">
+              <template slot-scope="scope">
+                <el-button size="mini" @click="editFormClone(scope.$index, scope.row)">选择</el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
       </div>
     </el-drawer>
 
@@ -558,7 +560,7 @@ const api = {
   scriptAll: "/script/scriptAll"
 };
 export default {
-  name: "ConsoleScriptEdit",
+  name: "ScriptEdit",
   props: {
     user_id: Number,
     edit: Array

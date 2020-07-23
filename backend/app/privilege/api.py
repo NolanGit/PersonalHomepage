@@ -160,7 +160,7 @@ def rolePrivilegeGet():
                 'privilege_id': row['privilege_id'],
                 'privilege_name': cf.dict_list_get_single_element(privilege_list, 'id', row['privilege_id'], 'name', row['privilege_id'] - 1),
             })
-        result.sort(key = lambda x: x['privilege_name'])
+        result.sort(key=lambda x: x['privilege_name'])
         return jsonify({'code': 200, 'msg': '成功！', 'data': result})
     except Exception as e:
         traceback.print_exc()
@@ -268,8 +268,8 @@ def roleDelete():
 @cross_origin()
 def privilegeGet():
     try:
-        _ = privilege_list_get() 
-        _.sort(key = lambda x: x['name'])
+        _ = privilege_list_get()
+        _.sort(key=lambda x: x['name'])
         return jsonify({'code': 200, 'msg': '成功！', 'data': _})
     except Exception as e:
         traceback.print_exc()

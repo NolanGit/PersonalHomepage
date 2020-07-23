@@ -43,7 +43,7 @@ const api = {
   privilegeEdit: "/privilege/privilegeEdit"
 };
 export default {
-  name: "ConsolePrivilegeEditPrivilege",
+  name: "PrivilegeEditPrivilege",
   props: {
     action: String, // action=='new':新增角色页面
     privilegeId: Number,

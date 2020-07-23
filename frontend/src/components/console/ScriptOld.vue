@@ -1042,7 +1042,7 @@ const api = {
   subSystemDelete: "/script/subSystemDelete"
 };
 export default {
-  name: "ConsoleScriptOld",
+  name: "ScriptOld",
   props: {
     user_id: Number
   },
