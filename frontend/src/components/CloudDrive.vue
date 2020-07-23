@@ -32,7 +32,7 @@
         >
           <el-table :data="tableData" style="text-align: center;" size="small">
             <el-table-column prop="file_name" label="名称"></el-table-column>
-            <el-table-column prop="size" label="大小"></el-table-column>
+            <el-table-column prop="size" label="大小" width="100"></el-table-column>
             <el-table-column prop="update_time" label="上传时间"></el-table-column>
             <el-table-column :key="Math.random()" label="操作" width="150">
               <template slot-scope="scope">
