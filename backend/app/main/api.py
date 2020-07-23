@@ -93,7 +93,7 @@ def upload():
     f = request.files['file']
     upload_path = os.path.join(folder_path, secure_filename(''.join(lazy_pinyin(str(time.time()) + '-' + f.filename))))  #注意：没有的文件夹一定要先创建，不然会提示没有该路径
     f.save(upload_path)
-    fsize = str(round(float(int(os.path.getsize(upload_path)) / 1000000)), 2) + 'MB'
+    fsize = str(round(float(int(os.path.getsize(upload_path)) / 1000000), 2)) + 'MB'
     _ = upload_table(file_name=f.filename, file_path=upload_path, size=fsize, user_id=user_id, update_time=datetime.datetime.now())
     _.save()
     response = {'code': 200, 'msg': '成功！', 'data': {'id': _.id, 'name': f.filename}}
