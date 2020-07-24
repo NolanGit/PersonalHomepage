@@ -3,7 +3,7 @@
 // 接着调用一个userInfo接口，此接口的作用是：当存在cookie时，检查cookie的有效性。
 // 如果cookie过期则清空cookie，置相关字段为空或0，获取不登陆状态可以使用的组件列表并加载；如果有效，则获取用户的组件并加载
 <template>
-  <div id="app" v-if="qq">
+  <div id="app" v-if="initial">
     <githubConner />
     <el-row class="loginRow">
       <login :user_id="user_id" :user_name="user_name" :login_name="login_name" />
@@ -25,7 +25,7 @@ import login from "./components/Login.vue";
 import widget from "./components/Widget.vue";
 
 const api = {
-  userInfo: "/userInfo",
+  userInfo: "/userInfo"
 };
 
 export default {
@@ -37,7 +37,7 @@ export default {
   },
   data() {
     return {
-qq:false,
+      initial: false,
       user_id: 0,
       widget: [],
       widgetSuite: [],
@@ -67,7 +67,7 @@ qq:false,
         }
       }
       await this.userIdFlush();
-this.qq=true
+      this.initial = true;
     },
     userIdFlush() {
       try {
@@ -88,7 +88,7 @@ this.qq=true
         this.user_id = 0;
         this.login_name = "";
       }
-    },
+    }
   },
   async created() {
     await this.userIdFlush();

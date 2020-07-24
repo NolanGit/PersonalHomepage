@@ -90,11 +90,11 @@ export default {
     appMonitor,
     gold
   },
-  watch:{
-user_id(newVal,oldVal){
-this.widgetSuiteLabelGet()
-}
-},
+  watch: {
+    user_id(newVal, oldVal) {
+      this.widgetSuiteLabelGet();
+    }
+  },
   data() {
     return {
       widgetSuiteLabelActiveName: "",
@@ -170,9 +170,9 @@ this.widgetSuiteLabelGet()
       this.widgetSuite[suiteIndex][index].flush = false;
     }
   },
-  mounted(){
+  mounted() {
     this.widgetSuiteLabelGet();
-  },
+  }
 };
 </script>
 </style>
