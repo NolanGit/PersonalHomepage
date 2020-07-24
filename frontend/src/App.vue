@@ -3,7 +3,7 @@
 // 接着调用一个userInfo接口，此接口的作用是：当存在cookie时，检查cookie的有效性。
 // 如果cookie过期则清空cookie，置相关字段为空或0，获取不登陆状态可以使用的组件列表并加载；如果有效，则获取用户的组件并加载
 <template>
-  <div id="app">
+  <div id="app" v-if="qq">
     <githubConner />
     <el-row class="loginRow">
       <login :user_id="user_id" :user_name="user_name" :login_name="login_name" />
@@ -37,7 +37,7 @@ export default {
   },
   data() {
     return {
-      user: "",
+qq:false,
       user_id: 0,
       widget: [],
       widgetSuite: [],
@@ -57,8 +57,6 @@ export default {
           this.$cookies.remove("user_name");
           this.$cookies.remove("user_id");
           this.$cookies.remove("login_name");
-          this.user = "";
-          this.user_id = 0;
         } else if (e.response.status == 403) {
           console.log(e.response.data.msg);
         } else {
@@ -68,7 +66,8 @@ export default {
           });
         }
       }
-      this.userIdFlush();
+      await this.userIdFlush();
+this.qq=true
     },
     userIdFlush() {
       try {
@@ -94,8 +93,8 @@ export default {
   async created() {
     await this.userIdFlush();
   },
-  mounted() {
-    this.userInfo();
+  async mounted() {
+    await this.userInfo();
   }
 };
 </script>
