@@ -91,8 +91,8 @@ export default {
       }
     },
   },
-  created() {
-    this.userIdFlush();
+  async created() {
+    await this.userIdFlush();
   },
   mounted() {
     this.userInfo();

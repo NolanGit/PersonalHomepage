@@ -90,6 +90,11 @@ export default {
     appMonitor,
     gold
   },
+  watch:{
+user_id(newVal,oldVal){
+this.widgetSuiteLabelGet()
+}
+},
   data() {
     return {
       widgetSuiteLabelActiveName: "",
@@ -99,7 +104,7 @@ export default {
     };
   },
   methods: {
-    async widgetSuiteLableGet() {
+    async widgetSuiteLabelGet() {
       try {
         const { data: res } = await axios.post(api.suiteGet, {
           user_id: this.user_id
@@ -165,9 +170,9 @@ export default {
       this.widgetSuite[suiteIndex][index].flush = false;
     }
   },
-  mounted() {
-    this.widgetSuiteLableGet();
-  }
+  mounted(){
+    this.widgetSuiteLabelGet();
+  },
 };
 </script>
 </style>
