@@ -9,11 +9,11 @@
 
 ## 部署
 
-  后端代码位于/backend，后端入口文件位于/backend/run.py，前端代码位于/frontend，前端编译的产物位于/dist
+  后端代码位于/backend，后端入口文件位于/backend/run.py，前端代码位于/frontend，前端编译的产物位于/dist，上传的文件保存在/upload
   
-  同时需要本地安装MySQL（测试时使用的是MariaDB）和Redis
+  首先需要本地安装MySQL（测试时使用的是MariaDB）和Redis
   
-  在安装好环境后，使用python3运行根目录下的start.py并根据提示进行操作
+  在具备环境后，使用python3运行根目录下的start.py并根据提示进行操作
   
 ## 开发进度
 ### Done：
