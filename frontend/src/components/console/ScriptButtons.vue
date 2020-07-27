@@ -23,7 +23,7 @@
       </el-tooltip>
       <el-tooltip class="question-mark" effect="dark" content="查看最近50次运行记录" placement="top">
         <el-popover placement="left" width="1010" trigger="click">
-          <div class="scrollbar-div max-height-medium" ref="scrollbarDiv">
+          <div class="scrollbar-div max_height-medium" ref="scrollbarDiv">
             <el-table size="small" :data="output.logs" stripe v-loading="output.loading">
               <el-table-column width="110" property="user" label="运行人"></el-table-column>
               <el-table-column

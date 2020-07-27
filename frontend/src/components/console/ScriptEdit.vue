@@ -1,7 +1,7 @@
 <template>
   <section>
     <div class="edit-form-card margin_left-medium margin_right-medium">
-      <div class="scrollbar-div max-height-large padding-right-19" ref="scrollbarDiv">
+      <div class="scrollbar-div max_height-large padding-right-19" ref="scrollbarDiv">
         <el-card shadow="never">
           <div class="margin_bottom-medium">
             <el-card>
@@ -477,7 +477,7 @@
       size="25%"
     >
       <div class="margin_left-medium margin_right-medium">
-        <div class="min_height-medium scrollbar-div">
+        <div class="min_height-medium scrollbar-div max_height-large">
           <el-table :data="cloneSettings.script.data" size="mini">
             <el-table-column label="名称" width="250" prop="name"></el-table-column>
             <el-table-column label="操作">
@@ -500,7 +500,7 @@
     >
       <div class="margin_left-medium margin_right-medium">
         <div
-          class="scrollbar-div max-height-large padding-right-19 padding_bottom-medium"
+          class="scrollbar-div max_height-large padding-right-19 padding_bottom-medium"
           ref="scrollbarDiv"
         >
           <div v-for="singleDataOption in singleDataOptionDialog.data" :key="singleDataOption.key">

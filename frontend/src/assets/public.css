@@ -215,11 +215,11 @@
     background: #f3f3f300;
 }
 
-.max-height-large {
+.max_height-large {
     max-height: 70vh;
 }
 
-.max-height-medium {
+.max_height-medium {
     max-height: 40vh;
 }
 

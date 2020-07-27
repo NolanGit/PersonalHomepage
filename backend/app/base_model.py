@@ -12,6 +12,16 @@ cf = CommonFunc()
 
 class Base(object):
 
+    def base_complete(self, table):
+        self_dict = cf.attr_to_dict(self)
+        if 'id' in self_dict:
+            _ = table.get(table.id == self_dict['id'])
+            for key in self_dict:
+                self_dict[key] = _[key]
+        else:
+            raise AttributeError
+        return self
+
     def base_create(self, table):
         self_dict = cf.attr_to_dict(self)
         if 'id' in self_dict:

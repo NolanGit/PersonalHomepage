@@ -181,7 +181,7 @@
                     placement="top"
                   >
                     <el-popover placement="left" width="1010" trigger="click">
-                      <div class="scrollbar-div max-height-medium" ref="scrollbarDiv">
+                      <div class="scrollbar-div max_height-medium" ref="scrollbarDiv">
                         <el-table
                           size="small"
                           :data="output.logs"
@@ -409,7 +409,7 @@
       @closed="editFormClosed"
     >
       <div class="edit-form-card margin_left-medium margin_right-medium">
-        <div class="scrollbar-div max-height-large padding-right-19" ref="scrollbarDiv">
+        <div class="scrollbar-div max_height-large padding-right-19" ref="scrollbarDiv">
           <el-card shadow="never">
             <div class="margin_bottom-medium">
               <el-card>
