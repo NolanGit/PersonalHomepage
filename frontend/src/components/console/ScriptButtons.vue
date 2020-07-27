@@ -33,23 +33,8 @@
                 :property="important_field"
                 :label="important_field"
               ></el-table-column>
-              <el-table-column min-width="235" property="options" label="操作">
+              <el-table-column min-width="200" property="options" label="操作">
                 <template slot-scope="scope">
-                  <el-popover placement="left" width="350" trigger="hover">
-                    <tr v-for="(key,index) in scope.row.detail" :key="key">
-                      <td class="td--label">
-                        <b>{{index+":"}}</b>
-                      </td>
-                      <td>{{key}}</td>
-                    </tr>
-                    <el-button
-                      plain
-                      size="mini"
-                      type="primary"
-                      icon="el-icon-set-up"
-                      slot="reference"
-                    >参数</el-button>
-                  </el-popover>
                   <el-button
                     class="noMargin"
                     size="mini"
@@ -58,14 +43,23 @@
                     icon="el-icon-tickets"
                     @click="log_output(scope.row.output)"
                   >日志</el-button>
-                  <el-button
-                    class="noMargin"
-                    size="mini"
-                    plain
-                    type="primary"
-                    icon="el-icon-refresh-left"
-                    @click="log_replay(scope.row.version,scope.row.detail)"
-                  >回放</el-button>
+                  <el-popover placement="left" width="350" trigger="hover">
+                    <tr v-for="(key,index) in scope.row.detail" :key="key">
+                      <td class="td--label">
+                        <b>{{index+":"}}</b>
+                      </td>
+                      <td>{{key}}</td>
+                    </tr>
+                    <el-button
+                      class="noMargin"
+                      plain
+                      size="mini"
+                      type="primary"
+                      icon="el-icon-refresh-left"
+                      @click="log_replay(scope.row.version,scope.row.detail)"
+                      slot="reference"
+                    >回放</el-button>
+                  </el-popover>
                 </template>
               </el-table-column>
               <el-table-column width="150" property="update_time" label="运行开始时间"></el-table-column>
