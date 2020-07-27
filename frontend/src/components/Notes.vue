@@ -43,7 +43,7 @@
       ></WidgetButton>
     </el-row>
     <!--编辑界面-->
-    <el-drawer
+    <!-- <el-drawer
       :title="edit.dialogTitle"
       :visible.sync="edit.visible"
       :close-on-click-modal="false"
@@ -52,7 +52,7 @@
     >
       <el-input></el-input>
       <el-input></el-input>
-    </el-drawer>
+    </el-drawer> -->
   </section>
 </template>
 <script>
