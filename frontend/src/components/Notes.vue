@@ -85,7 +85,7 @@ export default {
         });
         this.notesData = res.data;
         for (let x = 0; x < this.notesData.length; x++) {
-          this.notesData.content
+          this.notesData[x].content
             .replace(/\n/g, "<br>")
             .replace(/\s/g, "&nbsp;");
         }
