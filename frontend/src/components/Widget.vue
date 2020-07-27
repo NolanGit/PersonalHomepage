@@ -61,6 +61,14 @@
               :flush="singleWidget.auto_update"
               @done="done(suiteIndex,index)"
             />
+            <notes
+              v-if="singleWidget.name=='notes'"
+              :user_id="user_id"
+              :widget_id="singleWidget.id"
+              :buttons="singleWidget.buttons"
+              :flush="singleWidget.auto_update"
+              @done="done(suiteIndex,index)"
+            />
           </el-card>
         </transition>
       </el-col>
@@ -73,6 +81,7 @@ import weather from "./Weather.vue";
 import bookmarks from "./Bookmarks.vue";
 import appMonitor from "./AppMonitor.vue";
 import gold from "./Gold.vue";
+import notes from "./Notes.vue";
 
 const api = {
   get: "/widget/get",
@@ -88,7 +97,8 @@ export default {
     weather,
     bookmarks,
     appMonitor,
-    gold
+    gold,
+    notes
   },
   watch: {
     user_id(newVal, oldVal) {

@@ -92,7 +92,6 @@
 </template>
 <script>
 import axios from "axios";
-import Router from "vue-router";
 import IconComponet from "./common/Icon.vue";
 import SlickSort from "./common/SlickSort.vue";
 import WidgetButton from "./common/WidgetButton.vue";
