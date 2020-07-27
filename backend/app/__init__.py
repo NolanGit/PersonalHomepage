@@ -57,7 +57,7 @@ def create_app(config_name):
     from .gold_price_monitor import gold_price_monitor as gold_price_monitor_blueprint
     app.register_blueprint(gold_price_monitor_blueprint, url_prefix='/gold')
 
-    from .notes_price_monitor import notes_price_monitor as notes_price_monitor_blueprint
-    app.register_blueprint(notes_price_monitor_blueprint, url_prefix='/notes')
+    from .notes import notes as  notes_blueprint
+    app.register_blueprint(notes_blueprint, url_prefix='/notes')
 
     return app
