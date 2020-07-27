@@ -84,7 +84,7 @@ export default {
           user_id: this.user_id,
         });
         this.notesData = res.data;
-        for (letx = 0; x < this.notesData.length; x++) {
+        for (let x = 0; x < this.notesData.length; x++) {
           this.notesData.content
             .replace(/\n/g, "<br>")
             .replace(/\s/g, "&nbsp;");
