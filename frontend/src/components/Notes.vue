@@ -5,14 +5,29 @@
         <div class="widget-label">便签</div>
       </div>
     </el-row>
-    <el-tabs tab-position="left" class="scrollbar-div" style="max-height: 210px;">
+    <el-tabs
+      tab-position="left"
+      class="scrollbar-div"
+      style="max-height: 210px; min-height: 210px;"
+    >
       <el-tab-pane
         v-for="singleNotesData in notesData"
         :key="singleNotesData"
         :label="singleNotesData.name"
       >
+        <span slot="label">
+          {{singleNotesData.name}}
+          <i class="el-icon-delete"></i>
+        </span>
         <p
-          style="color: #606266; font-size: 12px; font-family: Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,SimSun,sans-serif;"
+          style="color: #606266;
+          font-size: 18px;
+          text-align: left;
+          line-height: 35px;
+          margin-left: 10px;
+          margin-right: 20px;
+          margin-top: 0px;
+          font-family: Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,SimSun,sans-serif;"
         >{{singleNotesData.content}}</p>
       </el-tab-pane>
     </el-tabs>
@@ -27,6 +42,17 @@
         @setting="setting()"
       ></WidgetButton>
     </el-row>
+    <!--编辑界面-->
+    <el-drawer
+      :title="edit.dialogTitle"
+      :visible.sync="edit.visible"
+      :close-on-click-modal="false"
+      size="60%"
+      @closed="editFormClosed"
+    >
+      <el-input></el-input>
+      <el-input></el-input>
+    </el-drawer>
   </section>
 </template>
 <script>
@@ -58,6 +84,11 @@ export default {
           user_id: this.user_id,
         });
         this.notesData = res.data;
+        for (letx = 0; x < this.notesData.length; x++) {
+          this.notesData.content
+            .replace(/\n/g, "<br>")
+            .replace(/\s/g, "&nbsp;");
+        }
         this.$emit("done");
       } catch (e) {
         console.log(e);
