@@ -22,28 +22,29 @@
           {{singleNotesData.name}}
           <i
             class="el-icon-edit"
-            style="color:#409EFF"
-            v-show="activeNote==singleNotesData.name"
+            style="color:#409EFF; cursor: pointer;"
+            v-show="!singleNotesData.edit"
+            @click="singleNotesData.edit=true"
           ></i>
-          <i class="el-icon-check" style="color:#67C23A" v-show="activeNote==singleNotesData.name"></i>
-          <el-popover placement="right" width="160" v-model="visible">
-            <div>
-              <i
-                class="el-icon-bell"
-                style="color:#E6A23C"
-                v-show="activeNote==singleNotesData.name"
-              ></i>
-            </div>
-            <div>
-              <i
-                class="el-icon-delete"
-                style="color:#F56C6C"
-                v-show="activeNote==singleNotesData.name"
-              ></i>
-            </div>
+          <i
+            class="el-icon-check"
+            style="color:#67C23A; cursor: pointer;"
+            v-show="activeNote==singleNotesData.name"
+            @click="submit(singleNotesData.name)"
+          ></i>
+          <el-popover placement="right" width="160" trigger="hover" v-model="visible">
+            <el-button type="text" style="color:#E6A23C" icon="el-icon-bell">提醒</el-button>
+            <el-button type="text" style="color:#F56C6C" icon="el-icon-delete">删除</el-button>
             <i class="el-icon-more" slot="reference" v-show="activeNote==singleNotesData.name"></i>
           </el-popover>
         </span>
+        <el-input
+          v-show="singleNotesData.edit"
+          type="textarea"
+          autosize
+          placeholder="请输入内容"
+          v-model="singleNotesData.content"
+        ></el-input>
         <p
           style="color: #606266;
           font-size: 15px;
@@ -53,6 +54,7 @@
           margin-right: 20px;
           margin-top: 0px;
           font-family: Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,SimSun,sans-serif;"
+          v-show="!singleNotesData.edit"
         >{{singleNotesData.content}}</p>
       </el-tab-pane>
     </el-tabs>
@@ -67,17 +69,6 @@
         @setting="setting()"
       ></WidgetButton>
     </el-row>
-    <!--编辑界面-->
-    <!-- <el-drawer
-      :title="edit.dialogTitle"
-      :visible.sync="edit.visible"
-      :close-on-click-modal="false"
-      size="60%"
-      @closed="editFormClosed"
-    >
-      <el-input></el-input>
-      <el-input></el-input>
-    </el-drawer>-->
   </section>
 </template>
 <script>
@@ -112,6 +103,7 @@ export default {
         this.notesData = res.data;
         this.activeNote = this.notesData[0].name;
         for (let x = 0; x < this.notesData.length; x++) {
+          this.notesData[x].edit = false;
           this.notesData[x].content
             .replace(/\n/g, "<br>")
             .replace(/\s/g, "&nbsp;");
@@ -124,6 +116,18 @@ export default {
           type: "error"
         });
       }
+    },
+    notesGetIndex(notesName) {
+      for (let x = 0; x < this.notesData.length; x++) {
+        if (this.notesData[x].name == notesName) {
+          return x;
+        }
+      }
+      return null;
+    },
+    submit(notesName) {
+      let i = this.notesGetIndex(notesName);
+      this.notesData[i].edit = false;
     }
   },
   mounted() {
