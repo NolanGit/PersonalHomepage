@@ -9,6 +9,7 @@
       tab-position="left"
       class="scrollbar-div"
       style="max-height: 210px; min-height: 210px;"
+      v-model="activeNote"
     >
       <el-tab-pane
         v-for="singleNotesData in notesData"
@@ -17,11 +18,12 @@
       >
         <span slot="label">
           {{singleNotesData.name}}
-          <i class="el-icon-delete"></i>
+          <i class="el-icon-bell" v-show="activeNote==singleNotesData.name"></i>
+          <i class="el-icon-delete" v-show="activeNote==singleNotesData.name"></i>
         </span>
         <p
           style="color: #606266;
-          font-size: 18px;
+          font-size: 15px;
           text-align: left;
           line-height: 35px;
           margin-left: 10px;
@@ -52,7 +54,7 @@
     >
       <el-input></el-input>
       <el-input></el-input>
-    </el-drawer> -->
+    </el-drawer>-->
   </section>
 </template>
 <script>
@@ -60,28 +62,29 @@ import axios from "axios";
 import WidgetButton from "./common/WidgetButton.vue";
 
 const api = {
-  get: "/notes/get",
+  get: "/notes/get"
 };
 export default {
   name: "notes",
   props: {
     user_id: Number,
     widget_id: Number,
-    buttons: Array,
+    buttons: Array
   },
   components: {
-    WidgetButton,
+    WidgetButton
   },
   data() {
     return {
       notesData: [],
+      activeNote: ""
     };
   },
   methods: {
     async notesGet() {
       try {
         const { data: res } = await axios.post(api.get, {
-          user_id: this.user_id,
+          user_id: this.user_id
         });
         this.notesData = res.data;
         for (let x = 0; x < this.notesData.length; x++) {
@@ -94,14 +97,14 @@ export default {
         console.log(e);
         this.$message({
           message: e.response.data.msg,
-          type: "error",
+          type: "error"
         });
       }
-    },
+    }
   },
   mounted() {
     this.notesGet();
-  },
+  }
 };
 </script>
 <style scoped>

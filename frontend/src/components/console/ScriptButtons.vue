@@ -43,7 +43,7 @@
                     icon="el-icon-tickets"
                     @click="log_output(scope.row.output)"
                   >日志</el-button>
-                  <el-popover placement="left" width="350" trigger="hover">
+                  <el-popover placement="right" width="350" trigger="hover">
                     <tr v-for="(key,index) in scope.row.detail" :key="key">
                       <td class="td--label">
                         <b>{{index+":"}}</b>
