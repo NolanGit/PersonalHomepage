@@ -15,12 +15,20 @@
         v-for="singleNotesData in notesData"
         :key="singleNotesData"
         :label="singleNotesData.name"
-	:name="singleNotesData.name"
+        :name="singleNotesData.name"
+        style="padding-left:0px;"
       >
+        <i class="el-icon-more" v-show="activeNote==singleNotesData.name"></i>
         <span slot="label">
           {{singleNotesData.name}}
-          <i class="el-icon-bell" v-show="activeNote==singleNotesData.name"></i>
-          <i class="el-icon-delete" v-show="activeNote==singleNotesData.name"></i>
+          <i
+            class="el-icon-edit"
+            style="color:#409EFF"
+            v-show="activeNote==singleNotesData.name"
+          ></i>
+          <i class="el-icon-check" style="color:#67C23A" v-show="activeNote==singleNotesData.name"></i>
+          <i class="el-icon-bell" style="color:#E6A23C" v-show="activeNote==singleNotesData.name"></i>
+          <i class="el-icon-delete" style="color:#F56C6C" v-show="activeNote==singleNotesData.name"></i>
         </span>
         <p
           style="color: #606266;
@@ -88,7 +96,7 @@ export default {
           user_id: this.user_id
         });
         this.notesData = res.data;
-	this.activeNote=this.notesData[0].name
+        this.activeNote = this.notesData[0].name;
         for (let x = 0; x < this.notesData.length; x++) {
           this.notesData[x].content
             .replace(/\n/g, "<br>")
