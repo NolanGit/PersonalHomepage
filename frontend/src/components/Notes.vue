@@ -24,12 +24,12 @@
             class="el-icon-edit"
             style="color:#409EFF; cursor: pointer;"
             v-show="!singleNotesData.editMode"
-            @click="singleNotesData.editMode=true"
+            @click="edit(singleNotesData.name)"
           ></i>
           <i
             class="el-icon-check"
             style="color:#67C23A; cursor: pointer;"
-            v-show="!singleNotesData.editMode"
+            v-show="singleNotesData.editMode"
             @click="submit(singleNotesData.name)"
           ></i>
           <el-popover placement="right" width="160" trigger="hover" v-model="visible">
@@ -41,7 +41,7 @@
         <el-input
           v-show="singleNotesData.editMode"
           type="textarea"
-          autosize
+          :autosize="{ minRows: 2, maxRows: 4}"
           placeholder="请输入内容"
           v-model="singleNotesData.content"
         ></el-input>
@@ -124,6 +124,10 @@ export default {
         }
       }
       return null;
+    },
+    edit(notesName) {
+      let i = this.notesGetIndex(notesName);
+      this.notesData[i].editMode = true;
     },
     submit(notesName) {
       let i = this.notesGetIndex(notesName);
