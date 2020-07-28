@@ -23,13 +23,13 @@
           <i
             class="el-icon-edit"
             style="color:#409EFF; cursor: pointer;"
-            v-show="!singleNotesData.edit"
-            @click="singleNotesData.edit=true"
+            v-show="!singleNotesData.editMode"
+            @click="singleNotesData.editMode=true"
           ></i>
           <i
             class="el-icon-check"
             style="color:#67C23A; cursor: pointer;"
-            v-show="activeNote==singleNotesData.name"
+            v-show="!singleNotesData.editMode"
             @click="submit(singleNotesData.name)"
           ></i>
           <el-popover placement="right" width="160" trigger="hover" v-model="visible">
@@ -39,7 +39,7 @@
           </el-popover>
         </span>
         <el-input
-          v-show="singleNotesData.edit"
+          v-show="singleNotesData.editMode"
           type="textarea"
           autosize
           placeholder="请输入内容"
@@ -54,7 +54,7 @@
           margin-right: 20px;
           margin-top: 0px;
           font-family: Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,SimSun,sans-serif;"
-          v-show="!singleNotesData.edit"
+          v-show="!singleNotesData.editMode"
         >{{singleNotesData.content}}</p>
       </el-tab-pane>
     </el-tabs>
@@ -103,7 +103,7 @@ export default {
         this.notesData = res.data;
         this.activeNote = this.notesData[0].name;
         for (let x = 0; x < this.notesData.length; x++) {
-          this.notesData[x].edit = false;
+          this.notesData[x].editMode = false;
           this.notesData[x].content
             .replace(/\n/g, "<br>")
             .replace(/\s/g, "&nbsp;");
@@ -127,7 +127,7 @@ export default {
     },
     submit(notesName) {
       let i = this.notesGetIndex(notesName);
-      this.notesData[i].edit = false;
+      this.notesData[i].editMode = false;
     }
   },
   mounted() {
