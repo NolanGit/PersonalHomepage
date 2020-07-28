@@ -128,10 +128,12 @@ export default {
     edit(notesName) {
       let i = this.notesGetIndex(notesName);
       this.notesData[i].editMode = true;
+      this.$nextTick(() => {});
     },
     submit(notesName) {
       let i = this.notesGetIndex(notesName);
       this.notesData[i].editMode = false;
+      this.$nextTick(() => {});
     }
   },
   mounted() {
