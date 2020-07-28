@@ -15,6 +15,7 @@
         v-for="singleNotesData in notesData"
         :key="singleNotesData"
         :label="singleNotesData.name"
+	:name="singleNotesData.name"
       >
         <span slot="label">
           {{singleNotesData.name}}
@@ -87,6 +88,7 @@ export default {
           user_id: this.user_id
         });
         this.notesData = res.data;
+	this.activeNote=this.notesData[0].name
         for (let x = 0; x < this.notesData.length; x++) {
           this.notesData[x].content
             .replace(/\n/g, "<br>")
