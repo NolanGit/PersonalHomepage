@@ -32,16 +32,17 @@
             v-show="singleNotesData.editMode&activeNote==singleNotesData.name"
             @click="submit(singleNotesData.name)"
           ></i>
-          <el-popover placement="right" width="160" trigger="hover" v-model="visible">
-            <el-button type="text" style="color:#E6A23C" icon="el-icon-bell">提醒</el-button>
-            <el-button type="text" style="color:#F56C6C" icon="el-icon-delete">删除</el-button>
+          <el-popover placement="right" width="80" trigger="hover" v-model="visible">
+            <div class="div-flex">
+              <el-button type="text" style="color:#E6A23C" icon="el-icon-bell">提醒</el-button>
+              <el-button type="text" style="color:#F56C6C" icon="el-icon-delete">删除</el-button>
+            </div>
             <i class="el-icon-more" slot="reference" v-show="activeNote==singleNotesData.name"></i>
           </el-popover>
         </span>
         <el-input
           v-show="singleNotesData.editMode"
           type="textarea"
-          :autosize="{ minRows: 2, maxRows: 4}"
           placeholder="请输入内容"
           v-model="singleNotesData.content"
         ></el-input>
@@ -76,29 +77,29 @@ import axios from "axios";
 import WidgetButton from "./common/WidgetButton.vue";
 
 const api = {
-  get: "/notes/get"
+  get: "/notes/get",
 };
 export default {
   name: "notes",
   props: {
     user_id: Number,
     widget_id: Number,
-    buttons: Array
+    buttons: Array,
   },
   components: {
-    WidgetButton
+    WidgetButton,
   },
   data() {
     return {
       notesData: [],
-      activeNote: ""
+      activeNote: "",
     };
   },
   methods: {
     async notesGet() {
       try {
         const { data: res } = await axios.post(api.get, {
-          user_id: this.user_id
+          user_id: this.user_id,
         });
         this.notesData = res.data;
         this.activeNote = this.notesData[0].name;
@@ -113,7 +114,7 @@ export default {
         console.log(e);
         this.$message({
           message: e.response.data.msg,
-          type: "error"
+          type: "error",
         });
       }
     },
@@ -127,18 +128,20 @@ export default {
     },
     edit(notesName) {
       let i = this.notesGetIndex(notesName);
-      this.notesData[i].editMode = true;
-      this.$nextTick(() => {});
+      this.$nextTick(() => {
+        this.notesData[i].editMode = true;
+      });
     },
     submit(notesName) {
       let i = this.notesGetIndex(notesName);
-      this.notesData[i].editMode = false;
-      this.$nextTick(() => {});
-    }
+      this.$nextTick(() => {
+        this.notesData[i].editMode = false;
+      });
+    },
   },
   mounted() {
     this.notesGet();
-  }
+  },
 };
 </script>
 <style scoped>
