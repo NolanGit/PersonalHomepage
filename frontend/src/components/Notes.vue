@@ -23,13 +23,13 @@
           <i
             class="el-icon-edit"
             style="color:#409EFF; cursor: pointer;"
-            v-show="!singleNotesData.editMode"
+            v-show="!singleNotesData.editMode&activeNote==singleNotesData.name"
             @click="edit(singleNotesData.name)"
           ></i>
           <i
             class="el-icon-check"
             style="color:#67C23A; cursor: pointer;"
-            v-show="singleNotesData.editMode"
+            v-show="singleNotesData.editMode&activeNote==singleNotesData.name"
             @click="submit(singleNotesData.name)"
           ></i>
           <el-popover placement="right" width="160" trigger="hover" v-model="visible">
