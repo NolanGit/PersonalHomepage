@@ -18,7 +18,6 @@
         :name="singleNotesData.name"
         style="padding-left:0px;"
       >
-        <i class="el-icon-more" v-show="activeNote==singleNotesData.name"></i>
         <span slot="label">
           {{singleNotesData.name}}
           <i
@@ -27,8 +26,23 @@
             v-show="activeNote==singleNotesData.name"
           ></i>
           <i class="el-icon-check" style="color:#67C23A" v-show="activeNote==singleNotesData.name"></i>
-          <i class="el-icon-bell" style="color:#E6A23C" v-show="activeNote==singleNotesData.name"></i>
-          <i class="el-icon-delete" style="color:#F56C6C" v-show="activeNote==singleNotesData.name"></i>
+          <el-popover placement="right" width="160" v-model="visible">
+            <div>
+              <i
+                class="el-icon-bell"
+                style="color:#E6A23C"
+                v-show="activeNote==singleNotesData.name"
+              ></i>
+            </div>
+            <div>
+              <i
+                class="el-icon-delete"
+                style="color:#F56C6C"
+                v-show="activeNote==singleNotesData.name"
+              ></i>
+            </div>
+            <i class="el-icon-more" slot="reference" v-show="activeNote==singleNotesData.name"></i>
+          </el-popover>
         </span>
         <p
           style="color: #606266;
