@@ -66,13 +66,19 @@
       <WidgetButton :user_id="user_id" :widget_id="widget_id" :buttons="buttons" @add="add()"></WidgetButton>
     </el-row>
     <el-dialog :title="edit.dialogTitle" :visible.sync="edit.visible">
-      <el-input size="small" class="margin_bottom-medium" v-model="edit.title"></el-input>
+      <el-input
+        size="small"
+        class="margin_bottom-medium"
+        v-model="edit.title"
+        placeholder="请输入便签标题"
+      ></el-input>
       <el-input
         type="textarea"
         size="small"
         autosize
         class="margin_bottom-large"
         v-model="edit.content"
+        placeholder="请输入便签内容"
       ></el-input>
       <div slot="footer" class="dialog-footer">
         <el-button size="small" @click="edit.visible = false">取消</el-button>
@@ -142,7 +148,8 @@ export default {
     },
     add() {
       this.edit.dialogTitle = "新建";
-      this.edit.title = "";
+      let d = new Date();
+      this.edit.title = d.getMonth() + 1 + "." + d.getDate();
       this.edit.content = "";
       this.edit.visible = true;
     },
