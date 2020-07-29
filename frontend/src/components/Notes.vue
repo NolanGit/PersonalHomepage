@@ -20,7 +20,7 @@
       >
         <span slot="label">
           {{singleNotesData.name}}
-          <el-popover placement="right" width="50" trigger="hover" v-model="visible">
+          <el-popover placement="right" width="50" trigger="hover">
             <div>
               <div>
                 <el-button
@@ -65,9 +65,15 @@
     <el-row type="flex" justify="center" v-show="user_id!=0">
       <WidgetButton :user_id="user_id" :widget_id="widget_id" :buttons="buttons" @add="add()"></WidgetButton>
     </el-row>
-    <el-dialog :title="edit.title" :visible.sync="edit.visible">
+    <el-dialog :title="edit.dialogTitle" :visible.sync="edit.visible">
       <el-input size="small" class="margin_bottom-medium" v-model="edit.title"></el-input>
-      <el-input size="small" autosize class="margin_bottom-large" v-model="edit.content"></el-input>
+      <el-input
+        type="textarea"
+        size="small"
+        autosize
+        class="margin_bottom-large"
+        v-model="edit.content"
+      ></el-input>
       <div slot="footer" class="dialog-footer">
         <el-button size="small" @click="edit.visible = false">取消</el-button>
         <el-button size="small" type="primary" @click="submit()">确定</el-button>
@@ -98,6 +104,7 @@ export default {
       activeNote: "",
       edit: {
         visible: false,
+        dialogTitle: "",
         title: "",
         content: "",
       },
@@ -134,12 +141,14 @@ export default {
       return null;
     },
     add() {
+      this.edit.dialogTitle = "新建";
       this.edit.title = "";
       this.edit.content = "";
       this.edit.visible = true;
     },
     editClicked(notesName) {
       let i = this.notesGetIndex(notesName);
+      this.edit.dialogTitle = "编辑";
       this.edit.title = this.notesData[i].name;
       this.edit.content = this.notesData[i].content;
       this.edit.visible = true;
