@@ -119,13 +119,16 @@ def download():
 @cross_origin()
 def gitHook():
     try:
-    _ = request.get_json()['head_commit']
-    add_files = _['added']
-    removed_files = _['removed']
-    modified_files = _['modified']
-    changed_files = add_files + removed_files + modified_files
-    for changed_file in changed_files:
-        if FRONTEND_FOLDER in changed_file:
-            _ = os.popen('cd /home/pi/Documents/Github/PersonalHomepage/frontend && git pull && npm run build')
-    response = {'code': 200, 'msg': 'success'}
-    return jsonify(response)
+        _ = request.get_json()['head_commit']
+        add_files = _['added']
+        removed_files = _['removed']
+        modified_files = _['modified']
+        changed_files = add_files + removed_files + modified_files
+        for changed_file in changed_files:
+            if FRONTEND_FOLDER in changed_file:
+                _ = os.popen('cd /home/pi/Documents/Github/PersonalHomepage/frontend && git pull && npm run build')
+        response = {'code': 200, 'msg': 'success'}
+        return jsonify(response)
+    except Exception as e:
+        response = {'code': 500, 'msg': 'success', data: str(e)}
+        return jsonify(response)
