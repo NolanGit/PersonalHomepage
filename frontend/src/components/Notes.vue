@@ -66,39 +66,39 @@
       <WidgetButton :user_id="user_id" :widget_id="widget_id" :buttons="buttons" @add="add()"></WidgetButton>
     </el-row>
     <el-dialog :title="edit.dialogTitle" :visible.sync="edit.visible">
-      <el-input
-        size="small"
-        class="margin_bottom-medium"
-        v-model="edit.title"
-        placeholder="请输入便签标题"
-      ></el-input>
-      <el-input
-        type="textarea"
-        size="small"
-        autosize
-        class="margin_bottom-large"
-        v-model="edit.content"
-        placeholder="请输入便签内容"
-      ></el-input>
+      <div class="div-flex">
+        <p
+          style="color: #606266;
+          font-size: 15px;
+          text-align: left;
+          font-family: Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,SimSun,sans-serif;"
+        >标题：</p>
+        <el-input
+          size="small"
+          class="margin_bottom-medium"
+          v-model="edit.title"
+          placeholder="请输入便签标题"
+        ></el-input>
+      </div>
+      <div class="div-flex">
+        <p
+          style="color: #606266;
+          font-size: 15px;
+          text-align: left;
+          font-family: Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,SimSun,sans-serif;"
+        >内容：</p>
+        <el-input
+          type="textarea"
+          size="small"
+          autosize
+          class="margin_bottom-large"
+          v-model="edit.content"
+          placeholder="请输入便签内容"
+        ></el-input>
+      </div>
       <div slot="footer" class="dialog-footer">
-        <div class="div-flex">
-          <p
-            style="color: #606266;
-          font-size: 15px;
-          text-align: left;
-          font-family: Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,SimSun,sans-serif;"
-          >标题：</p>
-          <el-button size="small" @click="edit.visible = false">取消</el-button>
-        </div>
-        <div class="div-flex">
-          <p
-            style="color: #606266;
-          font-size: 15px;
-          text-align: left;
-          font-family: Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,SimSun,sans-serif;"
-          >内容：</p>
-          <el-button size="small" type="primary" @click="submit()">确定</el-button>
-        </div>
+        <el-button size="small" @click="edit.visible = false">取消</el-button>
+        <el-button size="small" type="primary" @click="submit()">确定</el-button>
       </div>
     </el-dialog>
   </section>
