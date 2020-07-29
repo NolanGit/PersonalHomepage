@@ -67,13 +67,13 @@
     </el-row>
     <el-dialog :title="edit.dialogTitle" :visible.sync="edit.visible">
       <div class="div-flex">
-        <p
+        <div
           style="color: #606266;
           font-size: 15px;
           text-align: left;
           padding-top: 5px;
           font-family: Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,SimSun,sans-serif;"
-        >标题：</p>
+        >标题：</div>
         <el-input
           size="small"
           style="width: 80%;"
@@ -83,13 +83,13 @@
         ></el-input>
       </div>
       <div class="div-flex">
-        <p
+        <div
           style="color: #606266;
           font-size: 15px;
           text-align: left;
           padding-top: 5px;
           font-family: Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,SimSun,sans-serif;"
-        >内容：</p>
+        >内容：</div>
         <el-input
           type="textarea"
           size="small"
@@ -113,6 +113,7 @@ import WidgetButton from "./common/WidgetButton.vue";
 
 const api = {
   get: "/notes/get",
+  save: "/notes/save",
 };
 export default {
   name: "notes",
@@ -129,6 +130,7 @@ export default {
       notesData: [],
       activeNote: "",
       edit: {
+        noteIndex: Number,
         visible: false,
         dialogTitle: "",
         title: "",
@@ -158,6 +160,24 @@ export default {
         });
       }
     },
+    async notesSave() {
+      try {
+        const { data: res } = await axios.post(api.save, {
+          user_id: this.user_id,
+          notes: this.notesData,
+        });
+        this.$message({
+          message: res.msg,
+          type: "success",
+        });
+      } catch (e) {
+        console.log(e);
+        this.$message({
+          message: e.response.data.msg,
+          type: "error",
+        });
+      }
+    },
     notesGetIndex(notesName) {
       for (let x = 0; x < this.notesData.length; x++) {
         if (this.notesData[x].name == notesName) {
@@ -175,12 +195,17 @@ export default {
     },
     editClicked(notesName) {
       let i = this.notesGetIndex(notesName);
+      this.edit.noteIndex = i;
       this.edit.dialogTitle = "编辑";
       this.edit.title = this.notesData[i].name;
       this.edit.content = this.notesData[i].content;
       this.edit.visible = true;
     },
     submit() {
+      this.notesData[this.edit.noteIndex].title = this.edit.title;
+      this.notesData[this.edit.noteIndex].content = this.edit.content;
+      this.notesSave();
+      this.notesGet();
       this.edit.visible = false;
     },
   },
