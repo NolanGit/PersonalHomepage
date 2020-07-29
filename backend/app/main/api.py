@@ -130,5 +130,5 @@ def gitHook():
         response = {'code': 200, 'msg': 'success'}
         return jsonify(response)
     except Exception as e:
-        response = {'code': 500, 'msg': 'success', data: str(e)}
+        response = {'code': 500, 'msg': 'success', 'data': str(e)}
         return jsonify(response)
