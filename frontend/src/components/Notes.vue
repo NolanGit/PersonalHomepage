@@ -20,7 +20,7 @@
       >
         <span slot="label">
           {{singleNotesData.name}}
-          <el-popover placement="right" width="50" trigger="hover">
+          <el-popover placement="right" width="30" trigger="hover">
             <div>
               <div>
                 <el-button
@@ -71,10 +71,12 @@
           style="color: #606266;
           font-size: 15px;
           text-align: left;
+          padding-top: 5px;
           font-family: Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,SimSun,sans-serif;"
         >标题：</p>
         <el-input
           size="small"
+          style="width: 80%;"
           class="margin_bottom-medium"
           v-model="edit.title"
           placeholder="请输入便签标题"
@@ -85,11 +87,13 @@
           style="color: #606266;
           font-size: 15px;
           text-align: left;
+          padding-top: 5px;
           font-family: Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,SimSun,sans-serif;"
         >内容：</p>
         <el-input
           type="textarea"
           size="small"
+          style="width: 80%;"
           autosize
           class="margin_bottom-large"
           v-model="edit.content"
