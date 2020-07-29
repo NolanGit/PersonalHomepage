@@ -42,7 +42,7 @@ def save():
     try:
         user_id = request.get_json()['user_id']
         notes = request.get_json()['notes']
-        notes_table.update(is_valid=1).where((notes_table.user_id == user_id) & (notes_table.id_valid == 1)).execute()
+        notes_table.update(is_valid=1).where((notes_table.user_id == user_id) & (notes_table.is_valid == 1)).execute()
         notes_table.create(**notes)
         return rsp.success()
     except Exception as e:
