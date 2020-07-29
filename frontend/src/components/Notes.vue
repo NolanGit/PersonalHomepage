@@ -81,8 +81,24 @@
         placeholder="请输入便签内容"
       ></el-input>
       <div slot="footer" class="dialog-footer">
-        <el-button size="small" @click="edit.visible = false">取消</el-button>
-        <el-button size="small" type="primary" @click="submit()">确定</el-button>
+        <div class="div-flex">
+          <p
+            style="color: #606266;
+          font-size: 15px;
+          text-align: left;
+          font-family: Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,SimSun,sans-serif;"
+          >标题：</p>
+          <el-button size="small" @click="edit.visible = false">取消</el-button>
+        </div>
+        <div class="div-flex">
+          <p
+            style="color: #606266;
+          font-size: 15px;
+          text-align: left;
+          font-family: Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,SimSun,sans-serif;"
+          >内容：</p>
+          <el-button size="small" type="primary" @click="submit()">确定</el-button>
+        </div>
       </div>
     </el-dialog>
   </section>
