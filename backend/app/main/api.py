@@ -22,7 +22,7 @@ import configparser
 
 cf = configparser.ConfigParser()
 cf.read('app/homepage.config')
-FRONTEND_FOLDER = 'fronted/'
+FRONTEND_FOLDER = 'frontend/'
 UPLOAD_FILE_PATH = cf.get('config', 'UPLOAD_FILE_PATH')
 URL_PREFIX = ''
 
@@ -118,6 +118,7 @@ def download():
 @main.route('/gitHook', methods=['POST'])
 @cross_origin()
 def gitHook():
+    try:
     _ = request.get_json()['head_commit']
     add_files = _['added']
     removed_files = _['removed']
