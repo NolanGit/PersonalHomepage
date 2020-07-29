@@ -111,3 +111,9 @@ def download():
     response = make_response(send_file(file_path, as_attachment=True, attachment_filename=file_name))
     response.headers['filename'] = file_name.encode('utf-8')
     return response
+
+
+@main.route('/gitHook', methods=['POST'])
+@cross_origin()
+def gitHook():
+    print(request.get_json()['head_commit']['added'])
