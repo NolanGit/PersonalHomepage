@@ -21,7 +21,7 @@ URL_PREFIX = '/notes'
 def get():
     try:
         user_id = request.get_json()['user_id']
-        notes_table_query = notes_table.select().where(notes_table.user_id == user_id).dicts()
+        notes_table_query = notes_table.select().where((notes_table.user_id == user_id) & (notes_table.is_valid == 1)).dicts()
         return rsp.success([{
             'id': _['id'],
             'name': _['name'],
@@ -43,7 +43,10 @@ def save():
         user_id = request.get_json()['user_id']
         notes = request.get_json()['notes']
         notes_table.update(is_valid=1).where((notes_table.user_id == user_id) & (notes_table.is_valid == 1)).execute()
-        notes_table.create(**notes)
+        for note in notes:
+            del note['id']
+            note['update_time'] = datetime.datetime.now()
+            notes_table.create(**note)
         return rsp.success()
     except Exception as e:
         traceback.print_exc()
