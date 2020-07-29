@@ -20,32 +20,27 @@
       >
         <span slot="label">
           {{singleNotesData.name}}
-          <i
-            class="el-icon-edit"
-            style="color:#409EFF; cursor: pointer;"
-            v-show="!singleNotesData.editMode&activeNote==singleNotesData.name"
-            @click="edit(singleNotesData.name)"
+          <!-- <i
+            class="el-icon-bell"
+            style="color:#E6A23C; cursor: pointer;"
+            v-show="activeNote==singleNotesData.name"
+            @click="notify(singleNotesData.name)"
           ></i>
           <i
-            class="el-icon-check"
-            style="color:#67C23A; cursor: pointer;"
-            v-show="singleNotesData.editMode&activeNote==singleNotesData.name"
-            @click="submit(singleNotesData.name)"
-          ></i>
+            class="el-icon-delete"
+            style="color:#F56C6C; cursor: pointer;"
+            v-show="activeNote==singleNotesData.name"
+            @click="del(singleNotesData.name)"
+          ></i>-->
           <el-popover placement="right" width="80" trigger="hover" v-model="visible">
             <div class="div-flex">
+              <el-button type="text" style="color:#E6A23C" icon="el-icon-edit">编辑</el-button>
               <el-button type="text" style="color:#E6A23C" icon="el-icon-bell">提醒</el-button>
               <el-button type="text" style="color:#F56C6C" icon="el-icon-delete">删除</el-button>
             </div>
             <i class="el-icon-more" slot="reference" v-show="activeNote==singleNotesData.name"></i>
           </el-popover>
         </span>
-        <el-input
-          v-show="singleNotesData.editMode"
-          type="textarea"
-          placeholder="请输入内容"
-          v-model="singleNotesData.content"
-        ></el-input>
         <p
           style="color: #606266;
           font-size: 15px;
@@ -55,7 +50,6 @@
           margin-right: 20px;
           margin-top: 0px;
           font-family: Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,SimSun,sans-serif;"
-          v-show="!singleNotesData.editMode"
         >{{singleNotesData.content}}</p>
       </el-tab-pane>
     </el-tabs>
@@ -70,6 +64,14 @@
         @setting="setting()"
       ></WidgetButton>
     </el-row>
+    <el-dialog :title="edit.title" :visible.sync="edit.visible">
+      <el-input v-model="edit.title"></el-input>
+      <el-input v-model="edit.content"></el-input>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="edit.visible = false">取消</el-button>
+        <el-button type="primary" @click="edit.visible = false">确定</el-button>
+      </div>
+    </el-dialog>
   </section>
 </template>
 <script>
@@ -104,7 +106,6 @@ export default {
         this.notesData = res.data;
         this.activeNote = this.notesData[0].name;
         for (let x = 0; x < this.notesData.length; x++) {
-          this.notesData[x].editMode = false;
           this.notesData[x].content
             .replace(/\n/g, "<br>")
             .replace(/\s/g, "&nbsp;");
