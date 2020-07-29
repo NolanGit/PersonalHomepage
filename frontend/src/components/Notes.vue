@@ -20,23 +20,32 @@
       >
         <span slot="label">
           {{singleNotesData.name}}
-          <!-- <i
-            class="el-icon-bell"
-            style="color:#E6A23C; cursor: pointer;"
-            v-show="activeNote==singleNotesData.name"
-            @click="notify(singleNotesData.name)"
-          ></i>
-          <i
-            class="el-icon-delete"
-            style="color:#F56C6C; cursor: pointer;"
-            v-show="activeNote==singleNotesData.name"
-            @click="del(singleNotesData.name)"
-          ></i>-->
-          <el-popover placement="right" width="80" trigger="hover" v-model="visible">
-            <div class="div-flex">
-              <el-button type="text" style="color:#E6A23C" icon="el-icon-edit">编辑</el-button>
-              <el-button type="text" style="color:#E6A23C" icon="el-icon-bell">提醒</el-button>
-              <el-button type="text" style="color:#F56C6C" icon="el-icon-delete">删除</el-button>
+          <el-popover placement="right" width="50" trigger="hover" v-model="visible">
+            <div>
+              <div>
+                <el-button
+                  @click="edit(singleNotesData.name)"
+                  type="text"
+                  style="color:#409EFF"
+                  icon="el-icon-edit"
+                >编辑</el-button>
+              </div>
+              <div>
+                <el-button
+                  @click="notify(singleNotesData.name)"
+                  type="text"
+                  style="color:#E6A23C"
+                  icon="el-icon-bell"
+                >提醒</el-button>
+              </div>
+              <div>
+                <el-button
+                  @click="del(singleNotesData.name)"
+                  type="text"
+                  style="color:#F56C6C"
+                  icon="el-icon-delete"
+                >删除</el-button>
+              </div>
             </div>
             <i class="el-icon-more" slot="reference" v-show="activeNote==singleNotesData.name"></i>
           </el-popover>
@@ -54,22 +63,14 @@
       </el-tab-pane>
     </el-tabs>
     <el-row type="flex" justify="center" v-show="user_id!=0">
-      <WidgetButton
-        :user_id="user_id"
-        :widget_id="widget_id"
-        :buttons="buttons"
-        @add="add()"
-        @sort="sort()"
-        @notify="notify()"
-        @setting="setting()"
-      ></WidgetButton>
+      <WidgetButton :user_id="user_id" :widget_id="widget_id" :buttons="buttons" @add="add()"></WidgetButton>
     </el-row>
     <el-dialog :title="edit.title" :visible.sync="edit.visible">
       <el-input v-model="edit.title"></el-input>
       <el-input v-model="edit.content"></el-input>
       <div slot="footer" class="dialog-footer">
         <el-button @click="edit.visible = false">取消</el-button>
-        <el-button type="primary" @click="edit.visible = false">确定</el-button>
+        <el-button type="primary" @click="submit()">确定</el-button>
       </div>
     </el-dialog>
   </section>
@@ -95,6 +96,11 @@ export default {
     return {
       notesData: [],
       activeNote: "",
+      edit: {
+        visible: false,
+        title: "",
+        content: "",
+      },
     };
   },
   methods: {
@@ -127,17 +133,19 @@ export default {
       }
       return null;
     },
+    add() {
+      this.edit.title = "";
+      this.edit.content = "";
+      this.edit.visible = true;
+    },
     edit(notesName) {
       let i = this.notesGetIndex(notesName);
-      this.$nextTick(() => {
-        this.notesData[i].editMode = true;
-      });
+      this.edit.title = this.notesData[i].name;
+      this.edit.content = this.notesData[i].content;
+      this.edit.visible = true;
     },
-    submit(notesName) {
-      let i = this.notesGetIndex(notesName);
-      this.$nextTick(() => {
-        this.notesData[i].editMode = false;
-      });
+    submit() {
+      this.edit.visible = false;
     },
   },
   mounted() {
