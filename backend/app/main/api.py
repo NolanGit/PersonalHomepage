@@ -22,6 +22,7 @@ import configparser
 
 cf = configparser.ConfigParser()
 cf.read('app/homepage.config')
+FRONTEND_FOLDER = 'fronted/'
 UPLOAD_FILE_PATH = cf.get('config', 'UPLOAD_FILE_PATH')
 URL_PREFIX = ''
 
@@ -116,4 +117,13 @@ def download():
 @main.route('/gitHook', methods=['POST'])
 @cross_origin()
 def gitHook():
-    print(request.get_json()['head_commit']['added'])
+    _ = request.get_json()['head_commit']
+    add_files = _['added']
+    removed_files = _['removed']
+    modified_files = _['modified']
+    changed_files = add_files + removed_files + modified_files
+    for changed_file in changed_files:
+        if FRONTEND_FOLDER in changed_file:
+            print('1')
+    response = {'code': 200, 'msg': '成功！'}
+    return jsonify(response)
