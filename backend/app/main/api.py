@@ -114,6 +114,7 @@ def download():
     return response
 
 
+# 代码变动时，触发hook，如果变动的是前端代码，则自动编译
 @main.route('/gitHook', methods=['POST'])
 @cross_origin()
 def gitHook():
@@ -124,6 +125,6 @@ def gitHook():
     changed_files = add_files + removed_files + modified_files
     for changed_file in changed_files:
         if FRONTEND_FOLDER in changed_file:
-            print('1')
-    response = {'code': 200, 'msg': '成功！'}
+            _ = os.popen('cd /home/pi/Documents/Github/PersonalHomepage/frontend && git pull && npm run build')
+    response = {'code': 200, 'msg': 'success'}
     return jsonify(response)
