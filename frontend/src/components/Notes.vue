@@ -19,12 +19,11 @@
         style="padding-left:0px;"
       >
         <span slot="label">
-          {{singleNotesData.name}}
           <el-dropdown
             @command="handleCommand"
             size="small"
             v-show="activeNote==singleNotesData.name"
-            placement="top-start"
+            show-timeout="50"
           >
             <span class="el-dropdown-link">
               <i class="el-icon-more"></i>
@@ -35,6 +34,7 @@
               <el-dropdown-item style="color:#F56C6C" command="delete" icon="el-icon-delete">删除</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
+          {{singleNotesData.name}}
         </span>
         <p
           style="color: #606266;
