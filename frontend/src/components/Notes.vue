@@ -76,10 +76,16 @@
     <el-dialog title="提醒" :visible.sync="notify.visible">
       <el-form ref="form" :model="notify.form" size="mini" class="padding_bottom-medium">
         <el-form-item label="标题">
-          <p class="notesText">{{notify.form.title}}</p>
+          <p
+            class="notesText"
+            style="padding-top: 0px; margin-top: 0px; margin-bottom: 0px"
+          >{{notify.form.title}}</p>
         </el-form-item>
         <el-form-item label="内容">
-          <p class="notesText">{{notify.form.content}}</p>
+          <p
+            class="notesText"
+            style="padding-top: 0px; margin-top: 0px; margin-bottom: 0px"
+          >{{notify.form.content}}</p>
         </el-form-item>
         <el-form-item label="推送方式">
           <div class="div-flex" style="width:324px">
@@ -267,7 +273,7 @@ export default {
     },
     async submit() {
       if (this.edit.dialogTitle == "编辑") {
-        this.notesData[this.edit.noteIndex].title = this.edit.title;
+        this.notesData[this.edit.noteIndex].title = this.edit.name;
         this.notesData[this.edit.noteIndex].content = this.edit.content;
       } else if (this.edit.dialogTitle == "新建") {
         this.notesData.push({
