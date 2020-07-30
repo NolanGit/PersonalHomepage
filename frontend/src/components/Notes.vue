@@ -20,11 +20,13 @@
       >
         <span slot="label">
           <el-dropdown @command="handleCommand" size="small">
-            {{singleNotesData.name}}
-            <i
-              class="el-icon-more"
-              v-show="activeNote==singleNotesData.name"
-            ></i>
+            <span class="el-dropdown-link">
+              {{singleNotesData.name}}
+              <i
+                class="el-icon-more"
+                v-show="activeNote==singleNotesData.name"
+              ></i>
+            </span>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item style="color:#409EFF" icon="el-icon-edit">编辑</el-dropdown-item>
               <el-dropdown-item style="color:#E6A23C" icon="el-icon-bell">提醒</el-dropdown-item>
