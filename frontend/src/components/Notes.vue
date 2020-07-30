@@ -330,7 +330,10 @@ export default {
   color: #606266;
   font-size: 15px;
   text-align: left;
-  padding-top: 5px;
+  line-height: 35px;
+  margin-left: 10px;
+  margin-right: 20px;
+  margin-top: 0px;
   font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB,
     Microsoft YaHei, SimSun, sans-serif;
 }
