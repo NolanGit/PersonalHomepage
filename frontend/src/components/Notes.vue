@@ -19,13 +19,14 @@
         style="padding-left:0px;"
       >
         <span slot="label">
-          <el-dropdown @command="handleCommand" size="small">
+          {{singleNotesData.name}}
+          <el-dropdown
+            @command="handleCommand"
+            size="small"
+            v-show="activeNote==singleNotesData.name"
+          >
             <span class="el-dropdown-link">
-              {{singleNotesData.name}}
-              <i
-                class="el-icon-more"
-                v-show="activeNote==singleNotesData.name"
-              ></i>
+              <i class="el-icon-more"></i>
             </span>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item style="color:#409EFF" icon="el-icon-edit">编辑</el-dropdown-item>
