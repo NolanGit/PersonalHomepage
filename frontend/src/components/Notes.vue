@@ -20,35 +20,30 @@
       >
         <span slot="label">
           {{singleNotesData.name}}
-          <el-popover placement="right" width="30" trigger="hover">
-            <div>
-              <div>
-                <el-button
-                  @click="editClicked(singleNotesData.name)"
-                  type="text"
-                  style="color:#409EFF"
-                  icon="el-icon-edit"
-                >编辑</el-button>
-              </div>
-              <div>
-                <el-button
-                  @click="notify(singleNotesData.name)"
-                  type="text"
-                  style="color:#E6A23C"
-                  icon="el-icon-bell"
-                >提醒</el-button>
-              </div>
-              <div>
-                <el-button
-                  @click="del(singleNotesData.name)"
-                  type="text"
-                  style="color:#F56C6C"
-                  icon="el-icon-delete"
-                >删除</el-button>
-              </div>
-            </div>
-            <i class="el-icon-more" slot="reference" v-show="activeNote==singleNotesData.name"></i>
-          </el-popover>
+          <el-dropdown @command="handleCommand">
+            <i class="el-icon-more" v-show="activeNote==singleNotesData.name"></i>
+            <el-dropdown-item
+              @click="editClicked(singleNotesData.name)"
+              size="small"
+              type="text"
+              style="color:#409EFF"
+              icon="el-icon-edit"
+            >编辑</el-dropdown-item>
+            <el-dropdown-item
+              @click="notify(singleNotesData.name)"
+              size="small"
+              type="text"
+              style="color:#E6A23C"
+              icon="el-icon-bell"
+            >提醒</el-dropdown-item>
+            <el-dropdown-item
+              @click="del(singleNotesData.name)"
+              size="small"
+              type="text"
+              style="color:#F56C6C"
+              icon="el-icon-delete"
+            >删除</el-dropdown-item>
+          </el-dropdown>
         </span>
         <p
           style="color: #606266;
@@ -202,8 +197,12 @@ export default {
       this.edit.visible = true;
     },
     submit() {
-      this.notesData[this.edit.noteIndex].title = this.edit.title;
-      this.notesData[this.edit.noteIndex].content = this.edit.content;
+      if (this.edit.dialogTitle == "编辑") {
+        this.notesData[this.edit.noteIndex].title = this.edit.title;
+        this.notesData[this.edit.noteIndex].content = this.edit.content;
+      } else if (this.edit.dialogTitle == "新建") {
+        this.notesData.push();
+      }
       this.notesSave();
       this.notesGet();
       this.edit.visible = false;
