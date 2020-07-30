@@ -127,6 +127,10 @@
             ></el-time-select>
           </div>
         </el-form-item>
+        <p
+          class="notesText"
+          style="font-size: 10px; color: red; padding-top: 0px; margin-top: 0px; margin-bottom: 0px"
+        >*提交后不能取消，但可以多次提交</p>
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" size="small" @click="notify.visible=false">取消</el-button>
