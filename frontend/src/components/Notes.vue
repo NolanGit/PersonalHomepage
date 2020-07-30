@@ -60,7 +60,7 @@
         <el-input
           type="textarea"
           size="small"
-          style="width: 80%; margin-left: 40px;"
+          style="width: 80%;"
           autosize
           class="margin_bottom-large"
           v-model="edit.content"
@@ -84,7 +84,7 @@
         <el-form-item label="内容">
           <p
             class="notesText"
-            style="font-size: 14px; padding-top: 0px; margin-top: 0px; margin-bottom: 0px"
+            style="font-size: 14px; margin-left: 40px; padding-top: 0px; margin-top: 0px; margin-bottom: 0px"
           >{{notify.form.content}}</p>
         </el-form-item>
         <el-form-item label="推送方式">
@@ -302,7 +302,7 @@ export default {
           user_id: this.user_id,
           title: this.notify.form.title,
           content: this.notify.form.content,
-          method: this.notify.form.method,
+          method: this.notify.form.notifyMethod.select,
           notify_trigger_time:
             this.notify.form.triggerDate + " " + this.notify.form.triggerTime,
         });
