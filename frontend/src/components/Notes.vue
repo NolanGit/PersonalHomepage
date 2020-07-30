@@ -24,9 +24,10 @@
             size="small"
             v-show="activeNote==singleNotesData.name"
             show-timeout="50"
+            placement="bottom"
           >
             <span class="el-dropdown-link">
-              <i class="el-icon-more"></i>
+              <i class="el-icon-more" style="margin-right: 4px;"></i>
             </span>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item style="color:#409EFF" command="edit" icon="el-icon-edit">编辑</el-dropdown-item>
@@ -197,6 +198,15 @@ export default {
       this.edit.title = this.notesData[i].name;
       this.edit.content = this.notesData[i].content;
       this.edit.visible = true;
+    },
+    del(notesName) {
+      this.$confirm("确认删除吗?", "提示", {}).then(async () => {
+        let i = this.notesGetIndex(notesName);
+        this.edit.noteIndex = i;
+        this.notesData.splice(i, 1);
+        this.notesSave();
+        this.notesGet();
+      });
     },
     submit() {
       if (this.edit.dialogTitle == "编辑") {
