@@ -273,7 +273,7 @@ export default {
     },
     async submit() {
       if (this.edit.dialogTitle == "编辑") {
-        this.notesData[this.edit.noteIndex].title = this.edit.name;
+        this.notesData[this.edit.noteIndex].title = this.edit.title;
         this.notesData[this.edit.noteIndex].content = this.edit.content;
       } else if (this.edit.dialogTitle == "新建") {
         this.notesData.push({
@@ -287,7 +287,7 @@ export default {
     },
     notifyClicked(notesName) {
       let i = this.notesGetIndex(notesName);
-      this.notify.form.title = this.notesData[i].title;
+      this.notify.form.title = this.notesData[i].name;
       this.notify.form.content = this.notesData[i].content;
       this.notify.visible = true;
     },
