@@ -37,30 +37,16 @@
           </el-dropdown>
           {{singleNotesData.name}}
         </span>
-        <p
-          style="color: #606266;
-          font-size: 15px;
-          text-align: left;
-          line-height: 35px;
-          margin-left: 10px;
-          margin-right: 20px;
-          margin-top: 0px;
-          font-family: Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,SimSun,sans-serif;"
-        >{{singleNotesData.content}}</p>
+        <p class="notesText">{{singleNotesData.content}}</p>
       </el-tab-pane>
     </el-tabs>
     <el-row type="flex" justify="center" v-show="user_id!=0">
       <WidgetButton :user_id="user_id" :widget_id="widget_id" :buttons="buttons" @add="add()"></WidgetButton>
     </el-row>
+
     <el-dialog :title="edit.dialogTitle" :visible.sync="edit.visible">
       <div class="div-flex">
-        <div
-          style="color: #606266;
-          font-size: 15px;
-          text-align: left;
-          padding-top: 5px;
-          font-family: Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,SimSun,sans-serif;"
-        >标题：</div>
+        <div class="notesEditFormLabel">标题：</div>
         <el-input
           size="small"
           style="width: 80%;"
@@ -70,13 +56,7 @@
         ></el-input>
       </div>
       <div class="div-flex">
-        <div
-          style="color: #606266;
-          font-size: 15px;
-          text-align: left;
-          padding-top: 5px;
-          font-family: Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,SimSun,sans-serif;"
-        >内容：</div>
+        <div class="notesEditFormLabel">内容：</div>
         <el-input
           type="textarea"
           size="small"
@@ -91,6 +71,61 @@
         <el-button size="small" @click="edit.visible = false">取消</el-button>
         <el-button size="small" type="primary" @click="submit()">确定</el-button>
       </div>
+    </el-dialog>
+
+    <el-dialog title="提醒" :visible.sync="notify.visible">
+      <el-form ref="form" :model="notify.form" size="mini" class="padding_bottom-medium">
+        <el-form-item label="标题">
+          <p class="notesText">{{notify.form.title}}</p>
+        </el-form-item>
+        <el-form-item label="内容">
+          <p class="notesText">{{notify.form.content}}</p>
+        </el-form-item>
+        <el-form-item label="推送方式">
+          <div class="div-flex" style="width:324px">
+            <el-select
+              v-model="notify.form.notifyMethod.select"
+              placeholder="请选择"
+              size="small"
+              class="main_select--medium"
+            >
+              <el-option
+                v-for="item in notify.form.notifyMethod.options"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              ></el-option>
+            </el-select>
+          </div>
+        </el-form-item>
+        <el-form-item label="推送时间">
+          <div class="div-flex">
+            <el-date-picker
+              v-model="notify.form.triggerDate"
+              type="date"
+              placeholder="选择日期"
+              value-format="yyyy-MM-dd"
+              size="small"
+              class="main_select--medium"
+            ></el-date-picker>
+            <el-time-select
+              v-model="notify.form.triggerTime"
+              :picker-options="{
+              start: '00:00',
+              step: '01:00',
+              end: '24:00'
+            }"
+              placeholder="选择时间"
+              size="small"
+              class="main_select--medium"
+            ></el-time-select>
+          </div>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" size="small" @click="notify.visible=false">取消</el-button>
+        <el-button type="primary" size="small" @click="notifyConfirm()">确定</el-button>
+      </span>
     </el-dialog>
   </section>
 </template>
@@ -122,6 +157,28 @@ export default {
         dialogTitle: "",
         title: "",
         content: "",
+      },
+      notify: {
+        visible: false,
+        form: {
+          title: "",
+          content: "",
+          notifyMethod: {
+            select: 1,
+            options: [
+              {
+                value: 1,
+                label: "微信",
+              },
+              {
+                value: 2,
+                label: "邮件",
+              },
+            ],
+          },
+          triggerDate: "",
+          triggerTime: "",
+        },
       },
     };
   },
@@ -178,7 +235,7 @@ export default {
         this.editClicked(this.activeNote);
       }
       if (command == "bell") {
-        this.notify(this.activeNote);
+        this.notifyClicked(this.activeNote);
       }
       if (command == "delete") {
         this.del(this.activeNote);
@@ -222,6 +279,13 @@ export default {
       await this.notesGet();
       this.edit.visible = false;
     },
+    notifyClicked(notesName) {
+      let i = this.notesGetIndex(notesName);
+      this.notify.title = this.notesData[i].title;
+      this.notify.content = this.notesData[i].content;
+      this.notify.visible = true;
+    },
+    notifyConfirm() {},
   },
   mounted() {
     this.notesGet();
@@ -229,4 +293,20 @@ export default {
 };
 </script>
 <style scoped>
+.notesText {
+  color: #606266;
+  font-size: 15px;
+  text-align: left;
+  padding-top: 5px;
+  font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB,
+    Microsoft YaHei, SimSun, sans-serif;
+}
+.notesEditFormLabel {
+  color: #606266;
+  font-size: 15px;
+  text-align: left;
+  padding-top: 5px;
+  font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB,
+    Microsoft YaHei, SimSun, sans-serif;
+}
 </style>
