@@ -306,6 +306,11 @@ export default {
           notify_trigger_time:
             this.notify.form.triggerDate + " " + this.notify.form.triggerTime,
         });
+        this.$message({
+          message: res.msg,
+          type: "success",
+        });
+        this.notify.visible = false;
       } catch (e) {
         console.log(e);
         this.$message({
