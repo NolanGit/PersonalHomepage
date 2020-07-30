@@ -200,11 +200,13 @@ export default {
           user_id: this.user_id,
         });
         this.notesData = res.data;
-        this.activeNote = this.notesData[0].name;
-        for (let x = 0; x < this.notesData.length; x++) {
-          this.notesData[x].content
-            .replace(/\n/g, "<br>")
-            .replace(/\s/g, "&nbsp;");
+        if (this.notesData.length != 0) {
+          this.activeNote = this.notesData[0].name;
+          for (let x = 0; x < this.notesData.length; x++) {
+            this.notesData[x].content
+              .replace(/\n/g, "<br>")
+              .replace(/\s/g, "&nbsp;");
+          }
         }
         this.$emit("done");
       } catch (e) {
