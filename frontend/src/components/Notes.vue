@@ -78,13 +78,13 @@
         <el-form-item label="标题">
           <p
             class="notesText"
-            style="padding-top: 0px; margin-top: 0px; margin-bottom: 0px"
+            style="font-size: 14px; padding-top: 0px; margin-top: 0px; margin-bottom: 0px"
           >{{notify.form.title}}</p>
         </el-form-item>
         <el-form-item label="内容">
           <p
             class="notesText"
-            style="padding-top: 0px; margin-top: 0px; margin-bottom: 0px"
+            style="font-size: 14px; padding-top: 0px; margin-top: 0px; margin-bottom: 0px"
           >{{notify.form.content}}</p>
         </el-form-item>
         <el-form-item label="推送方式">
