@@ -199,24 +199,27 @@ export default {
       this.edit.content = this.notesData[i].content;
       this.edit.visible = true;
     },
-    del(notesName) {
+    async del(notesName) {
       this.$confirm("确认删除吗?", "提示", {}).then(async () => {
         let i = this.notesGetIndex(notesName);
         this.edit.noteIndex = i;
         this.notesData.splice(i, 1);
-        this.notesSave();
-        this.notesGet();
+        await this.notesSave();
+        await this.notesGet();
       });
     },
-    submit() {
+    async submit() {
       if (this.edit.dialogTitle == "编辑") {
         this.notesData[this.edit.noteIndex].title = this.edit.title;
         this.notesData[this.edit.noteIndex].content = this.edit.content;
       } else if (this.edit.dialogTitle == "新建") {
-        this.notesData.push();
+        this.notesData.push({
+          name: this.edit.title,
+          content: this.edit.content,
+        });
       }
-      this.notesSave();
-      this.notesGet();
+      await this.notesSave();
+      await this.notesGet();
       this.edit.visible = false;
     },
   },
