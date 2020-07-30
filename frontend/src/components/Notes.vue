@@ -281,8 +281,8 @@ export default {
     },
     notifyClicked(notesName) {
       let i = this.notesGetIndex(notesName);
-      this.notify.title = this.notesData[i].title;
-      this.notify.content = this.notesData[i].content;
+      this.notify.form.title = this.notesData[i].title;
+      this.notify.form.content = this.notesData[i].content;
       this.notify.visible = true;
     },
     notifyConfirm() {},
