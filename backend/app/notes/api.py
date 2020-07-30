@@ -44,7 +44,8 @@ def save():
         notes = request.get_json()['notes']
         notes_table.update(is_valid=0).where((notes_table.user_id == user_id) & (notes_table.is_valid == 1)).execute()
         for note in notes:
-            del note['id']
+            if 'id' in note:
+                del note['id']
             note['user_id'] = user_id
             note['is_valid'] = 1
             note['update_time'] = datetime.datetime.now()
