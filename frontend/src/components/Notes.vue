@@ -60,7 +60,7 @@
         <el-input
           type="textarea"
           size="small"
-          style="width: 80%;"
+          style="width: 80%; margin-left: 40px;"
           autosize
           class="margin_bottom-large"
           v-model="edit.content"
@@ -129,7 +129,7 @@
         </el-form-item>
         <p
           class="notesText"
-          style="font-size: 10px; color: red; padding-top: 0px; margin-top: 0px; margin-bottom: 0px"
+          style="font-size: 13px; color: red; padding-top: 0px; margin-top: 0px; margin-bottom: 0px"
         >*提交后不能取消，但可以多次提交</p>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -146,6 +146,7 @@ import WidgetButton from "./common/WidgetButton.vue";
 const api = {
   get: "/notes/get",
   save: "/notes/save",
+  notify: "/notes/notify",
 };
 export default {
   name: "notes",
@@ -295,7 +296,24 @@ export default {
       this.notify.form.content = this.notesData[i].content;
       this.notify.visible = true;
     },
-    notifyConfirm() {},
+    async notifyConfirm() {
+      try {
+        const { data: res } = await axios.post(api.notify, {
+          user_id: this.user_id,
+          title: this.notify.form.title,
+          content: this.notify.form.content,
+          method: this.notify.form.method,
+          notify_trigger_time:
+            this.notify.form.triggerDate + " " + this.notify.form.triggerTime,
+        });
+      } catch (e) {
+        console.log(e);
+        this.$message({
+          message: e.response.data.msg,
+          type: "error",
+        });
+      }
+    },
   },
   mounted() {
     this.notesGet();

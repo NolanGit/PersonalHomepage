@@ -7,6 +7,8 @@ from . import notes as notes_blue_print
 from flask import session, redirect, current_app, request, jsonify
 
 from ..response import Response
+from ..login.login_funtion import User
+from ..model.push_model import push_queue
 from ..model.notes_model import notes as notes_table
 from ..privilege.privilege_control import privilegeFunction
 from ..privilege.privilege_control import permission_required
@@ -50,6 +52,45 @@ def save():
             note['is_valid'] = 1
             note['update_time'] = datetime.datetime.now()
             notes_table.create(**note)
+        return rsp.success()
+    except Exception as e:
+        traceback.print_exc()
+        return rsp.failed(e), 500
+
+
+@notes_blue_print.route('/notify', methods=['POST'])
+#@permission_required(URL_PREFIX + '/notify')
+@cross_origin()
+def notify():
+    try:
+        _ = request.get_json()
+        notify_trigger_time = datetime.datetime.strptime(_['notify_trigger_time'], "%Y-%m-%d %H:%M") - datetime.timedelta(minutes=1)
+        if notify_trigger_time < datetime.datetime.now():
+            return rsp.failed('定时运行时间不可以小于当前时间'), 500
+
+        user_id = _['user_id']
+        title = _['title']
+        content = _['content']
+        method = int(_['method'])
+
+        user = User(user_id=user_id)
+        if method == 1:
+            address = user.wechat_key
+        elif method == 2:
+            address = user.email
+        else:
+            return rsp.failed('错误的推送方式'), 500
+
+        push_queue.create(user_id=user_id,
+                          method=method,
+                          address=address,
+                          title=title,
+                          content=content,
+                          status=1,
+                          trigger_time=notify_trigger_time,
+                          log="",
+                          create_time=datetime.datetime.now(),
+                          update=datetime.datetime.now())
         return rsp.success()
     except Exception as e:
         traceback.print_exc()
