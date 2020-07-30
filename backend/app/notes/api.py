@@ -86,7 +86,7 @@ def notify():
                           address=address,
                           title=title,
                           content=content,
-                          status=1,
+                          status=0,
                           trigger_time=notify_trigger_time,
                           log="",
                           create_time=datetime.datetime.now(),
