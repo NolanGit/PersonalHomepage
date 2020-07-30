@@ -24,14 +24,15 @@
             @command="handleCommand"
             size="small"
             v-show="activeNote==singleNotesData.name"
+            placement="top-start"
           >
             <span class="el-dropdown-link">
               <i class="el-icon-more"></i>
             </span>
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item style="color:#409EFF" icon="el-icon-edit">编辑</el-dropdown-item>
-              <el-dropdown-item style="color:#E6A23C" icon="el-icon-bell">提醒</el-dropdown-item>
-              <el-dropdown-item style="color:#F56C6C" icon="el-icon-delete">删除</el-dropdown-item>
+              <el-dropdown-item style="color:#409EFF" command="edit" icon="el-icon-edit">编辑</el-dropdown-item>
+              <el-dropdown-item style="color:#E6A23C" command="bell" icon="el-icon-bell">提醒</el-dropdown-item>
+              <el-dropdown-item style="color:#F56C6C" command="delete" icon="el-icon-delete">删除</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
         </span>
@@ -170,6 +171,17 @@ export default {
         }
       }
       return null;
+    },
+    handleCommand(command) {
+      if (command == "edit") {
+        this.editClicked(this.activeNote);
+      }
+      if (command == "bell") {
+        this.notify(this.activeNote);
+      }
+      if (command == "delete") {
+        this.del(this.activeNote);
+      }
     },
     add() {
       this.edit.dialogTitle = "新建";
