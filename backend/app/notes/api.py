@@ -27,6 +27,7 @@ def get():
         return rsp.success([{
             'id': _['id'],
             'name': _['name'],
+            'token': _['token'],
             'content': _['content'],
             'user_id': _['user_id'],
             'is_valid': _['is_valid'],
