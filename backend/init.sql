@@ -371,6 +371,7 @@ INSERT INTO `widget` (`id`, `name`, `is_valid`, `span`, `buttons`, `auto_update`
 INSERT INTO `widget` (`id`, `name`, `is_valid`, `span`, `buttons`, `auto_update`, `update_time`) VALUES ('2', 'bookmarks', '1', '8', '[\'add\', \'sort\']', '0', '2019-10-28 11:35:37');
 INSERT INTO `widget` (`id`, `name`, `is_valid`, `span`, `buttons`, `auto_update`, `update_time`) VALUES ('3', 'app', '1', '8', '[\'add\', \'sort\', \'notify\']', '1800000', '2019-10-28 11:35:37');
 INSERT INTO `widget` (`id`, `name`, `is_valid`, `span`, `buttons`, `auto_update`, `update_time`) VALUES ('4', 'gold', '1', '8', '[\'setting\', \'notify\']', '1800000', '2019-10-28 11:35:37');
+INSERT INTO `widget` (`id`, `name`, `is_valid`, `span`, `buttons`, `auto_update`, `update_time`) VALUES ('5', 'notes', '1', '8', '[\'add\']', '180000', '2019-10-28 11:35:37');
 INSERT INTO `widget_suite` (`id`, `name`, `user_id`, `order`, `is_valid`, `detail`, `update_time`) VALUES ('1', '基本组件', '0', '1', '1', '[1,2,4]', '2019-10-28 11:35:37');
 INSERT INTO `widget_suite` (`id`, `name`, `user_id`, `order`, `is_valid`, `detail`, `update_time`) VALUES ('2', '常用', '1', '1', '1', '[1,2]', '2019-10-28 11:35:37');
 INSERT INTO `widget_suite` (`id`, `name`, `user_id`, `order`, `is_valid`, `detail`, `update_time`) VALUES ('3', '其他', '1', '1', '1', '[3,4]', '2019-10-28 11:35:37');

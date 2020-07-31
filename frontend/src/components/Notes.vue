@@ -154,6 +154,7 @@ export default {
     user_id: Number,
     widget_id: Number,
     buttons: Array,
+    flush: Number,
   },
   components: {
     WidgetButton,
@@ -324,6 +325,10 @@ export default {
   },
   mounted() {
     this.notesGet();
+    this.timer = window.setInterval(this.goldPriceGet, this.flush);
+  },
+  beforeDestroy() {
+    window.clearInterval(this.timer);
   },
 };
 </script>
