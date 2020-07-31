@@ -28,8 +28,9 @@
 - AppStore价格监控（支持设置触发阈值后推送微信或发送邮件）
 - 黄金价格（支持设置触发阈值后推送微信或发送邮件）
 - 网盘
-### Working on:
 - 便签
+### Working on:
+- 改bug
 ### To Do
 - 翻译
 - 基金
@@ -47,59 +48,6 @@
 - 自动提示和切换搜索引擎
 
 ![image](https://user-images.githubusercontent.com/27627484/71998812-3f255980-327b-11ea-9e6d-7ad97cd5c18d.png)
-### 天气
-入口：主页小组件
-
-功能：如不登录则展示IP所在地的天气信息，登录后可以进行自定义，展示范围为IP+自定义位置的信息
-
-说明：当请求数据时，为了保障速度，首先会使用缓存，缓存数据有效期为3小时（在\backend\app\weather\weather_function.py:16修改），如果没有有效缓存，则会请求外部API以获取数据
-
-按钮：新增-登录后新增城市；排序-可拖动对自定义的城市进行排序或删除
-
-![image](https://user-images.githubusercontent.com/27627484/87287598-df12b700-c52c-11ea-9645-60418f048f45.png)
-
-### 书签
-
-入口：主页小组件
-
-功能：登陆后可以自定义，不登录时展示的书签是在数据库中修改（bookmarks.user_id==0）
-
-按钮：新增-登陆后新增书签；设置：登陆后拖动排序、删除或修改书签的图标
-
-- 拖动修改展示顺序
-
-![image](https://user-images.githubusercontent.com/27627484/87288831-72002100-c52e-11ea-9fe1-aca28bfabe73.png)
-- 修改书签详情
-
-![image](https://user-images.githubusercontent.com/27627484/87288878-8512f100-c52e-11ea-8a2a-4c771ff32143.png)
-- 修改书签图标
-
-![image](https://user-images.githubusercontent.com/27627484/87288937-965bfd80-c52e-11ea-9ff2-e3d49c84d7b5.png)
-
-### 黄金价格
-
-入口：主页小组件
-
-功能描述：监控黄金价格，并且可以设定阈值，当价格超过阈值时发送提醒。需要在"脚本运行平台"中配置定时任务，爬虫内部会跳过国内黄金不开盘的时间。
-
-![image](https://user-images.githubusercontent.com/27627484/87305571-4b031880-c549-11ea-880a-115b891704db.png)
-
-![image](https://user-images.githubusercontent.com/27627484/87305626-62da9c80-c549-11ea-8bac-f33695ac4d71.png)
-
-### App Store应用价格监控
-
-入口：主页小组件
-
-功能：监控苹果软件商店应用的价格，当小于设定的阈值时，提醒用户。需要填写AppStore应用链接，此链接可以百度'想要关注的app名字+" site:apps.apple.com"'来获取，如"webssh pro site:apps.apple.com"，然后打开中文商店的页面(这样价格爬取到的才是中文)，此时的页面链接即为AppStore应用链接，如"https://apps.apple.com/cn/app/id958955657"。
-
-![image](https://user-images.githubusercontent.com/27627484/87305689-7a198a00-c549-11ea-9925-d944bdb839e5.png)
-
-### 网盘
-入口：登陆后左上角hover用户名-网盘
-
-功能：一个简易的网盘功能，文件上传不限制大小，下载不限制速度，但是大文件上传时需要多等一会直到loading结束，文件存储于根目录的upload文件夹，并建立名称为日期的子文件夹。
-
-![image](https://user-images.githubusercontent.com/27627484/87327430-a2fc4800-c566-11ea-8946-d24955d6448d.png)
 
 ### 控制台
 入口：登陆后左上角hover用户名-控制台
@@ -183,4 +131,70 @@
 - 权限设置：新增权限、禁用权限、删除权限、修改权限
 
 ![image](https://user-images.githubusercontent.com/27627484/87305485-2444e200-c549-11ea-91cb-612b3a4c9ca5.png)
+
+### 网盘
+入口：登陆后左上角hover用户名-网盘
+
+功能：一个简易的网盘功能，文件上传不限制大小，下载不限制速度，但是大文件上传时需要多等一会直到loading结束，文件存储于根目录的upload文件夹，并建立名称为日期的子文件夹。
+
+![image](https://user-images.githubusercontent.com/27627484/87327430-a2fc4800-c566-11ea-8946-d24955d6448d.png)
+
+### 小组件-天气
+入口：主页小组件
+
+功能：如不登录则展示IP所在地的天气信息，登录后可以进行自定义，展示范围为IP+自定义位置的信息
+
+说明：当请求数据时，为了保障速度，首先会使用缓存，缓存数据有效期为3小时（在\backend\app\weather\weather_function.py:16修改），如果没有有效缓存，则会请求外部API以获取数据
+
+按钮：新增-登录后新增城市；排序-可拖动对自定义的城市进行排序或删除
+
+![image](https://user-images.githubusercontent.com/27627484/87287598-df12b700-c52c-11ea-9645-60418f048f45.png)
+
+### 小组件-书签
+
+入口：主页小组件
+
+功能：登陆后可以自定义，不登录时展示的书签是在数据库中修改（bookmarks.user_id==0）
+
+按钮：新增-登陆后新增书签；设置：登陆后拖动排序、删除或修改书签的图标
+
+- 拖动修改展示顺序
+
+![image](https://user-images.githubusercontent.com/27627484/87288831-72002100-c52e-11ea-9fe1-aca28bfabe73.png)
+- 修改书签详情
+
+![image](https://user-images.githubusercontent.com/27627484/87288878-8512f100-c52e-11ea-8a2a-4c771ff32143.png)
+- 修改书签图标
+
+![image](https://user-images.githubusercontent.com/27627484/87288937-965bfd80-c52e-11ea-9ff2-e3d49c84d7b5.png)
+
+### 小组件-黄金价格
+
+入口：主页小组件
+
+功能描述：监控黄金价格，并且可以设定阈值，当价格超过阈值时发送提醒。需要在"脚本运行平台"中配置定时任务，爬虫内部会跳过国内黄金不开盘的时间。
+
+![image](https://user-images.githubusercontent.com/27627484/87305571-4b031880-c549-11ea-880a-115b891704db.png)
+
+![image](https://user-images.githubusercontent.com/27627484/87305626-62da9c80-c549-11ea-8bac-f33695ac4d71.png)
+
+### 小组件-App Store应用价格监控
+
+入口：主页小组件
+
+功能：监控苹果软件商店应用的价格，当小于设定的阈值时，提醒用户。需要填写AppStore应用链接，此链接可以百度'想要关注的app名字+" site:apps.apple.com"'来获取，如"webssh pro site:apps.apple.com"，然后打开中文商店的页面(这样价格爬取到的才是中文)，此时的页面链接即为AppStore应用链接，如"https://apps.apple.com/cn/app/id958955657"。
+
+![image](https://user-images.githubusercontent.com/27627484/87305689-7a198a00-c549-11ea-9925-d944bdb839e5.png)
+
+![image](https://user-images.githubusercontent.com/27627484/88994520-2b2a6d80-d31b-11ea-9b3a-3f764f83b575.png)
+
+### 小组件-便签
+
+入口：主页小组件
+
+功能：记录便签，并可以定时推送便签内容到微信/邮件。
+
+![image](https://user-images.githubusercontent.com/27627484/88994974-22866700-d31c-11ea-92e5-6730cfb0078a.png)
+
+
 
