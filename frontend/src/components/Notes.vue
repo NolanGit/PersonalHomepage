@@ -162,18 +162,18 @@
                 <el-table-column prop="name" width="100" label="标题"></el-table-column>
                 <el-table-column label="内容">
                   <template slot-scope="innerScope">
-                    <span v-if="innerScope.row.content.length<20">{{ innerScope.row.content }}</span>
-                    <el-tooltip
-                      class="item"
-                      effect="dark"
+                    <span v-if="innerScope.row.content.length<25">{{ innerScope.row.content }}</span>
+                    <el-popover
+                      placement="top"
+                      width="200"
+                      trigger="hover"
                       :content="innerScope.row.content"
-                      placement="top-start"
-                      v-if="innerScope.row.content.length>=20"
                     >
                       <span
-                        v-if="innerScope.row.content.length>=20"
-                      >{{ innerScope.row.content.substring(0,20)+'...' }}</span>
-                    </el-tooltip>
+                        slot="reference"
+                        v-if="innerScope.row.content.length>=25"
+                      >{{ innerScope.row.content.substring(0,25)+'...' }}</span>
+                    </el-popover>
                   </template>
                 </el-table-column>
               </el-table>
