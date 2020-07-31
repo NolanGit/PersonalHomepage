@@ -110,7 +110,7 @@ def revert():
         _r = []
         for s_ in _:
             _n = notes_table.select().where((notes_table.user_id == user_id) & (notes_table.update_time == s_['update_time'])).dicts()
-            _r.append({'update_time': s_['update_time'], 'user': user.user_name, 'detail': []})
+            _r.append({'update_time': s_['update_time'].strftime("%Y-%m-%d %H:%M:%S"), 'user': user.user_name, 'detail': []})
             for s_n in _n:
                 _r[-1]['detail'].append({
                     'id': s_n['id'],
@@ -119,7 +119,7 @@ def revert():
                     'content': s_n['content'],
                     'user_id': s_n['user_id'],
                     'is_valid': s_n['is_valid'],
-                    'update_time': s_n['update_time'].strftime("%Y-%m-%d %H:%M:%S"),
+                    'update_time': s_n['update_time']
                 })
         return rsp.success(_r)
     except Exception as e:
