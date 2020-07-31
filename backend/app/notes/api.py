@@ -99,17 +99,18 @@ def notify():
         return rsp.failed(e), 500
 
 
-@notes_blue_print.route('/revertGet', methods=['POST'])
-# @permission_required(URL_PREFIX + '/revertGet')
+@notes_blue_print.route('/revert', methods=['POST'])
+# @permission_required(URL_PREFIX + '/revert')
 @cross_origin()
-def revertGet():
+def revert():
     try:
         user_id = request.get_json()['user_id']
+        user = User(user_id=user_id)
         _ = notes_table.select().where(notes_table.user_id == user_id).group_by(notes_table.update_time).order_by(-notes_table.update_time).limit(5).dicts()
         _r = []
         for s_ in _:
             _n = notes_table.select().where((notes_table.user_id == user_id) & (notes_table.update_time == s_['update_time'])).dicts()
-            _r.append({'update_time': s_['update_time'], 'detail': []})
+            _r.append({'update_time': s_['update_time'], 'user': user.user_name, 'detail': []})
             for s_n in _n:
                 _r[-1]['detail'].append({
                     'id': s_n['id'],
@@ -121,27 +122,6 @@ def revertGet():
                     'update_time': s_n['update_time'],
                 })
         return rsp.success(_r)
-    except Exception as e:
-        traceback.print_exc()
-        return rsp.failed(e), 500
-
-
-@notes_blue_print.route('/revert', methods=['POST'])
-# @permission_required(URL_PREFIX + '/revert')
-@cross_origin()
-def revert():
-    try:
-        user_id = request.get_json()['user_id']
-        notes = request.get_json()['notes']
-        notes_table.update(is_valid=0).where((notes_table.user_id == user_id) & (notes_table.is_valid == 1)).execute()
-        for note in notes:
-            if 'id' in note:
-                del note['id']
-            note['user_id'] = user_id
-            note['is_valid'] = 1
-            note['update_time'] = datetime.datetime.now()
-            notes_table.create(**note)
-        return rsp.success()
     except Exception as e:
         traceback.print_exc()
         return rsp.failed(e), 500
