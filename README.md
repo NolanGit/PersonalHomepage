@@ -194,7 +194,7 @@
 
 功能：记录便签，并可以定时推送便签内容到微信/邮件。由于不想把功能做的太复杂，提交的推送是不允许撤销的，但可以多次设置，即：设置的推送可以随意加但不能减。此外，便签还可以通过"时间机器"回滚至之前的版本，适用于误删等情况。
 
-![image](https://user-images.githubusercontent.com/27627484/88994974-22866700-d31c-11ea-92e5-6730cfb0078a.png)
+![image](https://user-images.githubusercontent.com/27627484/89023385-14553c80-d356-11ea-9eba-41ba82edf40e.png)
 
 ![image](https://user-images.githubusercontent.com/27627484/89022948-69448300-d355-11ea-893d-2deb553072bc.png)
 
