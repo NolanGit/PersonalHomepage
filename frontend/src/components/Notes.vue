@@ -15,14 +15,14 @@
         v-for="singleNotesData in notesData"
         :key="singleNotesData"
         :label="singleNotesData.name"
-        :name="singleNotesData.name"
+        :name="singleNotesData.token"
         style="padding-left:0px;"
       >
         <span slot="label">
           <el-dropdown
             @command="handleCommand"
             size="small"
-            v-show="activeNote==singleNotesData.name"
+            v-show="activeNote==singleNotesData.token"
             show-timeout="50"
             placement="bottom"
           >
@@ -154,6 +154,7 @@ export default {
     user_id: Number,
     widget_id: Number,
     buttons: Array,
+    flush: Number,
   },
   components: {
     WidgetButton,
@@ -201,7 +202,7 @@ export default {
         });
         this.notesData = res.data;
         if (this.notesData.length != 0) {
-          this.activeNote = this.notesData[0].name;
+          this.activeNote = this.notesData[0].token;
           for (let x = 0; x < this.notesData.length; x++) {
             this.notesData[x].content
               .replace(/\n/g, "<br>")
@@ -237,7 +238,7 @@ export default {
     },
     notesGetIndex(notesName) {
       for (let x = 0; x < this.notesData.length; x++) {
-        if (this.notesData[x].name == notesName) {
+        if (this.notesData[x].token == notesName) {
           return x;
         }
       }
@@ -283,9 +284,12 @@ export default {
         this.notesData[this.edit.noteIndex].title = this.edit.title;
         this.notesData[this.edit.noteIndex].content = this.edit.content;
       } else if (this.edit.dialogTitle == "新建") {
+        let timestamp = new Date().getTime();
+        let salt = Math.floor(Math.random() * 100000000000000);
         this.notesData.push({
           name: this.edit.title,
           content: this.edit.content,
+          token: String(timestamp) + String(salt),
         });
       }
       await this.notesSave();
@@ -324,6 +328,10 @@ export default {
   },
   mounted() {
     this.notesGet();
+    this.timer = window.setInterval(this.goldPriceGet, this.flush);
+  },
+  beforeDestroy() {
+    window.clearInterval(this.timer);
   },
 };
 </script>

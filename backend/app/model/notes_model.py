@@ -6,6 +6,7 @@ from .model_function import BaseModel
 
 class notes(BaseModel):
     name = CharField()
+    token = CharField()
     content = CharField()
     user_id = IntegerField()
     is_valid = IntegerField()
