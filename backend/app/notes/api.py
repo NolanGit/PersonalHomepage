@@ -18,7 +18,7 @@ URL_PREFIX = '/notes'
 
 
 @notes_blue_print.route('/get', methods=['POST'])
-#@permission_required(URL_PREFIX + '/get')
+@permission_required(URL_PREFIX + '/get')
 @cross_origin()
 def get():
     try:
@@ -38,7 +38,7 @@ def get():
 
 
 @notes_blue_print.route('/save', methods=['POST'])
-#@permission_required(URL_PREFIX + '/save')
+@permission_required(URL_PREFIX + '/save')
 @cross_origin()
 def save():
     try:
@@ -59,7 +59,7 @@ def save():
 
 
 @notes_blue_print.route('/notify', methods=['POST'])
-#@permission_required(URL_PREFIX + '/notify')
+@permission_required(URL_PREFIX + '/notify')
 @cross_origin()
 def notify():
     try:
