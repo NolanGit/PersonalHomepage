@@ -158,22 +158,22 @@
         <el-table-column :key="Math.random()" label="操作" width="150">
           <template slot-scope="scope">
             <el-popover placement="right" width="350" trigger="hover">
-              <el-table :data="scope.row.singleDetail" style="text-align: center;" size="small">
+              <el-table :data="scope.row.detail" style="text-align: center;" size="small">
                 <el-table-column prop="name" label="标题"></el-table-column>
                 <el-table-column label="内容" width="100">
                   <template slot-scope="innerScope">
                     <span
                       style="margin-left: 10px"
-                      v-if="innerScope.content.length<20"
-                    >{{ innerScope.content }}</span>
+                      v-if="innerScope.row.content.length<20"
+                    >{{ innerScope.row.content }}</span>
                     <el-tooltip
                       class="item"
                       effect="dark"
-                      :content="innerScope.content"
+                      :content="innerScope.row.content"
                       placement="top-start"
-                      v-if="innerScope.content.length>=20"
+                      v-if="innerScope.row.content.length>=20"
                     >
-                      <span style="margin-left: 10px">{{ singleDetail.content }}</span>
+                      <span style="margin-left: 10px">{{ innerScope.row.content }}</span>
                     </el-tooltip>
                   </template>
                 </el-table-column>
