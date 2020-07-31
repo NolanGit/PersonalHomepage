@@ -138,7 +138,7 @@
         <p
           class="notesText"
           style="font-size: 12px; color: red; padding-top: 0px; margin-top: 0px; margin-bottom: 0px"
-        >*提交后不能取消，但可以多次提交</p>
+        >*提交后不能取消，但可以多次提交。</p>
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" size="small" @click="notify.visible=false">取消</el-button>
@@ -151,7 +151,7 @@
       <p
         class="notesText"
         style="font-size: 12px; color: red; padding-top: 0px; margin-top: 0px; margin-bottom: 0px"
-      >*可以恢复到最近的五个版本中的任意一个，此操作不会对过去的版本产生影响，而是会使用以前版本的内容生成一个新版本</p>
+      >*可以恢复到最近的五个版本中的任意一个，此操作不会对过去的版本产生影响，而是会使用以前版本的内容生成一个新版本。</p>
       <el-table :data="revert.data" style="text-align: center;" size="small">
         <el-table-column prop="update_time" label="版本"></el-table-column>
         <el-table-column prop="user" label="创建人" width="100"></el-table-column>
@@ -183,7 +183,7 @@
                 plain
                 type="primary"
                 slot="reference"
-                @click="download(scope.row.file_id)"
+                @click="revertConfirm(scope.row.update_time, scope.row.detail)"
               >恢复至此版本</el-button>
             </el-popover>
           </template>
@@ -400,6 +400,17 @@ export default {
           type: "error",
         });
       }
+    },
+    async revertConfirm(update_time, detail) {
+      this.$confirm(
+        "确认使用时间机器恢复至[" + update_time + "]的版本吗?",
+        "提示",
+        {}
+      ).then(async () => {
+        this.notesData = detail;
+        await this.notesSave();
+        await this.notesGet();
+      });
     },
   },
   mounted() {
