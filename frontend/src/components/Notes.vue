@@ -170,7 +170,9 @@
                       placement="top-start"
                       v-if="innerScope.row.content.length>=20"
                     >
-                      <span v-if="innerScope.row.content.length>=20">{{ innerScope.row.content }}</span>
+                      <span
+                        v-if="innerScope.row.content.length>=20"
+                      >{{ innerScope.row.content.substring(0,20)+'...' }}</span>
                     </el-tooltip>
                   </template>
                 </el-table-column>
