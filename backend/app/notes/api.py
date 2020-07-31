@@ -82,17 +82,46 @@ def notify():
         else:
             return rsp.failed('错误的推送方式'), 500
 
-        push_queue.create(user_id=user_id,
-                          method=method,
-                          address=address,
-                          title=title,
-                          content=content,
-                          status=0,
-                          trigger_time=notify_trigger_time,
-                          log="",
-                          create_time=datetime.datetime.now(),
-                          update=datetime.datetime.now())
+        push_queue.create(
+            user_id=user_id,
+            method=method,
+            address=address,
+            title=title,
+            content=content,
+            status=0,
+            trigger_time=notify_trigger_time,
+            log="",
+            create_time=datetime.datetime.now(),
+            update=datetime.datetime.now())
         return rsp.success()
+    except Exception as e:
+        traceback.print_exc()
+        return rsp.failed(e), 500
+
+
+@notes_blue_print.route('/revert', methods=['POST'])
+# @permission_required(URL_PREFIX + '/revert')
+@cross_origin()
+def revert():
+    try:
+        user_id = request.get_json()['user_id']
+        user = User(user_id=user_id)
+        _ = notes_table.select().where(notes_table.user_id == user_id).group_by(notes_table.update_time).order_by(-notes_table.update_time).limit(6).dicts()
+        _r = []
+        for s_ in _[1:]:
+            _n = notes_table.select().where((notes_table.user_id == user_id) & (notes_table.update_time == s_['update_time'])).dicts()
+            _r.append({'update_time': s_['update_time'].strftime("%Y-%m-%d %H:%M:%S"), 'user': user.user_name, 'detail': []})
+            for s_n in _n:
+                _r[-1]['detail'].append({
+                    'id': s_n['id'],
+                    'name': s_n['name'],
+                    'token': s_n['token'],
+                    'content': s_n['content'],
+                    'user_id': s_n['user_id'],
+                    'is_valid': s_n['is_valid'],
+                    'update_time': s_n['update_time']
+                })
+        return rsp.success(_r)
     except Exception as e:
         traceback.print_exc()
         return rsp.failed(e), 500

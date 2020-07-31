@@ -20,7 +20,7 @@
       >
         <span slot="label">
           <el-dropdown
-            @command="handleCommand"
+            @command="actionClicked"
             size="small"
             v-show="activeNote==singleNotesData.token"
             show-timeout="50"
@@ -41,9 +41,16 @@
       </el-tab-pane>
     </el-tabs>
     <el-row type="flex" justify="center" v-show="user_id!=0">
-      <WidgetButton :user_id="user_id" :widget_id="widget_id" :buttons="buttons" @add="add()"></WidgetButton>
+      <WidgetButton
+        :user_id="user_id"
+        :widget_id="widget_id"
+        :buttons="buttons"
+        @add="add()"
+        @revert="revertClicked()"
+      ></WidgetButton>
     </el-row>
 
+    <!-- 编辑dialog -->
     <el-dialog :title="edit.dialogTitle" :visible.sync="edit.visible">
       <div class="div-flex">
         <div class="notesEditFormLabel">标题：</div>
@@ -69,10 +76,11 @@
       </div>
       <div slot="footer" class="dialog-footer">
         <el-button size="small" @click="edit.visible = false">取消</el-button>
-        <el-button size="small" type="primary" @click="submit()">确定</el-button>
+        <el-button size="small" type="primary" @click="editSubmit()">确定</el-button>
       </div>
     </el-dialog>
 
+    <!-- 推送dialog -->
     <el-dialog title="提醒" :visible.sync="notify.visible">
       <el-form ref="form" :model="notify.form" size="mini" class="padding_bottom-medium">
         <el-form-item label="标题">
@@ -87,7 +95,7 @@
             style="font-size: 14px; margin-left: 40px; line-height: 28px; padding-top: 0px; margin-top: 0px; margin-bottom: 0px"
           >{{notify.form.content}}</p>
         </el-form-item>
-        <el-form-item label="推送方式">
+        <el-form-item label="提醒方式">
           <div class="div-flex" style="width:324px">
             <el-select
               v-model="notify.form.notifyMethod.select"
@@ -104,7 +112,7 @@
             </el-select>
           </div>
         </el-form-item>
-        <el-form-item label="推送时间">
+        <el-form-item label="提醒时间">
           <div class="div-flex">
             <el-date-picker
               v-model="notify.form.triggerDate"
@@ -129,13 +137,61 @@
         </el-form-item>
         <p
           class="notesText"
-          style="font-size: 13px; color: red; padding-top: 0px; margin-top: 0px; margin-bottom: 0px"
-        >*提交后不能取消，但可以多次提交</p>
+          style="font-size: 12px; color: red; padding-top: 0px; margin-top: 0px; margin-bottom: 0px"
+        >*提交后不能取消，但可以多次提交。</p>
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" size="small" @click="notify.visible=false">取消</el-button>
-        <el-button type="primary" size="small" @click="notifyConfirm()">确定</el-button>
+        <el-button type="primary" size="small" @click="notifySubmit()">确定</el-button>
       </span>
+    </el-dialog>
+
+    <!-- 时间机器dialog -->
+    <el-dialog title="时间机器" :visible.sync="revert.visible">
+      <p
+        class="notesText"
+        style="font-size: 12px; color: red; padding-top: 0px; margin-top: 0px; margin-bottom: 0px"
+      >*可以恢复到最近的五个版本中的任意一个，此操作不会对过去的版本产生影响，而是会使用以前版本的内容生成一个新版本。</p>
+      <el-table :data="revert.data" style="text-align: center;" size="small">
+        <el-table-column prop="update_time" label="版本"></el-table-column>
+        <el-table-column prop="user" label="创建人" width="100"></el-table-column>
+        <el-table-column :key="Math.random()" label="操作" width="150">
+          <template slot-scope="scope">
+            <el-popover placement="right" width="350" trigger="hover">
+              <el-table :data="scope.row.detail" style="text-align: center;" size="small">
+                <el-table-column prop="name" width="100" label="标题"></el-table-column>
+                <el-table-column label="内容">
+                  <template slot-scope="innerScope">
+                    <span v-if="innerScope.row.content.length<25">{{ innerScope.row.content }}</span>
+                    <el-popover
+                      placement="top"
+                      width="200"
+                      trigger="hover"
+                      :content="innerScope.row.content"
+                    >
+                      <span
+                        slot="reference"
+                        v-if="innerScope.row.content.length>=25"
+                      >{{ innerScope.row.content.substring(0,25)+'...' }}</span>
+                    </el-popover>
+                  </template>
+                </el-table-column>
+              </el-table>
+              <el-button
+                class="noMargin"
+                size="mini"
+                plain
+                type="primary"
+                slot="reference"
+                @click="revertConfirm(scope.row.update_time, scope.row.detail)"
+              >恢复至此版本</el-button>
+            </el-popover>
+          </template>
+        </el-table-column>
+      </el-table>
+      <div slot="footer" class="dialog-footer">
+        <el-button size="small" @click="revert.visible = false">取消</el-button>
+      </div>
     </el-dialog>
   </section>
 </template>
@@ -147,6 +203,7 @@ const api = {
   get: "/notes/get",
   save: "/notes/save",
   notify: "/notes/notify",
+  revert: "/notes/revert",
 };
 export default {
   name: "notes",
@@ -192,9 +249,32 @@ export default {
           triggerTime: "",
         },
       },
+      revert: {
+        visible: false,
+        data: [],
+      },
     };
   },
   methods: {
+    actionClicked(command) {
+      if (command == "edit") {
+        this.editClicked(this.activeNote);
+      }
+      if (command == "bell") {
+        this.notifyClicked(this.activeNote);
+      }
+      if (command == "delete") {
+        this.del(this.activeNote);
+      }
+    },
+    notesGetIndex(notesName) {
+      for (let x = 0; x < this.notesData.length; x++) {
+        if (this.notesData[x].token == notesName) {
+          return x;
+        }
+      }
+      return null;
+    },
     async notesGet() {
       try {
         const { data: res } = await axios.post(api.get, {
@@ -236,38 +316,11 @@ export default {
         });
       }
     },
-    notesGetIndex(notesName) {
-      for (let x = 0; x < this.notesData.length; x++) {
-        if (this.notesData[x].token == notesName) {
-          return x;
-        }
-      }
-      return null;
-    },
-    handleCommand(command) {
-      if (command == "edit") {
-        this.editClicked(this.activeNote);
-      }
-      if (command == "bell") {
-        this.notifyClicked(this.activeNote);
-      }
-      if (command == "delete") {
-        this.del(this.activeNote);
-      }
-    },
     add() {
       this.edit.dialogTitle = "新建";
       let d = new Date();
       this.edit.title = d.getMonth() + 1 + "." + d.getDate();
       this.edit.content = "";
-      this.edit.visible = true;
-    },
-    editClicked(notesName) {
-      let i = this.notesGetIndex(notesName);
-      this.edit.noteIndex = i;
-      this.edit.dialogTitle = "编辑";
-      this.edit.title = this.notesData[i].name;
-      this.edit.content = this.notesData[i].content;
       this.edit.visible = true;
     },
     async del(notesName) {
@@ -279,7 +332,15 @@ export default {
         await this.notesGet();
       });
     },
-    async submit() {
+    editClicked(notesName) {
+      let i = this.notesGetIndex(notesName);
+      this.edit.noteIndex = i;
+      this.edit.dialogTitle = "编辑";
+      this.edit.title = this.notesData[i].name;
+      this.edit.content = this.notesData[i].content;
+      this.edit.visible = true;
+    },
+    async editSubmit() {
       if (this.edit.dialogTitle == "编辑") {
         this.notesData[this.edit.noteIndex].title = this.edit.title;
         this.notesData[this.edit.noteIndex].content = this.edit.content;
@@ -302,7 +363,7 @@ export default {
       this.notify.form.content = this.notesData[i].content;
       this.notify.visible = true;
     },
-    async notifyConfirm() {
+    async notifySubmit() {
       try {
         const { data: res } = await axios.post(api.notify, {
           user_id: this.user_id,
@@ -324,6 +385,33 @@ export default {
           type: "error",
         });
       }
+    },
+    async revertClicked() {
+      try {
+        const { data: res } = await axios.post(api.revert, {
+          user_id: this.user_id,
+        });
+        this.revert.data = res.data;
+        this.revert.visible = true;
+      } catch (e) {
+        console.log(e);
+        this.$message({
+          message: e.response.data.msg,
+          type: "error",
+        });
+      }
+    },
+    async revertConfirm(update_time, detail) {
+      this.$confirm(
+        "确认使用时间机器恢复至[" + update_time + "]的版本吗?",
+        "提示",
+        {}
+      ).then(async () => {
+        this.notesData = detail;
+        await this.notesSave();
+        await this.notesGet();
+        this.revert.visible = false;
+      });
     },
   },
   mounted() {
