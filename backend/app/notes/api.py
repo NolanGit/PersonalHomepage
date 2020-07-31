@@ -100,7 +100,7 @@ def notify():
 
 
 @notes_blue_print.route('/revert', methods=['POST'])
-# @permission_required(URL_PREFIX + '/revert')
+@permission_required(URL_PREFIX + '/revert')
 @cross_origin()
 def revert():
     try:
