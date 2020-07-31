@@ -82,16 +82,53 @@ def notify():
         else:
             return rsp.failed('错误的推送方式'), 500
 
-        push_queue.create(user_id=user_id,
-                          method=method,
-                          address=address,
-                          title=title,
-                          content=content,
-                          status=0,
-                          trigger_time=notify_trigger_time,
-                          log="",
-                          create_time=datetime.datetime.now(),
-                          update=datetime.datetime.now())
+        push_queue.create(
+            user_id=user_id,
+            method=method,
+            address=address,
+            title=title,
+            content=content,
+            status=0,
+            trigger_time=notify_trigger_time,
+            log="",
+            create_time=datetime.datetime.now(),
+            update=datetime.datetime.now())
+        return rsp.success()
+    except Exception as e:
+        traceback.print_exc()
+        return rsp.failed(e), 500
+
+
+@notes_blue_print.route('/revertGet', methods=['POST'])
+# @permission_required(URL_PREFIX + '/revertGet')
+@cross_origin()
+def revertGet():
+    try:
+        user_id = request.get_json()['user_id']
+        _ = notes_table.select().where(notes_table.user_id == user_id).group_by(notes_table.update_time).order_by(-notes_table.update_time).limit(5).dicts()
+        for s_ in _:
+            print(s_)
+        return rsp.success()
+    except Exception as e:
+        traceback.print_exc()
+        return rsp.failed(e), 500
+
+
+@notes_blue_print.route('/revert', methods=['POST'])
+# @permission_required(URL_PREFIX + '/revert')
+@cross_origin()
+def revert():
+    try:
+        user_id = request.get_json()['user_id']
+        notes = request.get_json()['notes']
+        notes_table.update(is_valid=0).where((notes_table.user_id == user_id) & (notes_table.is_valid == 1)).execute()
+        for note in notes:
+            if 'id' in note:
+                del note['id']
+            note['user_id'] = user_id
+            note['is_valid'] = 1
+            note['update_time'] = datetime.datetime.now()
+            notes_table.create(**note)
         return rsp.success()
     except Exception as e:
         traceback.print_exc()
