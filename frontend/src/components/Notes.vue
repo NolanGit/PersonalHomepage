@@ -410,6 +410,7 @@ export default {
         this.notesData = detail;
         await this.notesSave();
         await this.notesGet();
+        this.revert.visible = false;
       });
     },
   },

@@ -106,9 +106,9 @@ def revert():
     try:
         user_id = request.get_json()['user_id']
         user = User(user_id=user_id)
-        _ = notes_table.select().where(notes_table.user_id == user_id).group_by(notes_table.update_time).order_by(-notes_table.update_time).limit(5).dicts()
+        _ = notes_table.select().where(notes_table.user_id == user_id).group_by(notes_table.update_time).order_by(-notes_table.update_time).limit(6).dicts()
         _r = []
-        for s_ in _:
+        for s_ in _[1:]:
             _n = notes_table.select().where((notes_table.user_id == user_id) & (notes_table.update_time == s_['update_time'])).dicts()
             _r.append({'update_time': s_['update_time'].strftime("%Y-%m-%d %H:%M:%S"), 'user': user.user_name, 'detail': []})
             for s_n in _n:
