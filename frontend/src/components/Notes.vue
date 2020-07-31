@@ -137,7 +137,7 @@
         </el-form-item>
         <p
           class="notesText"
-          style="font-size: 13px; color: red; padding-top: 0px; margin-top: 0px; margin-bottom: 0px"
+          style="font-size: 12px; color: red; padding-top: 0px; margin-top: 0px; margin-bottom: 0px"
         >*提交后不能取消，但可以多次提交</p>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -150,7 +150,7 @@
     <el-dialog title="时间机器" :visible.sync="revert.visible">
       <p
         class="notesText"
-        style="font-size: 13px; color: red; padding-top: 0px; margin-top: 0px; margin-bottom: 0px"
+        style="font-size: 12px; color: red; padding-top: 0px; margin-top: 0px; margin-bottom: 0px"
       >*可以查看并恢复到最近产生的五个版本中的任意一个，此操作不会对过去的版本产生影响，而是会同步以前版本的内容并生成一个新的版本</p>
       <el-table :data="revert.data" style="text-align: center;" size="small">
         <el-table-column prop="update_time" label="版本"></el-table-column>
@@ -158,12 +158,26 @@
         <el-table-column :key="Math.random()" label="操作" width="150">
           <template slot-scope="scope">
             <el-popover placement="right" width="350" trigger="hover">
-              <tr v-for="singleDetail in scope.row.detail" :key="singleDetail">
-                <td class="td--label">
-                  <b>{{singleDetail.name+":"}}</b>
-                </td>
-                <td>{{singleDetail.content}}</td>
-              </tr>
+              <el-table :data="singleDetail" style="text-align: center;" size="small">
+                <el-table-column prop="name" label="标题"></el-table-column>
+                <el-table-column label="内容" width="100">
+                  <template slot-scope="scope">
+                    <span
+                      style="margin-left: 10px"
+                      v-if="singleDetail.content.length<20"
+                    >{{ singleDetail.content }}</span>
+                    <el-tooltip
+                      class="item"
+                      effect="dark"
+                      :content="singleDetail.content"
+                      placement="top-start"
+                      v-if="singleDetail.content.length>=20"
+                    >
+                      <span style="margin-left: 10px">{{ singleDetail.content }}</span>
+                    </el-tooltip>
+                  </template>
+                </el-table-column>
+              </el-table>
               <el-button
                 class="noMargin"
                 size="mini"

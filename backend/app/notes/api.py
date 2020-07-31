@@ -119,7 +119,7 @@ def revert():
                     'content': s_n['content'],
                     'user_id': s_n['user_id'],
                     'is_valid': s_n['is_valid'],
-                    'update_time': s_n['update_time'],
+                    'update_time': s_n['update_time'].strftime("%Y-%m-%d %H:%M:%S"),
                 })
         return rsp.success(_r)
     except Exception as e:
