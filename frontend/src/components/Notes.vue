@@ -416,7 +416,7 @@ export default {
   },
   mounted() {
     this.notesGet();
-    this.timer = window.setInterval(this.goldPriceGet, this.flush);
+    this.timer = window.setInterval(this.notesGet, this.flush);
   },
   beforeDestroy() {
     window.clearInterval(this.timer);
