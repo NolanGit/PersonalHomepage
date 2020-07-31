@@ -151,7 +151,7 @@
       <p
         class="notesText"
         style="font-size: 12px; color: red; padding-top: 0px; margin-top: 0px; margin-bottom: 0px"
-      >*可以查看并恢复到最近产生的五个版本中的任意一个，此操作不会对过去的版本产生影响，而是会同步以前版本的内容并生成一个新的版本</p>
+      >*可以恢复到最近的五个版本中的任意一个，此操作不会对过去的版本产生影响，而是会使用以前版本的内容生成一个新版本</p>
       <el-table :data="revert.data" style="text-align: center;" size="small">
         <el-table-column prop="update_time" label="版本"></el-table-column>
         <el-table-column prop="user" label="创建人" width="100"></el-table-column>
@@ -159,13 +159,10 @@
           <template slot-scope="scope">
             <el-popover placement="right" width="350" trigger="hover">
               <el-table :data="scope.row.detail" style="text-align: center;" size="small">
-                <el-table-column prop="name" label="标题"></el-table-column>
-                <el-table-column label="内容" width="100">
+                <el-table-column prop="name" width="100" label="标题"></el-table-column>
+                <el-table-column label="内容">
                   <template slot-scope="innerScope">
-                    <span
-                      style="margin-left: 10px"
-                      v-if="innerScope.row.content.length<20"
-                    >{{ innerScope.row.content }}</span>
+                    <span v-if="innerScope.row.content.length<20">{{ innerScope.row.content }}</span>
                     <el-tooltip
                       class="item"
                       effect="dark"
@@ -173,7 +170,7 @@
                       placement="top-start"
                       v-if="innerScope.row.content.length>=20"
                     >
-                      <span style="margin-left: 10px">{{ innerScope.row.content }}</span>
+                      <span v-if="innerScope.row.content.length>=20">{{ innerScope.row.content }}</span>
                     </el-tooltip>
                   </template>
                 </el-table-column>
