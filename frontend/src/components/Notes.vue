@@ -202,7 +202,7 @@ export default {
         });
         this.notesData = res.data;
         if (this.notesData.length != 0) {
-          this.activeNote = this.notesData[0].name;
+          this.activeNote = this.notesData[0].token;
           for (let x = 0; x < this.notesData.length; x++) {
             this.notesData[x].content
               .replace(/\n/g, "<br>")
