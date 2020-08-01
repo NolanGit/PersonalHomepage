@@ -72,7 +72,7 @@ def generate_next_schedule(schedule):
             version=schedule['version'],
             user_id=schedule['user_id'],
             is_automatic=schedule['is_automatic'],
-            trigger_time=schedule['trigger_time'] + datetime.timedelta(hours=schedule['interval']),
+            trigger_time=schedule['trigger_time'] + datetime.timedelta(minutes=schedule['interval']),
             interval=schedule['interval'],
             interval_raw=schedule['interval_raw'],
             interval_unit=schedule['interval_unit'],

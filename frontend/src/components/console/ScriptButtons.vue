@@ -303,6 +303,10 @@ export default {
               select: 2,
               options: [
                 {
+                  value: 0,
+                  label: "分钟"
+                },
+                {
                   value: 1,
                   label: "小时"
                 },

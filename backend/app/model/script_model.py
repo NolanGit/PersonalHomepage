@@ -79,7 +79,7 @@ class script_schedule(BaseModel):
     is_automatic = IntegerField()
     interval = IntegerField()
     interval_raw = IntegerField()
-    interval_unit = IntegerField()  # 1:小时,2:天
+    interval_unit = IntegerField()  # 0:分钟,1:小时,2:天
     trigger_time = DateTimeField(null=True)
     update_time = DateTimeField(null=True)
 
