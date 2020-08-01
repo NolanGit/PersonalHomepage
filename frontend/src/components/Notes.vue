@@ -51,7 +51,7 @@
     </el-row>
 
     <!-- 编辑dialog -->
-    <el-dialog :title="edit.dialogTitle" :visible.sync="edit.visible">
+    <el-dialog :title="edit.dialogTitle" :visible.sync="edit.visible" close-on-click-modal="false">
       <div class="div-flex">
         <div class="notesEditFormLabel">标题：</div>
         <el-input
