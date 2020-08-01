@@ -152,7 +152,7 @@
         class="notesText"
         style="font-size: 12px; color: red; padding-top: 0px; margin-top: 0px; margin-bottom: 0px"
       >*可以恢复到最近的五个版本中的任意一个，此操作不会对过去的版本产生影响，而是会使用以前版本的内容生成一个新版本。</p>
-      <el-table :data="revert.data" style="text-align: center;" size="small">
+      <el-table :data="revert.data" style="text-align: center; margin-bottom: 20px;" size="small">
         <el-table-column prop="update_time" label="版本"></el-table-column>
         <el-table-column prop="user" label="创建人" width="100"></el-table-column>
         <el-table-column :key="Math.random()" label="操作" width="150">
