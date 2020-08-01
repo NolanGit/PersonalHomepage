@@ -20,10 +20,7 @@
           </el-select>
         </div>
       </el-form-item>
-      <el-form-item
-        label="推送方式"
-        v-show="notifyData.form.notify.select == 1"
-      >
+      <el-form-item label="推送方式" v-show="notifyData.form.notify.select == 1">
         <div class="div-flex" style="width:324px">
           <el-select
             v-model="notifyData.form.notifyMethod.select"
@@ -40,10 +37,7 @@
           </el-select>
         </div>
       </el-form-item>
-      <el-form-item
-        label="提醒间隔"
-        v-show="notifyData.form.notify.select == 1"
-      >
+      <el-form-item label="提醒间隔" v-show="notifyData.form.notify.select == 1">
         <div class="div-flex">
           <div>每</div>
           <el-input
@@ -67,10 +61,7 @@
           </el-select>
         </div>
       </el-form-item>
-      <el-form-item
-        label="在此时间后开始推送"
-        v-show="notifyData.form.notify.select == 1"
-      >
+      <el-form-item label="在此时间后开始推送" v-show="notifyData.form.notify.select == 1">
         <div class="div-flex">
           <el-date-picker
             v-model="notifyData.form.triggerDate"
@@ -95,7 +86,7 @@
       </el-form-item>
     </el-form>
     <span slot="footer" class="dialog-footer">
-      <el-button type="primary" size="small" @click="edit()">确定</el-button>
+      <el-button :loading="buttonLoading" type="primary" size="small" @click="edit()">确定</el-button>
     </span>
   </div>
 </template>
@@ -106,17 +97,18 @@ const api = {
   get: "/push/get",
   add: "/push/add",
   edit: "/push/edit",
-  delete: "/push/delete"
+  delete: "/push/delete",
 };
 export default {
   name: "PushEdit",
   props: {
     user_id: Number,
-    widget_id: Number
+    widget_id: Number,
   },
   data() {
     return {
       id: 0,
+      buttonLoading: false,
       notifyData: {
         form: {
           notify: {
@@ -124,26 +116,26 @@ export default {
             options: [
               {
                 value: 0,
-                label: "否"
+                label: "否",
               },
               {
                 value: 1,
-                label: "是"
-              }
-            ]
+                label: "是",
+              },
+            ],
           },
           notifyMethod: {
             select: 1,
             options: [
               {
                 value: 1,
-                label: "微信"
+                label: "微信",
               },
               {
                 value: 2,
-                label: "邮件"
-              }
-            ]
+                label: "邮件",
+              },
+            ],
           },
           triggerDate: "",
           triggerTime: "",
@@ -154,21 +146,21 @@ export default {
               options: [
                 {
                   value: 0,
-                  label: "分钟"
+                  label: "分钟",
                 },
                 {
                   value: 1,
-                  label: "小时"
+                  label: "小时",
                 },
                 {
                   value: 2,
-                  label: "天"
-                }
-              ]
-            }
-          }
-        }
-      }
+                  label: "天",
+                },
+              ],
+            },
+          },
+        },
+      },
     };
   },
   methods: {
@@ -176,32 +168,40 @@ export default {
       try {
         const { data: res } = await axios.post(api.get, {
           user_id: this.user_id,
-          widget_id: this.widget_id
+          widget_id: this.widget_id,
         });
         if (res.data.length == 0) {
           var today = new Date();
-          this.notifyData.form.triggerDate =  formatDate(new Date(today.getTime() + 24*60*60*1000));
-          this.notifyData.form.triggerTime = '08:00'
+          this.notifyData.form.triggerDate = formatDate(
+            new Date(today.getTime() + 24 * 60 * 60 * 1000)
+          );
+          this.notifyData.form.triggerTime = "08:00";
           return;
         } else {
-          this.id = res.data.id
-          this.notifyData.form.notify.select = res.data.notify
-          this.notifyData.form.notifyMethod.select = res.data.notify_method
-          this.notifyData.form.triggerDate = res.data.notify_trigger_time.split(" ")[0]
-          this.notifyData.form.triggerTime = res.data.notify_trigger_time.split(" ")[1].substr(0, 5)
-          this.notifyData.form.interval.value = res.data.notify_interval_raw
-          this.notifyData.form.interval.unit.select = res.data.notify_interval_unit
+          this.id = res.data.id;
+          this.notifyData.form.notify.select = res.data.notify;
+          this.notifyData.form.notifyMethod.select = res.data.notify_method;
+          this.notifyData.form.triggerDate = res.data.notify_trigger_time.split(
+            " "
+          )[0];
+          this.notifyData.form.triggerTime = res.data.notify_trigger_time
+            .split(" ")[1]
+            .substr(0, 5);
+          this.notifyData.form.interval.value = res.data.notify_interval_raw;
+          this.notifyData.form.interval.unit.select =
+            res.data.notify_interval_unit;
         }
       } catch (e) {
         console.log(e);
         this.$message({
           message: e.response.data.msg,
-          type: "error"
+          type: "error",
         });
       }
     },
     async edit() {
       try {
+        this.buttonLoading = true;
         if (this.id != 0) {
           const { data: res } = await axios.post(api.edit, {
             id: this.id,
@@ -211,13 +211,17 @@ export default {
             notify_method: this.notifyData.form.notifyMethod.select,
             notify_interval_raw: Number(this.notifyData.form.interval.value),
             notify_interval_unit: this.notifyData.form.interval.unit.select,
-            notify_trigger_time: this.notifyData.form.triggerDate + " " + this.notifyData.form.triggerTime,
+            notify_trigger_time:
+              this.notifyData.form.triggerDate +
+              " " +
+              this.notifyData.form.triggerTime,
           });
           this.$message({
             message: res.msg,
-            type: "success"
+            type: "success",
           });
-          this.$emit('done')
+          this.buttonLoading = false;
+          this.$emit("done");
         } else if (this.id == 0) {
           const { data: res } = await axios.post(api.add, {
             id: this.id,
@@ -227,26 +231,31 @@ export default {
             notify_method: this.notifyData.form.notifyMethod.select,
             notify_interval_raw: Number(this.notifyData.form.interval.value),
             notify_interval_unit: this.notifyData.form.interval.unit.select,
-            notify_trigger_time: this.notifyData.form.triggerDate + " " + this.notifyData.form.triggerTime,
+            notify_trigger_time:
+              this.notifyData.form.triggerDate +
+              " " +
+              this.notifyData.form.triggerTime,
           });
           this.$message({
             message: res.msg,
-            type: "success"
+            type: "success",
           });
-          this.$emit('done')
+          this.buttonLoading = false;
+          this.$emit("done");
         }
       } catch (e) {
+        this.buttonLoading = false;
         console.log(e);
         this.$message({
           message: e.response.data.msg,
-          type: "error"
+          type: "error",
         });
       }
-    }
+    },
   },
   mounted() {
     this.get();
-  }
+  },
 };
 </script>
 <style scoped>
