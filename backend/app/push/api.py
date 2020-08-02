@@ -71,7 +71,7 @@ def add():
                  notify_interval_raw=notify_interval_raw,
                  notify_interval_unit=notify_interval_unit,
                  notify_interval=notify_interval,
-                 notify_trigger_time=notify_trigger_time,
+                 notify_trigger_time=notify_trigger_time - datetime.timedelta(minutes=1),
                  update_time=datetime.datetime.now()).save()
         return rsp.success()
 
