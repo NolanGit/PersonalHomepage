@@ -71,7 +71,7 @@ def add():
                  notify_interval_raw=notify_interval_raw,
                  notify_interval_unit=notify_interval_unit,
                  notify_interval=notify_interval,
-                 notify_trigger_time=notify_trigger_time - datetime.timedelta(minutes=1),
+                 notify_trigger_time=notify_trigger_time - datetime.timedelta(minutes=1), # 因为推送也是异步的，颗粒度为五分钟，所以为了避免时间差稍差一点，所以减去一分钟
                  update_time=datetime.datetime.now()).save()
         return rsp.success()
 
@@ -108,7 +108,7 @@ def edit():
                  notify_interval_raw=notify_interval_raw,
                  notify_interval_unit=notify_interval_unit,
                  notify_interval=notify_interval,
-                 notify_trigger_time=notify_trigger_time,
+                 notify_trigger_time=notify_trigger_time - datetime.timedelta(minutes=1), # 因为推送也是异步的，颗粒度为五分钟，所以为了避免时间差稍差一点，所以减去一分钟
                  update_time=datetime.datetime.now()).save()
         return rsp.success()
 
