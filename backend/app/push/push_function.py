@@ -26,18 +26,19 @@ except:
 
 
 class PushData(object):
+
     def __init__(
-        self,
-        id=0,
-        user_id=0,
-        widget_id=0,
-        notify=0,
-        notify_method=0,
-        notify_interval_raw=0,
-        notify_interval_unit=0,
-        notify_interval=0,
-        notify_trigger_time=None,
-        update_time=None,
+            self,
+            id=0,
+            user_id=0,
+            widget_id=0,
+            notify=0,
+            notify_method=0,
+            notify_interval_raw=0,
+            notify_interval_unit=0,
+            notify_interval=0,
+            notify_trigger_time=None,
+            update_time=None,
     ):
         '''
             args:
@@ -68,16 +69,17 @@ class PushData(object):
         '''
             新建一条数据到库中
         '''
-        push.create(user_id=self.user_id,
-                    widget_id=self.widget_id,
-                    is_valid=1,
-                    notify=self.notify,
-                    notify_method=self.notify_method,
-                    notify_interval_raw=self.notify_interval_raw,
-                    notify_interval_unit=self.notify_interval_unit,
-                    notify_interval=self.notify_interval,
-                    notify_trigger_time=self.notify_trigger_time,
-                    update_time=datetime.datetime.now())
+        push.create(
+            user_id=self.user_id,
+            widget_id=self.widget_id,
+            is_valid=1,
+            notify=self.notify,
+            notify_method=self.notify_method,
+            notify_interval_raw=self.notify_interval_raw,
+            notify_interval_unit=self.notify_interval_unit,
+            notify_interval=self.notify_interval,
+            notify_trigger_time=self.notify_trigger_time,
+            update_time=datetime.datetime.now())
         return self
 
     def delete(self):
@@ -95,15 +97,16 @@ class PushData(object):
                 address = User(user_id=self.user_id).wechat_key
             elif self.notify_method == 2:
                 address = User(user_id=self.user_id).email
-            push_queue.create(user_id=self.user_id,
-                              method=self.notify_method,
-                              address=address,
-                              title=title,
-                              content=content,
-                              status=0,
-                              trigger_time=self.notify_trigger_time,
-                              create_time=datetime.datetime.now(),
-                              update_time=datetime.datetime.now())
+            push_queue.create(
+                user_id=self.user_id,
+                method=self.notify_method,
+                address=address,
+                title=title,
+                content=content,
+                status=0,
+                trigger_time=self.notify_trigger_time,
+                create_time=datetime.datetime.now(),
+                update_time=datetime.datetime.now())
             return True
         except Exception as e:
             traceback.print_exc()
@@ -115,17 +118,20 @@ class PushData(object):
             用于推送完毕后，生成下一条待推送的记录
         '''
         try:
-            if self.notify_trigger_time-self.current_time
-            push.create(user_id=self.user_id,
-                        widget_id=self.widget_id,
-                        is_valid=1,
-                        notify=self.notify,
-                        notify_method=self.notify_method,
-                        notify_interval_raw=self.notify_interval_raw,
-                        notify_interval_unit=self.notify_interval_unit,
-                        notify_interval=self.notify_interval,
-                        notify_trigger_time=self.current_time + datetime.timedelta(minutes=self.notify_interval),
-                        update_time=datetime.datetime.now())
+            if self.notify_trigger_time - self.current_time:
+                pass
+            #to do
+            push.create(
+                user_id=self.user_id,
+                widget_id=self.widget_id,
+                is_valid=1,
+                notify=self.notify,
+                notify_method=self.notify_method,
+                notify_interval_raw=self.notify_interval_raw,
+                notify_interval_unit=self.notify_interval_unit,
+                notify_interval=self.notify_interval,
+                notify_trigger_time=self.current_time + datetime.timedelta(minutes=self.notify_interval),
+                update_time=datetime.datetime.now())
             return True
         except Exception as e:
             traceback.print_exc()
@@ -156,6 +162,7 @@ class PushData(object):
 
 
 class PushList(object):
+
     def __init__(self, user_id=0, widget_id=0):
         self.user_id = user_id
         self.widget_id = widget_id
@@ -196,21 +203,23 @@ class PushList(object):
                 else:
                     push_valids = push.select().where(bool_is_valid).dicts()
         self.push_list = [
-            PushData(id=push_valid['id'],
-                     user_id=push_valid['user_id'],
-                     widget_id=push_valid['widget_id'],
-                     notify=push_valid['notify'],
-                     notify_method=push_valid['notify_method'],
-                     notify_interval_raw=push_valid['notify_interval_raw'],
-                     notify_interval_unit=push_valid['notify_interval_unit'],
-                     notify_interval=push_valid['notify_interval'],
-                     notify_trigger_time=push_valid['notify_trigger_time'],
-                     update_time=push_valid['update_time']) for push_valid in push_valids
+            PushData(
+                id=push_valid['id'],
+                user_id=push_valid['user_id'],
+                widget_id=push_valid['widget_id'],
+                notify=push_valid['notify'],
+                notify_method=push_valid['notify_method'],
+                notify_interval_raw=push_valid['notify_interval_raw'],
+                notify_interval_unit=push_valid['notify_interval_unit'],
+                notify_interval=push_valid['notify_interval'],
+                notify_trigger_time=push_valid['notify_trigger_time'],
+                update_time=push_valid['update_time']) for push_valid in push_valids
         ]
         return self
 
 
 class PushQueueList(object):
+
     def __init__(self):
         pass
 
@@ -220,25 +229,27 @@ class PushQueueList(object):
             print('无待推送任务')
             self.push_queue_list = []
         self.push_queue_list = [
-            PushQueueData(id=single_push_queue_query['id'],
-                          method=single_push_queue_query['method'],
-                          address=single_push_queue_query['address'],
-                          title=single_push_queue_query['title'],
-                          content=single_push_queue_query['content'],
-                          trigger_time=single_push_queue_query['trigger_time']) for single_push_queue_query in push_queue_query
+            PushQueueData(
+                id=single_push_queue_query['id'],
+                method=single_push_queue_query['method'],
+                address=single_push_queue_query['address'],
+                title=single_push_queue_query['title'],
+                content=single_push_queue_query['content'],
+                trigger_time=single_push_queue_query['trigger_time']) for single_push_queue_query in push_queue_query
         ]
         return self
 
 
 class PushQueueData(object):
+
     def __init__(
-        self,
-        id,
-        method,
-        address,
-        title,
-        content,
-        trigger_time,
+            self,
+            id,
+            method,
+            address,
+            title,
+            content,
+            trigger_time,
     ):
         self.id = id
         self.method = method
@@ -248,6 +259,7 @@ class PushQueueData(object):
         self.trigger_time = trigger_time
 
     def before_push(push_func):
+
         @wraps(push_func)
         def inner(self):
             try:
@@ -261,6 +273,7 @@ class PushQueueData(object):
         return inner
 
     def after_push(push_func):
+
         @wraps(push_func)
         def inner(self):
             push_func(self)
