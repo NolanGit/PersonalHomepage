@@ -1,11 +1,9 @@
 import os
 import sys
 import random
-import pymysql
 import datetime
 import traceback
 import subprocess
-import configparser
 
 CURRENT_RUNNING_PATH = os.path.abspath('.')
 TOMORROW = datetime.datetime.today().replace(hour=0, minute=0, second=0, microsecond=0) + datetime.timedelta(days=1)
@@ -25,6 +23,8 @@ print('当前运行路径:%s' % CURRENT_RUNNING_PATH)
 
 first_excution = input('请问是初次运行本脚本吗?(y/n):')
 if first_excution == 'n' or first_excution == 'N':
+    import pymysql
+    import configparser
 
     def executeScriptsFromFile(filename, db):
         cursor = db.cursor()
@@ -92,6 +92,8 @@ def install(REQUIREMENTS_PATH):
 
 print('安装requirements.txt......')
 install(REQUIREMENTS_PATH)
+import pymysql
+import configparser
 
 admin_email = input('请输入管理员邮箱，用于接收推送邮件:')
 print(admin_email)

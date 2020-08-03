@@ -115,6 +115,7 @@ class PushData(object):
             用于推送完毕后，生成下一条待推送的记录
         '''
         try:
+            if self.notify_trigger_time-self.current_time
             push.create(user_id=self.user_id,
                         widget_id=self.widget_id,
                         is_valid=1,
