@@ -120,7 +120,7 @@ class PushData(object):
         try:
             time_difference = self.current_time - self.notify_trigger_time
             if time_difference.days > 1:
-                self.notify_trigger_time = self.notify_trigger_time + datetime.timedelta(days=time_difference)
+                self.notify_trigger_time = self.notify_trigger_time + datetime.timedelta(days=time_difference.days)
             push.create(
                 user_id=self.user_id,
                 widget_id=self.widget_id,
