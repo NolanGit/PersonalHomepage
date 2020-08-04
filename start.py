@@ -145,7 +145,7 @@ flag = True
 try:
     print('%s开始配置' % CONFIG_PATH)
     backup(CONFIG_PATH)
-    homepage_text = '[config]\nWIDGET_ID_WEATHER = 1\nWIDGET_ID_BOOKMARKS = 2\nWIDGET_ID_APP = 3\nWIDGET_ID_GOLD = 4\nADMIN_EMAIL = %s\nSENDER = %s\nPASSWORD = %s\nDB_PASS=%s\nKEY = %s\nLOCATION = %s\nUPLOAD_FILE_PATH = %s\n' % (
+    homepage_text = '[config]\nWIDGET_ID_WEATHER = 1\nWIDGET_ID_BOOKMARKS = 2\nWIDGET_ID_APP = 3\nWIDGET_ID_GOLD = 4\nWIDGET_ID_NOTES = 5\nADMIN_EMAIL = %s\nSENDER = %s\nPASSWORD = %s\nDB_PASS=%s\nKEY = %s\nLOCATION = %s\nUPLOAD_FILE_PATH = %s\n' % (
         admin_email, mail_sender_address, mail_sender_password, mysql_password, weather_api_key, weather_default_location, UPLOAD_FILE_PATH)
     with open(CONFIG_PATH, 'w') as w:
         w.write(homepage_text)
