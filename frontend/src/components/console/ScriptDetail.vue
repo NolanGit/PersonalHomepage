@@ -709,7 +709,7 @@ export default {
     //使用当前激活tab的detial，接收start_command和组装方式，组装好command和detail并返回，start_command在运行脚本时为打开文件夹的命令加上起始命令
     command_get(start_command, type) {
       var command = "";
-      var detail = {};
+      var detail = [];
       if (type == "1") {
         //顺序模式
         for (
@@ -720,8 +720,21 @@ export default {
           let _singleDetail = this.formData[this.activeTabIndex].formDataDetail[
             x
           ];
-          //console.log(this.formData[this.activeTabIndex].formDataDetail[x].type)
-          detail[_singleDetail.label] = _singleDetail.value;
+          detail.push({});
+          detail[detail.length - 1].type = _singleData.type;
+          detail[detail.length - 1].label = _singleData.label;
+          detail[detail.length - 1].value = _singleData.value;
+          if (detail[detail.length - 1].type == "select") {
+            for (var l in _singleData.options) {
+              if (
+                _singleData.options[l].value == detail[detail.length - 1].value
+              ) {
+                detail[detail.length - 1].optionLabel =
+                  _singleData.options[l].label;
+                break;
+              }
+            }
+          }
           if (_singleDetail.type == "dateRange") {
             if (_singleDetail.value == null) {
               //解决用户点击了组建上的清空按钮后导致前端报错的问题
@@ -747,7 +760,21 @@ export default {
           let _singleDetail = this.formData[this.activeTabIndex].formDataDetail[
             x
           ];
-          detail[_singleDetail.label] = _singleDetail.value;
+          detail.push({});
+          detail[detail.length - 1].type = _singleData.type;
+          detail[detail.length - 1].label = _singleData.label;
+          detail[detail.length - 1].value = _singleData.value;
+          if (detail[detail.length - 1].type == "select") {
+            for (var l in _singleData.options) {
+              if (
+                _singleData.options[l].value == detail[detail.length - 1].value
+              ) {
+                detail[detail.length - 1].optionLabel =
+                  _singleData.options[l].label;
+                break;
+              }
+            }
+          }
           if (_singleDetail.type == "dateRange") {
             if (_singleDetail.value == null) {
               //解决用户点击了组建上的清空按钮后导致前端报错的问题
