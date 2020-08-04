@@ -274,14 +274,14 @@ const api = {
   getNewestLog: "/script/getNewestLog",
   schedule: "/script/schedule",
   scheduleAdd: "/script/scheduleEdit",
-  scheduleDelete: "/script/scheduleDelete"
+  scheduleDelete: "/script/scheduleDelete",
 };
 export default {
   name: "ConsoleScriptButtons",
   components: {},
   props: {
     user_id: Number,
-    singleForm: Array
+    singleForm: Array,
   },
   watch: {},
   data() {
@@ -304,20 +304,20 @@ export default {
               options: [
                 {
                   value: 0,
-                  label: "分钟"
+                  label: "分钟",
                 },
                 {
                   value: 1,
-                  label: "小时"
+                  label: "小时",
                 },
                 {
                   value: 2,
-                  label: "天"
-                }
-              ]
-            }
-          }
-        }
+                  label: "天",
+                },
+              ],
+            },
+          },
+        },
       },
       output: {
         canBeTerminate: false,
@@ -327,8 +327,8 @@ export default {
         visible: false,
         text: "",
         important_fields: [],
-        isAlert: false
-      }
+        isAlert: false,
+      },
     };
   },
   watch: {},
@@ -338,14 +338,36 @@ export default {
       try {
         const { data: res } = await axios.post(api.replay, {
           script_id: this.singleForm.id,
-          user_id: this.user_id
+          user_id: this.user_id,
         });
         if (res.code != 200) {
           this.$message({
             message: res.msg,
-            type: "error"
+            type: "error",
           });
-        } else if (this.singleForm.version != res.data.version) {
+        }
+        for (var f = 0; f < this.singleForm.formDataDetail.length; f++) {
+          for (let x = 0; x < res.data.detail.length; x++) {
+            try {
+              if (
+                res.data.detail[x].label ==
+                this.singleForm.formDataDetail[f].label
+              ) {
+                this.singleForm.formDataDetail[f].value =
+                  res.data.detail[x].value;
+              }
+            } catch (err) {
+              console.log(
+                "[" +
+                  this.singleForm.formDataDetail[f].label +
+                  "]" +
+                  "恢复失败：" +
+                  err
+              );
+            }
+          }
+        }
+        if (this.singleForm.version != res.data.version) {
           this.$message({
             message:
               "检测到脚本配置发生过修改(" +
@@ -355,34 +377,20 @@ export default {
               "V" +
               this.singleForm.version +
               ")，可能无法完美恢复上一次参数",
-            type: "info"
+            type: "info",
           });
         } else {
           this.$message({
-            message: "参数填充成功",
-            type: "success"
+            message: "参数填充完毕",
+            type: "success",
           });
-        }
-        for (var f = 0; f < this.singleForm.formDataDetail.length; f++) {
-          try {
-            this.singleForm.formDataDetail[f].value =
-              res.data.detail[this.singleForm.formDataDetail[f].label];
-          } catch (err) {
-            console.log(
-              "[" +
-                this.singleForm.formDataDetail[f].label +
-                "]" +
-                "恢复失败：" +
-                err
-            );
-          }
         }
         this.$emit("replay", this.singleForm);
       } catch (e) {
         console.log(e);
         this.$message({
           message: e.response.data.msg,
-          type: "error"
+          type: "error",
         });
       }
     },
@@ -391,14 +399,14 @@ export default {
       try {
         const { data: res } = await axios.post(api.getNewestLog, {
           script_id: this.singleForm.id,
-          user_id: this.user_id
+          user_id: this.user_id,
         });
         this.$emit("output", res.data[0].output);
       } catch (e) {
         console.log(e);
         this.$message({
           message: e.response.data.msg,
-          type: "error"
+          type: "error",
         });
       }
     },
@@ -409,7 +417,7 @@ export default {
       try {
         const { data: res } = await axios.post(api.getLogs, {
           script_id: this.singleForm.id,
-          user_id: this.user_id
+          user_id: this.user_id,
         });
         this.output.logs = res.data.logs;
         this.output.important_fields = res.data.important_fields;
@@ -424,7 +432,7 @@ export default {
         console.log(e);
         this.$message({
           message: e.response.data.msg,
-          type: "error"
+          type: "error",
         });
       }
       this.output.loading = false;
@@ -460,12 +468,12 @@ export default {
             this.singleForm.version +
             ")，可能无法完美恢复上一次参数，请关闭列表弹出框后查看",
           type: "info",
-          duration: 4000
+          duration: 4000,
         });
       } else {
         this.$message({
           message: "参数填充成功，请关闭列表弹出框后点击提交按钮以运行",
-          type: "success"
+          type: "success",
         });
         this.$emit("replay", this.singleForm);
       }
@@ -477,7 +485,7 @@ export default {
       try {
         const { data: res } = await axios.post(api.schedule, {
           script_id: this.singleForm.id,
-          user_id: this.user_id
+          user_id: this.user_id,
         });
         this.schedule.loading = false;
         this.schedule.schedules = res.data;
@@ -486,7 +494,7 @@ export default {
         console.log(e);
         this.$message({
           message: e.response.data.msg,
-          type: "error"
+          type: "error",
         });
       }
     },
@@ -517,11 +525,11 @@ export default {
           is_automatic: this.schedule.scheduleData.is_automatic == true ? 1 : 0,
           interval_raw: Number(this.schedule.scheduleData.interval.value),
           interval_unit: this.schedule.scheduleData.interval.unit.select,
-          schedule_id: this.schedule.scheduleData.schedule_id
+          schedule_id: this.schedule.scheduleData.schedule_id,
         });
         this.$message({
           message: "成功！",
-          type: "success"
+          type: "success",
         });
         this.schedule.dialogVisible = false;
         this.schedule.scheduleData.triggerDate = "";
@@ -534,7 +542,7 @@ export default {
         console.log(e);
         this.$message({
           message: e.response.data.msg,
-          type: "error"
+          type: "error",
         });
       }
     },
@@ -566,17 +574,17 @@ export default {
         try {
           const { data: res } = await axios.post(api.scheduleDelete, {
             user_id: this.user_id,
-            schedule_id: schedule_id
+            schedule_id: schedule_id,
           });
           this.$message({
             message: res.msg,
-            type: "success"
+            type: "success",
           });
         } catch (e) {
           console.log(e);
           this.$message({
             message: e.response.data.msg,
-            type: "error"
+            type: "error",
           });
         }
       });
@@ -592,18 +600,18 @@ export default {
           try {
             const { data: res } = await axios.post(api.delete, {
               script_id: this.singleForm.id,
-              user_id: this.user_id
+              user_id: this.user_id,
             });
             this.$message({
               message: res.msg,
-              type: "success"
+              type: "success",
             });
             this.$emit("deleted");
           } catch (e) {
             console.log(e);
             this.$message({
               message: e.response.data.msg,
-              type: "error"
+              type: "error",
             });
           }
         })
@@ -683,12 +691,12 @@ export default {
       }
       var temp = {
         command: command,
-        detail: detail
+        detail: detail,
       };
       return temp;
-    }
+    },
   },
-  mounted() {}
+  mounted() {},
 };
 </script>
 
