@@ -721,16 +721,17 @@ export default {
             x
           ];
           detail.push({});
-          detail[detail.length - 1].type = _singleData.type;
-          detail[detail.length - 1].label = _singleData.label;
-          detail[detail.length - 1].value = _singleData.value;
+          detail[detail.length - 1].type = _singleDetail.type;
+          detail[detail.length - 1].label = _singleDetail.label;
+          detail[detail.length - 1].value = _singleDetail.value;
           if (detail[detail.length - 1].type == "select") {
-            for (var l in _singleData.options) {
+            for (var l in _singleDetail.options) {
               if (
-                _singleData.options[l].value == detail[detail.length - 1].value
+                _singleDetail.options[l].value ==
+                detail[detail.length - 1].value
               ) {
                 detail[detail.length - 1].optionLabel =
-                  _singleData.options[l].label;
+                  _singleDetail.options[l].label;
                 break;
               }
             }
@@ -761,16 +762,17 @@ export default {
             x
           ];
           detail.push({});
-          detail[detail.length - 1].type = _singleData.type;
-          detail[detail.length - 1].label = _singleData.label;
-          detail[detail.length - 1].value = _singleData.value;
+          detail[detail.length - 1].type = _singleDetail.type;
+          detail[detail.length - 1].label = _singleDetail.label;
+          detail[detail.length - 1].value = _singleDetail.value;
           if (detail[detail.length - 1].type == "select") {
-            for (var l in _singleData.options) {
+            for (var l in _singleDetail.options) {
               if (
-                _singleData.options[l].value == detail[detail.length - 1].value
+                _singleDetail.options[l].value ==
+                detail[detail.length - 1].value
               ) {
                 detail[detail.length - 1].optionLabel =
-                  _singleData.options[l].label;
+                  _singleDetail.options[l].label;
                 break;
               }
             }
