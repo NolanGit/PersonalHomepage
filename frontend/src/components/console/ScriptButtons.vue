@@ -90,11 +90,12 @@
             <el-table-column min-width="250" property="options" label="操作">
               <template slot-scope="scope">
                 <el-popover placement="left" width="350" trigger="hover">
-                  <tr v-for="(key,index) in scope.row.detail" :key="key">
+                  <tr v-for="key in scope.row.detail" :key="key">
                     <td class="td--label">
-                      <b>{{index+":"}}</b>
+                      <b>{{key.label+":"}}</b>
                     </td>
-                    <td>{{key}}</td>
+                    <td v-if="key.type=='select'">{{key.optionLabel}}</td>
+                    <td v-if="key.type!='select'">{{key.value}}</td>
                   </tr>
                   <el-button
                     plain
