@@ -642,14 +642,8 @@ export default {
       var detail = [];
       if (type == "1") {
         //顺序模式
-        for (
-          var x = 0;
-          x < this.formData[this.activeTabIndex].formDataDetail.length;
-          x++
-        ) {
-          let _singleDetail = this.formData[this.activeTabIndex].formDataDetail[
-            x
-          ];
+        for (var x = 0; x < this.singleForm.formDataDetail.length; x++) {
+          let _singleDetail = this.singleForm.formDataDetail[x];
           detail.push({});
           detail[detail.length - 1].type = _singleDetail.type;
           detail[detail.length - 1].label = _singleDetail.label;
@@ -683,14 +677,8 @@ export default {
       } else if (type == "2") {
         //替换模式
         var tempCommand = start_command;
-        for (
-          var x = 0;
-          x < this.formData[this.activeTabIndex].formDataDetail.length;
-          x++
-        ) {
-          let _singleDetail = this.formData[this.activeTabIndex].formDataDetail[
-            x
-          ];
+        for (var x = 0; x < this.singleForm.formDataDetail.length; x++) {
+          let _singleDetail = this.singleForm.formDataDetail[x];
           detail.push({});
           detail[detail.length - 1].type = _singleDetail.type;
           detail[detail.length - 1].label = _singleDetail.label;
