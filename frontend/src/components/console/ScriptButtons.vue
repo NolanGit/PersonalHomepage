@@ -639,72 +639,89 @@ export default {
     //使用当前激活tab的detial，接收start_command和组装方式，组装好command和detail并返回，start_command在运行脚本时为打开文件夹的命令加上起始命令
     command_get(start_command, type) {
       var command = "";
-      var detail = {};
-      //console.log(this.activeTab)
+      var detail = [];
       if (type == "1") {
         //顺序模式
-        for (var x = 0; x < this.singleForm.formDataDetail.length; x++) {
-          //console.log(this.singleForm.formDataDetail[x].type)
-          detail[
-            this.singleForm.formDataDetail[x].label
-          ] = this.singleForm.formDataDetail[x].value;
-          if (this.singleForm.formDataDetail[x].type == "dateRange") {
-            if (this.singleForm.formDataDetail[x].value == null) {
+        for (
+          var x = 0;
+          x < this.formData[this.activeTabIndex].formDataDetail.length;
+          x++
+        ) {
+          let _singleDetail = this.formData[this.activeTabIndex].formDataDetail[
+            x
+          ];
+          detail.push({});
+          detail[detail.length - 1].type = _singleDetail.type;
+          detail[detail.length - 1].label = _singleDetail.label;
+          detail[detail.length - 1].value = _singleDetail.value;
+          if (detail[detail.length - 1].type == "select") {
+            for (var l in _singleDetail.options) {
+              if (
+                _singleDetail.options[l].value ==
+                detail[detail.length - 1].value
+              ) {
+                detail[detail.length - 1].optionLabel =
+                  _singleDetail.options[l].label;
+                break;
+              }
+            }
+          }
+          if (_singleDetail.type == "dateRange") {
+            if (_singleDetail.value == null) {
               //解决用户点击了组建上的清空按钮后导致前端报错的问题
               continue;
             }
-            for (
-              let d = 0;
-              d < this.singleForm.formDataDetail[x].value.length;
-              d++
-            ) {
-              command =
-                command + " " + this.singleForm.formDataDetail[x].value[d];
+            for (let d = 0; d < _singleDetail.value.length; d++) {
+              command = command + " " + _singleDetail.value[d];
             }
             continue;
           }
-          command = command + " " + this.singleForm.formDataDetail[x].value;
+          command = command + " " + _singleDetail.value;
         }
         command = start_command + command;
         //console.log(command)
       } else if (type == "2") {
         //替换模式
         var tempCommand = start_command;
-        for (var x = 0; x < this.singleForm.formDataDetail.length; x++) {
-          detail[
-            this.singleForm.formDataDetail[x].label
-          ] = this.singleForm.formDataDetail[x].value;
-          if (this.singleForm.formDataDetail[x].type == "dateRange") {
-            if (this.singleForm.formDataDetail[x].value == null) {
+        for (
+          var x = 0;
+          x < this.formData[this.activeTabIndex].formDataDetail.length;
+          x++
+        ) {
+          let _singleDetail = this.formData[this.activeTabIndex].formDataDetail[
+            x
+          ];
+          detail.push({});
+          detail[detail.length - 1].type = _singleDetail.type;
+          detail[detail.length - 1].label = _singleDetail.label;
+          detail[detail.length - 1].value = _singleDetail.value;
+          if (detail[detail.length - 1].type == "select") {
+            for (var l in _singleDetail.options) {
+              if (
+                _singleDetail.options[l].value ==
+                detail[detail.length - 1].value
+              ) {
+                detail[detail.length - 1].optionLabel =
+                  _singleDetail.options[l].label;
+                break;
+              }
+            }
+          }
+          if (_singleDetail.type == "dateRange") {
+            if (_singleDetail.value == null) {
               //解决用户点击了组建上的清空按钮后导致前端报错的问题
               continue;
             }
             var tempDateRange = "";
-            for (
-              let d = 0;
-              d < this.singleForm.formDataDetail[x].value.length;
-              d++
-            ) {
-              tempDateRange =
-                tempDateRange +
-                " " +
-                this.singleForm.formDataDetail[x].value[d];
+            for (let d = 0; d < _singleDetail.value.length; d++) {
+              tempDateRange = tempDateRange + " " + _singleDetail.value[d];
             }
-            var reg = new RegExp(
-              "%" + this.singleForm.formDataDetail[x].label + "%",
-              "g"
-            );
+            var reg = new RegExp("%" + _singleDetail.label + "%", "g");
             tempCommand = tempCommand.replace(reg, tempDateRange);
             continue;
           }
-          var reg = new RegExp(
-            "%" + this.singleForm.formDataDetail[x].label + "%",
-            "g"
-          );
-          tempCommand = tempCommand.replace(
-            reg,
-            this.singleForm.formDataDetail[x].value
-          );
+          var reg = new RegExp("%" + _singleDetail.label + "%", "g");
+          tempCommand = tempCommand.replace(reg, _singleDetail.value);
         }
         command = tempCommand;
       }
