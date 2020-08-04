@@ -263,7 +263,7 @@ class PushQueueData(object):
         @wraps(push_func)
         def inner(self):
             try:
-                push_queue.update(status=1).where(push_queue.id == self.id).execute()
+                push_queue.update(status=1, update_time=datetime.datetime.now()).where(push_queue.id == self.id).execute()
                 push_func(self)
             except Exception as e:
                 traceback.print_exc()
@@ -278,9 +278,9 @@ class PushQueueData(object):
         def inner(self):
             push_func(self)
             if self.log['code'] == 200:
-                push_queue.update(status=2, log=str(self.log)).where(push_queue.id == self.id).execute()
+                push_queue.update(status=2, log=str(self.log), update_time=datetime.datetime.now()).where(push_queue.id == self.id).execute()
             else:
-                push_queue.update(status=0, log=str(self.log)).where(push_queue.id == self.id).execute()
+                push_queue.update(status=0, log=str(self.log), update_time=datetime.datetime.now()).where(push_queue.id == self.id).execute()
 
         return inner
 
