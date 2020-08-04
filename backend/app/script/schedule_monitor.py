@@ -65,6 +65,10 @@ def run(schedules):
 
 def generate_next_schedule(schedule):
     if schedule['is_automatic'] == 1:
+        current_time = datetime.datetime.now()
+        time_difference = current_time - schedule['trigger_time']
+        if time_difference.days > 1:
+            schedule['trigger_time'] = schedule['trigger_time'] + datetime.timedelta(days=time_difference.days)
         script_schedule.create(
             script_id=schedule['script_id'],
             command=schedule['command'],
