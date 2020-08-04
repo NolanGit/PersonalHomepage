@@ -191,19 +191,19 @@ const api = {
   edit: "/script/edit",
   saveOutput: "/script/saveOutput",
   getLogs: "/script/getLogs",
-  extraButtonScriptRun: "/script/extraButtonScriptRun"
+  extraButtonScriptRun: "/script/extraButtonScriptRun",
 };
 export default {
   name: "ConsoleScriptDetail",
   components: {
     ScriptButtons,
-    ScriptEdit
+    ScriptEdit,
   },
   props: {
     user_id: Number,
     systemId: Number,
     newTabBool: Boolean,
-    activeScriptName: String
+    activeScriptName: String,
   },
   watch: {
     systemId(newVal, oldVal) {
@@ -220,7 +220,7 @@ export default {
       if (newVal && !oldVal) {
         this.newScript();
       }
-    }
+    },
   },
   data() {
     return {
@@ -233,7 +233,7 @@ export default {
         output: "",
         buttonLoading: false,
         loading: false,
-        output_temp: ""
+        output_temp: "",
       },
       output: {
         canBeTerminate: false,
@@ -244,7 +244,7 @@ export default {
         text: "",
         important_fields: [],
         isAlert: false,
-        scrollInit: true
+        scrollInit: true,
       },
       edit: {
         buttonLoading: false,
@@ -259,34 +259,34 @@ export default {
         typeOptions: [
           {
             label: "输入框",
-            value: "input"
+            value: "input",
           },
           {
             label: "选择器",
-            value: "select"
+            value: "select",
           },
           {
             label: "日期",
-            value: "date"
+            value: "date",
           },
           {
             label: "日期范围",
-            value: "dateRange"
-          }
+            value: "dateRange",
+          },
         ],
         boolOptions: [
           {
             label: "是",
-            value: 1
+            value: 1,
           },
           {
             label: "否",
-            value: 0
-          }
+            value: 0,
+          },
         ],
-        formData: []
+        formData: [],
       },
-      submitButtonLoading: false
+      submitButtonLoading: false,
     };
   },
   methods: {
@@ -310,11 +310,11 @@ export default {
               scrollY: true,
               scrollbar: {
                 fade: true, // node_modules\better-scroll\dist\bscroll.esm.js:2345可以调时间，目前使用的是'var time = visible ? 500 : 5000;'
-                interactive: true
+                interactive: true,
               },
               momentumLimitDistance: 300,
               mouseWheel: true,
-              preventDefault: false
+              preventDefault: false,
             });
             scroll.refresh();
           } catch (error) {
@@ -352,7 +352,7 @@ export default {
       try {
         const { data: res } = await axios.post(api.subSystemScript, {
           user_id: this.user_id,
-          sub_system_id: systemId
+          sub_system_id: systemId,
         });
         this.formData = [];
         for (let d = 0; d < res.data.length; d++) {
@@ -368,7 +368,7 @@ export default {
             update_time: res.data[d]["update_time"],
             type: res.data[d]["type"],
             sub_system_id: res.data[d]["sub_system_id"],
-            formDataDetail: []
+            formDataDetail: [],
           });
           for (var t = 0; t < res.data[d]["detail"].length; t++) {
             this.formData[this.formData.length - 1]["formDataDetail"].push({
@@ -387,7 +387,7 @@ export default {
                 res.data[d]["detail"][t]["extra_button_label"],
               extra_button_script:
                 res.data[d]["detail"][t]["extra_button_script"],
-              version: res.data[d]["detail"][t]["version"]
+              version: res.data[d]["detail"][t]["version"],
             });
           }
         }
@@ -397,13 +397,13 @@ export default {
         console.log(e);
         this.$message({
           message: e.response.data.msg,
-          type: "error"
+          type: "error",
         });
       }
     },
     //展示编辑脚本dialog
     singleDataSetting() {
-      this.subSystemScript(this.systemId).then(data => {
+      this.subSystemScript(this.systemId).then((data) => {
         this.edit.dialogTitle = "编辑脚本";
         this.edit.title = data[this.activeTabIndex].title;
         this.edit.id = data[this.activeTabIndex].id;
@@ -441,13 +441,13 @@ export default {
         axios
           .post(api.extraButtonScriptRun, {
             user_id: this.user_id,
-            command: command
+            command: command,
           })
-          .then(res => {
+          .then((res) => {
             if (res.data.data["process_id"] == -1) {
               this.$message({
                 message: "任务创建错误，请联系管理员！",
-                type: "error"
+                type: "error",
               });
             } else {
               var process_id = res.data.data["process_id"];
@@ -462,7 +462,7 @@ export default {
         console.log(e);
         this.$message({
           message: e.response.data.msg,
-          type: "error"
+          type: "error",
         });
       }
     },
@@ -473,13 +473,13 @@ export default {
         axios
           .post(api.runOutput, {
             process_id: process_id,
-            user_id: this.user_id
+            user_id: this.user_id,
           })
-          .then(res => {
+          .then((res) => {
             if (res.data.data["status"] == -1) {
               this.$message({
                 message: data["msg"],
-                type: "error"
+                type: "error",
               });
               this.extra_button.loading = false;
               this.extra_button.buttonLoading = false;
@@ -526,7 +526,7 @@ export default {
         console.log(e);
         this.$message({
           message: e.response.data.msg,
-          type: "error"
+          type: "error",
         });
       }
     },
@@ -562,13 +562,13 @@ export default {
             detail: command_get_result.detail,
             user_id: this.user_id,
             salt: salt,
-            sign: sign
+            sign: sign,
           })
-          .then(res => {
+          .then((res) => {
             if (res.data.data["process_id"] == -1) {
               this.$message({
                 message: "任务创建错误，请联系管理员！",
-                type: "error"
+                type: "error",
               });
             } else {
               this.output.log_id = res.data.data["log_id"];
@@ -583,7 +583,7 @@ export default {
         console.log(e);
         this.$message({
           message: e.response.data.msg,
-          type: "error"
+          type: "error",
         });
       }
     },
@@ -593,17 +593,17 @@ export default {
         try {
           const { data: res } = await axios.post(api.terminate, {
             user_id: this.user_id,
-            process_id: this.output.process_id
+            process_id: this.output.process_id,
           });
           this.$message({
             message: res.msg,
-            type: "success"
+            type: "success",
           });
         } catch (e) {
           console.log(e);
           this.$message({
             message: e.response.data.msg,
-            type: "error"
+            type: "error",
           });
         }
       });
@@ -615,13 +615,13 @@ export default {
         axios
           .post(api.runOutput, {
             process_id: process_id,
-            user_id: this.user_id
+            user_id: this.user_id,
           })
-          .then(res => {
+          .then((res) => {
             if (res.data.data["status"] == -1) {
               this.$message({
                 message: data["msg"],
-                type: "error"
+                type: "error",
               });
               this.submitButtonLoading = false;
               return;
@@ -638,18 +638,18 @@ export default {
               this.output.text = this.output.text.replace(/#&nbsp;/g, " ");
               this.$message({
                 message: "运行结束，请查看输出。",
-                type: "success"
+                type: "success",
               });
               this.$nextTick(() => {
                 let scroll = new BScroll(this.$refs.outputDialog, {
                   scrollY: true,
                   scrollbar: {
                     fade: true, // node_modules\better-scroll\dist\bscroll.esm.js:2345可以调时间，目前使用的是'var time = visible ? 500 : 5000;'
-                    interactive: true
+                    interactive: true,
                   },
                   momentumLimitDistance: 300,
                   mouseWheel: true,
-                  preventDefault: false
+                  preventDefault: false,
                 });
                 scroll.scrollTo(0, scroll.maxScrollY);
               });
@@ -657,9 +657,9 @@ export default {
                 axios
                   .post(api.saveOutput, {
                     log_id: this.output.log_id,
-                    output: this.output.text
+                    output: this.output.text,
                   })
-                  .then(res => {
+                  .then((res) => {
                     this.submitButtonLoading = false;
                   });
               } catch (e) {
@@ -667,7 +667,7 @@ export default {
                 this.$message({
                   message:
                     "记录运行日志错误！请联系管理员" + e.response.data.msg,
-                  type: "error"
+                  type: "error",
                 });
               }
               return;
@@ -683,11 +683,11 @@ export default {
                     scrollY: true,
                     scrollbar: {
                       fade: true, // node_modules\better-scroll\dist\bscroll.esm.js:2345可以调时间，目前使用的是'var time = visible ? 500 : 5000;'
-                      interactive: true
+                      interactive: true,
                     },
                     momentumLimitDistance: 300,
                     mouseWheel: true,
-                    preventDefault: false
+                    preventDefault: false,
                   });
                   scroll.scrollTo(0, scroll.maxScrollY);
                   scroll.destroy();
@@ -702,7 +702,7 @@ export default {
         console.log(e);
         this.$message({
           message: e.response.data.msg,
-          type: "error"
+          type: "error",
         });
       }
     },
@@ -717,37 +717,22 @@ export default {
           x < this.formData[this.activeTabIndex].formDataDetail.length;
           x++
         ) {
+          let _singleDetail = this.formData[this.activeTabIndex].formDataDetail[
+            x
+          ];
           //console.log(this.formData[this.activeTabIndex].formDataDetail[x].type)
-          detail[
-            this.formData[this.activeTabIndex].formDataDetail[x].label
-          ] = this.formData[this.activeTabIndex].formDataDetail[x].value;
-          if (
-            this.formData[this.activeTabIndex].formDataDetail[x].type ==
-            "dateRange"
-          ) {
-            if (
-              this.formData[this.activeTabIndex].formDataDetail[x].value == null
-            ) {
+          detail[_singleDetail.label] = _singleDetail.value;
+          if (_singleDetail.type == "dateRange") {
+            if (_singleDetail.value == null) {
               //解决用户点击了组建上的清空按钮后导致前端报错的问题
               continue;
             }
-            for (
-              let d = 0;
-              d <
-              this.formData[this.activeTabIndex].formDataDetail[x].value.length;
-              d++
-            ) {
-              command =
-                command +
-                " " +
-                this.formData[this.activeTabIndex].formDataDetail[x].value[d];
+            for (let d = 0; d < _singleDetail.value.length; d++) {
+              command = command + " " + _singleDetail.value[d];
             }
             continue;
           }
-          command =
-            command +
-            " " +
-            this.formData[this.activeTabIndex].formDataDetail[x].value;
+          command = command + " " + _singleDetail.value;
         }
         command = start_command + command;
         //console.log(command)
@@ -759,56 +744,31 @@ export default {
           x < this.formData[this.activeTabIndex].formDataDetail.length;
           x++
         ) {
-          detail[
-            this.formData[this.activeTabIndex].formDataDetail[x].label
-          ] = this.formData[this.activeTabIndex].formDataDetail[x].value;
-          if (
-            this.formData[this.activeTabIndex].formDataDetail[x].type ==
-            "dateRange"
-          ) {
-            if (
-              this.formData[this.activeTabIndex].formDataDetail[x].value == null
-            ) {
+          let _singleDetail = this.formData[this.activeTabIndex].formDataDetail[
+            x
+          ];
+          detail[_singleDetail.label] = _singleDetail.value;
+          if (_singleDetail.type == "dateRange") {
+            if (_singleDetail.value == null) {
               //解决用户点击了组建上的清空按钮后导致前端报错的问题
               continue;
             }
             var tempDateRange = "";
-            for (
-              let d = 0;
-              d <
-              this.formData[this.activeTabIndex].formDataDetail[x].value.length;
-              d++
-            ) {
-              tempDateRange =
-                tempDateRange +
-                " " +
-                this.formData[this.activeTabIndex].formDataDetail[x].value[d];
+            for (let d = 0; d < _singleDetail.value.length; d++) {
+              tempDateRange = tempDateRange + " " + _singleDetail.value[d];
             }
-            var reg = new RegExp(
-              "%" +
-                this.formData[this.activeTabIndex].formDataDetail[x].label +
-                "%",
-              "g"
-            );
+            var reg = new RegExp("%" + _singleDetail.label + "%", "g");
             tempCommand = tempCommand.replace(reg, tempDateRange);
             continue;
           }
-          var reg = new RegExp(
-            "%" +
-              this.formData[this.activeTabIndex].formDataDetail[x].label +
-              "%",
-            "g"
-          );
-          tempCommand = tempCommand.replace(
-            reg,
-            this.formData[this.activeTabIndex].formDataDetail[x].value
-          );
+          var reg = new RegExp("%" + _singleDetail.label + "%", "g");
+          tempCommand = tempCommand.replace(reg, _singleDetail.value);
         }
         command = tempCommand;
       }
       var temp = {
         command: command,
-        detail: detail
+        detail: detail,
       };
       return temp;
     },
@@ -819,7 +779,7 @@ export default {
           "在运行中关闭运行窗口会导致运行日志保存不完整，仍然要关闭吗?",
           "提示",
           {}
-        ).then(_ => {
+        ).then((_) => {
           this.output.text = "";
           done();
         });
@@ -827,8 +787,8 @@ export default {
         this.output.text = "";
         done();
       }
-    }
-  }
+    },
+  },
 };
 </script>
 
