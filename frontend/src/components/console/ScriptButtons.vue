@@ -44,11 +44,12 @@
                     @click="log_output(scope.row.output)"
                   >日志</el-button>
                   <el-popover placement="right" width="350" trigger="hover">
-                    <tr v-for="(key,index) in scope.row.detail" :key="key">
+                    <tr v-for="key in scope.row.detail" :key="key">
                       <td class="td--label">
-                        <b>{{index+":"}}</b>
+                        <b>{{key.label+":"}}</b>
                       </td>
-                      <td>{{key}}</td>
+                      <td v-if="key.type=='select'">{{key.optionLabel}}</td>
+                      <td v-if="key.type!='select'">{{key.value}}</td>
                     </tr>
                     <el-button
                       class="noMargin"
@@ -423,9 +424,23 @@ export default {
         this.output.important_fields = res.data.important_fields;
         for (let o = 0; o < this.output.logs.length; o++) {
           for (let i = 0; i < this.output.important_fields.length; i++) {
-            this.output.logs[o][
-              this.output.important_fields[i]
-            ] = this.output.logs[o].detail[this.output.important_fields[i]];
+            for (let s = 0; s < this.output.logs[o].detail.length; s++) {
+              if (
+                this.output.logs[o].detail[s].label ==
+                this.output.important_fields[i]
+              ) {
+                if (this.output.logs[o].detail[s].type == "select") {
+                  this.output.logs[o][
+                    this.output.important_fields[i]
+                  ] = this.output.logs[o].detail[s].optionLabel;
+                } else {
+                  this.output.logs[o][
+                    this.output.important_fields[i]
+                  ] = this.output.logs[o].detail[s].value;
+                }
+                break;
+              }
+            }
           }
         }
       } catch (e) {
@@ -445,8 +460,12 @@ export default {
     log_replay(version, detail) {
       for (var f = 0; f < this.singleForm.formDataDetail.length; f++) {
         try {
-          this.singleForm.formDataDetail[f].value =
-            detail[this.singleForm.formDataDetail[f].label];
+          for (let s = 0; s < detail.length; s++) {
+            if (detail[s].label == this.singleForm.formDataDetail[f].label) {
+              this.singleForm.formDataDetail[f].value = detail[s].value;
+              break;
+            }
+          }
         } catch (err) {
           console.log(
             "[" +
