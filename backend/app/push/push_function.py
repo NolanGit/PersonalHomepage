@@ -118,9 +118,9 @@ class PushData(object):
             用于推送完毕后，生成下一条待推送的记录
         '''
         try:
-            if self.notify_trigger_time - self.current_time:
-                pass
-            #to do
+            time_difference = self.current_time - self.notify_trigger_time
+            if time_difference.day > 1:
+                self.notify_trigger_time = self.notify_trigger_time + datetime.timedelta(days=time_difference)
             push.create(
                 user_id=self.user_id,
                 widget_id=self.widget_id,
@@ -130,7 +130,7 @@ class PushData(object):
                 notify_interval_raw=self.notify_interval_raw,
                 notify_interval_unit=self.notify_interval_unit,
                 notify_interval=self.notify_interval,
-                notify_trigger_time=self.current_time + datetime.timedelta(minutes=self.notify_interval),
+                notify_trigger_time=self.notify_trigger_time + datetime.timedelta(minutes=self.notify_interval),
                 update_time=datetime.datetime.now())
             return True
         except Exception as e:
