@@ -127,7 +127,7 @@ if first_excution == 'n' or first_excution == 'N':
 if first_excution != 'y' and first_excution != 'yes':
     bye()
 
-print('\n你好啊！欢迎使用我的项目，任何问题请提issue！\n\n那么，让我们开始吧！部署前您需要准备：')
+print('你好啊！欢迎使用我的项目，任何问题请提issue！\n\n那么，让我们开始吧！部署前您需要准备：')
 print('- 个人邮箱（用于接收推送信息）')
 print('- SeverChan的微信推送key，请参考http://sc.ftqq.com/')
 print('- 用于发送邮件的邮箱')
@@ -138,7 +138,7 @@ print('- 和风天气API的Key，请参考https://dev.heweather.com/')
 iamready = input('准备好了吗(y/n):')
 print('\n')
 if iamready == 'y' or iamready == 'yes':
-    print('\n让我们开始吧！')
+    print('让我们开始吧！')
 else:
     bye()
 
