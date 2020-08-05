@@ -41,7 +41,7 @@ def executeScriptsFromFile(filename, db):
             cursor.execute(command)
         except Exception as msg:
             print('[执行错误]' + command)
-            print('[错误信息]' + msg)
+            print('[错误信息]' + str(msg))
     try:
         db.commit()
     except:
