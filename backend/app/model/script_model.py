@@ -77,8 +77,8 @@ class script_schedule(BaseModel):
     user_id = IntegerField()
     is_valid = IntegerField()
     is_automatic = IntegerField()
-    interval = IntegerField()
-    interval_raw = IntegerField()
+    interval = IntegerField() # 以分钟单位的间隔
+    interval_raw = IntegerField() # 用户填写的间隔
     interval_unit = IntegerField()  # 0:分钟,1:小时,2:天
     trigger_time = DateTimeField(null=True)
     update_time = DateTimeField(null=True)
