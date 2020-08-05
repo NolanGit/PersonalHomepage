@@ -19,102 +19,39 @@ SQL_UPDATE_APP = CURRENT_RUNNING_PATH + '/backend/app/app_price_monitor'
 UPLOAD_FILE_PATH = CURRENT_RUNNING_PATH + '/upload/'
 BYE = ['海内存知己，天涯若比邻。', '何当重相见，樽酒慰离颜。', '日暮征帆何处泊？天涯一望断人肠。', '日暮酒醒人已远，满天风雨下西楼。', '离心不异西江水，直送征帆万里行。', '劝君更尽一杯酒，西出阳关无故人。', '人情却似杨柳絮，悠扬便逐春风去。', '衰兰送客咸阳道，天若有情天亦老。']
 
-print('当前运行路径:%s' % CURRENT_RUNNING_PATH)
 
-first_excution = input('请问是初次运行本脚本吗?(y/n):')
-if first_excution == 'n' or first_excution == 'N':
-    import pymysql
-    import configparser
+def bye():
+    print('告辞。')
+    print(BYE[random.randint(0, len(BYE) - 1)])
+    exit()
 
-    def executeScriptsFromFile(filename, db):
-        cursor = db.cursor()
-        fd = open(filename, 'r', encoding='utf-8')
-        sqlFile = fd.read()
-        fd.close()
-        sqlCommands = sqlFile.split(';')
 
-        for command in sqlCommands:
-            if len(command) == 0:
-                continue
-            try:
-                print(command)
-                cursor.execute(command)
-            except Exception as msg:
-                print(len(command))
-                print(msg)
+def executeScriptsFromFile(filename, db):
+    cursor = db.cursor()
+    fd = open(filename, 'r', encoding='utf-8')
+    sqlFile = fd.read()
+    fd.close()
+    sqlCommands = sqlFile.split(';')
+
+    for command in sqlCommands:
+        if len(command) == 0:
+            continue
         try:
-            db.commit()
-        except:
-            db.rollback()
-        finally:
-            db.close()
-
-    first_excution = input('那么，需要执行初始化SQL吗? (需要初始化配置之后才能正确执行)(y/n):')
-    if first_excution != 'y':
-        print('告辞。')
-        print(BYE[random.randint(0, len(BYE) - 1)])
-        exit()
-    print('开始执行初始化SQL')
-
-    PATH = lambda p: os.path.abspath(os.path.join(os.path.dirname(__file__), p))
-    cf = configparser.ConfigParser()
-    cf.read(CONFIG_PATH)
-    DB_PASS = cf.get('config', 'DB_PASS')
-    db = pymysql.connect(host='localhost', user='root', passwd=DB_PASS, db='PersonalHomepage', charset='utf8')
-    executeScriptsFromFile(INIT_SQL_PATH, db)
-    print('初始化SQL执行完成，默认用户名为：Admin，默认密码为：123456')
-    exit()
-
-if first_excution != 'y' and first_excution != 'yes':
-    print('告辞。')
-    print(BYE[random.randint(0, len(BYE) - 1)])
-    exit()
-print('\n你好啊！欢迎使用我的项目，任何问题请提issue！\n\n那么，让我们开始吧！部署前您需要准备：')
-print('- 个人邮箱（用于接收推送信息）')
-print('- SeverChan的微信推送key，请参考http://sc.ftqq.com/')
-print('- 用于发送邮件的邮箱')
-print('- 用于发送邮件的邮箱的口令，可以搜一下"如何获取邮箱口令"')
-print('- 本地装好MySQL，并且知道root账户的密码')
-print('- 和风天气API的Key，请参考https://dev.heweather.com/')
-
-iamready = input('准备好了吗(y/n):')
-if iamready == 'y' or iamready == 'yes':
-    print('\n让我们开始吧！')
-else:
-    print('告辞。')
-    print(BYE[random.randint(0, len(BYE) - 1)])
-    exit()
+            print(command)
+            cursor.execute(command)
+        except Exception as msg:
+            print('[执行错误]' + command)
+            print('[错误信息]' + msg)
+    try:
+        db.commit()
+    except:
+        db.rollback()
+    finally:
+        db.close()
 
 
 def install(REQUIREMENTS_PATH):
     subprocess.check_call([PYTHON_PATH, "-m", "pip", "install", "-r", REQUIREMENTS_PATH])
-
-
-print('安装requirements.txt......')
-install(REQUIREMENTS_PATH)
-import pymysql
-import configparser
-
-admin_email = input('请输入管理员邮箱，用于接收推送邮件:')
-print(admin_email)
-admin_wechat_key = input('请输入微信推送key:')
-print(admin_wechat_key)
-mail_sender_address = input('请输入用于发送的邮件地址:')
-print(mail_sender_address)
-mail_sender_password = input('请输入发送的邮件地址的口令:')
-print(mail_sender_password)
-mysql_password = input('请输入本地MySQL的root账号的密码:')
-print(mysql_password)
-weather_default_location = input('请输入您所在的位置，如：北京:')
-print(weather_default_location)
-weather_api_key = input('请输入天气api的key:')
-print(weather_api_key)
-'''
-需要更改的有：
-- backend/app/homepage.config
-- backend/init.sql
-- backend/app/config.py
-'''
 
 
 def backup(path):
@@ -140,6 +77,91 @@ def alter(file, alter_dict):
     os.remove(file)
     os.rename("%s.bak" % file, file)
 
+
+def msg():
+    print('- 首先，在"frontend"目录下使用"npm i"安装必需前端组件，使用"npm run build"打包前端代码')
+    print('- 然后，使用python3在backend/目录下运行"run.py"（如不在此目录下运行会产生问题），此操作会启用服务并自动建表')
+    print('- 接着，停止服务后，再次运行此脚本(python3 start.py)以执行初始化SQL')
+    print('- 接着，使用crontab将%s加入定时任务，频率为每15分钟运行一次，可直接复制参数:"*/5 * * * * %s"，配置完成后，应用内配置的脚本（获取App价格脚本、推送脚本）将在明天后被驱动运行，具体可在"控制台-运行脚本-定时任务"查看' % (SCHEDULE_SCRIPT_PATH, SCHEDULE_SCRIPT_PATH))
+    print('- 最后，使用python3在backend/目录下运行"run.py"打开服务，登录50000端口试试看吧！初始化的用户名为admin，密码为123456')
+
+
+print('当前运行路径:%s' % CURRENT_RUNNING_PATH)
+
+first_excution = input('请问是初次运行本脚本吗?(y/n):')
+if first_excution == 'n' or first_excution == 'N':
+    import pymysql
+    import configparser
+    print('请选择需要执行的操作：\n    1.我现在需要做什么\n    2.执行初始化sql')
+    option = input('输入需要执行的操作数字(1或2):')
+    if str(option) == '1':
+        msg()
+        bye()
+    elif str(option) == '2':
+        pass
+    else:
+        print('错误的选项，请输入1或2')
+        bye()
+    first_excution = input('那么，需要执行初始化SQL吗? (y/n):')
+    if first_excution != 'y':
+        bye()
+    run_check = input('那么，使用python3在backend/目录下运行"run.py"了吗(y/n):')
+    if run_check != 'y':
+        print('请先使用python3在backend/目录下运行"run.py"吧，需要执行此操作从而建表')
+        bye()
+    print('开始执行初始化SQL')
+
+    PATH = lambda p: os.path.abspath(os.path.join(os.path.dirname(__file__), p))
+    cf = configparser.ConfigParser()
+    cf.read(CONFIG_PATH)
+    DB_PASS = cf.get('config', 'DB_PASS')
+    db = pymysql.connect(host='localhost', user='root', passwd=DB_PASS, db='PersonalHomepage', charset='utf8')
+    executeScriptsFromFile(INIT_SQL_PATH, db)
+    print('初始化SQL执行完成，默认用户名为：Admin，默认密码为：123456')
+    exit()
+
+if first_excution != 'y' and first_excution != 'yes':
+    bye()
+
+print('\n你好啊！欢迎使用我的项目，任何问题请提issue！\n\n那么，让我们开始吧！部署前您需要准备：')
+print('- 个人邮箱（用于接收推送信息）')
+print('- SeverChan的微信推送key，请参考http://sc.ftqq.com/')
+print('- 用于发送邮件的邮箱')
+print('- 用于发送邮件的邮箱的口令，可以搜一下"如何获取邮箱口令"')
+print('- 本地装好MySQL，并且知道root账户的密码')
+print('- 和风天气API的Key，请参考https://dev.heweather.com/')
+
+iamready = input('准备好了吗(y/n):')
+if iamready == 'y' or iamready == 'yes':
+    print('\n让我们开始吧！')
+else:
+    bye()
+
+print('安装requirements.txt......')
+install(REQUIREMENTS_PATH)
+import pymysql
+import configparser
+
+admin_email = input('[第1步/共7步]请输入管理员邮箱，用于接收推送邮件:')
+print(admin_email)
+admin_wechat_key = input('[第2步/共7步]请输入微信推送key:')
+print(admin_wechat_key)
+mail_sender_address = input('[第3步/共7步]请输入用于发送的邮件地址:')
+print(mail_sender_address)
+mail_sender_password = input('[第4步/共7步]请输入发送的邮件地址的口令:')
+print(mail_sender_password)
+mysql_password = input('[第5步/共7步]请输入本地MySQL的root账号的密码:')
+print(mysql_password)
+weather_default_location = input('[第6步/共7步]请输入您所在的位置，如：北京:')
+print(weather_default_location)
+weather_api_key = input('[第7步/共7步]请输入天气api的key:')
+print(weather_api_key)
+'''
+需要更改的有：
+- backend/app/homepage.config
+- backend/init.sql
+- backend/app/config.py
+'''
 
 flag = True
 try:
@@ -206,11 +228,7 @@ except Exception as e:
 
 if flag:
     print('基本操作已经全部完成了，还有几个步骤需要手动完成:')
-    print('- 首先，在"frontend"目录下使用"npm i"安装必需前端组件，使用"npm run build"打包前端代码')
-    print('- 然后，使用python3在backend/目录下运行"run.py"（如不在此目录下运行会产生问题），此操作会启用服务并自动建表')
-    print('- 接着，停止服务后，再次运行此脚本(python3 start.py)以执行初始化SQL')
-    print('- 接着，使用crontab将%s加入定时任务，频率为每15分钟运行一次，可直接复制参数:"*/5 * * * * %s"，配置完成后，应用内配置的脚本（获取App价格脚本、推送脚本）将在明天后被驱动运行，具体可在"控制台-运行脚本-定时任务"查看' % (SCHEDULE_SCRIPT_PATH, SCHEDULE_SCRIPT_PATH))
-    print('- 最后，使用python3在backend/目录下运行"run.py"打开服务，登录50000端口试试看吧！初始化的用户名为admin，密码为123456')
+    msg()
 else:
     print('存在失败的操作，终止执行，请手动排查。')
     exit()
