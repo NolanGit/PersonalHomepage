@@ -89,13 +89,13 @@ def msg():
 print('当前运行路径:%s' % CURRENT_RUNNING_PATH)
 
 first_excution = input('请问是初次运行本脚本吗?(y/n):')
-print('\n')
+print('')
 if first_excution == 'n' or first_excution == 'N':
     import pymysql
     import configparser
     print('请选择需要执行的操作：\n    1.我现在需要做什么\n    2.执行初始化sql')
     option = input('输入需要执行的操作数字(1或2):')
-    print('\n')
+    print('')
     if str(option) == '1':
         msg()
         bye()
@@ -105,11 +105,11 @@ if first_excution == 'n' or first_excution == 'N':
         print('错误的选项，请输入1或2')
         bye()
     first_excution = input('那么，需要执行初始化SQL吗? (y/n):')
-    print('\n')
+    print('')
     if first_excution != 'y':
         bye()
     run_check = input('那么，使用python3在backend/目录下运行"run.py"了吗(y/n):')
-    print('\n')
+    print('')
     if run_check != 'y':
         print('请先使用python3在backend/目录下运行"run.py"吧，需要执行此操作从而建表')
         bye()
@@ -136,7 +136,7 @@ print('- 本地装好MySQL，并且知道root账户的密码')
 print('- 和风天气API的Key，请参考https://dev.heweather.com/')
 
 iamready = input('准备好了吗(y/n):')
-print('\n')
+print('')
 if iamready == 'y' or iamready == 'yes':
     print('让我们开始吧！')
 else:
@@ -148,26 +148,26 @@ import pymysql
 import configparser
 
 admin_email = input('[第1步/共7步]请输入管理员邮箱，用于接收推送邮件:')
-print('\n')
 print(admin_email)
+print('')
 admin_wechat_key = input('[第2步/共7步]请输入微信推送key:')
-print('\n')
 print(admin_wechat_key)
+print('')
 mail_sender_address = input('[第3步/共7步]请输入用于发送的邮件地址:')
-print('\n')
 print(mail_sender_address)
+print('')
 mail_sender_password = input('[第4步/共7步]请输入发送的邮件地址的口令:')
-print('\n')
 print(mail_sender_password)
+print('')
 mysql_password = input('[第5步/共7步]请输入本地MySQL的root账号的密码:')
-print('\n')
 print(mysql_password)
+print('')
 weather_default_location = input('[第6步/共7步]请输入您所在的位置，如：北京:')
-print('\n')
 print(weather_default_location)
+print('')
 weather_api_key = input('[第7步/共7步]请输入天气api的key:')
-print('\n')
 print(weather_api_key)
+print('')
 '''
 需要更改的有：
 - backend/app/homepage.config
