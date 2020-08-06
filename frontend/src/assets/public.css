@@ -374,6 +374,7 @@ icon-medium::-webkit-scrollbar {
 }
 
 .list-item {
+    z-index: 9999;
     display: flex;
     align-items: center;
     width: 100%;
@@ -405,6 +406,7 @@ icon-medium::-webkit-scrollbar {
 }
 
 .SortableItem {
+    z-index: 9999;
     display: flex;
     align-items: center;
     width: 100%;
