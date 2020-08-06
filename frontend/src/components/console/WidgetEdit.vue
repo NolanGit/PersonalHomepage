@@ -1,18 +1,40 @@
 <template>
   <div>
+    <h4>Demo2 : parent item in X-axis , children item in Y-ais</h4>
     <SlickList
       :lockToContainerEdges="true"
       axis="x"
       lockAxis="x"
       v-model="items"
-      class="slick_list"
+      class="SortableList"
       @input="getChangeLists"
     >
-      <SlickItem v-for="(item, index) in items" class="slick_list_item" :index="index" :key="index">
+      <SlickItem v-for="(item, index) in items" class="SortableItem" :index="index" :key="index">
         {{ item.name }}
-        <SlickList :lockToContainerEdges="true" class="slick_list" lockAxis="y" v-model="item.itemArr">
+        <SlickList :lockToContainerEdges="true" class="list" lockAxis="y" v-model="item.itemArr">
           <SlickItem
-            class="slick_list_item"
+            class="list-item"
+            v-for="(item, index) in item.itemArr"
+            :index="index"
+            :key="index"
+          >{{ item }}</SlickItem>
+        </SlickList>
+      </SlickItem>
+    </SlickList>
+    <hr />
+    <h4>Demo3 : parent item in Y-axis , children item in Y-ais</h4>
+    <SlickList
+      :lockToContainerEdges="true"
+      lockAxis="y"
+      v-model="items"
+      class="SortableList2"
+      @input="getChangeLists"
+    >
+      <SlickItem v-for="(item, index) in items" class="SortableItem2" :index="index" :key="index">
+        <p>{{ item.name }}</p>
+        <SlickList :lockToContainerEdges="true" class="list" lockAxis="y" v-model="item.itemArr">
+          <SlickItem
+            class="list-item"
             v-for="(item, index) in item.itemArr"
             :index="index"
             :key="index"
