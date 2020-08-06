@@ -35,7 +35,10 @@ export default {
   props: {
     user_id: Number,
   },
-  components: {},
+  components: {
+    SlickItem,
+    SlickList,
+  },
   watch: {},
   data() {
     return {
