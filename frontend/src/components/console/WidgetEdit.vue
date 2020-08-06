@@ -5,12 +5,12 @@
       axis="x"
       lockAxis="x"
       v-model="items"
-      class="SortableList"
+      class="slick_list"
       @input="getChangeLists"
     >
-      <SlickItem v-for="(item, index) in items" class="slick_list" :index="index" :key="index">
+      <SlickItem v-for="(item, index) in items" class="slick_list_item" :index="index" :key="index">
         {{ item.name }}
-        <SlickList :lockToContainerEdges="true" class="list" lockAxis="y" v-model="item.itemArr">
+        <SlickList :lockToContainerEdges="true" class="slick_list" lockAxis="y" v-model="item.itemArr">
           <SlickItem
             class="slick_list_item"
             v-for="(item, index) in item.itemArr"
