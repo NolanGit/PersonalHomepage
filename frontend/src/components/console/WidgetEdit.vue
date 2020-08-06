@@ -62,4 +62,15 @@ export default {
   mounted() {},
 };
 </script>
+<style scoped>
+body,
+html {
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  user-select: none;
+}
+h3,
+h4 {
+  text-align: center;
+}
 </style>
