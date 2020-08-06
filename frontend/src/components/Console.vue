@@ -28,6 +28,9 @@
         <div v-if="activeComponent=='Script'">
           <Script :user_id="user_id" />
         </div>
+        <div v-if="activeComponent=='widgetEdit'">
+          <widgetEdit :user_id="user_id" />
+        </div>
       </div>
     </el-drawer>
   </div>
@@ -36,6 +39,7 @@
 import axios from "axios";
 import Privilege from "./console/Privilege.vue";
 import Script from "./console/Script.vue";
+import widgetEdit from "./console/WidgetEdit.vue";
 const api = {
   get: "/console/get"
 };
