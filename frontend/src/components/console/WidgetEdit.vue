@@ -8,11 +8,11 @@
       class="SortableList"
       @input="getChangeLists"
     >
-      <SlickItem v-for="(item, index) in items" class="SortableItem" :index="index" :key="index">
+      <SlickItem v-for="(item, index) in items" class="slick_list" :index="index" :key="index">
         {{ item.name }}
         <SlickList :lockToContainerEdges="true" class="list" lockAxis="y" v-model="item.itemArr">
           <SlickItem
-            class="list-item"
+            class="slick_list_item"
             v-for="(item, index) in item.itemArr"
             :index="index"
             :key="index"
@@ -63,81 +63,83 @@ export default {
 };
 </script>
 <style scoped>
-body,html{
-    -moz-user-select: none;
-    -khtml-user-select: none; 
-    user-select: none;
+body,
+html {
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  user-select: none;
 }
-h3,h4{
-    text-align:center;
+h3,
+h4 {
+  text-align: center;
 }
 .list {
-    max-height: 80vh;
-    margin: 0 auto;
-    padding: 0;
-    overflow: auto;
-    background-color: #f3f3f3;
-    border: 1px solid #efefef;
-    max-width:600px;
-    cursor:pointer;
+  max-height: 80vh;
+  margin: 0 auto;
+  padding: 0;
+  overflow: auto;
+  background-color: #f3f3f3;
+  border: 1px solid #efefef;
+  max-width: 600px;
+  cursor: pointer;
 }
 .list-item {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    padding: 20px;
-    background-color: #fff;
-    border-bottom: 1px solid #efefef;
-    box-sizing: border-box;
-    user-select: none;
-    color: #333;
-    font-weight: 400;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 20px;
+  background-color: #fff;
+  border-bottom: 1px solid #efefef;
+  box-sizing: border-box;
+  user-select: none;
+  color: #333;
+  font-weight: 400;
 }
 .stylizedHelper {
-    background: blue;
-    color: #fff
+  background: blue;
+  color: #fff;
 }
 .SortableList {
-    display: flex;
-    width: 600px;
-    white-space: nowrap;
-    max-height: 80vh;
-    margin: 0 auto;
-    padding: 0;
-    overflow: auto;
-    background-color: #f3f3f3;
-    border: 1px solid #efefef;
-    cursor:pointer;
+  display: flex;
+  width: 600px;
+  white-space: nowrap;
+  max-height: 80vh;
+  margin: 0 auto;
+  padding: 0;
+  overflow: auto;
+  background-color: #f3f3f3;
+  border: 1px solid #efefef;
+  cursor: pointer;
 }
 .SortableItem {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    padding: 20px;
-    background-color: #fff;
-    border-bottom: 1px solid #efefef;
-    box-sizing: border-box;
-    user-select: none;
-    color: #333;
-    font-weight: 400;
-    border: 1px solid #ccc;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 20px;
+  background-color: #fff;
+  border-bottom: 1px solid #efefef;
+  box-sizing: border-box;
+  user-select: none;
+  color: #333;
+  font-weight: 400;
+  border: 1px solid #ccc;
 }
-.SortableList2{
-    width:300px;
-    margin:20px auto;
-    border:1px solid #efefef;
+.SortableList2 {
+  width: 300px;
+  margin: 20px auto;
+  border: 1px solid #efefef;
 }
-.SortableItem2{
-    width:300px;
-    border:1px solid #efefef;
-    text-align:center;
+.SortableItem2 {
+  width: 300px;
+  border: 1px solid #efefef;
+  text-align: center;
 }
-.SortableItem2 p{
-    font-size:24px;
-    font-weight:bold;
-    cursor:pointer;
-    background:#efefef;
-    margin:0;
-    height:30px;
+.SortableItem2 p {
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+  background: #efefef;
+  margin: 0;
+  height: 30px;
 }
 </style>
