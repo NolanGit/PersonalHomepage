@@ -41,7 +41,7 @@ def widget_suite_get(user_id):
     _ = widget_suite.select().where(widget_suite.user_id == user_id).order_by(widget_suite.order).dicts()
     result = []
     for s_ in _:
-        result.append({'id': s_['id'], 'name': s_['name'], 'order': s_['order'], 'detail': eval(s_['detail']), 'update_time': s_['update_time']})
+        result.append({'id': s_['id'], 'name': s_['name'], 'name_ch': s_['name_ch'], 'order': s_['order'], 'detail': eval(s_['detail']), 'update_time': s_['update_time']})
     return result
 
 

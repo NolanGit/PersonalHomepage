@@ -7,6 +7,7 @@ from .model_function import BaseModel
 
 class widget(BaseModel):
     name = CharField()
+    name_ch = CharField()
     is_valid = IntegerField()
     span = IntegerField()  # 页面一行的宽度为24
     buttons = CharField()  # 此组件具有的按钮

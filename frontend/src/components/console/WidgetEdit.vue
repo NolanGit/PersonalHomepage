@@ -21,7 +21,7 @@
             v-for="(item, index) in item.widget_detail"
             :index="index"
             :key="index"
-          >{{ item.name }}</SlickItem>
+          >{{ item.name_ch }}</SlickItem>
         </SlickList>
       </SlickItem>
     </SlickList>
