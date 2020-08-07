@@ -419,24 +419,3 @@ icon-medium::-webkit-scrollbar {
     font-weight: 400;
     border: 1px solid #ccc;
 }
-
-.SortableList2 {
-    width: 300px;
-    margin: 20px auto;
-    border: 1px solid #efefef;
-}
-
-.SortableItem2 {
-    width: 300px;
-    border: 1px solid #efefef;
-    text-align: center;
-}
-
-.SortableItem2 p {
-    font-size: 24px;
-    font-weight: bold;
-    cursor: pointer;
-    background: #efefef;
-    margin: 0;
-    height: 30px;
-}

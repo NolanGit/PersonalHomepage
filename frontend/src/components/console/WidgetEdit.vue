@@ -11,13 +11,18 @@
     >
       <SlickItem v-for="(item, index) in items" class="SortableItem" :index="index" :key="index">
         {{ item.name }}
-        <SlickList :lockToContainerEdges="true" class="list" lockAxis="y" v-model="item.itemArr">
+        <SlickList
+          :lockToContainerEdges="true"
+          class="list"
+          lockAxis="y"
+          v-model="item.widget_detail"
+        >
           <SlickItem
             class="list-item"
-            v-for="(item, index) in item.itemArr"
+            v-for="(item, index) in item.widget_detail"
             :index="index"
             :key="index"
-          >{{ item }}</SlickItem>
+          >{{ item.name }}</SlickItem>
         </SlickList>
       </SlickItem>
     </SlickList>
@@ -27,8 +32,7 @@
 import axios from "axios";
 import { SlickList, SlickItem } from "vue-slicksort";
 const api = {
-  get: "/widget/get",
-  suiteGet: "/widget/suite/get",
+  suiteDetail: "/widget/suite/detail",
 };
 
 export default {
@@ -43,23 +47,25 @@ export default {
   watch: {},
   data() {
     return {
-      items: [
-        {
-          name: "title1",
-          itemArr: ["Item1", "Item2", "Item3"],
-        },
-        {
-          name: "title2",
-          itemArr: ["Item4", "Item5", "Item6"],
-        },
-        {
-          name: "title3",
-          itemArr: ["Item7", "Item8", "Item9"],
-        },
-      ],
+      items: [],
     };
   },
-  methods: {},
+  methods: {
+    async widgetSuiteDetailGet() {
+      try {
+        const { data: res } = await axios.post(api.suiteDetail, {
+          user_id: this.user_id,
+        });
+        this.items = res.data;
+      } catch (e) {
+        console.log(e);
+        this.$message({
+          message: e.response.data.msg,
+          type: "error",
+        });
+      }
+    },
+  },
   mounted() {},
 };
 </script>
