@@ -18,9 +18,15 @@
             ></i>
             <p class="noMargin">{{ item.name }}</p>
             <div class="margin_left-large">
-              <el-button size="mini" class="el-icon-plus"></el-button>
-              <el-button size="mini" class="el-icon-setting"></el-button>
-              <el-button type="danger" size="mini" class="el-icon-delete"></el-button>
+              <el-tooltip content="为组件集增加组件" placement="top">
+                <el-button size="mini" class="el-icon-plus"></el-button>
+              </el-tooltip>
+              <el-tooltip content="编辑组件集" placement="top">
+                <el-button size="mini" class="el-icon-setting"></el-button>
+              </el-tooltip>
+              <el-tooltip content="删除组件集" placement="top">
+                <el-button type="danger" size="mini" class="el-icon-delete"></el-button>
+              </el-tooltip>
             </div>
           </el-row>
           <el-row>
@@ -39,7 +45,9 @@
                 <i class="el-icon-s-operation" style="color: #6a6c70;"></i>
                 <span class="slick_list_item_span">{{ item.name_zh }}</span>
                 <div class="slick_list_item_button">
-                  <el-button type="danger" size="mini" class="el-icon-delete"></el-button>
+                  <el-tooltip content="删除组件" placement="top">
+                    <el-button type="danger" size="mini" class="el-icon-delete"></el-button>
+                  </el-tooltip>
                 </div>
               </SlickItem>
             </SlickList>
@@ -47,7 +55,9 @@
         </el-row>
       </SlickItem>
     </SlickList>
-    <el-button circle class="el-icon-plus margin_left-large" style="margin-top: 150px;"></el-button>
+    <el-tooltip content="增加组件集" placement="top">
+      <el-button circle class="el-icon-plus margin_left-large" style="margin-top: 150px;"></el-button>
+    </el-tooltip>
   </div>
 </template>
 <script>
