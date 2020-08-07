@@ -1,6 +1,5 @@
 <template>
-  <div>
-    <el-button size="mini" class="el-icon-plus">增加组件集</el-button>
+  <div class="div-flex">
     <SlickList
       :lockToContainerEdges="true"
       axis="x"
@@ -11,8 +10,11 @@
     >
       <SlickItem v-for="(item, index) in items" class="SortableItem" :index="index" :key="index">
         <el-row>
-          <el-row class="div-flex margin_top-medium">
-            <i class="el-icon-s-operation margin_right-medium" style="color: #6a6c70;"></i>
+          <el-row class="div-flex margin_top-medium" style="margin-bottom: 30px;">
+            <i
+              class="el-icon-s-operation margin_right-medium margin_left-small"
+              style="color: #6a6c70;"
+            ></i>
             <p class="noMargin">{{ item.name }}</p>
             <div class="margin_left-large">
               <el-button size="mini" class="el-icon-plus"></el-button>
@@ -44,6 +46,7 @@
         </el-row>
       </SlickItem>
     </SlickList>
+    <el-button size="mini" circle class="el-icon-plus"></el-button>
   </div>
 </template>
 <script>
