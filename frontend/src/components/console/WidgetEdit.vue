@@ -12,11 +12,11 @@
       <SlickItem v-for="(item, index) in items" class="SortableItem" :index="index" :key="index">
         <el-row>
           <el-col :span="4">
-            <i class="el-icon-s-operation" style="color: #6a6c70;"></i>
+            <i class="el-icon-s-operation margin_top-large" style="color: #6a6c70;"></i>
           </el-col>
           <el-col :span="20">
             <el-row class="div-flex">
-              <p>{{ item.name }}</p>
+              <p class="noMargin">{{ item.name }}</p>
               <div class="margin_left-large">
                 <el-button size="mini" class="el-icon-plus"></el-button>
                 <el-button size="mini" class="el-icon-setting"></el-button>
