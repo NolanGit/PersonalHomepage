@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-button size="mini" class="el-icon-plus"></el-button>
+    <el-button size="mini" class="el-icon-plus">增加组件集</el-button>
     <SlickList
       :lockToContainerEdges="true"
       axis="x"
@@ -11,31 +11,40 @@
     >
       <SlickItem v-for="(item, index) in items" class="SortableItem" :index="index" :key="index">
         <el-row>
-          <p>{{ item.name }}</p>
-          <el-button size="mini" class="el-icon-plus"></el-button>
-          <el-button size="mini" class="el-icon-setting"></el-button>
-          <el-button type="danger" size="mini" class="el-icon-delete"></el-button>
-        </el-row>
-        <el-row>
-          <SlickList
-            :lockToContainerEdges="true"
-            class="list"
-            lockAxis="y"
-            v-model="item.widget_detail"
-          >
-            <SlickItem
-              class="list-item"
-              v-for="(item, index) in item.widget_detail"
-              :index="index"
-              :key="index"
-            >
-              <i class="el-icon-s-operation" style="color: #6a6c70;"></i>
-              <span class="slick_list_item_span">{{ item.name_zh }}</span>
-              <div class="slick_list_item_button">
+          <el-col :span="4">
+            <i class="el-icon-s-operation" style="color: #6a6c70;"></i>
+          </el-col>
+          <el-col :span="24">
+            <el-row class="div-flex">
+              <p>{{ item.name }}</p>
+              <div class="margin_left-large">
+                <el-button size="mini" class="el-icon-plus"></el-button>
+                <el-button size="mini" class="el-icon-setting"></el-button>
                 <el-button type="danger" size="mini" class="el-icon-delete"></el-button>
               </div>
-            </SlickItem>
-          </SlickList>
+            </el-row>
+            <el-row>
+              <SlickList
+                :lockToContainerEdges="true"
+                class="list"
+                lockAxis="y"
+                v-model="item.widget_detail"
+              >
+                <SlickItem
+                  class="list-item"
+                  v-for="(item, index) in item.widget_detail"
+                  :index="index"
+                  :key="index"
+                >
+                  <i class="el-icon-s-operation" style="color: #6a6c70;"></i>
+                  <span class="slick_list_item_span">{{ item.name_zh }}</span>
+                  <div class="slick_list_item_button">
+                    <el-button type="danger" size="mini" class="el-icon-delete"></el-button>
+                  </div>
+                </SlickItem>
+              </SlickList>
+            </el-row>
+          </el-col>
         </el-row>
       </SlickItem>
     </SlickList>

@@ -394,7 +394,7 @@ icon-medium::-webkit-scrollbar {
 
 .SortableList {
     display: flex;
-    width: 600px;
+    width: 900px;
     white-space: nowrap;
     max-height: 80vh;
     margin: 0 auto;
@@ -407,7 +407,6 @@ icon-medium::-webkit-scrollbar {
 
 .SortableItem {
     z-index: 9999;
-    display: flex;
     align-items: center;
     width: 100%;
     padding: 20px;
