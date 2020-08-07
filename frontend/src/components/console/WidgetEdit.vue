@@ -14,7 +14,7 @@
           <el-col :span="4">
             <i class="el-icon-s-operation" style="color: #6a6c70;"></i>
           </el-col>
-          <el-col :span="24">
+          <el-col :span="20">
             <el-row class="div-flex">
               <p>{{ item.name }}</p>
               <div class="margin_left-large">
