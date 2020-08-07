@@ -1,11 +1,11 @@
 <template>
-  <div>
+  <div class="margin_left-large">
     <SlickList
       :lockToContainerEdges="true"
       axis="x"
       lockAxis="x"
       v-model="items"
-      class="SortableList margin_left-large"
+      class="SortableList"
       @input="getChangeLists"
       style="float: left;"
     >
