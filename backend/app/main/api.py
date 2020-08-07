@@ -4,6 +4,7 @@ import time
 import requests
 import datetime
 import traceback
+import threading
 from pypinyin import lazy_pinyin
 from werkzeug.utils import secure_filename
 
@@ -35,7 +36,6 @@ def catch_all(path):
 
 @main.route('/userInfo', methods=['POST'])
 @permission_required('/userInfo')
-@cross_origin()
 def userInfo():
     try:
         try:
@@ -55,7 +55,6 @@ def userInfo():
 
 
 @main.route('/favicon.ico', methods=['GET'])
-@cross_origin()
 def faviconico():
     with open("../dist/star.ico", 'rb') as f:
         image = f.read()
@@ -64,7 +63,6 @@ def faviconico():
 
 
 @main.route('/icon', methods=['GET'])
-@cross_origin()
 def icon():
     try:
         result = []
@@ -80,7 +78,6 @@ def icon():
 
 @main.route('/upload', methods=['POST'])
 @permission_required('/upload')
-@cross_origin()
 def upload():
     user_key = request.cookies.get('user_key')
     redis_conn = privilegeFunction().get_redis_conn0()
@@ -103,7 +100,6 @@ def upload():
 
 @main.route('/download', methods=['GET'])
 @permission_required('/download')
-@cross_origin()
 def download():
     file_id = request.args.get('file_id')
     _ = upload_table.get(id=file_id)
@@ -116,18 +112,30 @@ def download():
 
 # 代码变动时，触发hook，如果变动的是前端代码，则自动编译
 @main.route('/gitHook', methods=['POST'])
-@cross_origin()
 def gitHook():
     try:
+
+        def pull():
+            os.popen('cd /home/pi/Documents/Github/PersonalHomepage/frontend && git pull && npm run build')
+
+        def pull_and_build():
+            os.popen('cd /home/pi/Documents/Github/PersonalHomepage/frontend && git pull && npm run build')
+
         _ = request.get_json()['head_commit']
         add_files = _['added']
         removed_files = _['removed']
         modified_files = _['modified']
         changed_files = add_files + removed_files + modified_files
+        pull = True
+        thread = None
         for changed_file in changed_files:
             if FRONTEND_FOLDER in changed_file:
-                _ = os.popen('cd /home/pi/Documents/Github/PersonalHomepage/frontend && git pull && npm run build')
-        response = {'code': 200, 'msg': 'success'}
+                thread = threading.Thread(target=pull_and_build)
+                pull = False
+                break
+        thread = threading.Thread(target=pull) if pull else thread
+        thread.start()
+        response = {'code': 200, 'msg': 'pulling codes' if pull else 'pulling and building codes'}
         return jsonify(response)
     except Exception as e:
         print(e)
