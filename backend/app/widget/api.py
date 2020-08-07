@@ -14,7 +14,7 @@ from ..model.widget_model import widget as widget_table
 from ..model.widget_model import widget_suite
 
 rsp = Response()
-URL_PREFIX = 'widget'
+URL_PREFIX = '/widget'
 
 
 @widget_blue_print.route('/suite/get', methods=['POST'])
