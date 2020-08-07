@@ -48,7 +48,7 @@ def widgetSuiteDetail():
 
 
 @widget_blue_print.route('/suite/save', methods=['POST'])
-#@permission_required(URL_PREFIX + '/suite/save')
+@permission_required(URL_PREFIX + '/suite/save')
 @cross_origin()
 def widgetSuiteSave():
     try:

@@ -19,13 +19,18 @@
             <p class="noMargin">{{ item.name }}</p>
             <div class="margin_left-large">
               <el-tooltip content="为组件集增加组件" placement="top">
-                <el-button size="mini" class="el-icon-plus"></el-button>
+                <el-button @click="widgetAdd(item)" size="mini" class="el-icon-plus"></el-button>
               </el-tooltip>
               <el-tooltip content="编辑组件集" placement="top">
-                <el-button size="mini" class="el-icon-setting"></el-button>
+                <el-button @click="widgetSuiteEdit(item)" size="mini" class="el-icon-setting"></el-button>
               </el-tooltip>
               <el-tooltip content="删除组件集" placement="top">
-                <el-button type="danger" size="mini" class="el-icon-delete"></el-button>
+                <el-button
+                  @click="widgetSuiteDelete(item)"
+                  type="danger"
+                  size="mini"
+                  class="el-icon-delete"
+                ></el-button>
               </el-tooltip>
             </div>
           </el-row>
@@ -46,7 +51,12 @@
                 <span class="slick_list_item_span">{{ item.name_zh }}</span>
                 <div class="slick_list_item_button">
                   <el-tooltip content="删除组件" placement="top">
-                    <el-button type="danger" size="mini" class="el-icon-delete"></el-button>
+                    <el-button
+                      @click="widgetDelete(item)"
+                      type="danger"
+                      size="mini"
+                      class="el-icon-delete"
+                    ></el-button>
                   </el-tooltip>
                 </div>
               </SlickItem>
@@ -56,7 +66,12 @@
       </SlickItem>
     </SlickList>
     <el-tooltip content="增加组件集" placement="top">
-      <el-button circle class="el-icon-plus margin_left-large" style="margin-top: 150px;"></el-button>
+      <el-button
+        @click="widgetSuiteAdd()"
+        circle
+        class="el-icon-plus margin_left-large"
+        style="margin-top: 125px;"
+      ></el-button>
     </el-tooltip>
   </div>
 </template>
@@ -97,6 +112,19 @@ export default {
         });
       }
     },
+    widgetAdd(item) {
+      console.log(item);
+    },
+    widgetSuiteEdit(item) {
+      console.log(item);
+    },
+    widgetSuiteDelete(item) {
+      console.log(item);
+    },
+    widgetDelete(item) {
+      console.log(item);
+    },
+    widgetSuiteAdd() {},
   },
   mounted() {
     this.widgetSuiteDetailGet();
