@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h4>Demo2 : parent item in X-axis , children item in Y-ais</h4>
     <SlickList
       :lockToContainerEdges="true"
       axis="x"
@@ -66,7 +65,9 @@ export default {
       }
     },
   },
-  mounted() {},
+  mounted() {
+    this.widgetSuiteDetailGet();
+  },
 };
 </script>
 <style scoped>
