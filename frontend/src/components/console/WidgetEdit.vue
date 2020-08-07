@@ -1,5 +1,6 @@
 <template>
   <div>
+    <el-button size="mini" class="el-icon-plus"></el-button>
     <SlickList
       :lockToContainerEdges="true"
       axis="x"
@@ -9,7 +10,10 @@
       @input="getChangeLists"
     >
       <SlickItem v-for="(item, index) in items" class="SortableItem" :index="index" :key="index">
-        {{ item.name }}
+        <p>{{ item.name }}</p>
+        <el-button size="mini" class="el-icon-plus"></el-button>
+        <el-button size="mini" class="el-icon-setting"></el-button>
+        <el-button type="danger" size="mini" class="el-icon-delete"></el-button>
         <SlickList
           :lockToContainerEdges="true"
           class="list"
@@ -21,7 +25,13 @@
             v-for="(item, index) in item.widget_detail"
             :index="index"
             :key="index"
-          >{{ item.name_zh }}</SlickItem>
+          >
+            <i class="el-icon-s-operation" style="color: #6a6c70;"></i>
+            <span class="slick_list_item_span">{{ item.name_zh }}</span>
+            <div class="slick_list_item_button">
+              <el-button type="danger" size="mini" class="el-icon-delete"></el-button>
+            </div>
+          </SlickItem>
         </SlickList>
       </SlickItem>
     </SlickList>
