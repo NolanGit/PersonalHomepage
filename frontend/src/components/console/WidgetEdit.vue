@@ -1,12 +1,13 @@
 <template>
-  <div class="div-flex">
+  <div>
     <SlickList
       :lockToContainerEdges="true"
       axis="x"
       lockAxis="x"
       v-model="items"
-      class="SortableList"
+      class="SortableList margin_left-large"
       @input="getChangeLists"
+      style="float: left;"
     >
       <SlickItem v-for="(item, index) in items" class="SortableItem" :index="index" :key="index">
         <el-row>
@@ -46,7 +47,7 @@
         </el-row>
       </SlickItem>
     </SlickList>
-    <el-button size="mini" circle class="el-icon-plus"></el-button>
+    <el-button circle class="el-icon-plus margin_left-large" style="margin-top: 150px;"></el-button>
   </div>
 </template>
 <script>
