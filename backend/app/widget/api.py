@@ -29,7 +29,7 @@ def widgetSuite():
         return rsp.success(widget_suite_get(user_id))
     except Exception as e:
         traceback.print_exc()
-        return rsp.failed(e)
+        return rsp.failed(e), 500
 
 
 @widget_blue_print.route('/suite/detail', methods=['POST'])
@@ -44,7 +44,7 @@ def widgetSuiteDetail():
         return rsp.success(_r)
     except Exception as e:
         traceback.print_exc()
-        return rsp.failed(e)
+        return rsp.failed(e), 500
 
 
 @widget_blue_print.route('/suite/save', methods=['POST'])
@@ -59,7 +59,7 @@ def widgetSuiteSave():
         return rsp.success(widget_suite_get(user_id))
     except Exception as e:
         traceback.print_exc()
-        return rsp.failed(e)
+        return rsp.failed(e), 500
 
 
 @widget_blue_print.route('/get', methods=['POST'])
@@ -72,4 +72,4 @@ def widget():
         return rsp.success(widget_get(user_id, widget_suite_id))
     except Exception as e:
         traceback.print_exc()
-        return rsp.failed(e)
+        return rsp.failed(e), 500

@@ -11,14 +11,16 @@ cf = CommonFunc()
 class Widget(Base):
     id = None
     name = None
+    name_zh = None
     is_valid = None
     span = None
     buttons = None
     auto_update = None
     update_time = None
 
-    def __init__(self, name=None, is_valid=None, span=None, buttons=None, auto_update=0, update_time=datetime.datetime.now(), id=0):
+    def __init__(self, name=None, name_zh=None, is_valid=None, span=None, buttons=None, auto_update=0, update_time=datetime.datetime.now(), id=0):
         self.name = name
+        self.name_zh = name_zh
         self.is_valid = is_valid
         self.span = span
         self.buttons = buttons
@@ -29,6 +31,7 @@ class Widget(Base):
     def complete(self):
         _ = widget_table.get(widget_table.id == self.id)
         self.name = _.name
+        self.name_zh = _.name_zh
         self.is_valid = _.is_valid
         self.span = _.span
         self.buttons = _.buttons
@@ -41,7 +44,7 @@ def widget_suite_get(user_id):
     _ = widget_suite.select().where(widget_suite.user_id == user_id).order_by(widget_suite.order).dicts()
     result = []
     for s_ in _:
-        result.append({'id': s_['id'], 'name': s_['name'], 'name_ch': s_['name_ch'], 'order': s_['order'], 'detail': eval(s_['detail']), 'update_time': s_['update_time']})
+        result.append({'id': s_['id'], 'name': s_['name'], 'order': s_['order'], 'detail': eval(s_['detail']), 'update_time': s_['update_time']})
     return result
 
 
