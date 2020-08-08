@@ -1,4 +1,5 @@
 <template>
+<section>
   <div class="margin_left-large">
     <SlickList
       :lockToContainerEdges="true"
@@ -74,6 +75,8 @@
       ></el-button>
     </el-tooltip>
   </div>
+  
+  </section>
 </template>
 <script>
 import axios from "axios";
