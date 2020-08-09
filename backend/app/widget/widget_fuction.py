@@ -50,6 +50,14 @@ def widget_suite_get(user_id):
     } for s_ in widget_suite.select().where(widget_suite.user_id == user_id).order_by(widget_suite.order).dicts()]
 
 
+def widget_suite_delete(user_id):
+    try:
+        widget_suite.update(is_valid=1).where((widget_suite.user_id == user_id) & (widget_suite.is_valid == 1)).execute()
+        return True, 'success'
+    except Exception as e:
+        return False, e
+
+
 def widget_get(user_id, suite_id):
     _ = widget_suite.get(widget_suite.id == suite_id)
     if int(_.user_id) != int(user_id):

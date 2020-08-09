@@ -1,6 +1,10 @@
 <template>
   <section>
     <div class="margin_left-large">
+      <p
+        class="notesText"
+        style="font-size: 12px; color: red; padding-top: 0px; margin-top: 0px; margin-bottom: 0px"
+      >*拖拽以排序</p>
       <SlickList
         :lockToContainerEdges="true"
         axis="x"
@@ -75,6 +79,8 @@
         ></el-button>
       </el-tooltip>
     </div>
+    <el-button @click="submit()" size="small" class="margin_top-medium">提交</el-button>
+
     <el-drawer
       :title="edit.title"
       :visible.sync="edit.visible"
@@ -232,6 +238,9 @@ export default {
     },
     editFormClosed() {
       this.edit.widgetSuiteName = "";
+    },
+    submit() {
+      console.log(this.items);
     },
   },
   mounted() {
