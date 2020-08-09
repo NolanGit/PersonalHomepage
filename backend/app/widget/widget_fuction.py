@@ -47,7 +47,7 @@ def widget_suite_get(user_id):
         'order': s_['order'],
         'detail': eval(s_['detail']),
         'update_time': s_['update_time']
-    } for s_ in widget_suite.select().where(widget_suite.user_id == user_id).order_by(widget_suite.order).dicts()]
+    } for s_ in widget_suite.select().where((widget_suite.user_id == user_id) & (widget_suite.is_valid == 1)).order_by(widget_suite.order).dicts()]
 
 
 def widget_suite_delete(user_id):

@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-tabs
-      v-model="widgetSuiteLabelActiveName"
+      v-model="widgetSuiteLabelActiveId"
       @tab-click="handleClick"
       stretch="true"
       style="padding-bottom: 30px; width: 70%; text-align: center; margin: 0 auto;"
@@ -10,7 +10,7 @@
       <el-tab-pane
         v-for="(singleWidgetSuite) in widgetSuiteLabels"
         :label="singleWidgetSuite.name"
-        :name="singleWidgetSuite.name"
+        :name="singleWidgetSuite.id"
         :key="singleWidgetSuite"
       ></el-tab-pane>
     </el-tabs>
@@ -85,68 +85,68 @@ import notes from "./Notes.vue";
 
 const api = {
   get: "/widget/get",
-  suiteGet: "/widget/suite/get"
+  suiteGet: "/widget/suite/get",
 };
 
 export default {
   name: "widget",
   props: {
-    user_id: Number
+    user_id: Number,
   },
   components: {
     weather,
     bookmarks,
     appMonitor,
     gold,
-    notes
+    notes,
   },
   watch: {
     user_id(newVal, oldVal) {
       this.widgetSuiteLabelGet();
-    }
+    },
   },
   data() {
     return {
-      widgetSuiteLabelActiveName: "",
+      widgetSuiteLabelActiveId: Number,
       widgetSuiteLabels: [],
       widgetSuite: [],
-      widget: []
+      widget: [],
     };
   },
   methods: {
     async widgetSuiteLabelGet() {
       try {
         const { data: res } = await axios.post(api.suiteGet, {
-          user_id: this.user_id
+          user_id: this.user_id,
         });
         this.widgetSuiteLabels = res.data;
         if (this.widgetSuiteLabels.length != 0) {
-          this.widgetSuiteLabelActiveName = this.widgetSuiteLabels[0].name;
+          this.widgetSuiteLabelActiveId = this.widgetSuiteLabels[0].id;
           this.widgetGet(this.widgetSuiteLabels[0].id);
         }
       } catch (e) {
         console.log(e);
         this.$message({
           message: e.response.data.msg,
-          type: "error"
+          type: "error",
         });
       }
     },
     handleClick(activeTab) {
-      let activeTabId = 0;
-      for (let x = 0; x < this.widgetSuiteLabels.length; x++) {
-        if (activeTab.name == this.widgetSuiteLabels[x].name) {
-          activeTabId = this.widgetSuiteLabels[x].id;
-          break;
-        }
-      }
-      this.widgetGet(activeTabId);
+      // let activeTabId = 0;
+      // for (let x = 0; x < this.widgetSuiteLabels.length; x++) {
+      //   if (activeTab.name == this.widgetSuiteLabels[x].id) {
+      //     activeTabId = this.widgetSuiteLabels[x].id;
+      //     break;
+      //   }
+      // }
+      this.widgetGet(activeTab);
     },
     async widgetGet(widgetSuiteLabelActiveId) {
       try {
         const { data: res } = await axios.post(api.get, {
           user_id: this.user_id,
-          widget_suite_id: widgetSuiteLabelActiveId
+          widget_suite_id: widgetSuiteLabelActiveId,
         });
         for (let x = 0; x < res.data.length; x++) {
           res.data[x].show = false;
@@ -158,7 +158,7 @@ export default {
         console.log(e);
         this.$message({
           message: e.response.data.msg,
-          type: "error"
+          type: "error",
         });
       }
     },
@@ -178,11 +178,11 @@ export default {
     done(suiteIndex, index) {
       this.widgetSuite[suiteIndex][index].show = true;
       this.widgetSuite[suiteIndex][index].flush = false;
-    }
+    },
   },
   mounted() {
     this.widgetSuiteLabelGet();
-  }
+  },
 };
 </script>
 </style>
