@@ -20,7 +20,7 @@
               <p class="noMargin">{{ item.name }}</p>
               <div class="margin_left-large">
                 <el-tooltip content="为组件集增加组件" placement="top">
-                  <el-button @click="widgetAdd(item)" size="mini" class="el-icon-plus"></el-button>
+                  <el-button @click="widgetAdd(index)" size="mini" class="el-icon-plus"></el-button>
                 </el-tooltip>
                 <el-tooltip content="编辑组件集名称" placement="top">
                   <el-button @click="widgetSuiteEdit(index)" size="mini" class="el-icon-setting"></el-button>
@@ -95,7 +95,7 @@
         ></el-input>
         <el-button type="primary" size="mini" plain @click="widgetSuiteEdited()">确定</el-button>
       </div>
-      <div class="scrollbar-div margin_left-medium">
+      <div class="scrollbar-div margin_left-medium" style="width: 400px;">
         <el-table
           v-if="edit.action=='addWidget'"
           :key="Math.random()"
@@ -105,8 +105,8 @@
           stripe
           style="width: 100%"
         >
-          <el-table-column :key="Math.random()" prop="name_zh" label="名称" width="120"></el-table-column>
-          <el-table-column :key="Math.random()" label="操作">
+          <el-table-column :key="Math.random()" prop="name_zh" label="名称"></el-table-column>
+          <el-table-column :key="Math.random()" label="操作" width="120">
             <template slot-scope="scope">
               <el-button class="noMargin" size="mini" plain @click="widgetAdded(scope.row)">选择</el-button>
             </template>
