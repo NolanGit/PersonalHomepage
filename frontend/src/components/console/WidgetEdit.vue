@@ -80,7 +80,7 @@
       </el-tooltip>
     </el-row>
     <el-row class="margin_left-large">
-      <el-button @click="submit()" size="small" class="margin_top-medium">提交</el-button>
+      <el-button @click="submit()" type="primary" size="small" class="margin_top-medium">提交</el-button>
     </el-row>
 
     <el-drawer
@@ -251,9 +251,9 @@ export default {
       this.edit.widgetSuiteName = "";
     },
     async submit() {
-      this.items[x].detail = [];
       for (let x = 0; x < this.items.length; x++) {
         this.items[x].order = x;
+        this.items[x].detail = [];
         for (let y = 0; y < this.items[x].widget_detail.length; y++) {
           this.items[x].detail.push(this.items[x].widget_detail[y].id);
         }
