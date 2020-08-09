@@ -23,11 +23,11 @@
                   <el-button @click="widgetAdd(item)" size="mini" class="el-icon-plus"></el-button>
                 </el-tooltip>
                 <el-tooltip content="编辑组件集" placement="top">
-                  <el-button @click="widgetSuiteEdit(item)" size="mini" class="el-icon-setting"></el-button>
+                  <el-button @click="widgetSuiteEdit(index)" size="mini" class="el-icon-setting"></el-button>
                 </el-tooltip>
                 <el-tooltip content="删除组件集" placement="top">
                   <el-button
-                    @click="widgetSuiteDelete(item)"
+                    @click="widgetSuiteDelete(item,index)"
                     type="danger"
                     size="mini"
                     class="el-icon-delete"
@@ -75,7 +75,7 @@
         ></el-button>
       </el-tooltip>
     </div>
-    <el-drawer>
+    <el-drawer :title="edit.title" :visible.sync="edit.visible" size="60%" direction="btt">
       <div
         class="div-flex margin_bottom-medium margin_left-large"
         v-if="edit.action=='addWidgetSuite'"
@@ -144,13 +144,18 @@ export default {
     widgetSuiteEdit(item) {
       console.log(item);
     },
-    widgetSuiteDelete(item) {
-      console.log(item);
+    widgetSuiteDelete(item, index) {
+      this.$confirm("确认删除[" + item.name + "]吗?", "提示", {}).then(
+        async () => {
+          this.items.splice(index, 1);
+        }
+      );
     },
     widgetDelete(item) {
       console.log(item);
     },
     widgetSuiteAdd() {
+      this.edit.title = "新增组件集";
       this.edit.action = "addWidgetSuite";
       this.edit.visible = true;
     },
