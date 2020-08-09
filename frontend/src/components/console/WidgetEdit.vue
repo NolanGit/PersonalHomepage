@@ -95,22 +95,24 @@
         ></el-input>
         <el-button type="primary" size="mini" plain @click="widgetSuiteEdited()">确定</el-button>
       </div>
-      <el-table
-        v-if="edit.action=='addWidget'"
-        :key="Math.random()"
-        size="mini"
-        height="400"
-        :data="widgets"
-        stripe
-        style="width: 100%"
-      >
-        <el-table-column :key="Math.random()" prop="name_zh" label="名称" width="120"></el-table-column>
-        <el-table-column :key="Math.random()" label="操作">
-          <template slot-scope="scope">
-            <el-button class="noMargin" size="mini" plain @click="widgetAdded(scope.row)">选择</el-button>
-          </template>
-        </el-table-column>
-      </el-table>
+      <div class="scrollbar-div margin_left-medium">
+        <el-table
+          v-if="edit.action=='addWidget'"
+          :key="Math.random()"
+          size="mini"
+          height="400"
+          :data="widgets"
+          stripe
+          style="width: 100%"
+        >
+          <el-table-column :key="Math.random()" prop="name_zh" label="名称" width="120"></el-table-column>
+          <el-table-column :key="Math.random()" label="操作">
+            <template slot-scope="scope">
+              <el-button class="noMargin" size="mini" plain @click="widgetAdded(scope.row)">选择</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
     </el-drawer>
   </section>
 </template>
@@ -174,15 +176,15 @@ export default {
     },
     widgetAdd(index) {
       this.widgetAllGet();
-      this.edit.title = "添加组件";
+      this.edit.title = "添加小组件";
       this.edit.action = "addWidget";
       this.edit.widgetSuiteIndexInOpration = index;
       this.edit.visible = true;
     },
     widgetAdded(item) {
       let widgetSuiteIndex = this.edit.widgetSuiteIndexInOpration;
-      this.items[x].detail.push(item.id);
-      this.items[x].widget_detail.push({
+      this.items[widgetSuiteIndex].detail.push(item.id);
+      this.items[widgetSuiteIndex].widget_detail.push({
         name_zh: item.name_zh,
       });
     },
