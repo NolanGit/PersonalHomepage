@@ -4,7 +4,7 @@
       <p
         class="notesText"
         style="font-size: 12px; color: red; padding-top: 0px; margin-top: 0px; margin-bottom: 10px"
-      >*拖拽以排序</p>
+      >*拖动以排序</p>
       <SlickList
         :lockToContainerEdges="true"
         axis="x"

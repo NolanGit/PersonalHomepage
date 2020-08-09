@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-tabs
-      v-model="widgetSuiteLabelActiveId"
+      v-model="widgetSuiteLabelActiveName"
       @tab-click="handleClick"
       stretch="true"
       style="padding-bottom: 30px; width: 70%; text-align: center; margin: 0 auto;"
@@ -10,7 +10,7 @@
       <el-tab-pane
         v-for="(singleWidgetSuite) in widgetSuiteLabels"
         :label="singleWidgetSuite.name"
-        :name="singleWidgetSuite.id"
+        :name="singleWidgetSuite.name"
         :key="singleWidgetSuite"
       ></el-tab-pane>
     </el-tabs>
@@ -107,7 +107,7 @@ export default {
   },
   data() {
     return {
-      widgetSuiteLabelActiveId: Number,
+      widgetSuiteLabelActiveName: "",
       widgetSuiteLabels: [],
       widgetSuite: [],
       widget: [],
@@ -121,7 +121,7 @@ export default {
         });
         this.widgetSuiteLabels = res.data;
         if (this.widgetSuiteLabels.length != 0) {
-          this.widgetSuiteLabelActiveId = this.widgetSuiteLabels[0].id;
+          this.widgetSuiteLabelActiveName = this.widgetSuiteLabels[0].name;
           this.widgetGet(this.widgetSuiteLabels[0].id);
         }
       } catch (e) {
@@ -133,14 +133,14 @@ export default {
       }
     },
     handleClick(activeTab) {
-      // let activeTabId = 0;
-      // for (let x = 0; x < this.widgetSuiteLabels.length; x++) {
-      //   if (activeTab.name == this.widgetSuiteLabels[x].id) {
-      //     activeTabId = this.widgetSuiteLabels[x].id;
-      //     break;
-      //   }
-      // }
-      this.widgetGet(activeTab);
+      let activeTabId = 0;
+      for (let x = 0; x < this.widgetSuiteLabels.length; x++) {
+        if (activeTab.name == this.widgetSuiteLabels[x].name) {
+          activeTabId = this.widgetSuiteLabels[x].id;
+          break;
+        }
+      }
+      this.widgetGet(activeTabId);
     },
     async widgetGet(widgetSuiteLabelActiveId) {
       try {
