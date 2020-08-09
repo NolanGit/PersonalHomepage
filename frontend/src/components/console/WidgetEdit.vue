@@ -22,7 +22,7 @@
                 <el-tooltip content="为组件集增加组件" placement="top">
                   <el-button @click="widgetAdd(item)" size="mini" class="el-icon-plus"></el-button>
                 </el-tooltip>
-                <el-tooltip content="编辑组件集" placement="top">
+                <el-tooltip content="编辑组件集名称" placement="top">
                   <el-button @click="widgetSuiteEdit(index)" size="mini" class="el-icon-setting"></el-button>
                 </el-tooltip>
                 <el-tooltip content="删除组件集" placement="top">
@@ -44,16 +44,16 @@
               >
                 <SlickItem
                   class="list-item"
-                  v-for="(item, index) in item.widget_detail"
-                  :index="index"
-                  :key="index"
+                  v-for="(widgetItem, widgetIndex) in item.widget_detail"
+                  :index="widgetIndex"
+                  :key="widgetIndex"
                 >
                   <i class="el-icon-s-operation" style="color: #6a6c70;"></i>
-                  <span class="slick_list_item_span">{{ item.name_zh }}</span>
+                  <span class="slick_list_item_span">{{ widgetItem.name_zh }}</span>
                   <div class="slick_list_item_button">
                     <el-tooltip content="删除组件" placement="top">
                       <el-button
-                        @click="widgetDelete(item)"
+                        @click="widgetDelete(index,widgetItem,widgetIndex)"
                         type="danger"
                         size="mini"
                         class="el-icon-delete"
@@ -75,10 +75,16 @@
         ></el-button>
       </el-tooltip>
     </div>
-    <el-drawer :title="edit.title" :visible.sync="edit.visible" size="60%" direction="btt">
+    <el-drawer
+      :title="edit.title"
+      :visible.sync="edit.visible"
+      size="60%"
+      direction="btt"
+      @closed="editFormClosed"
+    >
       <div
         class="div-flex margin_bottom-medium margin_left-large"
-        v-if="edit.action=='addWidgetSuite'"
+        v-if="edit.action=='editWidgetSuite'"
       >
         <div class="td__p--label td--label">请输入组件集名称：</div>
         <el-input
@@ -87,7 +93,7 @@
           size="small"
           placeholder="请输入"
         ></el-input>
-        <el-button type="primary" size="mini" plain @click="widgetSuiteAdded()">确定</el-button>
+        <el-button type="primary" size="mini" plain @click="widgetSuiteEdited()">确定</el-button>
       </div>
       <el-table v-if="edit.action=='addWidget'"></el-table>
     </el-drawer>
@@ -117,8 +123,8 @@ export default {
       edit: {
         visible: false,
         action: "",
-        widgetSuiteInOpration: "",
-        widgetInOpration: "",
+        widgetSuiteIndexInOpration: "",
+        widgetIndexInOpration: "",
         widgetSuiteName: "",
       },
     };
@@ -141,8 +147,12 @@ export default {
     widgetAdd(item) {
       console.log(item);
     },
-    widgetSuiteEdit(item) {
-      console.log(item);
+    widgetSuiteEdit(index) {
+      this.edit.title = "编辑组件集名称";
+      this.edit.action = "editWidgetSuite";
+      this.edit.widgetSuiteIndexInOpration = index;
+      this.edit.widgetSuiteName = this.items[index].name;
+      this.edit.visible = true;
     },
     widgetSuiteDelete(item, index) {
       this.$confirm("确认删除[" + item.name + "]吗?", "提示", {}).then(
@@ -151,19 +161,35 @@ export default {
         }
       );
     },
-    widgetDelete(item) {
-      console.log(item);
+    widgetDelete(index, widgetItem, widgetIndex) {
+      this.$confirm("确认删除[" + item.name + "]吗?", "提示", {}).then(
+        async () => {
+          this.items[index].widget_detail.splice(widgetIndex, 1);
+          for (let x = 0; x < this.items[index].widget_detail; x++) {
+            if (this.items[index].detail[x] == widgetItem.id) {
+              this.items[index].detail.splice(x, 1);
+            }
+          }
+        }
+      );
     },
     widgetSuiteAdd() {
       this.edit.title = "新增组件集";
-      this.edit.action = "addWidgetSuite";
+      this.edit.action = "editWidgetSuite";
       this.edit.visible = true;
     },
-    widgetSuiteAdded() {
-      this.items.push({
-        name: this.edit.widgetSuiteName,
-      });
+    widgetSuiteEdited() {
+      if (this.edit.title == "新增组件集") {
+        this.items.push({
+          name: this.edit.widgetSuiteName,
+        });
+      } else if (this.edit.title == "编辑组件集名称") {
+        let widgetSuiteIndex = this.edit.widgetSuiteIndexInOpration;
+        this.items[widgetSuiteIndex].name = this.edit.widgetSuiteName;
+      }
       this.edit.visible = false;
+    },
+    editFormClosed() {
       this.edit.widgetSuiteName = "";
     },
   },
