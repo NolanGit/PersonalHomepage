@@ -1,4 +1,3 @@
-import ast
 import time
 import json
 import datetime
@@ -84,7 +83,7 @@ def widgetSuiteSave():
             raise Exception(_msg)
         data = []
         for s_suite_data in suite_data:
-            data.append((s_suite_data['name'], user_id, s_suite_data['order'], 1, ast.literal_eval(s_suite_data['detail']), datetime.datetime.now()))
+            data.append((s_suite_data['name'], user_id, s_suite_data['order'], 1, s_suite_data['detail'], datetime.datetime.now()))
         field = [widget_suite.name, widget_suite.user_id, widget_suite.order, widget_suite.is_valid, widget_suite.detail, widget_suite.update_time]
         widget_suite.insert_many(data, field).execute()
         return rsp.success()
