@@ -79,7 +79,7 @@
         ></el-button>
       </el-tooltip>
     </el-row>
-    <el-row>
+    <el-row class="margin_left-large">
       <el-button @click="submit()" size="small" class="margin_top-medium">提交</el-button>
     </el-row>
 
@@ -116,7 +116,13 @@
           <el-table-column :key="Math.random()" prop="name_zh" label="名称"></el-table-column>
           <el-table-column :key="Math.random()" label="操作" width="120">
             <template slot-scope="scope">
-              <el-button class="noMargin" size="mini" plain @click="widgetAdded(scope.row)">选择</el-button>
+              <el-button
+                class="noMargin"
+                type="primary"
+                size="mini"
+                plain
+                @click="widgetAdded(scope.row)"
+              >选择</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -245,8 +251,12 @@ export default {
       this.edit.widgetSuiteName = "";
     },
     async submit() {
+      this.items[x].detail = [];
       for (let x = 0; x < this.items.length; x++) {
         this.items[x].order = x;
+        for (let y = 0; y < this.items[x].widget_detail.length; y++) {
+          this.items[x].detail.push(this.items[x].widget_detail[y].id);
+        }
       }
       try {
         const { data: res } = await axios.post(api.suiteSave, {
@@ -257,6 +267,7 @@ export default {
           message: res.msg,
           type: "success",
         });
+        location.reload();
       } catch (e) {
         console.log(e);
         this.$message({
