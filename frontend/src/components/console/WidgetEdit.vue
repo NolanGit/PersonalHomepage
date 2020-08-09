@@ -127,6 +127,7 @@ import axios from "axios";
 import { SlickList, SlickItem } from "vue-slicksort";
 const api = {
   suiteDetail: "/widget/suite/detail",
+  suiteSave: "/widget/suite/save",
   widgetAll: "widget/get_all",
 };
 
@@ -241,11 +242,26 @@ export default {
     editFormClosed() {
       this.edit.widgetSuiteName = "";
     },
-    submit() {
+    async submit() {
       for (let x = 0; x < this.items.length; x++) {
         this.items[x].order = x;
       }
-      console.log(this.items);
+      try {
+        const { data: res } = await axios.post(api.suiteSave, {
+          user_id: this.user_id,
+          suite_data: this.items,
+        });
+        this.$message({
+          message: res.msg,
+          type: "success",
+        });
+      } catch (e) {
+        console.log(e);
+        this.$message({
+          message: e.response.data.msg,
+          type: "error",
+        });
+      }
     },
   },
   mounted() {
