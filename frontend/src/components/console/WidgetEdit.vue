@@ -163,6 +163,8 @@ export default {
       this.items.push({
         name: this.edit.widgetSuiteName,
       });
+      this.edit.visible = false;
+      this.edit.widgetSuiteName = "";
     },
   },
   mounted() {
