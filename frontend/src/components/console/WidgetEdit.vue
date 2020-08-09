@@ -142,7 +142,6 @@ export default {
         visible: false,
         action: "",
         widgetSuiteIndexInOpration: "",
-        widgetIndexInOpration: "",
         widgetSuiteName: "",
       },
     };
@@ -187,6 +186,7 @@ export default {
       this.items[widgetSuiteIndex].widget_detail.push({
         name_zh: item.name_zh,
       });
+      this.edit.visible = false;
     },
     widgetSuiteEdit(index) {
       this.edit.title = "编辑组件集名称";
