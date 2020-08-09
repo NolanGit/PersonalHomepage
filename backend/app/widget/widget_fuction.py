@@ -54,3 +54,7 @@ def widget_get(user_id, suite_id):
         return []
     widget_id_list = eval(_.detail)
     return [cf.attr_to_dict(Widget(id=widget_id).complete()) for widget_id in widget_id_list]
+
+
+def widget_all():
+    return widget_table.select().where(widget_table.is_valid == 1).dict()

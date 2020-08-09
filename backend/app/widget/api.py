@@ -9,7 +9,7 @@ from flask import session, redirect, url_for, current_app, request, jsonify
 from ..response import Response
 from ..login.login_funtion import User
 from ..privilege.privilege_control import permission_required
-from .widget_fuction import Widget, widget_suite_get, widget_get
+from .widget_fuction import Widget, widget_suite_get, widget_get, widget_all
 from ..model.widget_model import widget as widget_table
 from ..model.widget_model import widget_suite
 
@@ -57,6 +57,30 @@ def widgetSuiteSave():
         except:
             user_id = 0
         return rsp.success(widget_suite_get(user_id))
+    except Exception as e:
+        traceback.print_exc()
+        return rsp.failed(e), 500
+
+
+@widget_blue_print.route('/get', methods=['POST'])
+#@permission_required(URL_PREFIX + '/get')
+@cross_origin()
+def widget():
+    try:
+        user_id = request.get_json()['user_id']
+        widget_suite_id = request.get_json()['widget_suite_id']
+        return rsp.success(widget_get(user_id, widget_suite_id))
+    except Exception as e:
+        traceback.print_exc()
+        return rsp.failed(e), 500
+
+
+@widget_blue_print.route('/get_all', methods=['POST'])
+@permission_required(URL_PREFIX + '/get_all')
+@cross_origin()
+def widget_get_all():
+    try:
+        return rsp.success(widget_all())
     except Exception as e:
         traceback.print_exc()
         return rsp.failed(e), 500
