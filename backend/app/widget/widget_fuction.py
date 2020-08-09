@@ -52,7 +52,7 @@ def widget_suite_get(user_id):
 
 def widget_suite_delete(user_id):
     try:
-        widget_suite.update(is_valid=0).where((widget_suite.user_id == user_id) & (widget_suite.is_valid == 1)).execute()
+        widget_suite.update(is_valid=0, update_time=datetime.datetime.now()).where((widget_suite.user_id == user_id) & (widget_suite.is_valid == 1)).execute()
         return True, 'success'
     except Exception as e:
         return False, e
