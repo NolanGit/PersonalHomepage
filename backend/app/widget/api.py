@@ -32,6 +32,19 @@ def widgetSuite():
         return rsp.failed(e), 500
 
 
+@widget_blue_print.route('/get', methods=['POST'])
+#@permission_required(URL_PREFIX + '/get')
+@cross_origin()
+def widget():
+    try:
+        user_id = request.get_json()['user_id']
+        widget_suite_id = request.get_json()['widget_suite_id']
+        return rsp.success(widget_get(user_id, widget_suite_id))
+    except Exception as e:
+        traceback.print_exc()
+        return rsp.failed(e), 500
+
+
 @widget_blue_print.route('/get_all', methods=['POST'])
 @permission_required(URL_PREFIX + '/get_all')
 @cross_origin()
@@ -68,7 +81,9 @@ def widgetSuiteSave():
         _status, _msg = widget_suite_delete(user_id)
         if not _status:
             raise Exception(_msg)
-        
+
+        # field = [widget_suite.name, widget_suite.user_id, widget_suite.order, widget_suite.is_valid, widget_suite.detail, widget_suite.update_time]
+        # widget_suite.insert_many(data, field).execute()
         return rsp.success()
     except Exception as e:
         traceback.print_exc()
