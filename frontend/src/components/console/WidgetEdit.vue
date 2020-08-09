@@ -95,7 +95,27 @@
         ></el-input>
         <el-button type="primary" size="mini" plain @click="widgetSuiteEdited()">确定</el-button>
       </div>
-      <el-table v-if="edit.action=='addWidget'"></el-table>
+      <el-table
+        v-if="edit.action=='addWidget'"
+        :key="Math.random()"
+        size="mini"
+        height="400"
+        :data="widgets"
+        stripe
+        style="width: 100%"
+      >
+        <!-- <el-table-column :key="Math.random()" prop="id" sortable label="ID" width="70"></el-table-column> -->
+        <el-table-column :key="Math.random()" prop="name" label="姓名" width="120"></el-table-column>
+        <el-table-column :key="Math.random()" prop="login_name" label="登录名" width="180"></el-table-column>
+        <el-table-column :key="Math.random()" prop="role_name" label="角色" width="120"></el-table-column>
+        <el-table-column :key="Math.random()" prop="is_disabled" label="是否禁用" width="80"></el-table-column>
+        <el-table-column :key="Math.random()" prop="update_time" label="修改时间"></el-table-column>
+        <el-table-column :key="Math.random()" label="操作">
+          <template slot-scope="scope">
+            <el-button class="noMargin" size="mini" plain @click="userDisable(scope.row.id)">选择</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
     </el-drawer>
   </section>
 </template>
@@ -120,6 +140,7 @@ export default {
   data() {
     return {
       items: [],
+      widgets: [],
       edit: {
         visible: false,
         action: "",
@@ -136,6 +157,18 @@ export default {
           user_id: this.user_id,
         });
         this.items = res.data;
+      } catch (e) {
+        console.log(e);
+        this.$message({
+          message: e.response.data.msg,
+          type: "error",
+        });
+      }
+    },
+    async widgetAllGet() {
+      try {
+        const { data: res } = await axios.post(api.widgetAll);
+        this.widgets = res.data;
       } catch (e) {
         console.log(e);
         this.$message({
@@ -162,7 +195,7 @@ export default {
       );
     },
     widgetDelete(index, widgetItem, widgetIndex) {
-      this.$confirm("确认删除[" + item.name + "]吗?", "提示", {}).then(
+      this.$confirm("确认删除[" + widgetItem.name + "]吗?", "提示", {}).then(
         async () => {
           this.items[index].widget_detail.splice(widgetIndex, 1);
           for (let x = 0; x < this.items[index].widget_detail; x++) {
