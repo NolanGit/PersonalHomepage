@@ -41,8 +41,13 @@ class Widget(Base):
 
 
 def widget_suite_get(user_id):
-    _ = widget_suite.select().where(widget_suite.user_id == user_id).order_by(widget_suite.order).dicts()
-    return [{'id': s_['id'], 'name': s_['name'], 'order': s_['order'], 'detail': eval(s_['detail']), 'update_time': s_['update_time']} for s_ in _]
+    return [{
+        'id': s_['id'],
+        'name': s_['name'],
+        'order': s_['order'],
+        'detail': eval(s_['detail']),
+        'update_time': s_['update_time']
+    } for s_ in widget_suite.select().where(widget_suite.user_id == user_id).order_by(widget_suite.order).dicts()]
 
 
 def widget_get(user_id, suite_id):
@@ -55,11 +60,11 @@ def widget_get(user_id, suite_id):
 
 def widget_all():
     return [{
-        'id': s_['id'],
-        'name': s_['name'],
-        'name_zh': s_['name_zh'],
-        'span': s_['span'],
-        'buttons': s_['buttons'],
-        'auto_update': s_['auto_update'],
-        'update_time': s_['update_time']
+        'id': _['id'],
+        'name': _['name'],
+        'name_zh': _['name_zh'],
+        'span': _['span'],
+        'buttons': _['buttons'],
+        'auto_update': _['auto_update'],
+        'update_time': _['update_time']
     } for _ in widget_table.select().where(widget_table.is_valid == 1).dicts()]
