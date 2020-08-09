@@ -57,4 +57,4 @@ def widget_get(user_id, suite_id):
 
 
 def widget_all():
-    return widget_table.select().where(widget_table.is_valid == 1).dict()
+    return widget_table.select().where(widget_table.is_valid == 1).dicts()

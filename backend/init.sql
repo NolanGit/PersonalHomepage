@@ -311,6 +311,8 @@ INSERT INTO `privilege` (`id`, `name`, `mark`, `remark`, `is_valid`, `update_tim
 INSERT INTO `privilege` (`id`, `name`, `mark`, `remark`, `is_valid`, `update_time`) VALUES ('54', '便签-保存', '/notes/save', '', '1', '2020-07-31 10:29:14');
 INSERT INTO `privilege` (`id`, `name`, `mark`, `remark`, `is_valid`, `update_time`) VALUES ('55', '便签-推送', '/notes/notify', '', '1', '2020-07-31 10:29:47');
 INSERT INTO `privilege` (`id`, `name`, `mark`, `remark`, `is_valid`, `update_time`) VALUES ('56', '便签-回滚', '/notes/revert', '', '1', '2020-07-31 18:06:57');
+INSERT INTO `privilege` (`id`, `name`, `mark`, `remark`, `is_valid`, `update_time`) VALUES ('57', '控制台-编辑组件-组件集获取', '/widget/suite/detail', '', '1', '2020-08-09 14:37:27');
+INSERT INTO `privilege` (`id`, `name`, `mark`, `remark`, `is_valid`, `update_time`) VALUES ('58', '控制台-编辑组件-组件获取全部', '/widget/get_all', '', '1', '2020-08-09 14:37:50');
 INSERT INTO `privilege_role` (`id`, `privilege_id`, `role_id`, `is_valid`) VALUES ('1', '1', '1', '1');
 INSERT INTO `privilege_role` (`id`, `privilege_id`, `role_id`, `is_valid`) VALUES ('2', '2', '1', '1');
 INSERT INTO `privilege_role` (`id`, `privilege_id`, `role_id`, `is_valid`) VALUES ('3', '3', '1', '1');
@@ -367,6 +369,8 @@ INSERT INTO `privilege_role` (`id`, `privilege_id`, `role_id`, `is_valid`) VALUE
 INSERT INTO `privilege_role` (`id`, `privilege_id`, `role_id`, `is_valid`) VALUES ('54', '54', '1', '1');
 INSERT INTO `privilege_role` (`id`, `privilege_id`, `role_id`, `is_valid`) VALUES ('55', '55', '1', '1');
 INSERT INTO `privilege_role` (`id`, `privilege_id`, `role_id`, `is_valid`) VALUES ('56', '56', '1', '1');
+INSERT INTO `privilege_role` (`id`, `privilege_id`, `role_id`, `is_valid`) VALUES ('57', '57', '1', '1');
+INSERT INTO `privilege_role` (`id`, `privilege_id`, `role_id`, `is_valid`) VALUES ('58', '58', '1', '1');
 INSERT INTO `user` (`id`, `name`, `login_name`, `password`, `stable_salt`, `salt`, `salt_expire_time`, `role_id`, `email`, `wechat_key`, `is_valid`, `create_time`, `update_time`) VALUES (1, '管理员', 'admin', '71f11204b9cbf6ef09e83e43dda7399e', 'fndTb5mWFA6JYtdW1AKJvQSzZ3ERpVt0YupukTjI', 'SX2JQywwb13zhlt7uPPXh8Bne6V40JL2RwD3L6Wh', '2019-10-28 11:35:37', 1, 'my_email@my_email.cn', 'my_wechat_key', 1, '2019-08-21 16:46:21.981898', '2019-08-21 16:46:21.981898');
 INSERT INTO `role` (`id`, `name`, `is_valid`, `update_time`) VALUES ('1', '管理员', '1', '2019-10-28 11:35:37');
 INSERT INTO `widget` (`id`, `name`, `is_valid`, `span`, `buttons`, `auto_update`, `update_time`) VALUES ('1', 'weather', '1', '8', '[\'add\', \'sort\']', '1800000', '2019-10-28 11:35:37');
