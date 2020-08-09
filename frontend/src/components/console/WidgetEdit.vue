@@ -1,6 +1,6 @@
 <template>
   <section>
-    <div class="margin_left-large">
+    <el-row class="margin_left-large">
       <p
         class="notesText"
         style="font-size: 12px; color: red; padding-top: 0px; margin-top: 0px; margin-bottom: 10px"
@@ -78,8 +78,10 @@
           style="margin-top: 125px;"
         ></el-button>
       </el-tooltip>
-    </div>
-    <el-button @click="submit()" size="small" class="margin_top-medium">提交</el-button>
+    </el-row>
+    <el-row>
+      <el-button @click="submit()" size="small" class="margin_top-medium">提交</el-button>
+    </el-row>
 
     <el-drawer
       :title="edit.title"
