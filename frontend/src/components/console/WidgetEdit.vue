@@ -178,7 +178,11 @@ export default {
       }
     },
     widgetAdd(item) {
-      console.log(item);
+      this.widgetAllGet();
+      this.edit.title = "添加组件";
+      this.edit.action = "addWidget";
+      this.edit.widgetSuiteIndexInOpration = index;
+      this.edit.visible = true;
     },
     widgetSuiteEdit(index) {
       this.edit.title = "编辑组件集名称";
