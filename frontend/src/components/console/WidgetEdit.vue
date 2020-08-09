@@ -229,6 +229,8 @@ export default {
       if (this.edit.title == "新增组件集") {
         this.items.push({
           name: this.edit.widgetSuiteName,
+          detail: [],
+          widget_detail: [],
         });
       } else if (this.edit.title == "编辑组件集名称") {
         let widgetSuiteIndex = this.edit.widgetSuiteIndexInOpration;
@@ -240,6 +242,9 @@ export default {
       this.edit.widgetSuiteName = "";
     },
     submit() {
+      for (let x = 0; x < this.items.length; x++) {
+        this.items[x].order = x;
+      }
       console.log(this.items);
     },
   },

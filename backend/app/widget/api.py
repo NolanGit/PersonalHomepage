@@ -1,3 +1,4 @@
+import ast
 import time
 import json
 import datetime
@@ -77,13 +78,15 @@ def widgetSuiteDetail():
 def widgetSuiteSave():
     try:
         user_id = request.get_json()['user_id']
-        data = request.get_json()['data']
+        suite_data = request.get_json()['suite_data']
         _status, _msg = widget_suite_delete(user_id)
         if not _status:
             raise Exception(_msg)
-
-        # field = [widget_suite.name, widget_suite.user_id, widget_suite.order, widget_suite.is_valid, widget_suite.detail, widget_suite.update_time]
-        # widget_suite.insert_many(data, field).execute()
+        data = []
+        for s_suite_data in suite_data:
+            data.append((s_suite_data['name'], user_id, s_suite_data['order'], 1, ast.literal_eval(s_suite_data['detail']), datetime.datetime.now()))
+        field = [widget_suite.name, widget_suite.user_id, widget_suite.order, widget_suite.is_valid, widget_suite.detail, widget_suite.update_time]
+        widget_suite.insert_many(data, field).execute()
         return rsp.success()
     except Exception as e:
         traceback.print_exc()
