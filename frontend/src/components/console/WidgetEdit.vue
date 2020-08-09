@@ -89,7 +89,7 @@
         ></el-input>
         <el-button type="primary" size="mini" plain @click="widgetSuiteAdded()">确定</el-button>
       </div>
-      <el-table v-if="edit.action='addWidget'"></el-table>
+      <el-table v-if="edit.action=='addWidget'"></el-table>
     </el-drawer>
   </section>
 </template>
