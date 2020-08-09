@@ -15,15 +15,15 @@
             <el-row class="div-flex margin_top-medium" style="margin-bottom: 30px;">
               <i
                 class="el-icon-s-operation margin_right-medium margin_left-small"
-                style="color: #6a6c70;"
+                style="color: #6a6c70; margin-top: 3px;"
               ></i>
               <p class="noMargin">{{ item.name }}</p>
               <div class="margin_left-large">
+                <el-tooltip content="编辑组件集名称" placement="top">
+                  <el-button @click="widgetSuiteEdit(index)" size="mini" class="el-icon-edit"></el-button>
+                </el-tooltip>
                 <el-tooltip content="为组件集增加组件" placement="top">
                   <el-button @click="widgetAdd(index)" size="mini" class="el-icon-plus"></el-button>
-                </el-tooltip>
-                <el-tooltip content="编辑组件集名称" placement="top">
-                  <el-button @click="widgetSuiteEdit(index)" size="mini" class="el-icon-setting"></el-button>
                 </el-tooltip>
                 <el-tooltip content="删除组件集" placement="top">
                   <el-button
@@ -203,7 +203,7 @@ export default {
       );
     },
     widgetDelete(index, widgetItem, widgetIndex) {
-      this.$confirm("确认删除[" + widgetItem.name + "]吗?", "提示", {}).then(
+      this.$confirm("确认删除[" + widgetItem.name_zh + "]吗?", "提示", {}).then(
         async () => {
           this.items[index].widget_detail.splice(widgetIndex, 1);
           for (let x = 0; x < this.items[index].widget_detail; x++) {

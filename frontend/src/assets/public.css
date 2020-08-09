@@ -363,7 +363,7 @@ icon-medium::-webkit-scrollbar {
 }
 
 .list {
-    max-height: 80vh;
+    max-height: 50vh;
     margin: 0 auto;
     padding: 0;
     overflow: auto;
