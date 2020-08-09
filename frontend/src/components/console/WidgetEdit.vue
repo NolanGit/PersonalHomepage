@@ -104,15 +104,10 @@
         stripe
         style="width: 100%"
       >
-        <!-- <el-table-column :key="Math.random()" prop="id" sortable label="ID" width="70"></el-table-column> -->
-        <el-table-column :key="Math.random()" prop="name" label="姓名" width="120"></el-table-column>
-        <el-table-column :key="Math.random()" prop="login_name" label="登录名" width="180"></el-table-column>
-        <el-table-column :key="Math.random()" prop="role_name" label="角色" width="120"></el-table-column>
-        <el-table-column :key="Math.random()" prop="is_disabled" label="是否禁用" width="80"></el-table-column>
-        <el-table-column :key="Math.random()" prop="update_time" label="修改时间"></el-table-column>
+        <el-table-column :key="Math.random()" prop="name_zh" label="名称" width="120"></el-table-column>
         <el-table-column :key="Math.random()" label="操作">
           <template slot-scope="scope">
-            <el-button class="noMargin" size="mini" plain @click="userDisable(scope.row.id)">选择</el-button>
+            <el-button class="noMargin" size="mini" plain @click="widgetAdded(scope.row)">选择</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -177,12 +172,19 @@ export default {
         });
       }
     },
-    widgetAdd(item) {
+    widgetAdd(index) {
       this.widgetAllGet();
       this.edit.title = "添加组件";
       this.edit.action = "addWidget";
       this.edit.widgetSuiteIndexInOpration = index;
       this.edit.visible = true;
+    },
+    widgetAdded(item) {
+      let widgetSuiteIndex = this.edit.widgetSuiteIndexInOpration;
+      this.items[x].detail.push(item.id);
+      this.items[x].widget_detail.push({
+        name_zh: item.name_zh,
+      });
     },
     widgetSuiteEdit(index) {
       this.edit.title = "编辑组件集名称";

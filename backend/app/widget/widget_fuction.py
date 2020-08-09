@@ -64,7 +64,7 @@ def widget_all():
         'name': _['name'],
         'name_zh': _['name_zh'],
         'span': _['span'],
-        'buttons': _['buttons'],
+        'buttons': eval(_['buttons']),
         'auto_update': _['auto_update'],
         'update_time': _['update_time']
     } for _ in widget_table.select().where(widget_table.is_valid == 1).dicts()]
