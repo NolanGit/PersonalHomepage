@@ -113,6 +113,7 @@
           stripe
           style="width: 100%"
         >
+          <el-table-column :key="Math.random()" prop="id" label="ID" v-show="false"></el-table-column>
           <el-table-column :key="Math.random()" prop="name_zh" label="名称"></el-table-column>
           <el-table-column :key="Math.random()" label="操作" width="120">
             <template slot-scope="scope">
