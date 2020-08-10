@@ -169,7 +169,7 @@ export default {
       for (let x = 0; x < this.widget.length; x++) {
         if (count >= 24) {
           this.widgetSuite.push([]);
-          this.count = 0;
+          count = 0;
         }
         this.widgetSuite[this.widgetSuite.length - 1].push(this.widget[x]);
         count += this.widget[x].span;
