@@ -113,7 +113,7 @@
           stripe
           style="width: 100%"
         >
-          <el-table-column :key="Math.random()" prop="id" label="ID" v-show="false"></el-table-column>
+          <el-table-column :key="Math.random()" prop="id" label="ID" :v-show="false"></el-table-column>
           <el-table-column :key="Math.random()" prop="name_zh" label="名称"></el-table-column>
           <el-table-column :key="Math.random()" label="操作" width="120">
             <template slot-scope="scope">
@@ -198,8 +198,8 @@ export default {
     },
     widgetAdded(item) {
       let widgetSuiteIndex = this.edit.widgetSuiteIndexInOpration;
-      this.items[widgetSuiteIndex].detail.push(item.id);
       this.items[widgetSuiteIndex].widget_detail.push({
+        id: item.id,
         name_zh: item.name_zh,
       });
       this.edit.visible = false;
