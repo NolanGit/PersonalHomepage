@@ -22,7 +22,7 @@ def save():
     try:
         user_id = request.get_json()['user_id']
         file_id = request.get_json()['file_id']
-        cloud_drive.create(file_id=file_id, user_id=user_id, is_valid=1, update_time=datetime.datetime.now()).save()
+        cloud_drive.create(file_id=file_id, user_id=user_id, share_token=None, is_valid=1, update_time=datetime.datetime.now()).save()
         return rsp.success()
     except Exception as e:
         traceback.print_exc()
@@ -58,6 +58,7 @@ def get():
             'file_id': s_['file_id'],
             'file_name': upload.get(upload.id == s_['file_id']).file_name,
             'size': upload.get(upload.id == s_['file_id']).size,
+            'share': 1 if s_.share_token != None else 0,
             'update_time': s_['update_time'].strftime("%Y-%m-%d %H:%M:%S"),
         } for s_ in _r]
         return rsp.success({'list': _list, 'total': _total})
@@ -83,3 +84,17 @@ def delete():
     except Exception as e:
         traceback.print_exc()
         return rsp.failed(e), 500
+
+
+@cloud_drive_blue_print.route('/share/set', methods=['POST'])
+@permission_required(URL_PREFIX + '/share/set')
+@cross_origin()
+def share_set():
+    pass
+
+
+@cloud_drive_blue_print.route('/share/cancel', methods=['POST'])
+@permission_required(URL_PREFIX + '/share/cancel')
+@cross_origin()
+def cancel():
+    pass

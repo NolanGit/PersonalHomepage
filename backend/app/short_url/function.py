@@ -33,7 +33,7 @@ def set_content(content, type, expire_time=None):
 
 def get_content(code):
     try:
-        _ = short_content_table.get(short_content_table.code == code)
+        _ = short_content_table.get((short_content_table.code == code) & (short_content_table.is_valid == 1) & (short_content_table.expire_time < datetime.datetime.now()))
         return {'type': _.type, 'content': _.content}
     except DoesNotExist:
         return None

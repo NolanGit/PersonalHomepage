@@ -37,13 +37,14 @@ def t():
         return rsp.failed(e), 500
 
 
-@short_url_blue_print.route('/short_content/set', methods=['GET'])
+@short_url_blue_print.route('/short_content/set', methods=['POST'])
 @cross_origin()
 def set():
     try:
-        c = request.args.get('c')
-        if int(c) == 1:
-            return redirect('https://baidu.com', code=301)
+        content = request.get_json('content')
+        type = request.get_json('type')
+        set_content(content, type)
+        return rsp.success()
     except Exception as e:
         traceback.print_exc()
         return rsp.failed(e), 500

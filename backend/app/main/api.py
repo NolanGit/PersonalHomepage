@@ -5,6 +5,7 @@ import requests
 import datetime
 import traceback
 import threading
+from peewee import DoesNotExist
 from pypinyin import lazy_pinyin
 from werkzeug.utils import secure_filename
 
@@ -20,7 +21,9 @@ from ..login.login_funtion import User
 from ..privilege.privilege_control import privilegeFunction
 from ..privilege.privilege_control import permission_required
 import configparser
+from ..response import Response
 
+rsp = Response()
 cf = configparser.ConfigParser()
 cf.read('app/homepage.config')
 FRONTEND_FOLDER = 'frontend/'
@@ -101,8 +104,23 @@ def upload():
 @main.route('/download', methods=['GET'])
 @permission_required('/download')
 def download():
+    share_token = request.cookies.get('share_token')
+
+    if share_token == None:
+        user_key = request.cookies.get('user_key')
+        redis_conn = privilegeFunction().get_redis_conn0()
+        if user_key == None or redis_conn.exists(user_key) == 0:
+            user_id = 0
+        user_id = redis_conn.get(user_key)
+    else:
+        pass
+
     file_id = request.args.get('file_id')
-    _ = upload_table.get(id=file_id)
+    try:
+        _ = upload_table.get(id=file_id, user_id=user_id)
+    except DoesNotExist:
+        return rsp.failed('参数错误')
+
     file_path = _.file_path
     file_name = _.file_name
     response = make_response(send_file(file_path, as_attachment=True, attachment_filename=file_name))
