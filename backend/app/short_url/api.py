@@ -15,7 +15,7 @@ rsp = Response()
 URL_PREFIX = '/cloudDrive'
 
 
-@short_url_blue_print.route('/t', methods=['GET'])
+@short_url_blue_print.route('/', methods=['GET'])
 @cross_origin()
 def t():
     try:
