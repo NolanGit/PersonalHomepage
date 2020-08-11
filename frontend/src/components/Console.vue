@@ -28,6 +28,9 @@
         <div v-if="activeComponent=='Script'">
           <Script :user_id="user_id" />
         </div>
+        <div v-if="activeComponent=='widgetEdit'">
+          <widgetEdit :user_id="user_id" />
+        </div>
       </div>
     </el-drawer>
   </div>
@@ -36,19 +39,21 @@
 import axios from "axios";
 import Privilege from "./console/Privilege.vue";
 import Script from "./console/Script.vue";
+import widgetEdit from "./console/WidgetEdit.vue";
 const api = {
-  get: "/console/get"
+  get: "/console/get",
 };
 
 export default {
   name: "Console",
   props: {
     user_id: Number,
-    login_name: String
+    login_name: String,
   },
   components: {
     Script,
-    Privilege
+    Privilege,
+    widgetEdit,
   },
   data() {
     return {
@@ -57,9 +62,9 @@ export default {
         title: "",
         size: "",
         visible: false,
-        direction: "ttb"
+        direction: "ttb",
       },
-      activeComponent: ""
+      activeComponent: "",
     };
   },
   methods: {
@@ -71,7 +76,7 @@ export default {
         console.log(e);
         this.$message({
           message: e.response.data.msg,
-          type: "error"
+          type: "error",
         });
       }
     },
@@ -81,12 +86,12 @@ export default {
       this.drawer.visible = true;
       this.drawer.direction = "ttb";
       this.drawer.size = "80%";
-    }
+    },
   },
   created() {},
   mounted() {
     this.consoleGetFront();
-  }
+  },
 };
 </script>
 <style scoped>

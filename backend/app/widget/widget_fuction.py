@@ -11,14 +11,16 @@ cf = CommonFunc()
 class Widget(Base):
     id = None
     name = None
+    name_zh = None
     is_valid = None
     span = None
     buttons = None
     auto_update = None
     update_time = None
 
-    def __init__(self, name=None, is_valid=None, span=None, buttons=None, auto_update=0, update_time=datetime.datetime.now(), id=0):
+    def __init__(self, name=None, name_zh=None, is_valid=None, span=None, buttons=None, auto_update=0, update_time=datetime.datetime.now(), id=0):
         self.name = name
+        self.name_zh = name_zh
         self.is_valid = is_valid
         self.span = span
         self.buttons = buttons
@@ -29,6 +31,7 @@ class Widget(Base):
     def complete(self):
         _ = widget_table.get(widget_table.id == self.id)
         self.name = _.name
+        self.name_zh = _.name_zh
         self.is_valid = _.is_valid
         self.span = _.span
         self.buttons = _.buttons
@@ -38,11 +41,21 @@ class Widget(Base):
 
 
 def widget_suite_get(user_id):
-    _ = widget_suite.select().where(widget_suite.user_id == user_id).order_by(widget_suite.order).dicts()
-    result = []
-    for s_ in _:
-        result.append({'id': s_['id'], 'name': s_['name'], 'order': s_['order'], 'detail': eval(s_['detail']), 'update_time': s_['update_time']})
-    return result
+    return [{
+        'id': s_['id'],
+        'name': s_['name'],
+        'order': s_['order'],
+        'detail': eval(s_['detail']),
+        'update_time': s_['update_time']
+    } for s_ in widget_suite.select().where((widget_suite.user_id == user_id) & (widget_suite.is_valid == 1)).order_by(widget_suite.order).dicts()]
+
+
+def widget_suite_delete(user_id):
+    try:
+        widget_suite.update(is_valid=0, update_time=datetime.datetime.now()).where((widget_suite.user_id == user_id) & (widget_suite.is_valid == 1)).execute()
+        return True, 'success'
+    except Exception as e:
+        return False, e
 
 
 def widget_get(user_id, suite_id):
@@ -51,3 +64,15 @@ def widget_get(user_id, suite_id):
         return []
     widget_id_list = eval(_.detail)
     return [cf.attr_to_dict(Widget(id=widget_id).complete()) for widget_id in widget_id_list]
+
+
+def widget_all():
+    return [{
+        'id': _['id'],
+        'name': _['name'],
+        'name_zh': _['name_zh'],
+        'span': _['span'],
+        'buttons': eval(_['buttons']),
+        'auto_update': _['auto_update'],
+        'update_time': _['update_time']
+    } for _ in widget_table.select().where(widget_table.is_valid == 1).dicts()]
