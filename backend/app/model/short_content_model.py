@@ -4,16 +4,16 @@ from peewee import CharField, IntegerField, DateTimeField
 from .model_function import BaseModel
 
 
-class short_url(BaseModel):
+class short_content(BaseModel):
     code = CharField()
     content = CharField()
-    type = IntegerField()
+    type = IntegerField()  # 1:URL
     is_valid = IntegerField()
     expire_time = DateTimeField()
     update_time = DateTimeField()
 
     class Meta:
-        table_name = 'short_url'
+        table_name = 'short_content'
 
 
-short_url.create_table()
+short_content.create_table()
