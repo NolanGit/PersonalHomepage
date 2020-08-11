@@ -59,6 +59,8 @@ def get():
             'file_name': upload.get(upload.id == s_['file_id']).file_name,
             'size': upload.get(upload.id == s_['file_id']).size,
             'share': 1 if s_['share_token'] != None and s_['share_token'] != '' else 0,
+            'share_link': s_['share_link'],
+            'share_expire_time': s_['share_expire_time'].strftime("%Y-%m-%d %H:%M:%S") if s_['share_expire_time'] != None and s_['share_expire_time'] != '' else None,
             'update_time': s_['update_time'].strftime("%Y-%m-%d %H:%M:%S"),
         } for s_ in _r]
         return rsp.success({'list': _list, 'total': _total})
