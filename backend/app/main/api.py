@@ -106,13 +106,18 @@ def upload():
 def download():
     file_id = request.args.get('file_id')
     share_token = request.args.get('share_token')
-    
+
     if share_token == None:
         user_key = request.cookies.get('user_key')
         redis_conn = privilegeFunction().get_redis_conn0()
         if user_key == None or redis_conn.exists(user_key) == 0:
             user_id = 0
-        user_id = redis_conn.get(user_key)
+        else:
+            user_id = redis_conn.get(user_key)
+        try:
+            _ = upload_table.get(upload_table.id == file_id, upload_table.user_id == user_id)
+        except DoesNotExist:
+            return rsp.failed('参数错误')
     else:
         try:
             _ = cloud_drive.get(cloud_drive.share_token == share_token)
@@ -120,11 +125,6 @@ def download():
                 return rsp.failed('参数错误')
         except DoesNotExist:
             return rsp.failed('参数错误')
-
-    try:
-        _ = upload_table.get(id=file_id, user_id=user_id)
-    except DoesNotExist:
-        return rsp.failed('参数错误')
 
     file_path = _.file_path
     file_name = _.file_name
