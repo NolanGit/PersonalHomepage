@@ -46,7 +46,7 @@
                     @click="download(scope.row.file_id)"
                   ></el-button>
                 </el-tooltip>
-                <el-tooltip content="分享" placement="top">
+                <el-tooltip v-if="scope.row.share==0" content="分享" placement="top">
                   <el-button
                     v-if="scope.row.share==0"
                     class="noMargin"
@@ -57,26 +57,26 @@
                     @click="share(scope.row.file_id)"
                   ></el-button>
                 </el-tooltip>
-                <el-tooltip content="复制分享链接" placement="top">
+                <el-tooltip v-if="scope.row.share==1" content="复制分享链接" placement="top">
                   <el-button
                     v-if="scope.row.share==1"
                     class="noMargin"
                     size="mini"
                     plain
                     type="primary"
-                    icon="el-icon-paperclip"
+                    icon="el-icon-link"
                     v-clipboard:copy="scope.row.share_link"
                     v-clipboard:success="onCopy"
                     v-clipboard:error="onError"
                   ></el-button>
                 </el-tooltip>
-                <el-tooltip content="取消分享" placement="top">
+                <el-tooltip v-if="scope.row.share==1" content="取消分享" placement="top">
                   <el-button
                     v-if="scope.row.share==1"
                     class="noMargin"
                     size="mini"
                     plain
-                    type="danger"
+                    type="warning"
                     icon="el-icon-close"
                     @click="unShare(scope.row.file_id)"
                   ></el-button>
@@ -223,7 +223,7 @@ export default {
         });
         this.get();
         this.$message({
-          message: res.msg,
+          message: "创建分享链接成功，点击[复制分享链接]按钮复制吧！",
           type: "success",
         });
       } catch (e) {
@@ -236,7 +236,7 @@ export default {
     },
     onCopy(e) {
       this.$message({
-        message: "复制成功！现在就去粘贴吧！",
+        message: "复制分享链接成功！现在就去粘贴吧！",
         type: "success",
       });
     },
@@ -244,23 +244,29 @@ export default {
       alert("复制失败");
     },
     async unShare(fileId) {
-      try {
-        const { data: res } = await axios.post(api.unShare, {
-          user_id: this.user_id,
-          id: fileId,
-        });
-        this.get();
-        this.$message({
-          message: res.msg,
-          type: "success",
-        });
-      } catch (e) {
-        console.log(e);
-        this.$message({
-          message: e.response.data.msg,
-          type: "error",
-        });
-      }
+      this.$confirm(
+        "取消分享后，原来的分享链接将失效，确定取消分享吗？",
+        "提示",
+        {}
+      ).then(async () => {
+        try {
+          const { data: res } = await axios.post(api.unShare, {
+            user_id: this.user_id,
+            id: fileId,
+          });
+          this.get();
+          this.$message({
+            message: res.msg,
+            type: "success",
+          });
+        } catch (e) {
+          console.log(e);
+          this.$message({
+            message: e.response.data.msg,
+            type: "error",
+          });
+        }
+      });
     },
     async del(row_id) {
       this.$confirm("确认删除吗？", "提示", {}).then(async () => {
