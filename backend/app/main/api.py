@@ -115,13 +115,15 @@ def download():
         else:
             user_id = redis_conn.get(user_key)
         try:
-            _ = upload_table.get(upload_table.id == file_id, upload_table.user_id == user_id)
+            _ = upload_table.get((upload_table.id == file_id) & (upload_table.user_id == user_id))
         except DoesNotExist:
             return rsp.failed('参数错误')
     else:
         try:
-            _ = cloud_drive.get(cloud_drive.share_token == share_token)
-            if int(_.file_id) != int(file_id):
+            check_token_query = cloud_drive.get(cloud_drive.share_token == share_token)
+            if int(check_token_query.file_id) == int(file_id):
+                _ = upload_table.get(upload_table.id == file_id)
+            else:
                 return rsp.failed('参数错误')
         except DoesNotExist:
             return rsp.failed('参数错误')
