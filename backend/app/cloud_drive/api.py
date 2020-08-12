@@ -123,7 +123,7 @@ def share_set():
 
         salt = common_func.random_str(40)
         token = common_func.md5_it(str(_.id) + str(_.file_id) + salt)
-        raw_link = DOMAIN_NAME + '?' + 'file_id' + _.file_id + 'share_token=' + token
+        raw_link = DOMAIN_NAME + '?' + 'file_id' + str(_.file_id) + 'share_token=' + token
         default_expire_time = datetime.datetime.now() + datetime.timedelta(weeks=100 * 52)  # 有效期覆盖社会主义初级阶段
 
         _.share_token = token
