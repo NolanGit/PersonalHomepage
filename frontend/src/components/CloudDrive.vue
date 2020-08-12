@@ -66,6 +66,8 @@
                     type="primary"
                     icon="el-icon-paperclip"
                     v-clipboard:copy="scope.row.share_link"
+                    v-clipboard:success="onCopy"
+                    v-clipboard:error="onError"
                   ></el-button>
                 </el-tooltip>
                 <el-tooltip content="取消分享" placement="top">
@@ -230,6 +232,15 @@ export default {
           type: "error",
         });
       }
+    },
+    onCopy(e) {
+      this.$message({
+        message: "复制成功！现在就去粘贴吧！",
+        type: "success",
+      });
+    },
+    onError(e) {
+      alert("复制失败");
     },
     async del(row_id) {
       this.$confirm("确认删除吗？", "提示", {}).then(async () => {

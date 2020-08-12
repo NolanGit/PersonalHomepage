@@ -168,7 +168,7 @@ print('')
 mysql_password = input('[第7步/共8步]请输入本地MySQL的root账号的密码:')
 print(mysql_password)
 print('')
-domain = input('[第8步/共8步]请输入服务域名及端口(如果通过外网IP或域名访问，则填写外网IP或域名+端口，直接回车则使用"http://localhost:50000"):')
+domain = input('[第8步/共8步]请输入服务域名及端口(如果通过外网IP或域名访问，则填写"http://+外网IP或域名+端口"，如"http://baidu.com:666"，直接回车则使用"http://localhost:50000"):')
 if domain == None:
     domain = "http://localhost:50000"
 print(domain)
