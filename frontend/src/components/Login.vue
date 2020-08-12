@@ -168,7 +168,7 @@ export default {
     },
     cloudClicked() {
       this.drawer.title = "网盘";
-      this.drawer.size = "40%";
+      this.drawer.size = "50%";
       this.drawer.visible = true;
       this.drawer.direction = "rtl";
       this.cloudStatus = 0;

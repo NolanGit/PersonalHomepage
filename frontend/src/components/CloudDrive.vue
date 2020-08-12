@@ -33,8 +33,8 @@
           <el-table :data="tableData" style="text-align: center;" size="small">
             <el-table-column prop="file_name" label="名称"></el-table-column>
             <el-table-column prop="size" label="大小" width="100"></el-table-column>
-            <el-table-column prop="update_time" label="上传时间"></el-table-column>
-            <el-table-column :key="Math.random()" label="操作" width="150">
+            <el-table-column prop="update_time" label="上传时间" width="170"></el-table-column>
+            <el-table-column :key="Math.random()" label="操作" width="200">
               <template slot-scope="scope">
                 <el-tooltip content="下载" placement="top">
                   <el-button
@@ -48,12 +48,35 @@
                 </el-tooltip>
                 <el-tooltip content="分享" placement="top">
                   <el-button
+                    v-if="scope.row.share==0"
                     class="noMargin"
                     size="mini"
                     plain
                     type="primary"
                     icon="el-icon-share"
                     @click="share(scope.row.file_id)"
+                  ></el-button>
+                </el-tooltip>
+                <el-tooltip content="复制分享链接" placement="top">
+                  <el-button
+                    v-if="scope.row.share==0"
+                    class="noMargin"
+                    size="mini"
+                    plain
+                    type="primary"
+                    icon="el-icon-pagerclip"
+                    @click="shareLinkCopy(scope.row.share_link)"
+                  ></el-button>
+                </el-tooltip>
+                <el-tooltip content="取消分享" placement="top">
+                  <el-button
+                    v-if="scope.row.share==0"
+                    class="noMargin"
+                    size="mini"
+                    plain
+                    type="danger"
+                    icon="el-icon-close"
+                    @click="unShare(scope.row.file_id)"
                   ></el-button>
                 </el-tooltip>
                 <el-tooltip content="删除" placement="top">
