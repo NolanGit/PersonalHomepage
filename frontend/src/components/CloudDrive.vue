@@ -34,7 +34,7 @@
             <el-table-column prop="file_name" label="名称"></el-table-column>
             <el-table-column prop="size" label="大小" width="100"></el-table-column>
             <el-table-column prop="update_time" label="上传时间" width="170"></el-table-column>
-            <el-table-column :key="Math.random()" label="操作" width="230">
+            <el-table-column label="操作" width="250">
               <template slot-scope="scope">
                 <el-tooltip content="下载" placement="top">
                   <el-button
@@ -249,11 +249,11 @@ export default {
           user_id: this.user_id,
           id: fileId,
         });
+        this.get();
         this.$message({
           message: res.msg,
           type: "success",
         });
-        this.get();
       } catch (e) {
         console.log(e);
         this.$message({

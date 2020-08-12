@@ -21,9 +21,9 @@ from ..login.login_funtion import User
 from ..privilege.privilege_control import privilegeFunction
 from ..privilege.privilege_control import permission_required
 import configparser
-from ..response import Response
+from ..response import Response as MyResponse
 
-rsp = Response()
+rsp = MyResponse()
 cf = configparser.ConfigParser()
 cf.read('app/homepage.config')
 FRONTEND_FOLDER = 'frontend/'
@@ -115,7 +115,7 @@ def download():
         user_id = redis_conn.get(user_key)
     else:
         try:
-            _ = cloud_drive.get(share_token=share_token)
+            _ = cloud_drive.get(cloud_drive.share_token == share_token)
             if _.file_id != file_id:
                 return rsp.failed('参数错误')
         except DoesNotExist:
