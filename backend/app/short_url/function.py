@@ -30,12 +30,13 @@ def base_58(target: int):
 
 def set_content(content, type=1, expire_time=None):
     default_expire_time = datetime.datetime.now() + datetime.timedelta(weeks=100 * 52)  # 有效期覆盖社会主义初级阶段
-    s = short_content_table(code='', content='', type='', is_valid=1, expire_time=default_expire_time if expire_time == None else expire_time, update_time=datetime.datetime.now())
+    s = short_content_table(code='', content=content, type=type, is_valid=1, expire_time=default_expire_time if expire_time == None else expire_time, update_time=datetime.datetime.now())
     s.save()
     _id = s.id
     _code = base_58(_id)
     short_content_table.update(code=_code).where(short_content_table.id == _id).execute()
     return DOMAIN_NAME + '/s?c=' + _code
+
 
 def get_content(code):
     try:
