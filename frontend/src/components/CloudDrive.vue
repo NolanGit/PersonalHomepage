@@ -59,18 +59,18 @@
                 </el-tooltip>
                 <el-tooltip content="复制分享链接" placement="top">
                   <el-button
-                    v-if="scope.row.share==0"
+                    v-if="scope.row.share==1"
                     class="noMargin"
                     size="mini"
                     plain
                     type="primary"
-                    icon="el-icon-pagerclip"
+                    icon="el-icon-paperclip"
                     @click="shareLinkCopy(scope.row.share_link)"
                   ></el-button>
                 </el-tooltip>
                 <el-tooltip content="取消分享" placement="top">
                   <el-button
-                    v-if="scope.row.share==0"
+                    v-if="scope.row.share==1"
                     class="noMargin"
                     size="mini"
                     plain
