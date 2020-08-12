@@ -34,7 +34,7 @@
             <el-table-column prop="file_name" label="名称"></el-table-column>
             <el-table-column prop="size" label="大小" width="100"></el-table-column>
             <el-table-column prop="update_time" label="上传时间" width="170"></el-table-column>
-            <el-table-column :key="Math.random()" label="操作" width="200">
+            <el-table-column :key="Math.random()" label="操作" width="230">
               <template slot-scope="scope">
                 <el-tooltip content="下载" placement="top">
                   <el-button
@@ -121,6 +121,7 @@ const api = {
   get: "/cloudDrive/get",
   save: "/cloudDrive/save",
   share: "/cloudDrive/share/set",
+  unShare: "/cloudDrive/share/cancel",
   delete: "/cloudDrive/delete",
 };
 
@@ -220,11 +221,11 @@ export default {
           user_id: this.user_id,
           id: fileId,
         });
+        this.get();
         this.$message({
           message: res.msg,
           type: "success",
         });
-        this.get();
       } catch (e) {
         console.log(e);
         this.$message({
@@ -241,6 +242,25 @@ export default {
     },
     onError(e) {
       alert("复制失败");
+    },
+    async unShare(fileId) {
+      try {
+        const { data: res } = await axios.post(api.unShare, {
+          user_id: this.user_id,
+          id: fileId,
+        });
+        this.$message({
+          message: res.msg,
+          type: "success",
+        });
+        this.get();
+      } catch (e) {
+        console.log(e);
+        this.$message({
+          message: e.response.data.msg,
+          type: "error",
+        });
+      }
     },
     async del(row_id) {
       this.$confirm("确认删除吗？", "提示", {}).then(async () => {

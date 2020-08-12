@@ -123,16 +123,16 @@ def share_set():
 
         salt = common_func.random_str(40)
         token = common_func.md5_it(str(_.id) + str(_.file_id) + salt)
-        raw_link = DOMAIN_NAME + '/download?' + 'file_id' + str(_.file_id) + 'share_token=' + token
+        raw_link = DOMAIN_NAME + '/download?' + 'file_id=' + str(_.file_id) + 'share_token=' + token
         default_expire_time = datetime.datetime.now() + datetime.timedelta(weeks=100 * 52)  # 有效期覆盖社会主义初级阶段
 
         _.share_token = token
-        _.share_link = set_content(raw_link) # 存储短链接
+        _.share_link = set_content(raw_link)  # 存储短链接
         _.share_expire_time = default_expire_time
         _.save()
 
         return rsp.success()
-         
+
     except Exception as e:
         traceback.print_exc()
         return rsp.failed(e), 500
@@ -142,4 +142,32 @@ def share_set():
 @permission_required(URL_PREFIX + '/share/cancel')
 @cross_origin()
 def cancel():
-    pass
+    try:
+        user_id = request.get_json()['user_id']
+        id = request.get_json()['id']
+
+        user_key = request.cookies.get('user_key')
+        redis_conn = privilegeFunction().get_redis_conn0()
+
+        # 判断user_key是否有效
+        if user_key == None or redis_conn.exists(user_key) == 0:
+            return rsp.failed('错误的用户信息'), 403
+
+        # 判断user_id是否一致
+        redis_user_id = redis_conn.get(user_key)
+        if int(redis_user_id) != int(user_id):
+            return rsp.failed('错误的用户信息'), 403
+
+        # 判断文件归属权
+        _ = cloud_drive.get(cloud_drive.id == id)
+        if int(_.user_id) != int(user_id):
+            return rsp.refuse('文件归属错误！'), 403
+
+        _.share_token = None
+        _.save()
+
+        return rsp.success()
+
+    except Exception as e:
+        traceback.print_exc()
+        return rsp.failed(e), 500

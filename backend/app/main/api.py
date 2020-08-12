@@ -16,7 +16,7 @@ from ..model.search_model import search_engines, search_engines_log
 from ..model.bookmarks_model import bookmarks as bookmarks_table
 from ..model.bookmarks_model import icon as icon_table
 from ..model.widget_model import widget as widget_table
-from ..model.upload_model import upload as upload_table
+from ..model.upload_model import upload as upload_table, cloud_drive
 from ..login.login_funtion import User
 from ..privilege.privilege_control import privilegeFunction
 from ..privilege.privilege_control import permission_required
@@ -104,8 +104,9 @@ def upload():
 @main.route('/download', methods=['GET'])
 @permission_required('/download')
 def download():
+    file_id = request.args.get('file_id')
     share_token = request.args.get('share_token')
-
+    print(share_token)
     if share_token == None:
         user_key = request.cookies.get('user_key')
         redis_conn = privilegeFunction().get_redis_conn0()
@@ -113,9 +114,13 @@ def download():
             user_id = 0
         user_id = redis_conn.get(user_key)
     else:
-        pass
+        try:
+            _ = cloud_drive.get(share_token=share_token)
+            if _.file_id != file_id:
+                return rsp.failed('参数错误')
+        except DoesNotExist:
+            return rsp.failed('参数错误')
 
-    file_id = request.args.get('file_id')
     try:
         _ = upload_table.get(id=file_id, user_id=user_id)
     except DoesNotExist:
