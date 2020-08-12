@@ -65,7 +65,7 @@
                     plain
                     type="primary"
                     icon="el-icon-paperclip"
-                    @click="shareLinkCopy(scope.row.share_link)"
+                    v-clipboard:copy="scope.row.share_link"
                   ></el-button>
                 </el-tooltip>
                 <el-tooltip content="取消分享" placement="top">
@@ -118,6 +118,7 @@ const api = {
   download: "/download",
   get: "/cloudDrive/get",
   save: "/cloudDrive/save",
+  share: "/cloudDrive/share/set",
   delete: "/cloudDrive/delete",
 };
 
@@ -203,6 +204,25 @@ export default {
         elemIF.src = "/download?file_id=" + fileId;
         elemIF.style.display = "none";
         document.body.appendChild(elemIF);
+      } catch (e) {
+        console.log(e);
+        this.$message({
+          message: e.response.data.msg,
+          type: "error",
+        });
+      }
+    },
+    async share(fileId) {
+      try {
+        const { data: res } = await axios.post(api.share, {
+          user_id: this.user_id,
+          id: fileId,
+        });
+        this.$message({
+          message: res.msg,
+          type: "success",
+        });
+        this.get();
       } catch (e) {
         console.log(e);
         this.$message({

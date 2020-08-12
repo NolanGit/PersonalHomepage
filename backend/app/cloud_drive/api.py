@@ -2,15 +2,23 @@ import time
 import json
 import datetime
 import traceback
+import configparser
 from flask_cors import cross_origin
 from . import cloud_drive as cloud_drive_blue_print
 from flask import session, redirect, current_app, request, jsonify
 
 from ..response import Response
+from ..common_func import CommonFunc
 from ..model.upload_model import cloud_drive, upload
 from ..privilege.privilege_control import privilegeFunction
 from ..privilege.privilege_control import permission_required
+from ..short_url.function import set_content
 
+cf = configparser.ConfigParser()
+cf.read('app/homepage.config')
+DOMAIN_NAME = cf.get('config', 'DOMAIN_NAME')
+
+common_func = CommonFunc()
 rsp = Response()
 URL_PREFIX = '/cloudDrive'
 
@@ -92,7 +100,42 @@ def delete():
 @permission_required(URL_PREFIX + '/share/set')
 @cross_origin()
 def share_set():
-    pass
+    try:
+        user_id = request.get_json()['user_id']
+        id = request.get_json()['id']
+
+        user_key = request.cookies.get('user_key')
+        redis_conn = privilegeFunction().get_redis_conn0()
+
+        # 判断user_key是否有效
+        if user_key == None or redis_conn.exists(user_key) == 0:
+            return rsp.failed('错误的用户信息'), 403
+
+        # 判断user_id是否一致
+        redis_user_id = redis_conn.get(user_key)
+        if int(redis_user_id) != int(user_id):
+            return rsp.failed('错误的用户信息'), 403
+
+        # 判断文件归属权
+        _ = cloud_drive.get(cloud_drive.id == id)
+        if int(_.user_id) != int(user_id):
+            return rsp.refuse('文件归属错误！'), 403
+
+        salt = common_func.random_str(40)
+        token = common_func.md5_it(str(_.id) + str(_.file_id) + salt)
+        raw_link = DOMAIN_NAME + '?' + 'file_id' + _.file_id + 'share_token=' + token
+        default_expire_time = datetime.datetime.now() + datetime.timedelta(weeks=100 * 52)  # 有效期覆盖社会主义初级阶段
+
+        _.share_token = token
+        _.share_link = set_content(raw_link) # 存储短链接
+        _.share_expire_time = default_expire_time
+        _.save()
+
+        return rsp.success()
+         
+    except Exception as e:
+        traceback.print_exc()
+        return rsp.failed(e), 500
 
 
 @cloud_drive_blue_print.route('/share/cancel', methods=['POST'])

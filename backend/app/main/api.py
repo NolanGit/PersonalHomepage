@@ -104,7 +104,7 @@ def upload():
 @main.route('/download', methods=['GET'])
 @permission_required('/download')
 def download():
-    share_token = request.cookies.get('share_token')
+    share_token = request.args.get('share_token')
 
     if share_token == None:
         user_key = request.cookies.get('user_key')
