@@ -1,6 +1,6 @@
 # 使用Element UI+Flask实现的浏览器主页
 
-国内搜索引擎的信息流着实用不到，个人想关注的信息又过于分散，因此决定自己写一个主页，整合自己所需要的功能。
+国内搜索引擎的信息流着实用不到，个人想关注的信息又过于分散，因此决定自己写一个主页，整合自己所需要的信息和功能。
 
 采用前后端分离的架构，前端使用Vue.js，后端使用Python，MariaDB+Redis提供数据存储。
 
@@ -8,7 +8,7 @@
 
 ⭐欢迎star！尽量保证每天都有提交！
 
-![image](https://user-images.githubusercontent.com/27627484/86606736-fa387080-bfda-11ea-8492-30457e57295f.png)
+![image](https://user-images.githubusercontent.com/27627484/90041291-af0d2e00-dcfb-11ea-9a6c-32f2fe91d2c8.png)
 
 ## 部署
 
