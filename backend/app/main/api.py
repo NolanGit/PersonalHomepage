@@ -102,13 +102,14 @@ def upload():
 
 
 @main.route('/download', methods=['GET'])
-@permission_required('/download')
 def download():
     file_id = request.args.get('file_id')
     share_token = request.args.get('share_token')
 
     if share_token == None:
         user_key = request.cookies.get('user_key')
+        if user_key == None:
+            return rsp.failed('参数错误')
         redis_conn = privilegeFunction().get_redis_conn0()
         if user_key == None or redis_conn.exists(user_key) == 0:
             user_id = 0
