@@ -5,6 +5,7 @@ import requests
 import datetime
 import traceback
 import threading
+from peewee import DoesNotExist
 from pypinyin import lazy_pinyin
 from werkzeug.utils import secure_filename
 
@@ -15,12 +16,14 @@ from ..model.search_model import search_engines, search_engines_log
 from ..model.bookmarks_model import bookmarks as bookmarks_table
 from ..model.bookmarks_model import icon as icon_table
 from ..model.widget_model import widget as widget_table
-from ..model.upload_model import upload as upload_table
+from ..model.upload_model import upload as upload_table, cloud_drive
 from ..login.login_funtion import User
 from ..privilege.privilege_control import privilegeFunction
 from ..privilege.privilege_control import permission_required
 import configparser
+from ..response import Response as MyResponse
 
+rsp = MyResponse()
 cf = configparser.ConfigParser()
 cf.read('app/homepage.config')
 FRONTEND_FOLDER = 'frontend/'
@@ -99,10 +102,33 @@ def upload():
 
 
 @main.route('/download', methods=['GET'])
-@permission_required('/download')
 def download():
     file_id = request.args.get('file_id')
-    _ = upload_table.get(id=file_id)
+    share_token = request.args.get('share_token')
+
+    if share_token == None:
+        user_key = request.cookies.get('user_key')
+        if user_key == None:
+            return rsp.failed('参数错误')
+        redis_conn = privilegeFunction().get_redis_conn0()
+        if user_key == None or redis_conn.exists(user_key) == 0:
+            user_id = 0
+        else:
+            user_id = redis_conn.get(user_key)
+        try:
+            _ = upload_table.get((upload_table.id == file_id) & (upload_table.user_id == user_id))
+        except DoesNotExist:
+            return rsp.failed('参数错误')
+    else:
+        try:
+            check_token_query = cloud_drive.get(cloud_drive.share_token == share_token)
+            if int(check_token_query.file_id) == int(file_id):
+                _ = upload_table.get(upload_table.id == file_id)
+            else:
+                return rsp.failed('参数错误')
+        except DoesNotExist:
+            return rsp.failed('参数错误')
+
     file_path = _.file_path
     file_name = _.file_name
     response = make_response(send_file(file_path, as_attachment=True, attachment_filename=file_name))

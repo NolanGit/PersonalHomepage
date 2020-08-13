@@ -60,4 +60,6 @@ def create_app(config_name):
     from .notes import notes as  notes_blueprint
     app.register_blueprint(notes_blueprint, url_prefix='/notes')
 
+    from .short_url import short_url as  short_url_blueprint
+    app.register_blueprint(short_url_blueprint, url_prefix='/s')
     return app

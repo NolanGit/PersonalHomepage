@@ -33,23 +33,64 @@
           <el-table :data="tableData" style="text-align: center;" size="small">
             <el-table-column prop="file_name" label="名称"></el-table-column>
             <el-table-column prop="size" label="大小" width="100"></el-table-column>
-            <el-table-column prop="update_time" label="上传时间"></el-table-column>
-            <el-table-column :key="Math.random()" label="操作" width="150">
+            <el-table-column prop="update_time" label="上传时间" width="170"></el-table-column>
+            <el-table-column label="操作" width="280">
               <template slot-scope="scope">
-                <el-button
-                  class="noMargin"
-                  size="mini"
-                  plain
-                  type="primary"
-                  @click="download(scope.row.file_id)"
-                >下载</el-button>
-                <el-button
-                  class="noMargin"
-                  size="mini"
-                  plain
-                  type="danger"
-                  @click="del(scope.row.id)"
-                >删除</el-button>
+                <el-tooltip content="下载" placement="top">
+                  <el-button
+                    class="noMargin"
+                    size="mini"
+                    plain
+                    type="primary"
+                    icon="el-icon-download"
+                    @click="download(scope.row.file_id)"
+                  ></el-button>
+                </el-tooltip>
+                <el-tooltip v-if="scope.row.share==0" content="分享" placement="top">
+                  <el-button
+                    v-if="scope.row.share==0"
+                    class="noMargin"
+                    size="mini"
+                    plain
+                    type="primary"
+                    icon="el-icon-share"
+                    @click="share(scope.row.file_id)"
+                  ></el-button>
+                </el-tooltip>
+                <el-tooltip v-if="scope.row.share==1" content="复制分享链接" placement="top">
+                  <el-button
+                    v-if="scope.row.share==1"
+                    class="noMargin"
+                    size="mini"
+                    plain
+                    type="primary"
+                    icon="el-icon-link"
+                    v-clipboard:copy="scope.row.share_link"
+                    v-clipboard:success="onCopy"
+                    v-clipboard:error="onError"
+                  ></el-button>
+                </el-tooltip>
+                <el-tooltip v-if="scope.row.share==1" content="取消分享" placement="top">
+                  <el-button
+                    v-if="scope.row.share==1"
+                    class="noMargin"
+                    size="mini"
+                    plain
+                    type="warning"
+                    icon="el-icon-close"
+                    @click="unShare(scope.row.file_id)"
+                  ></el-button>
+                </el-tooltip>
+                <el-tooltip content="删除" placement="top">
+                  <el-button
+                    class="noMargin"
+                    size="mini"
+                    plain
+                    type="danger"
+                    icon="el-icon-delete"
+                    @click="del(scope.row.id)"
+                  ></el-button>
+                </el-tooltip>
               </template>
             </el-table-column>
           </el-table>
@@ -79,13 +120,15 @@ const api = {
   download: "/download",
   get: "/cloudDrive/get",
   save: "/cloudDrive/save",
-  delete: "/cloudDrive/delete"
+  share: "/cloudDrive/share/set",
+  unShare: "/cloudDrive/share/cancel",
+  delete: "/cloudDrive/delete",
 };
 
 export default {
   name: "CloudDrive",
   props: {
-    user_id: Number
+    user_id: Number,
   },
   components: {},
   watch: {},
@@ -95,8 +138,8 @@ export default {
       pagination: {
         currentPage: 1,
         pageSize: 10,
-        total: 0
-      }
+        total: 0,
+      },
     };
   },
   methods: {
@@ -127,7 +170,7 @@ export default {
         const { data: res } = await axios.post(api.get, {
           user_id: this.user_id,
           pagination_size: this.pagination.pageSize,
-          current_page: this.pagination.currentPage
+          current_page: this.pagination.currentPage,
         });
         this.tableData = res.data.list;
         this.pagination.total = res.data.total;
@@ -135,7 +178,7 @@ export default {
         console.log(e);
         this.$message({
           message: e.response.data.msg,
-          type: "error"
+          type: "error",
         });
       }
     },
@@ -143,18 +186,18 @@ export default {
       try {
         const { data: res } = await axios.post(api.save, {
           user_id: this.user_id,
-          file_id: file_id
+          file_id: file_id,
         });
         this.$message({
           message: res.msg,
-          type: "success"
+          type: "success",
         });
         this.get();
       } catch (e) {
         console.log(e);
         this.$message({
           message: e.response.data.msg,
-          type: "error"
+          type: "error",
         });
       }
     },
@@ -168,31 +211,84 @@ export default {
         console.log(e);
         this.$message({
           message: e.response.data.msg,
-          type: "error"
+          type: "error",
         });
       }
+    },
+    async share(fileId) {
+      try {
+        const { data: res } = await axios.post(api.share, {
+          user_id: this.user_id,
+          id: fileId,
+        });
+        this.get();
+        this.$message({
+          message: "创建分享链接成功，点击[复制分享链接]按钮复制吧！",
+          type: "success",
+        });
+      } catch (e) {
+        console.log(e);
+        this.$message({
+          message: e.response.data.msg,
+          type: "error",
+        });
+      }
+    },
+    onCopy(e) {
+      this.$message({
+        message: "复制分享链接成功！现在就去粘贴吧！",
+        type: "success",
+      });
+    },
+    onError(e) {
+      alert("复制失败");
+    },
+    async unShare(fileId) {
+      this.$confirm(
+        "取消分享后，原来的分享链接将失效，确定取消分享吗？",
+        "提示",
+        {}
+      ).then(async () => {
+        try {
+          const { data: res } = await axios.post(api.unShare, {
+            user_id: this.user_id,
+            id: fileId,
+          });
+          this.get();
+          this.$message({
+            message: res.msg,
+            type: "success",
+          });
+        } catch (e) {
+          console.log(e);
+          this.$message({
+            message: e.response.data.msg,
+            type: "error",
+          });
+        }
+      });
     },
     async del(row_id) {
       this.$confirm("确认删除吗？", "提示", {}).then(async () => {
         try {
           const { data: res } = await axios.post(api.delete, {
             user_id: this.user_id,
-            id: row_id
+            id: row_id,
           });
           this.$message({
             message: res.msg,
-            type: "success"
+            type: "success",
           });
           this.get();
         } catch (e) {
           console.log(e);
           this.$message({
             message: e.response.data.msg,
-            type: "error"
+            type: "error",
           });
         }
       });
-    }
+    },
   },
   mounted() {
     this.get();
@@ -200,7 +296,7 @@ export default {
   },
   beforeDestroy() {
     window.clearInterval(this.timer);
-  }
+  },
 };
 </script>
 </style>

@@ -147,26 +147,31 @@ install(REQUIREMENTS_PATH)
 import pymysql
 import configparser
 
-admin_email = input('[第1步/共7步]请输入管理员邮箱，用于接收推送邮件:')
+admin_email = input('[第1步/共8步]请输入管理员邮箱，用于接收推送邮件:')
 print(admin_email)
 print('')
-admin_wechat_key = input('[第2步/共7步]请输入微信推送key:')
+admin_wechat_key = input('[第2步/共8步]请输入微信推送key(获取方法见: http://sc.ftqq.com/):')
 print(admin_wechat_key)
 print('')
-mail_sender_address = input('[第3步/共7步]请输入用于发送的邮件地址:')
-print(mail_sender_address)
+weather_api_key = input('[第3步/共8步]请输入天气api的key(获取方法见: https://dev.heweather.com/):')
+print(weather_api_key)
 print('')
-mail_sender_password = input('[第4步/共7步]请输入发送的邮件地址的口令:')
-print(mail_sender_password)
-print('')
-mysql_password = input('[第5步/共7步]请输入本地MySQL的root账号的密码:')
-print(mysql_password)
-print('')
-weather_default_location = input('[第6步/共7步]请输入您所在的位置，如：北京:')
+weather_default_location = input('[第4步/共8步]请输入您所在的位置，如："北京":')
 print(weather_default_location)
 print('')
-weather_api_key = input('[第7步/共7步]请输入天气api的key:')
-print(weather_api_key)
+mail_sender_address = input('[第5步/共8步]请输入用于发送的邮件地址:')
+print(mail_sender_address)
+print('')
+mail_sender_password = input('[第6步/共8步]请输入发送的邮件地址的口令(非邮箱密码):')
+print(mail_sender_password)
+print('')
+mysql_password = input('[第7步/共8步]请输入本地MySQL的root账号的密码:')
+print(mysql_password)
+print('')
+domain = input('[第8步/共8步]请输入服务域名及端口(如果通过外网IP或域名访问，则填写"http://+外网IP或域名+端口"，如"http://baidu.com:666"，直接回车则使用"http://localhost:50000"):')
+if domain == None:
+    domain = "http://localhost:50000"
+print(domain)
 print('')
 '''
 需要更改的有：
@@ -179,8 +184,8 @@ flag = True
 try:
     print('%s开始配置' % CONFIG_PATH)
     backup(CONFIG_PATH)
-    homepage_text = '[config]\nWIDGET_ID_WEATHER = 1\nWIDGET_ID_BOOKMARKS = 2\nWIDGET_ID_APP = 3\nWIDGET_ID_GOLD = 4\nWIDGET_ID_NOTES = 5\nADMIN_EMAIL = %s\nSENDER = %s\nPASSWORD = %s\nDB_PASS=%s\nKEY = %s\nLOCATION = %s\nUPLOAD_FILE_PATH = %s\n' % (
-        admin_email, mail_sender_address, mail_sender_password, mysql_password, weather_api_key, weather_default_location, UPLOAD_FILE_PATH)
+    homepage_text = '[config]\nWIDGET_ID_WEATHER = 1\nWIDGET_ID_BOOKMARKS = 2\nWIDGET_ID_APP = 3\nWIDGET_ID_GOLD = 4\nWIDGET_ID_NOTES = 5\nADMIN_EMAIL = %s\nSENDER = %s\nPASSWORD = %s\nDB_PASS=%s\nKEY = %s\nLOCATION = %s\nUPLOAD_FILE_PATH = %s\nDOMAIN_NAME = %s\n' % (
+        admin_email, mail_sender_address, mail_sender_password, mysql_password, weather_api_key, weather_default_location, UPLOAD_FILE_PATH, domain)
     with open(CONFIG_PATH, 'w') as w:
         w.write(homepage_text)
         print('%s配置成功' % CONFIG_PATH)
