@@ -10,7 +10,7 @@
       <el-tab-pane
         v-for="(singleWidgetSuite) in widgetSuiteLabels"
         :label="singleWidgetSuite.name"
-        :name="singleWidgetSuite.id"
+        :name="singleWidgetSuite.name"
         :key="singleWidgetSuite"
       ></el-tab-pane>
     </el-tabs>
@@ -107,7 +107,7 @@ export default {
   },
   data() {
     return {
-      widgetSuiteLabelActiveName: Number,
+      widgetSuiteLabelActiveName: "",
       widgetSuiteLabels: [],
       widgetSuite: [],
       widget: [],
@@ -121,7 +121,7 @@ export default {
         });
         this.widgetSuiteLabels = res.data;
         if (this.widgetSuiteLabels.length != 0) {
-          this.widgetSuiteLabelActiveName = this.widgetSuiteLabels[0].id;
+          this.widgetSuiteLabelActiveName = this.widgetSuiteLabels[0].name;
           this.widgetGet(this.widgetSuiteLabels[0].id);
         }
       } catch (e) {
@@ -133,7 +133,14 @@ export default {
       }
     },
     handleClick(activeTab) {
-      this.widgetGet(activeTab.name);
+      let activeTabId = 0;
+      for (let x = 0; x < this.widgetSuiteLabels.length; x++) {
+        if (activeTab.name == this.widgetSuiteLabels[x].name) {
+          activeTabId = this.widgetSuiteLabels[x].id;
+          break;
+        }
+      }
+      this.widgetGet(activeTabId);
     },
     async widgetGet(widgetSuiteLabelActiveId) {
       try {
