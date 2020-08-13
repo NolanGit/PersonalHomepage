@@ -8,7 +8,7 @@
 
 ⭐欢迎star！尽量保证每天都有提交！
 
-![image](https://user-images.githubusercontent.com/27627484/90088614-f1615a00-dd51-11ea-8ccf-04639c1f51c3.png)
+![screenshot](https://user-images.githubusercontent.com/27627484/90091188-5c159400-dd58-11ea-9ab0-97b96c31e056.png)
 
 ## 部署
 
