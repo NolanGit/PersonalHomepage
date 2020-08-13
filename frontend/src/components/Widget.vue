@@ -10,7 +10,7 @@
       <el-tab-pane
         v-for="(singleWidgetSuite) in widgetSuiteLabels"
         :label="singleWidgetSuite.name"
-        :name="singleWidgetSuite.name"
+        :name="singleWidgetSuite.id"
         :key="singleWidgetSuite"
       ></el-tab-pane>
     </el-tabs>
@@ -107,7 +107,7 @@ export default {
   },
   data() {
     return {
-      widgetSuiteLabelActiveName: "",
+      widgetSuiteLabelActiveName: Number,
       widgetSuiteLabels: [],
       widgetSuite: [],
       widget: [],
@@ -121,7 +121,7 @@ export default {
         });
         this.widgetSuiteLabels = res.data;
         if (this.widgetSuiteLabels.length != 0) {
-          this.widgetSuiteLabelActiveName = this.widgetSuiteLabels[0].name;
+          this.widgetSuiteLabelActiveName = this.widgetSuiteLabels[0].id;
           this.widgetGet(this.widgetSuiteLabels[0].id);
         }
       } catch (e) {
