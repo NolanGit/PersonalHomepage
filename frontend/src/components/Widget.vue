@@ -7,10 +7,11 @@
       style="padding-bottom: 30px; width: 70%; text-align: center; margin: 0 auto;"
       v-if="widgetSuiteLabels.length>1"
     >
+      <!-- 这里有一个坑，当以数字作为el-tab-panel的name时，tab下方标识当前被触发tab的横条不能被正确计算并显示，所以要将el-tab-panel的name转化为字符串 -->
       <el-tab-pane
         v-for="(singleWidgetSuite) in widgetSuiteLabels"
         :label="singleWidgetSuite.name"
-        :name="singleWidgetSuite.id"
+        :name="String(singleWidgetSuite.id)"
         :key="singleWidgetSuite"
       ></el-tab-pane>
     </el-tabs>
@@ -121,11 +122,6 @@ export default {
         });
 
         this.widgetSuiteLabels = res.data;
-
-        //这里有一个坑，当以数字作为el-tab-panel的name时，tab下方标识当前被触发tab的横条不能被正确计算并显示，所以要将el-tab-panel的name转化为字符串
-        for (let x = 0; x < this.widgetSuiteLabels.length; x++) {
-          this.widgetSuiteLabels[x].id = String(this.widgetSuiteLabels[x].id);
-        }
 
         if (this.widgetSuiteLabels.length != 0) {
           this.widgetSuiteLabelActiveName = this.widgetSuiteLabels[0].id;

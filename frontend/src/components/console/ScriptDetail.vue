@@ -11,7 +11,7 @@
             v-for="(singleForm,singleFormIndex) in formData"
             :key="singleForm.key"
             :label="singleForm.title"
-            :name="singleForm.title"
+            :name="String(singleForm.id)"
             :lazy="true"
           >
             <div class="div-flex">
@@ -329,9 +329,9 @@ export default {
     },
     activeTabChanged(newVal) {
       for (let x = 0; x < this.formData.length; x++) {
-        if (this.formData[x].title == newVal) {
+        if (this.formData[x].id == newVal) {
           this.activeTabIndex = x;
-          this.activeScriptId = this.formData[x].id;
+          this.activeScriptId = newVal;
           break;
         }
       }
