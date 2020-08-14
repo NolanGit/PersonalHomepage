@@ -122,8 +122,10 @@ export default {
 
         //这里有一个坑，当以数字作为el-tab-panel的name时，tab下方标识当前被触发tab的横条不能被正确计算并显示，所以要将el-tab-panel的name转化为字符串
         for (let x = 0; x < res.data; x++) {
-          res.data[x].id = String(res.data[x].id);
+          let temp = String(res.data[x].id);
+          res.data[x].id = temp;
         }
+        console.log(res.data)
 
         this.widgetSuiteLabels = res.data;
         if (this.widgetSuiteLabels.length != 0) {
@@ -146,7 +148,7 @@ export default {
       //     break;
       //   }
       // }
-      this.widgetGet(activeTabId);
+      this.widgetGet(activeTab);
     },
     async widgetGet(widgetSuiteLabelActiveId) {
       try {
