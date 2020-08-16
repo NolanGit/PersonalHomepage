@@ -29,16 +29,34 @@ def base_58(target: int):
 
 
 def set_content(content, type=1, expire_time=None):
+    '''
+        args:
+            content: String              要缩略的内容
+            type: Integer                类型：1-链接
+            expire_time:time             过期时间，过期后将无法访问，默认为当天时间后一百年
+        returns:
+            shorted_content: String      缩略后的内容，当type传1时返回缩略后的完整链接
+    '''
     default_expire_time = datetime.datetime.now() + datetime.timedelta(weeks=100 * 52)  # 有效期覆盖社会主义初级阶段
     s = short_content_table(code='', content=content, type=type, is_valid=1, expire_time=default_expire_time if expire_time == None else expire_time, update_time=datetime.datetime.now())
     s.save()
     _id = s.id
     _code = base_58(_id)
     short_content_table.update(code=_code).where(short_content_table.id == _id).execute()
-    return DOMAIN_NAME + '/s?c=' + _code
+
+    if type == 1:
+        r = DOMAIN_NAME + '/s?c=' + _code
+
+    return r
 
 
 def get_content(code):
+    '''
+        args:
+            code: String              缩略后的code
+        returns:
+            {'type': String, 'content': String}
+    '''
     try:
         _ = short_content_table.get((short_content_table.code == code) & (short_content_table.is_valid == 1) & (short_content_table.expire_time > datetime.datetime.now()))
         return {'type': _.type, 'content': _.content}
