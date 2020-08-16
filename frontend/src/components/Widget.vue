@@ -147,6 +147,7 @@ export default {
       //     break;
       //   }
       // }
+      console.log(activeTab)
       this.widgetGet(activeTab);
     },
     async widgetGet(widgetSuiteLabelActiveId) {
