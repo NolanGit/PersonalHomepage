@@ -3,7 +3,12 @@ import time
 import datetime
 import configparser
 from peewee import DoesNotExist
-from ..model.short_content_model import short_content as short_content_table
+try:
+    from ..model.short_content_model import short_content as short_content_table
+except:
+    sys.path.append('../')
+    sys.path.append('../../')
+    from model.short_content_model import short_content as short_content_table
 
 cf = configparser.ConfigParser()
 cf.read('app/homepage.config')

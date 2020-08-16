@@ -209,7 +209,7 @@ try:
     alter_dict = {
         'my_email@my_email.cn': admin_email,
         'my_wechat_key': admin_wechat_key,
-        '/home/pi/Documents/GitHub/PersonalHomepage': CURRENT_RUNNING_PATH,
+        '/home/pi/Documents/Github/PersonalHomepage': CURRENT_RUNNING_PATH,
         'python3': PYTHON_PATH,
         '2020-06-20 00:00:00': str(TOMORROW),
         '2020-06-20 00:15:00': str(TOMORROW + datetime.timedelta(minutes=15)),
