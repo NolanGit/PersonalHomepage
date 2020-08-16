@@ -66,8 +66,11 @@ def get_content(code):
 
 
 if __name__ == '__main__':
-    content = sys.argv[1]
-    type = sys.argv[2]
-    expire_time = sys.argv[3]
-    _r = set_content(content, type, expire_time)
-    print(_r)
+    try:
+        content = sys.argv[1]
+        type = sys.argv[2]
+        print('正在生成...')
+        _r = set_content(content, type)
+        print('生成成功，缩略后的文本为[%s]' % _r)
+    except Exception as e:
+        print(e)
