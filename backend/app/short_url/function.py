@@ -1,3 +1,4 @@
+import sys
 import time
 import datetime
 import configparser
@@ -62,3 +63,11 @@ def get_content(code):
         return {'type': _.type, 'content': _.content}
     except DoesNotExist:
         return None
+
+
+if __name__ == '__main__':
+    content = sys.argv[1]
+    type = sys.argv[2]
+    expire_time = sys.argv[3]
+    _r = set_content(content, type, expire_time)
+    print(_r)

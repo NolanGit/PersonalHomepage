@@ -41,6 +41,7 @@ def get():
 
 
 @gold_price_monitor.route('/edit', methods=['POST'])
+@permission_required(URL_PREFIX + '/edit')
 @cross_origin()
 def edit():
     try:
