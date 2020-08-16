@@ -28,7 +28,7 @@ def t():
         else:
             if r['type'] not in CONTENT_TYPE:
                 raise Exception('参数错误')
-
+ 
         if CONTENT_TYPE[r['type']] == 'URL':
             return redirect(r['content'], code=301)
 
@@ -43,8 +43,8 @@ def set():
     try:
         content = request.get_json('content')
         type = request.get_json('type')
-        set_content(content, type)
-        return rsp.success()
+        _r = set_content(content, type)
+        return rsp.success(_r)
     except Exception as e:
         traceback.print_exc()
         return rsp.failed(e), 500
