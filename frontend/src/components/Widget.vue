@@ -10,7 +10,7 @@
       <el-tab-pane
         v-for="(singleWidgetSuite) in widgetSuiteLabels"
         :label="singleWidgetSuite.name"
-        :name="singleWidgetSuite.name"
+        :name="singleWidgetSuite.id"
         :key="singleWidgetSuite"
       ></el-tab-pane>
     </el-tabs>
@@ -119,9 +119,16 @@ export default {
         const { data: res } = await axios.post(api.suiteGet, {
           user_id: this.user_id,
         });
+
         this.widgetSuiteLabels = res.data;
+
+        //这里有一个坑，当以数字作为el-tab-panel的name时，tab下方标识当前被触发tab的横条不能被正确计算并显示，所以要将el-tab-panel的name转化为字符串
+        for (let x = 0; x < this.widgetSuiteLabels.length; x++) {
+          this.widgetSuiteLabels[x].id = String(this.widgetSuiteLabels[x].id);
+        }
+
         if (this.widgetSuiteLabels.length != 0) {
-          this.widgetSuiteLabelActiveName = this.widgetSuiteLabels[0].name;
+          this.widgetSuiteLabelActiveName = this.widgetSuiteLabels[0].id;
           this.widgetGet(this.widgetSuiteLabels[0].id);
         }
       } catch (e) {
@@ -133,20 +140,13 @@ export default {
       }
     },
     handleClick(activeTab) {
-      let activeTabId = 0;
-      for (let x = 0; x < this.widgetSuiteLabels.length; x++) {
-        if (activeTab.name == this.widgetSuiteLabels[x].name) {
-          activeTabId = this.widgetSuiteLabels[x].id;
-          break;
-        }
-      }
-      this.widgetGet(activeTabId);
+      this.widgetGet(activeTab.name);
     },
     async widgetGet(widgetSuiteLabelActiveId) {
       try {
         const { data: res } = await axios.post(api.get, {
           user_id: this.user_id,
-          widget_suite_id: widgetSuiteLabelActiveId,
+          widget_suite_id: Number(widgetSuiteLabelActiveId),
         });
         for (let x = 0; x < res.data.length; x++) {
           res.data[x].show = false;

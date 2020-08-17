@@ -6,7 +6,7 @@
       </div>
     </el-row>
     <ve-line
-      height="210px"
+      height="228px"
       :settings="chartSettings"
       :data="chartData"
       ref="chart"

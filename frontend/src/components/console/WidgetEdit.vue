@@ -55,7 +55,7 @@
                   <i class="el-icon-s-operation" style="color: #6a6c70;"></i>
                   <span class="slick_list_item_span">{{ widgetItem.name_zh }}</span>
                   <div class="slick_list_item_button">
-                    <el-tooltip content="删除组件" placement="top">
+                    <el-tooltip content="删除组件" placement="right">
                       <el-button
                         @click="widgetDelete(index,widgetItem,widgetIndex)"
                         type="danger"

@@ -28,7 +28,7 @@ def t():
         else:
             if r['type'] not in CONTENT_TYPE:
                 raise Exception('参数错误')
-
+ 
         if CONTENT_TYPE[r['type']] == 'URL':
             return redirect(r['content'], code=301)
 
@@ -36,15 +36,16 @@ def t():
         traceback.print_exc()
         return rsp.failed(e), 500
 
-
-@short_url_blue_print.route('/short_content/set', methods=['POST'])
-@cross_origin()
-def set():
-    try:
-        content = request.get_json('content')
-        type = request.get_json('type')
-        set_content(content, type)
-        return rsp.success()
-    except Exception as e:
-        traceback.print_exc()
-        return rsp.failed(e), 500
+# 避免复杂化，暂时使用脚本运行平台运行脚本(function.py)来生成短链接，而非新做一个组件
+# @short_url_blue_print.route('/short_content/set', methods=['POST'])
+# @permission_required(URL_PREFIX + '/short_content/set')
+# @cross_origin()
+# def set():
+#     try:
+#         content = request.get_json('content')
+#         type = request.get_json('type')
+#         _r = set_content(content, type)
+#         return rsp.success(_r)
+#     except Exception as e:
+#         traceback.print_exc()
+#         return rsp.failed(e), 500

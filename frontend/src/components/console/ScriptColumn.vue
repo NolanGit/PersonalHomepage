@@ -53,21 +53,21 @@ import { deepClone } from "../../js/common";
 const api = {
   subSystem: "/script/subSystem",
   subSystemAdd: "/script/subSystemAdd",
-  subSystemDelete: "/script/subSystemDelete"
+  subSystemDelete: "/script/subSystemDelete",
 };
 export default {
   name: "ScriptColumn",
   props: {
     user_id: Number,
     formData: {
-      default: []
-    }
+      default: [],
+    },
   },
   data() {
     return {
       activeSystem: "",
       subSystem: [],
-      subSystemName: ""
+      subSystemName: "",
     };
   },
   watch: {
@@ -81,7 +81,7 @@ export default {
         }
       }
       this.$emit("subSystemClicked", this.subSystem[s].id);
-    }
+    },
   },
   methods: {
     newTab() {
@@ -94,20 +94,20 @@ export default {
     async subSystemGet() {
       try {
         const { data: res } = await axios.get(api.subSystem, {
-          user_id: this.user_id
+          user_id: this.user_id,
         });
         this.subSystem = [];
         for (let x = 0; x < res.data.length; x++) {
           this.subSystem.push({
             id: res.data[x]["id"],
-            title: res.data[x]["name"]
+            title: res.data[x]["name"],
           });
         }
       } catch (e) {
         console.log(e);
         this.$message({
           message: e.response.data.msg,
-          type: "error"
+          type: "error",
         });
       }
     },
@@ -116,15 +116,16 @@ export default {
       try {
         const { data: res } = await axios.post(api.subSystemAdd, {
           sub_system_name: this.subSystemName,
-          user_id: this.user_id
+          user_id: this.user_id,
         });
         this.subSystem = [];
+        this.subSystemName = "";
         this.subSystemGet();
       } catch (e) {
         console.log(e);
         this.$message({
           message: e.response.data.msg,
-          type: "error"
+          type: "error",
         });
       }
     },
@@ -139,26 +140,26 @@ export default {
           }
           const { data: res } = await axios.post(api.subSystemDelete, {
             sub_system_id: this.subSystem[s].id,
-            user_id: this.user_id
+            user_id: this.user_id,
           });
           this.$message({
             message: "成功！",
-            type: "success"
+            type: "success",
           });
           this.subSystemGet();
         } catch (e) {
           console.log(e);
           this.$message({
             message: e.response.data.msg,
-            type: "error"
+            type: "error",
           });
         }
       });
-    }
+    },
   },
   mounted() {
     this.subSystemGet();
-  }
+  },
 };
 </script>
 

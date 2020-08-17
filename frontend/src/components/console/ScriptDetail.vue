@@ -11,7 +11,7 @@
             v-for="(singleForm,singleFormIndex) in formData"
             :key="singleForm.key"
             :label="singleForm.title"
-            :name="singleForm.title"
+            :name="singleForm.id"
             :lazy="true"
           >
             <div class="div-flex">
@@ -329,9 +329,9 @@ export default {
     },
     activeTabChanged(newVal) {
       for (let x = 0; x < this.formData.length; x++) {
-        if (this.formData[x].title == newVal) {
+        if (this.formData[x].id == newVal) {
           this.activeTabIndex = x;
-          this.activeScriptId = this.formData[x].id;
+          this.activeScriptId = Number(newVal);
           break;
         }
       }
@@ -342,7 +342,7 @@ export default {
       }
       await this.subSystemScript(val);
       if (this.formData.length != 0) {
-        this.activeTab = this.formData[0]["title"];
+        this.activeTab = this.formData[0].id;
       }
       this.$emit("formData", this.formData);
     },
@@ -355,10 +355,11 @@ export default {
           sub_system_id: systemId,
         });
         this.formData = [];
+        //这里有一个坑，当以数字作为el-tab-panel的name时，tab下方标识当前被触发tab的横条不能被正确计算并显示，所以要将el-tab-panel的name转化为字符串
         for (let d = 0; d < res.data.length; d++) {
           this.formData.push({
             title: res.data[d]["name"],
-            id: res.data[d]["id"],
+            id: String(res.data[d]["id"]),
             start_folder: res.data[d]["start_folder"],
             start_script: res.data[d]["start_script"],
             runs: res.data[d]["runs"],

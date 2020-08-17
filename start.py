@@ -14,8 +14,6 @@ FLASK_CONFIG_PATH = CURRENT_RUNNING_PATH + '/backend/app/config.py'
 CONFIG_PATH = CURRENT_RUNNING_PATH + '/backend/app/homepage.config'
 REQUIREMENTS_PATH = CURRENT_RUNNING_PATH + '/requirements.txt'
 SCHEDULE_SCRIPT_PATH = CURRENT_RUNNING_PATH + '/backend/app/script/schedule_monitor.sh'
-SQL_UPDATE_PUSH = CURRENT_RUNNING_PATH + '/backend/app/push'
-SQL_UPDATE_APP = CURRENT_RUNNING_PATH + '/backend/app/app_price_monitor'
 UPLOAD_FILE_PATH = CURRENT_RUNNING_PATH + '/upload/'
 BYE = ['海内存知己，天涯若比邻。', '何当重相见，樽酒慰离颜。', '日暮征帆何处泊？天涯一望断人肠。', '日暮酒醒人已远，满天风雨下西楼。', '离心不异西江水，直送征帆万里行。', '劝君更尽一杯酒，西出阳关无故人。', '人情却似杨柳絮，悠扬便逐春风去。', '衰兰送客咸阳道，天若有情天亦老。']
 
@@ -211,8 +209,7 @@ try:
     alter_dict = {
         'my_email@my_email.cn': admin_email,
         'my_wechat_key': admin_wechat_key,
-        '/home/pi/Documents/GitHub/PersonalHomepage/backend/app/push': SQL_UPDATE_PUSH,
-        '/home/pi/Documents/GitHub/PersonalHomepage/backend/app/app_price_monitor': SQL_UPDATE_APP,
+        '/home/pi/Documents/Github/PersonalHomepage': CURRENT_RUNNING_PATH,
         'python3': PYTHON_PATH,
         '2020-06-20 00:00:00': str(TOMORROW),
         '2020-06-20 00:15:00': str(TOMORROW + datetime.timedelta(minutes=15)),

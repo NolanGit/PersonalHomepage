@@ -7,7 +7,7 @@
     </el-row>
 
     <div class="bookmarks-data-row-main">
-      <el-carousel height="180px" trigger="click" :autoplay="false" indicator-position="outside">
+      <el-carousel height="198px" trigger="click" :autoplay="false" indicator-position="outside">
         <el-carousel-item v-for="bookmarksSuite in bookmarksSuites" :key="bookmarksSuite">
           <el-row
             class="margin_bottom-medium"
@@ -20,7 +20,7 @@
                 size="small"
                 @click="bookmarksClicked(bookmark.url)"
               >
-                <i :class="bookmark.icon" style="margin-right=5px;font-size=15px"></i>
+                <i :class="bookmark.icon" style="margin-right: 5px; font-size: 15px"></i>
                 {{bookmark.name}}
               </el-button>
             </el-col>
