@@ -1,3 +1,5 @@
+# -*- coding:utf-8 -*-
+
 import sys
 import time
 import datetime
@@ -16,7 +18,7 @@ except:
     from model.short_content_model import short_content as short_content_table
 
     cf = configparser.ConfigParser()
-    cf.read('../app/homepage.config')
+    cf.read('/home/pi/Documents/Github/PersonalHomepage/backend/app/homepage.config')
     DOMAIN_NAME = cf.get('config', 'DOMAIN_NAME')
 
 DICT = {
@@ -54,8 +56,8 @@ def set_content(content, type=1, expire_time=None):
     _id = s.id
     _code = base_58(_id)
     short_content_table.update(code=_code).where(short_content_table.id == _id).execute()
-
-    if type == 1:
+    r=''
+    if int(type) == 1:
         r = DOMAIN_NAME + '/s?c=' + _code
 
     return r
