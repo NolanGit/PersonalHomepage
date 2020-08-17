@@ -15,7 +15,7 @@
             style="cursor: pointer; color: #409EFF; font-size: 12px; font-family: Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,SimSun,sans-serif;"
             type="text"
             size="small"
-            @click="scriptLabelClicked(singleForm.title)"
+            @click="scriptLabelClicked(singleForm.id)"
           >{{singleForm.title}}</a>
           <a
             v-if="singleFormIndex!=formData.length-1"
