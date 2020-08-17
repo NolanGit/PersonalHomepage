@@ -32,7 +32,7 @@ URL_PREFIX = ''
 
 
 @main.route('/')
-def catch_all():
+def root():
     return render_template("index.html")
 
 
