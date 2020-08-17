@@ -31,8 +31,7 @@ UPLOAD_FILE_PATH = cf.get('config', 'UPLOAD_FILE_PATH')
 URL_PREFIX = ''
 
 
-@main.route('/', defaults={'path': ''})
-@main.route('/<path:path>')
+@main.route('/')
 def catch_all(path):
     return render_template("index.html")
 
