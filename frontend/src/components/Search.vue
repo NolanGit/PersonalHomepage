@@ -91,7 +91,7 @@ export default {
           break;
         }
       }
-      this.searchIcon = this.searchEngines.options[s].icon;
+      this.searchIcon = "search-icon " + this.searchEngines.options[s].icon;
     },
     async search() {
       for (var s = 0; s < this.searchEngines.options.length; s++) {
