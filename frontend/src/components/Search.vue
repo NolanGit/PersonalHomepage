@@ -18,6 +18,7 @@
           v-model="searchEngines.select"
           slot="prepend"
           placeholder="请选择"
+          @change="searchEnginesChanged()"
         >
           <el-option
             v-for="item in searchEngines.options"
@@ -37,13 +38,13 @@ import Router from "vue-router";
 const api = {
   searchEnginesData: "/search/searchEnginesData",
   searchEnginesAutoComplete: "/search/searchEnginesAutoComplete",
-  searchLog: "/search/searchLog"
+  searchLog: "/search/searchLog",
 };
 
 export default {
   name: "search",
   props: {
-    user_id: Number
+    user_id: Number,
   },
   data() {
     return {
@@ -54,8 +55,8 @@ export default {
         select_engine_id: 0,
         main_url: "",
         auto_complete_url: "",
-        options: []
-      }
+        options: [],
+      },
     };
   },
   methods: {
@@ -69,7 +70,7 @@ export default {
             auto_complete_url: res.data[s].auto_complete_url,
             icon: res.data[s].icon,
             label: res.data[s].name,
-            value: res.data[s].name
+            value: res.data[s].name,
           });
         }
         this.searchEngines.select = this.searchEngines.options[0].value;
@@ -80,9 +81,17 @@ export default {
         console.log(e);
         this.$message({
           message: e.response.data.msg,
-          type: "error"
+          type: "error",
         });
       }
+    },
+    searchEnginesChanged(engine) {
+      for (var s = 0; s < this.searchEngines.options.length; s++) {
+        if (this.searchEngines.options[s].value == this.searchEngines.select) {
+          break;
+        }
+      }
+      this.searchIcon = this.searchEngines.options[s].icon;
     },
     async search() {
       for (var s = 0; s < this.searchEngines.options.length; s++) {
@@ -101,7 +110,7 @@ export default {
         const { data: res } = await axios.post(api.searchLog, {
           user_id: this.user_id,
           engine_id: this.searchEngines.select_engine_id,
-          search_text: this.word
+          search_text: this.word,
         });
       } catch (e) {
         console.log(e);
@@ -133,12 +142,12 @@ export default {
               {
                 autoCompleteUrl: autoCompleteUrl,
                 name: this.searchEngines.select,
-                user_id: this.user_id
+                user_id: this.user_id,
               }
             );
             function String2Dict(x) {
               return {
-                value: x
+                value: x,
               };
             }
             var result = res.data.map(String2Dict);
@@ -151,19 +160,19 @@ export default {
             console.log(e);
             this.$message({
               message: e.response.data.msg,
-              type: "error"
+              type: "error",
             });
           }
         }
       }
-    }
+    },
   },
   created() {
     this.searchEnginesDataFront();
   },
   mounted() {
     this.$refs["input"].focus();
-  }
+  },
 };
 </script>
 <style scoped>
