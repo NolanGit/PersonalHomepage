@@ -1,6 +1,6 @@
 <template>
   <div class="search">
-    <div>
+    <div class="search-icon-div">
       <i :class="searchIcon"></i>
     </div>
     <div>
@@ -176,10 +176,12 @@ export default {
 };
 </script>
 <style scoped>
-.search-icon {
-  font-size: 100px;
+.search-icon-div {
   padding-top: 80px;
   padding-bottom: 60px;
+}
+.search-icon {
+  font-size: 100px;
 }
 .search-input {
   margin-left: 50px;
