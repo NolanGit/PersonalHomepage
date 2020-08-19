@@ -16,10 +16,13 @@ from ..common_func import CommonFunc
 from .privilege_control import privilegeFunction
 from ..privilege.privilege_control import user_list_get, role_list_get, privilege_list_get, privilege_role_list_get
 from ..privilege.privilege_control import permission_required
+from ..response import Response
 
-URL_PREFIX = '/privilege'
+rsp = Response()
 cf = CommonFunc()
 pf = privilegeFunction()
+
+URL_PREFIX = '/privilege'
 ALLOWED_TIME_SPAN = 100  # 盐过期X秒内允许修改，否则需要重新登录
 
 
@@ -44,11 +47,10 @@ def userGet():
                     single_user['is_edit'] = 1
                 else:
                     single_user['is_edit'] = 0
-        return jsonify({'code': 200, 'msg': '成功！', 'data': user_list})
+        return rsp.success(user_list)
     except Exception as e:
         traceback.print_exc()
-        response = {'code': 500, 'msg': '失败！错误信息：' + str(e) + '，请联系管理员。', 'data': []}
-        return jsonify(response), 500
+        return rsp.failed(e), 500
 
 
 # 用户禁用
@@ -60,11 +62,10 @@ def userDisable():
         user_id = int(request.get_json()['user_id'])
         user.update(is_valid=0, update_time=datetime.datetime.now()).where(user.id == user_id).execute()
         pf.del_user_id_to_redis(user_id)
-        return jsonify({'code': 200, 'msg': '成功！'})
+        return rsp.success()
     except Exception as e:
         traceback.print_exc()
-        response = {'code': 500, 'msg': '失败！错误信息：' + str(e) + '，请联系管理员。', 'data': []}
-        return jsonify(response), 500
+        return rsp.failed(e), 500
 
 
 # 用户启用
@@ -75,11 +76,10 @@ def userEnable():
     try:
         user_id = int(request.get_json()['user_id'])
         user.update(is_valid=1, update_time=datetime.datetime.now()).where(user.id == user_id).execute()
-        return jsonify({'code': 200, 'msg': '成功！'})
+        return rsp.success()
     except Exception as e:
         traceback.print_exc()
-        response = {'code': 500, 'msg': '失败！错误信息：' + str(e) + '，请联系管理员。', 'data': []}
-        return jsonify(response), 500
+        return rsp.failed(e), 500
 
 
 # 用户信息修改
@@ -103,13 +103,13 @@ def userRoleChange():
                 if server_timestamp < salt_expire_time + datetime.timedelta(seconds=ALLOWED_TIME_SPAN):
                     role_id = request.get_json()['role_id']
                     user.update(role_id=role_id, update_time=datetime.datetime.now()).where(user.login_name == login_name).execute()
-                    response = {'code': 200, 'msg': '成功'}
+                    return rsp.success()
                 else:
-                    response = {'code': 403, 'msg': '登录状态已过期，请返回并重新验证密码'}
-        return jsonify(response)
+                    return rsp.failed('登录状态已过期，请返回并重新验证密码'), 403
     except Exception as e:
-        response = {'code': 500, 'msg': e, 'data': {}}
-        return jsonify(response), 500
+        traceback.print_exc()
+        return rsp.failed(e), 500
+        
 
 
 # 用户删除
@@ -123,13 +123,12 @@ def userDelete():
         if user_status == 0:
             user.update(is_valid=-1, update_time=datetime.datetime.now()).where(user.id == user_id).execute()
             pf.del_user_id_to_redis(user_id)
-            return jsonify({'code': 200, 'msg': '成功！'})
+            return rsp.success()
         else:
-            return jsonify({'code': 500, 'msg': '失败！删除前请先禁用角色'})
+            return rsp.failed('失败！删除前请先禁用角色'), 403
     except Exception as e:
         traceback.print_exc()
-        response = {'code': 500, 'msg': '失败！错误信息：' + str(e) + '，请联系管理员。', 'data': []}
-        return jsonify(response), 500
+        return rsp.failed(e), 500
 
 
 # 角色列表获取
@@ -138,11 +137,10 @@ def userDelete():
 @cross_origin()
 def roleGet():
     try:
-        return jsonify({'code': 200, 'msg': '成功！', 'data': role_list_get()})
+        return rsp.success(role_list_get())
     except Exception as e:
         traceback.print_exc()
-        response = {'code': 500, 'msg': '失败！错误信息：' + str(e) + '，请联系管理员。', 'data': []}
-        return jsonify(response), 500
+        return rsp.failed(e), 500
 
 
 # 角色具有的权限列表获取
@@ -161,11 +159,10 @@ def rolePrivilegeGet():
                 'privilege_name': cf.dict_list_get_single_element(privilege_list, 'id', row['privilege_id'], 'name', row['privilege_id'] - 1),
             })
         result.sort(key=lambda x: x['privilege_name'])
-        return jsonify({'code': 200, 'msg': '成功！', 'data': result})
+        return rsp.success(result)
     except Exception as e:
         traceback.print_exc()
-        response = {'code': 500, 'msg': '失败！错误信息：' + str(e) + '，请联系管理员。', 'data': []}
-        return jsonify(response), 500
+        return rsp.failed(e), 500
 
 
 # 角色对应权限修改
@@ -183,11 +180,9 @@ def rolePrivilegeEdit():
         field = [privilege_role.privilege_id, privilege_role.role_id, privilege_role.is_valid]
         privilege_role.insert_many(data_source, field).execute()
         pf.flush_role_privilege_to_redis(role_id)
-        response = {'code': 200, 'msg': '成功'}
-        return jsonify(response)
+        return rsp.success()
     except Exception as e:
-        response = {'code': 500, 'msg': e, 'data': {}}
-        return jsonify(response), 500
+        return rsp.failed(e), 500
 
 
 # 角色新增和修改
@@ -203,11 +198,10 @@ def roleEdit():
             role.create(name=name, remark=remark, is_valid=1, update_time=datetime.datetime.now())
         else:
             role.update(name=name, remark=remark, update_time=datetime.datetime.now()).where(role.id == role_id).execute()
-        return jsonify({'code': 200, 'msg': '成功！'})
+        return rsp.success()
     except Exception as e:
         traceback.print_exc()
-        response = {'code': 500, 'msg': '失败！错误信息：' + str(e) + '，请联系管理员。', 'data': []}
-        return jsonify(response), 500
+        return rsp.failed(e), 500
 
 
 # 角色禁用
@@ -219,11 +213,10 @@ def roleDisable():
         role_id = request.get_json()['role_id']
         role.update(is_valid=0, update_time=datetime.datetime.now()).where(role.id == role_id).execute()
         pf.del_role_to_redis(role_id)
-        return jsonify({'code': 200, 'msg': '成功！'})
+        return rsp.success()
     except Exception as e:
         traceback.print_exc()
-        response = {'code': 500, 'msg': '失败！错误信息：' + str(e) + '，请联系管理员。', 'data': []}
-        return jsonify(response), 500
+        return rsp.failed(e), 500
 
 
 # 角色启用
@@ -235,11 +228,10 @@ def roleEnable():
         role_id = request.get_json()['role_id']
         role.update(is_valid=1, update_time=datetime.datetime.now()).where(role.id == role_id).execute()
         pf.flush_role_privilege_to_redis(role_id)
-        return jsonify({'code': 200, 'msg': '成功！'})
+        return rsp.success()
     except Exception as e:
         traceback.print_exc()
-        response = {'code': 500, 'msg': '失败！错误信息：' + str(e) + '，请联系管理员。', 'data': []}
-        return jsonify(response), 500
+        return rsp.failed(e), 500
 
 
 # 角色删除
@@ -253,13 +245,12 @@ def roleDelete():
         if role_status == 0:
             role.update(is_valid=-1, update_time=datetime.datetime.now()).where(role.id == role_id).execute()
             pf.del_role_to_redis(role_id)
-            return jsonify({'code': 200, 'msg': '成功！'})
+            return rsp.success()
         else:
             return jsonify({'code': 500, 'msg': '失败！删除前请先禁用角色'})
     except Exception as e:
         traceback.print_exc()
-        response = {'code': 500, 'msg': '失败！错误信息：' + str(e) + '，请联系管理员。', 'data': []}
-        return jsonify(response), 500
+        return rsp.failed(e), 500
 
 
 #权限列表获取
@@ -270,11 +261,10 @@ def privilegeGet():
     try:
         _ = privilege_list_get()
         _.sort(key=lambda x: x['name'])
-        return jsonify({'code': 200, 'msg': '成功！', 'data': _})
+        return rsp.success(_)
     except Exception as e:
         traceback.print_exc()
-        response = {'code': 500, 'msg': '失败！错误信息：' + str(e) + '，请联系管理员。', 'data': []}
-        return jsonify(response), 500
+        return rsp.failed(e), 500
 
 
 #权限新增和修改
@@ -296,12 +286,10 @@ def privilegeEdit():
                 privilege_model.create(name=name, mark=mark, remark=remark, is_valid=1, update_time=datetime.datetime.now())
         else:
             privilege_model.update(name=name, mark=mark, remark=remark, update_time=datetime.datetime.now()).where(privilege_model.id == privilege_id).execute()
-        response = {'code': 200, 'msg': '成功！'}
-        return jsonify(response)
+        return rsp.success()
     except Exception as e:
         traceback.print_exc()
-        response = {'code': 500, 'msg': '失败！错误信息：' + str(e) + '，请联系管理员。', 'data': []}
-        return jsonify(response), 500
+        return rsp.failed(e), 500
 
 
 # 权限禁用
@@ -313,11 +301,10 @@ def privilegeDisable():
         privilege_id = request.get_json()['privilege_id']
         privilege_model.update(is_valid=0, update_time=datetime.datetime.now()).where(privilege_model.id == privilege_id).execute()
         pf.flush_privilege_which_belongs_to_role_with_target_privilege_to_redis(privilege_id)
-        return jsonify({'code': 200, 'msg': '成功！'})
+        return rsp.success()
     except Exception as e:
         traceback.print_exc()
-        response = {'code': 500, 'msg': '失败！错误信息：' + str(e) + '，请联系管理员。', 'data': []}
-        return jsonify(response), 500
+        return rsp.failed(e), 500
 
 
 # 权限启用
@@ -329,11 +316,10 @@ def privilegeEnable():
         privilege_id = request.get_json()['privilege_id']
         privilege_model.update(is_valid=1, update_time=datetime.datetime.now()).where(privilege_model.id == privilege_id).execute()
         pf.flush_privilege_which_belongs_to_role_with_target_privilege_to_redis(privilege_id)
-        return jsonify({'code': 200, 'msg': '成功！'})
+        return rsp.success()
     except Exception as e:
         traceback.print_exc()
-        response = {'code': 500, 'msg': '失败！错误信息：' + str(e) + '，请联系管理员。', 'data': []}
-        return jsonify(response), 500
+        return rsp.failed(e), 500
 
 
 # 权限删除
@@ -347,10 +333,9 @@ def privilegeDelete():
         if privilege_status == 0:
             privilege_model.update(is_valid=-1, update_time=datetime.datetime.now()).where(privilege_model.id == privilege_id).execute()
             pf.flush_privilege_which_belongs_to_role_with_target_privilege_to_redis(privilege_id)
-            return jsonify({'code': 200, 'msg': '成功！'})
+            return rsp.success()
         else:
             return jsonify({'code': 500, 'msg': '失败！删除前请先禁用权限'})
     except Exception as e:
         traceback.print_exc()
-        response = {'code': 500, 'msg': '失败！错误信息：' + str(e) + '，请联系管理员。', 'data': []}
-        return jsonify(response), 500
+        return rsp.failed(e), 500
