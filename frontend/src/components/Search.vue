@@ -28,9 +28,7 @@
             <span style="float: left">{{ item.label }}</span>
           </el-option>
         </el-select>
-        <el-tooltip content="搜索" placement="top">
-          <el-button class="search-button" slot="append" :icon="searchIcon" @click="search()"></el-button>
-        </el-tooltip>
+        <el-button class="search-button" slot="append" icon="el-icon-search" @click="search()"></el-button>
       </el-autocomplete>
     </div>
   </div>
@@ -88,14 +86,6 @@ export default {
           type: "error",
         });
       }
-    },
-    searchEnginesChanged(engine) {
-      for (var s = 0; s < this.searchEngines.options.length; s++) {
-        if (this.searchEngines.options[s].value == this.searchEngines.select) {
-          break;
-        }
-      }
-      this.searchIcon = "search-icon " + this.searchEngines.options[s].icon;
     },
     async search() {
       for (var s = 0; s < this.searchEngines.options.length; s++) {
