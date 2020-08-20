@@ -1,7 +1,7 @@
 <template>
   <div class="search">
     <div class="search-icon-div">
-      <i :class="searchIcon"></i>
+      <i class="search-icon el-icon-search"></i>
     </div>
     <div>
       <el-autocomplete
@@ -18,16 +18,19 @@
           v-model="searchEngines.select"
           slot="prepend"
           placeholder="请选择"
-          @change="searchEnginesChanged()"
         >
           <el-option
             v-for="item in searchEngines.options"
             :key="item.value"
             :label="item.label"
             :value="item.value"
-          ></el-option>
+          >
+            <span style="float: left">{{ item.label }}</span>
+          </el-option>
         </el-select>
-        <el-button class="search-button" slot="append" icon="el-icon-search" @click="search()"></el-button>
+        <el-tooltip content="搜索" placement="top">
+          <el-button class="search-button" slot="append" :icon="searchIcon" @click="search()"></el-button>
+        </el-tooltip>
       </el-autocomplete>
     </div>
   </div>
@@ -77,6 +80,7 @@ export default {
         this.searchEngines.select_engine_id = this.searchEngines.options[0].id;
         this.searchEngines.main_url = this.searchEngines.options[0].main_url;
         this.searchEngines.auto_complete_url = this.searchEngines.options[0].auto_complete_url;
+        this.searchIcon = this.searchEngines.options[0].icon;
       } catch (e) {
         console.log(e);
         this.$message({
