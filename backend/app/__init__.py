@@ -62,4 +62,7 @@ def create_app(config_name):
 
     from .short_url import short_url as  short_url_blueprint
     app.register_blueprint(short_url_blueprint, url_prefix='/s')
+
+    from .image_cloud import image_cloud as  image_cloud_blueprint
+    app.register_blueprint(image_cloud_blueprint, url_prefix='/image')
     return app

@@ -1,0 +1,24 @@
+import time
+import json
+import requests
+import datetime
+import traceback
+import urllib.request
+from . import image_cloud
+from flask_cors import cross_origin
+from flask import session, redirect, url_for, current_app, flash, Response, request, jsonify
+from ..login.login_funtion import User
+from ..privilege.privilege_control import permission_required
+from ..response import Response
+from peewee import DoesNotExist
+
+rsp = Response()
+
+URL_PREFIX = '/image_cloud'
+
+@image_cloud.route('/favicon.ico', methods=['GET'])
+def faviconico():
+    with open("../dist/star.ico", 'rb') as f:
+        image = f.read()
+    resp = Response(image, mimetype="image/jpeg")
+    return resp
