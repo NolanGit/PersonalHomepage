@@ -1,6 +1,10 @@
 <template>
   <el-col>
     <el-row class="margin_bottom-large">
+      <el-tabs v-model="activeFunction" @tab-click="handleClick" stretch="true">
+        <el-tab-pane label="网盘" name="first">网盘</el-tab-pane>
+        <el-tab-pane label="图床" name="second">图床</el-tab-pane>
+      </el-tabs>
       <div class="margin_left-medium margin_right-medium" style="text-align: center;">
         <el-upload
           class="upload-demo"
@@ -17,8 +21,12 @@
           :on-exceed="handleExceed"
         >
           <i class="el-icon-upload"></i>
-          <div class="el-upload__text">
+          <div v-if="activeFunction=='first'" class="el-upload__text">
             将文件拖到此处，或
+            <em>点击上传</em>
+          </div>
+          <div v-if="activeFunction=='second'" class="el-upload__text">
+            将图片拖到此处，或
             <em>点击上传</em>
           </div>
         </el-upload>
@@ -30,7 +38,12 @@
           class="scrollbar-div"
           style="max-height:calc(100vh - 400px); height: calc(100vh - 400px);"
         >
-          <el-table :data="tableData" style="text-align: center;" size="small">
+          <el-table
+            v-if="activeFunction=='first'"
+            :data="tableData"
+            style="text-align: center;"
+            size="small"
+          >
             <el-table-column prop="file_name" label="名称"></el-table-column>
             <el-table-column prop="size" label="大小" width="100"></el-table-column>
             <el-table-column prop="update_time" label="上传时间" width="170"></el-table-column>
@@ -134,6 +147,7 @@ export default {
   watch: {},
   data() {
     return {
+      activeFunction: "first",
       tableData: [],
       pagination: {
         currentPage: 1,
