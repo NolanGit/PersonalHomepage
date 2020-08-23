@@ -1,9 +1,14 @@
 <template>
   <el-col>
     <el-row class="margin_bottom-large">
-      <el-tabs v-model="activeFunction" @tab-click="handleClick" stretch="true">
-        <el-tab-pane label="网盘" name="first">网盘</el-tab-pane>
-        <el-tab-pane label="图床" name="second">图床</el-tab-pane>
+      <el-tabs
+        v-model="activeFunction"
+        @tab-click="handleClick"
+        stretch="true"
+        class="margin_bottom-small margin_left-small margin_right-small"
+      >
+        <el-tab-pane label="网盘" name="first"></el-tab-pane>
+        <el-tab-pane label="图床" name="second"></el-tab-pane>
       </el-tabs>
       <div class="margin_left-medium margin_right-medium" style="text-align: center;">
         <el-upload
