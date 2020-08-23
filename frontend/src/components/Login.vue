@@ -48,7 +48,7 @@
       :before-close="drawerBeforeClose"
     >
       <Console :user_id="user_id" :login_name="login_name" v-if="drawer.title=='控制台'" />
-      <CloudDrive
+      <CloudDriveAndImageHosting
         :user_id="user_id"
         v-if="drawer.title=='网盘/图床'"
         @cloudStatusChanged="cloudStatusChanged"
