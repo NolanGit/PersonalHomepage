@@ -17,14 +17,16 @@ rsp = Response()
 
 URL_PREFIX = '/image'
 
+
 @image_cloud.route('/', methods=['GET'])
 def get():
-    i = request.args.get('i')
+    t = request.args.get('t')
     try:
-        pass
+        _ = image_table.get(image_table.token == t)
+        _path = _.file_path
     except DoesNotExist:
-        pass
-    with open("../dist/star.ico", 'rb') as f:
+        return rsp.failed('找不到文件')
+    with open(_path, 'rb') as f:
         image = f.read()
-    resp = Response(image, mimetype="image/jpeg")
-    return resp
+    img = Response(image, mimetype="image/jpeg")
+    return img

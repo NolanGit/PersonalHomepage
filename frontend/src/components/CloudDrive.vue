@@ -5,7 +5,7 @@
         v-model="activeFunction"
         @tab-click="handleClick"
         stretch="true"
-        class="margin_bottom-small margin_left-small margin_right-small"
+        class="margin_bottom-small margin_left-medium margin_right-medium"
       >
         <el-tab-pane label="网盘" name="first"></el-tab-pane>
         <el-tab-pane label="图床" name="second"></el-tab-pane>
