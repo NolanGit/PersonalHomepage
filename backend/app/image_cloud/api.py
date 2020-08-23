@@ -14,10 +14,11 @@ from peewee import DoesNotExist
 
 rsp = Response()
 
-URL_PREFIX = '/image_cloud'
+URL_PREFIX = '/image'
 
-@image_cloud.route('/favicon.ico', methods=['GET'])
-def faviconico():
+@image_cloud.route('/', methods=['GET'])
+def get():
+    i = request.args.get('i')
     with open("../dist/star.ico", 'rb') as f:
         image = f.read()
     resp = Response(image, mimetype="image/jpeg")
