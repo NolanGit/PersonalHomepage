@@ -32,7 +32,7 @@
       <div class="margin_left-medium margin_right-medium">
         <div
           class="scrollbar-div"
-          style="max-height:calc(100vh - 400px); height: calc(100vh - 400px);"
+          style="max-height:calc(100vh - 435px); height: calc(100vh - 435px);"
         >
           <el-table
             v-if="activeFunction=='first'"
