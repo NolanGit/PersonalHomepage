@@ -15,10 +15,24 @@ from ..model.image_model import image as image_table
 
 rsp = Response()
 
-URL_PREFIX = '/image'
+URL_PREFIX = '/image_hosting'
 
 
 @image_cloud.route('/', methods=['GET'])
+def fetch():
+    t = request.args.get('t')
+    try:
+        _ = image_table.get(image_table.token == t)
+        _path = _.file_path
+    except DoesNotExist:
+        return rsp.failed('找不到文件')
+    with open(_path, 'rb') as f:
+        image = f.read()
+    img = Response(image, mimetype="image/jpeg")
+    return img
+
+
+@image_cloud.route('/get', methods=['POST'])
 def get():
     t = request.args.get('t')
     try:

@@ -1,6 +1,15 @@
 <template>
   <section>
     <el-row class="margin_bottom-large">
+      <el-tabs
+        v-model="activeFunction"
+        @tab-click="handleClick"
+        stretch="true"
+        class="margin_bottom-small margin_left-medium margin_right-medium"
+      >
+        <el-tab-pane label="网盘" name="first"></el-tab-pane>
+        <el-tab-pane label="图床" name="second"></el-tab-pane>
+      </el-tabs>
       <div class="margin_left-medium margin_right-medium" style="text-align: center;">
         <el-upload
           class="upload-demo"
@@ -135,7 +144,7 @@ const api = {
 };
 
 export default {
-  name: "CloudDrive",
+  name: "CloudDriveAndImageHosting",
   props: {
     user_id: Number,
   },

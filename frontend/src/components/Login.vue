@@ -61,7 +61,7 @@ import md5 from "js-md5";
 import axios from "axios";
 import Router from "vue-router";
 import Console from "./Console.vue";
-import CloudDrive from "./CloudDrive.vue";
+import CloudDriveAndImageHosting from "./CloudDrive&ImageHosting.vue";
 const api = {
   userLogin: "/login/userLogin",
   userLoginSalt: "/login/userLoginSalt"
@@ -70,7 +70,7 @@ export default {
   name: "login",
   components: {
     Console,
-    CloudDrive
+    CloudDriveAndImageHosting
   },
   props: {
     login_name: String,
