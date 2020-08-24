@@ -78,7 +78,6 @@ def permission_required(privilege):
                 return rsp.failed(short_msg), 403
 
             # 上述校验均通过，刷新user_key的生效时间，并继续执行业务逻辑
-            pf.del_user_key_to_redis(user_key)
             pf.get_redis_conn0().set(user_key, user_id, LOGIN_STATUS_EXPIRE_TIME)
 
             return f(*args, **kwargs)
