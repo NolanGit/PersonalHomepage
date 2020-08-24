@@ -8,6 +8,7 @@ class image_hosting(BaseModel):
     file_name = CharField()
     file_path = CharField()
     token = CharField()
+    shorted_link = CharField()
     user_id = IntegerField()
     is_valid = IntegerField()
     update_time = DateTimeField()
