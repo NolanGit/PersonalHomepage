@@ -515,7 +515,7 @@
                   :content="singleDataOption.label"
                   placement="top"
                 >
-                  <el-input size="small" v-model="singleDataOption.label" placeholder="请输入选项展示文字"></el-input>
+                  <el-input style="width: 12vw;" size="small" v-model="singleDataOption.label" placeholder="请输入选项展示文字"></el-input>
                 </el-tooltip>
               </td>
               <td type="flex" class="td--label--short">
@@ -528,7 +528,7 @@
                   :content="singleDataOption.value"
                   placement="top"
                 >
-                  <el-input size="small" v-model="singleDataOption.value" placeholder="请输入选项实际的值"></el-input>
+                  <el-input style="width: 16vw;" size="small" v-model="singleDataOption.value" placeholder="请输入选项实际的值"></el-input>
                 </el-tooltip>
               </td>
               <td>
