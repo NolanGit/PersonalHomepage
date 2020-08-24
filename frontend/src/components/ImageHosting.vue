@@ -18,7 +18,7 @@
         >
           <i class="el-icon-upload"></i>
           <div class="el-upload__text">
-            将文件拖到此处，或
+            将图片拖到此处，或
             <em>点击上传</em>
           </div>
         </el-upload>
@@ -32,11 +32,10 @@
         >
           <el-table :data="tableData" style="text-align: center;" size="small">
             <el-table-column prop="file_name" label="名称"></el-table-column>
-            <el-table-column prop="size" label="大小" width="100"></el-table-column>
             <el-table-column prop="update_time" label="上传时间" width="170"></el-table-column>
             <el-table-column label="操作" width="280">
               <template slot-scope="scope">
-                <el-tooltip content="下载" placement="top">
+                <el-tooltip content="预览&下载" placement="top">
                   <el-button
                     class="noMargin"
                     size="mini"
@@ -46,20 +45,8 @@
                     @click="download(scope.row.file_id)"
                   ></el-button>
                 </el-tooltip>
-                <el-tooltip v-if="scope.row.share==0" content="分享" placement="top">
+                <el-tooltip content="复制链接" placement="top">
                   <el-button
-                    v-if="scope.row.share==0"
-                    class="noMargin"
-                    size="mini"
-                    plain
-                    type="primary"
-                    icon="el-icon-share"
-                    @click="share(scope.row.file_id)"
-                  ></el-button>
-                </el-tooltip>
-                <el-tooltip v-if="scope.row.share==1" content="复制分享链接" placement="top">
-                  <el-button
-                    v-if="scope.row.share==1"
                     class="noMargin"
                     size="mini"
                     plain
@@ -68,17 +55,6 @@
                     v-clipboard:copy="scope.row.share_link"
                     v-clipboard:success="onCopy"
                     v-clipboard:error="onError"
-                  ></el-button>
-                </el-tooltip>
-                <el-tooltip v-if="scope.row.share==1" content="取消分享" placement="top">
-                  <el-button
-                    v-if="scope.row.share==1"
-                    class="noMargin"
-                    size="mini"
-                    plain
-                    type="warning"
-                    icon="el-icon-close"
-                    @click="unShare(scope.row.file_id)"
                   ></el-button>
                 </el-tooltip>
                 <el-tooltip content="删除" placement="top">
@@ -119,13 +95,11 @@ const api = {
   download: "/download",
   get: "/cloudDrive/get",
   save: "/cloudDrive/save",
-  share: "/cloudDrive/share/set",
-  unShare: "/cloudDrive/share/cancel",
   delete: "/cloudDrive/delete",
 };
 
 export default {
-  name: "CloudDrive",
+  name: "ImageHosting",
   props: {
     user_id: Number,
   },

@@ -9,6 +9,7 @@ class image_hosting(BaseModel):
     file_path = CharField()
     token = CharField()
     user_id = IntegerField()
+    is_valid = IntegerField()
     update_time = DateTimeField()
 
     class Meta:
