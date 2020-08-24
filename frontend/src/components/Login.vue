@@ -35,7 +35,7 @@
       <span class="el-dropdown-link userinfo-inner">{{user_name}}</span>
       <el-dropdown-menu slot="dropdown">
         <el-dropdown-item @click.native="consoleClicked">控制台</el-dropdown-item>
-        <el-dropdown-item @click.native="cloudClicked">网盘</el-dropdown-item>
+        <el-dropdown-item @click.native="cloudClicked">网盘 / 图床</el-dropdown-item>
         <el-dropdown-item divided @click.native="logout">退出登录</el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
@@ -48,9 +48,9 @@
       :before-close="drawerBeforeClose"
     >
       <Console :user_id="user_id" :login_name="login_name" v-if="drawer.title=='控制台'" />
-      <CloudDrive
+      <CloudDriveAndImageHosting
         :user_id="user_id"
-        v-if="drawer.title=='网盘'"
+        v-if="drawer.title=='网盘 / 图床'"
         @cloudStatusChanged="cloudStatusChanged"
       />
     </el-drawer>
@@ -61,7 +61,7 @@ import md5 from "js-md5";
 import axios from "axios";
 import Router from "vue-router";
 import Console from "./Console.vue";
-import CloudDrive from "./CloudDrive.vue";
+import CloudDriveAndImageHosting from "./CloudDrive&ImageHosting.vue";
 const api = {
   userLogin: "/login/userLogin",
   userLoginSalt: "/login/userLoginSalt"
@@ -70,7 +70,7 @@ export default {
   name: "login",
   components: {
     Console,
-    CloudDrive
+    CloudDriveAndImageHosting
   },
   props: {
     login_name: String,
@@ -167,7 +167,7 @@ export default {
       this.drawer.direction = "ttb";
     },
     cloudClicked() {
-      this.drawer.title = "网盘";
+      this.drawer.title = "网盘 / 图床";
       this.drawer.size = "50%";
       this.drawer.visible = true;
       this.drawer.direction = "rtl";

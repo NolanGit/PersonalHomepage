@@ -1,7 +1,7 @@
 <template>
   <div class="search">
-    <div>
-      <i :class="searchIcon"></i>
+    <div class="search-icon-div">
+      <i class="search-icon el-icon-search"></i>
     </div>
     <div>
       <el-autocomplete
@@ -24,7 +24,9 @@
             :key="item.value"
             :label="item.label"
             :value="item.value"
-          ></el-option>
+          >
+            <span style="float: left">{{ item.label }}</span>
+          </el-option>
         </el-select>
         <el-button class="search-button" slot="append" icon="el-icon-search" @click="search()"></el-button>
       </el-autocomplete>
@@ -37,13 +39,13 @@ import Router from "vue-router";
 const api = {
   searchEnginesData: "/search/searchEnginesData",
   searchEnginesAutoComplete: "/search/searchEnginesAutoComplete",
-  searchLog: "/search/searchLog"
+  searchLog: "/search/searchLog",
 };
 
 export default {
   name: "search",
   props: {
-    user_id: Number
+    user_id: Number,
   },
   data() {
     return {
@@ -54,8 +56,8 @@ export default {
         select_engine_id: 0,
         main_url: "",
         auto_complete_url: "",
-        options: []
-      }
+        options: [],
+      },
     };
   },
   methods: {
@@ -69,18 +71,19 @@ export default {
             auto_complete_url: res.data[s].auto_complete_url,
             icon: res.data[s].icon,
             label: res.data[s].name,
-            value: res.data[s].name
+            value: res.data[s].name,
           });
         }
         this.searchEngines.select = this.searchEngines.options[0].value;
         this.searchEngines.select_engine_id = this.searchEngines.options[0].id;
         this.searchEngines.main_url = this.searchEngines.options[0].main_url;
         this.searchEngines.auto_complete_url = this.searchEngines.options[0].auto_complete_url;
+        this.searchIcon = this.searchEngines.options[0].icon;
       } catch (e) {
         console.log(e);
         this.$message({
           message: e.response.data.msg,
-          type: "error"
+          type: "error",
         });
       }
     },
@@ -101,7 +104,7 @@ export default {
         const { data: res } = await axios.post(api.searchLog, {
           user_id: this.user_id,
           engine_id: this.searchEngines.select_engine_id,
-          search_text: this.word
+          search_text: this.word,
         });
       } catch (e) {
         console.log(e);
@@ -133,12 +136,12 @@ export default {
               {
                 autoCompleteUrl: autoCompleteUrl,
                 name: this.searchEngines.select,
-                user_id: this.user_id
+                user_id: this.user_id,
               }
             );
             function String2Dict(x) {
               return {
-                value: x
+                value: x,
               };
             }
             var result = res.data.map(String2Dict);
@@ -151,26 +154,28 @@ export default {
             console.log(e);
             this.$message({
               message: e.response.data.msg,
-              type: "error"
+              type: "error",
             });
           }
         }
       }
-    }
+    },
   },
   created() {
     this.searchEnginesDataFront();
   },
   mounted() {
     this.$refs["input"].focus();
-  }
+  },
 };
 </script>
 <style scoped>
-.search-icon {
-  font-size: 100px;
+.search-icon-div {
   padding-top: 80px;
   padding-bottom: 60px;
+}
+.search-icon {
+  font-size: 100px;
 }
 .search-input {
   margin-left: 50px;

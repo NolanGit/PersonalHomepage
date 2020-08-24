@@ -21,8 +21,9 @@ pool0 = redis.ConnectionPool(host='localhost', port=6379, decode_responses=True,
 pool1 = redis.ConnectionPool(host='localhost', port=6379, decode_responses=True, db=1)
 
 cf = CommonFunc()
-LOGIN_STATUS_EXPIRE_TIME = 36000 # 登录状态在X秒后不活跃则会被置为失效
-IS_STATIC_IP=True
+LOGIN_STATUS_EXPIRE_TIME = 36000  # 登录状态在X秒后不活跃则会被置为失效
+IS_STATIC_IP = True
+
 
 # 权限装饰器
 def permission_required(privilege):
@@ -32,7 +33,7 @@ def permission_required(privilege):
         @wraps(f)
         def decorated_function(*args, **kwargs):
             user_key = request.cookies.get('user_key')
-            pf=privilegeFunction()
+            pf = privilegeFunction()
             redis_conn = pf.get_redis_conn0()
 
             # 是否存在cookie

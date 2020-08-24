@@ -235,6 +235,10 @@
     margin-bottom: 20px;
 }
 
+.margin_bottom-small {
+    margin-bottom: 10px;
+}
+
 .margin_bottom-large {
     margin-bottom: 40px;
 }
@@ -245,6 +249,10 @@
 
 .margin_left-large {
     margin-left: 40px;
+}
+
+.margin_left-small {
+    margin-left: 10px;
 }
 
 .margin_left-mini {
