@@ -122,7 +122,6 @@
 </template>
 <script>
 import axios from "axios";
-import { Loading } from "element-ui";
 
 const FLUSH_INTERVAL = 60000;
 const api = {
