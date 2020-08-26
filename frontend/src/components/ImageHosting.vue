@@ -43,10 +43,10 @@
                       class="image"
                       style="max-height: 300px; max-width: 300px; margin: 0 auto; cursor: pointer;"
                     />
-                    <div class="div-flex">
+                    <div class="div-flex" style="margin: 0 auto;">
                       <i
                         class="el-icon-top"
-                        style="font-size: 12px; color: #303133; padding-top: 0px; margin-top: 10px; margin-bottom: 10px"
+                        style="color: #303133; padding-top: 0px; margin-top: 12px; margin-bottom: 10px"
                       ></i>
                       <p
                         class="notesText"
