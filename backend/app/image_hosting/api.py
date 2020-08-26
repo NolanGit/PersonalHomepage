@@ -10,7 +10,7 @@ from flask_cors import cross_origin
 from flask import session, redirect, url_for, current_app, flash, Response, request, jsonify
 
 from . import image_hosting
-from ..response import Response
+from ..response import Response as MyResponse
 from ..common_func import CommonFunc
 from ..login.login_funtion import User
 from ..short_url.function import set_content
@@ -23,7 +23,7 @@ cf.read('app/homepage.config')
 DOMAIN_NAME = cf.get('config', 'DOMAIN_NAME')
 
 cf = CommonFunc()
-rsp = Response()
+rsp = MyResponse()
 
 URL_PREFIX = '/imageHosting'
 
@@ -48,7 +48,7 @@ def get():
         user_id = request.get_json()['user_id']
         _current_page = request.get_json()['current_page']
         _pagination_size = request.get_json()['pagination_size']
-        _ = image_hosting_table.select().where((image_hosting_table.user_id == user_id) & (image_hosting_table.is_calid == 1)).paginate(_current_page, _pagination_size).dicts()
+        _ = image_hosting_table.select().where((image_hosting_table.user_id == user_id) & (image_hosting_table.is_valid == 1)).paginate(_current_page, _pagination_size).dicts()
         result = [{
             'id': s_['id'],
             'file_name': s_['file_name'],
@@ -70,7 +70,7 @@ def save():
         file_path = _.file_path
         user_id = _.user_id
         token = cf.md5_it(file_name.split('.')[0] + str(time.time()).split('.')[0][-6:])
-        raw_link = DOMAIN_NAME + '/image_hosting?' + 't=' + str(token)
+        raw_link = DOMAIN_NAME + URL_PREFIX + '?' + 't=' + str(token)
         shorted_link = set_content(raw_link)  # 存储短链接
         image_hosting_table.create(file_name=file_name, file_path=file_path, token=token, shorted_link=shorted_link, user_id=user_id, is_valid=1, update_time=datetime.datetime.now())
         return rsp.success()
