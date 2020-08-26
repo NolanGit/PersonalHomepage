@@ -44,11 +44,14 @@
                       style="max-height: 300px; max-width: 300px; margin: 0 auto; cursor: pointer;"
                     />
                     <div class="div-flex">
-                      <i class="el-icon-top"></i>
+                      <i
+                        class="el-icon-top"
+                        style="font-size: 12px; color: #303133; padding-top: 0px; margin-top: 10px; margin-bottom: 10px"
+                      ></i>
                       <p
                         class="notesText"
                         style="font-size: 12px; color: #303133; padding-top: 0px; margin-top: 10px; margin-bottom: 10px"
-                      >点击以下载原图</p>
+                      >点击图片以下载原图</p>
                     </div>
                   </div>
                   <el-button

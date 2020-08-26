@@ -83,6 +83,7 @@ def delete():
         if int(_.user_id) != int(user_id):
             return rsp.refuse('文件归属错误！'), 403
         else:
+            _.token = _.token + '[deleted:' + str(time.time()) + ']'
             _.is_valid = 0
             _.save()
             return rsp.success()
