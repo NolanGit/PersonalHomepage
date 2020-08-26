@@ -48,14 +48,8 @@ def get():
         user_id = request.get_json()['user_id']
         _current_page = request.get_json()['current_page']
         _pagination_size = request.get_json()['pagination_size']
-        _ = image_hosting_table.select().where((image_hosting_table.user_id == user_id) & (image_hosting_table.is_valid == 1)).paginate(_current_page, _pagination_size).dicts()
-        result = [{
-            'id': s_['id'],
-            'file_name': s_['file_name'],
-            'file_path': s_['file_path'],
-            'shorted_link': s_['shorted_link'],
-            'update_time': s_['update_time'].strftime("%Y-%m-%d %H:%M:%S")
-        } for s_ in _]
+        _ = image_hosting_table.select().where((image_hosting_table.user_id == int(user_id)) & (image_hosting_table.is_valid == 1)).paginate(_current_page, _pagination_size).dicts()
+        result = [{'id': s_['id'], 'file_name': s_['file_name'], 'shorted_link': s_['shorted_link'], 'update_time': s_['update_time'].strftime("%Y-%m-%d %H:%M:%S")} for s_ in _]
         return rsp.success()
     except Exception as e:
         return rsp.failed(e)

@@ -35,8 +35,10 @@
             <el-table-column prop="update_time" label="上传时间" width="170"></el-table-column>
             <el-table-column label="操作" width="280">
               <template slot-scope="scope">
-                <el-tooltip content="预览&下载" placement="top">
+                <el-popover placement="right" width="400" trigger="hover">
+                  <img :src="scope.row.shorted_link" class="image" />
                   <el-button
+                    slot="reference"
                     class="noMargin"
                     size="mini"
                     plain
@@ -44,7 +46,7 @@
                     icon="el-icon-download"
                     @click="download(scope.row.file_id)"
                   ></el-button>
-                </el-tooltip>
+                </el-popover>
                 <el-tooltip content="复制链接" placement="top">
                   <el-button
                     class="noMargin"
