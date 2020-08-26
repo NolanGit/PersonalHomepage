@@ -37,16 +37,19 @@
               <template slot-scope="scope">
                 <el-popover placement="left" width="400" trigger="hover">
                   <div style="text-align: center">
-                    <p
-                      class="notesText"
-                      style="font-size: 12px; color: red; padding-top: 0px; margin-top: 0px; margin-bottom: 10px"
-                    >点击图片以下载原图</p>
                     <img
                       :src="scope.row.shorted_link"
                       @click="open(scope.row.shorted_link)"
                       class="image"
                       style="max-height: 300px; max-width: 300px; margin: 0 auto; cursor: pointer;"
                     />
+                    <div class="div-flex">
+                      <i class="el-icon-top"></i>
+                      <p
+                        class="notesText"
+                        style="font-size: 12px; color: #303133; padding-top: 0px; margin-top: 10px; margin-bottom: 10px"
+                      >点击以下载原图</p>
+                    </div>
                   </div>
                   <el-button
                     slot="reference"
@@ -60,7 +63,7 @@
                 </el-popover>
                 <el-tooltip content="复制链接" placement="top">
                   <el-button
-                    class="noMargin"
+                    class="margin_left-small"
                     size="mini"
                     plain
                     type="primary"
@@ -72,7 +75,7 @@
                 </el-tooltip>
                 <el-tooltip content="删除" placement="top">
                   <el-button
-                    class="noMargin"
+                    class="margin_left-small"
                     size="mini"
                     plain
                     type="danger"
