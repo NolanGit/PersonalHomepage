@@ -46,7 +46,9 @@ def fetch():
 def get():
     try:
         user_id = request.get_json()['user_id']
-        _ = image_hosting_table.select().where((image_hosting_table.user_id == user_id) & (image_hosting_table.is_calid == 1)).dicts()
+        _current_page = request.get_json()['current_page']
+        _pagination_size = request.get_json()['pagination_size']
+        _ = image_hosting_table.select().where((image_hosting_table.user_id == user_id) & (image_hosting_table.is_calid == 1)).paginate(_current_page, _pagination_size).dicts()
         result = [{
             'id': s_['id'],
             'file_name': s_['file_name'],
