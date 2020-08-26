@@ -43,9 +43,9 @@
                     >点击图片以下载原图</p>
                     <img
                       :src="scope.row.shorted_link"
-                      @click="window.open(scope.row.shorted_link)"
+                      @click="open(scope.row.shorted_link)"
                       class="image"
-                      style="max-height: 300px; max-width: 300px; margin: 0 auto cursor: pointer;"
+                      style="max-height: 300px; max-width: 300px; margin: 0 auto; cursor: pointer;"
                     />
                   </div>
                   <el-button
@@ -145,6 +145,9 @@ export default {
     uploadProgress() {
       this.$emit("cloudStatusChanged", 1);
     },
+    open(url) {
+      window.open(url);
+    },
     async get() {
       try {
         const { data: res } = await axios.post(api.get, {
@@ -181,39 +184,6 @@ export default {
         });
       }
     },
-    async download(fileId) {
-      try {
-        var elemIF = document.createElement("iframe");
-        elemIF.src = "/download?file_id=" + fileId;
-        elemIF.style.display = "none";
-        document.body.appendChild(elemIF);
-      } catch (e) {
-        console.log(e);
-        this.$message({
-          message: e.response.data.msg,
-          type: "error",
-        });
-      }
-    },
-    async share(fileId) {
-      try {
-        const { data: res } = await axios.post(api.share, {
-          user_id: this.user_id,
-          id: fileId,
-        });
-        this.get();
-        this.$message({
-          message: "创建分享链接成功，点击[复制分享链接]按钮复制吧！",
-          type: "success",
-        });
-      } catch (e) {
-        console.log(e);
-        this.$message({
-          message: e.response.data.msg,
-          type: "error",
-        });
-      }
-    },
     onCopy(e) {
       this.$message({
         message: "复制分享链接成功！现在就去粘贴吧！",
@@ -222,31 +192,6 @@ export default {
     },
     onError(e) {
       alert("复制失败");
-    },
-    async unShare(fileId) {
-      this.$confirm(
-        "取消分享后，原来的分享链接将失效，确定取消分享吗？",
-        "提示",
-        {}
-      ).then(async () => {
-        try {
-          const { data: res } = await axios.post(api.unShare, {
-            user_id: this.user_id,
-            id: fileId,
-          });
-          this.get();
-          this.$message({
-            message: res.msg,
-            type: "success",
-          });
-        } catch (e) {
-          console.log(e);
-          this.$message({
-            message: e.response.data.msg,
-            type: "error",
-          });
-        }
-      });
     },
     async del(row_id) {
       this.$confirm("确认删除吗？", "提示", {}).then(async () => {
