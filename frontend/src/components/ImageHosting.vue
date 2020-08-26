@@ -93,7 +93,7 @@ import axios from "axios";
 const FLUSH_INTERVAL = 60000;
 const api = {
   download: "/download",
-  get: "/cloudDrive/get",
+  get: "/image_hosting/get",
   save: "/cloudDrive/save",
   delete: "/cloudDrive/delete",
 };

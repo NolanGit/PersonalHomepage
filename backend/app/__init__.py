@@ -64,5 +64,5 @@ def create_app(config_name):
     app.register_blueprint(short_url_blueprint, url_prefix='/s')
 
     from .image_hosting import image_hosting as  image_hosting_blueprint
-    app.register_blueprint(image_hosting_blueprint, url_prefix='/image_hosting')
+    app.register_blueprint(image_hosting_blueprint, url_prefix='/imageHosting')
     return app
