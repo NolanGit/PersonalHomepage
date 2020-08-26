@@ -35,8 +35,19 @@
             <el-table-column prop="update_time" label="上传时间" width="170"></el-table-column>
             <el-table-column label="操作" width="280">
               <template slot-scope="scope">
-                <el-popover placement="right" width="400" trigger="hover">
-                  <img :src="scope.row.shorted_link" class="image" />
+                <el-popover placement="left" width="400" trigger="hover">
+                  <div style="text-align: center">
+                    <p
+                      class="notesText"
+                      style="font-size: 12px; color: red; padding-top: 0px; margin-top: 0px; margin-bottom: 10px"
+                    >点击图片以下载原图</p>
+                    <img
+                      :src="scope.row.shorted_link"
+                      @click="window.open(scope.row.shorted_link)"
+                      class="image"
+                      style="max-height: 300px; max-width: 300px; margin: 0 auto cursor: pointer;"
+                    />
+                  </div>
                   <el-button
                     slot="reference"
                     class="noMargin"
@@ -54,7 +65,7 @@
                     plain
                     type="primary"
                     icon="el-icon-link"
-                    v-clipboard:copy="scope.row.share_link"
+                    v-clipboard:copy="scope.row.shorted_link"
                     v-clipboard:success="onCopy"
                     v-clipboard:error="onError"
                   ></el-button>
