@@ -33,7 +33,28 @@
           <el-table :data="tableData" style="text-align: center;" size="small">
             <el-table-column label="名称">
               <template slot-scope="scope">
-                <el-input v-model="scope.row.file_name" placeholder="请输入内容" size="mini"></el-input>
+                <el-input
+                  v-if="scope.row.editMode==true"
+                  v-model="scope.row.file_name"
+                  placeholder="请输入内容"
+                  size="mini"
+                ></el-input>
+                <i
+                  v-if="scope.row.editMode==true"
+                  class="el-icon-check"
+                  style="cursor: pointer;"
+                  @click="scope.row.editMode=false"
+                ></i>
+                <span
+                  v-if="scope.row.editMode==false"
+                  style="margin-right: 10px"
+                >{{ scope.row.file_name }}</span>
+                <i
+                  v-if="scope.row.editMode==false"
+                  class="el-icon-edit"
+                  style="cursor: pointer;"
+                  @click="scope.row.editMode=true"
+                ></i>
               </template>
             </el-table-column>
             <el-table-column prop="update_time" label="上传时间" width="170"></el-table-column>
@@ -166,6 +187,9 @@ export default {
           current_page: this.pagination.currentPage,
         });
         this.tableData = res.data.list;
+        for (let x = 0; x < this.tableData.length; x++) {
+          this.tableData[x].editMode = false;
+        }
         this.pagination.total = res.data.total;
       } catch (e) {
         console.log(e);
