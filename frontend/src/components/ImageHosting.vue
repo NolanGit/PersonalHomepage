@@ -184,6 +184,7 @@ export default {
       for (let x = 0; x < this.tableData.length; x++) {
         if (this.tableData[x].id == rowId) {
           this.tableData[x].editMode = false;
+          this.$set(this.tableData, x, this.tableData[x]);
           break;
         }
       }
@@ -194,6 +195,7 @@ export default {
       for (let x = 0; x < this.tableData.length; x++) {
         if (this.tableData[x].id == rowId) {
           this.tableData[x].editMode = true;
+          this.$set(this.tableData, x, this.tableData[x]);
           break;
         }
       }
