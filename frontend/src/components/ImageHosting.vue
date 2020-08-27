@@ -187,14 +187,17 @@ export default {
           break;
         }
       }
+      console.log(this.tableData);
     },
     enableEditMode(rowId) {
+      console.log(rowId);
       for (let x = 0; x < this.tableData.length; x++) {
         if (this.tableData[x].id == rowId) {
           this.tableData[x].editMode = true;
           break;
         }
       }
+      console.log(this.tableData);
     },
     async get() {
       try {
