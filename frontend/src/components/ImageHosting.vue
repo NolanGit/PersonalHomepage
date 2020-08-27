@@ -43,7 +43,7 @@
                   v-if="scope.row.editMode==true"
                   class="el-icon-check"
                   style="cursor: pointer;"
-                  @click="scope.row.editMode=false"
+                  @click="submitEditMode(scope.row.id,scope.row.file_name)"
                 ></i>
                 <span
                   v-if="scope.row.editMode==false"
@@ -53,7 +53,7 @@
                   v-if="scope.row.editMode==false"
                   class="el-icon-edit"
                   style="cursor: pointer;"
-                  @click="scope.row.editMode=true"
+                  @click="enableEditMode(scope.row.id)"
                 ></i>
               </template>
             </el-table-column>
@@ -179,6 +179,17 @@ export default {
     open(url) {
       window.open(url);
     },
+    submitEditMode(rowId, rowFileName) {
+      console.log(rowId, rowFileName);
+    },
+    enableEditMode(rowId) {
+      for (let x = 0; x < this.tableData.length; x++) {
+        if (this.tableData[x].id == rowId) {
+          this.tableData[x].editMode = true;
+          break;
+        }
+      }
+    },
     async get() {
       try {
         const { data: res } = await axios.post(api.get, {
@@ -190,6 +201,7 @@ export default {
         for (let x = 0; x < this.tableData.length; x++) {
           this.tableData[x].editMode = false;
         }
+        console.log(this.tableData);
         this.pagination.total = res.data.total;
       } catch (e) {
         console.log(e);
