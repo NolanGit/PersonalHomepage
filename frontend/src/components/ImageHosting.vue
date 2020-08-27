@@ -31,7 +31,11 @@
           style="max-height:calc(100vh - 435px); height: calc(100vh - 435px);"
         >
           <el-table :data="tableData" style="text-align: center;" size="small">
-            <el-table-column prop="file_name" label="名称"></el-table-column>
+            <el-table-column label="名称">
+              <template slot-scope="scope">
+                <el-input v-model="scope.row.file_name" placeholder="请输入内容" size="mini"></el-input>
+              </template>
+            </el-table-column>
             <el-table-column prop="update_time" label="上传时间" width="170"></el-table-column>
             <el-table-column label="操作" width="280">
               <template slot-scope="scope">
