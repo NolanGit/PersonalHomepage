@@ -58,7 +58,7 @@ def set_content(content, type=1, expire_time=None):
     short_content_table.update(code=_code).where(short_content_table.id == _id).execute()
     r=''
     if int(type) == 1:
-        r = DOMAIN_NAME + '/s/?c=' + _code
+        r = DOMAIN_NAME + '/s?c=' + _code
 
     return r
 

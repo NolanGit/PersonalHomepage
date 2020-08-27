@@ -15,7 +15,7 @@ rsp = Response()
 CONTENT_TYPE = {1: 'URL'}
 
 
-@short_url_blue_print.route('/', methods=['GET'])
+@short_url_blue_print.route('', methods=['GET'])
 @cross_origin()
 def t():
     try:
