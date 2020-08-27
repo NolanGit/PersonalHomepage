@@ -12,7 +12,6 @@ from ..privilege.privilege_control import permission_required
 from .function import get_content, set_content
 
 rsp = Response()
-URL_PREFIX = '/cloudDrive'
 CONTENT_TYPE = {1: 'URL'}
 
 
