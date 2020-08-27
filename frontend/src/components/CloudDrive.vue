@@ -31,7 +31,40 @@
           style="max-height:calc(100vh - 435px); height: calc(100vh - 435px);"
         >
           <el-table :data="tableData" style="text-align: center;" size="small">
-            <el-table-column prop="file_name" label="名称"></el-table-column>
+            <el-table-column label="名称">
+              <template slot-scope="scope">
+                <div style="display: inline-flex;">
+                  <span
+                    v-if="scope.row.editMode==false"
+                    style="margin-right: 10px"
+                  >{{ scope.row.file_name }}</span>
+                  <i
+                    v-if="scope.row.editMode==false"
+                    class="el-icon-edit"
+                    style="cursor: pointer;"
+                    @click="changeEditMode(scope.row.id,'enable')"
+                  ></i>
+                  <el-input
+                    v-if="scope.row.editMode==true"
+                    v-model="scope.row.file_name"
+                    placeholder="请输入内容"
+                    size="mini"
+                  ></el-input>
+                  <i
+                    v-if="scope.row.editMode==true"
+                    class="el-icon-cancle"
+                    style="cursor: pointer;"
+                    @click="changeEditMode(scope.row.id,'disable')"
+                  ></i>
+                  <i
+                    v-if="scope.row.editMode==true"
+                    class="el-icon-check"
+                    style="cursor: pointer;"
+                    @click="submitEditMode(scope.row.id,scope.row.file_name)"
+                  ></i>
+                </div>
+              </template>
+            </el-table-column>
             <el-table-column prop="size" label="大小" width="100"></el-table-column>
             <el-table-column prop="update_time" label="上传时间" width="170"></el-table-column>
             <el-table-column label="操作" width="280">
@@ -122,6 +155,7 @@ const api = {
   share: "/cloudDrive/share/set",
   unShare: "/cloudDrive/share/cancel",
   delete: "/cloudDrive/delete",
+  changeName: "/cloudDrive/changeName",
 };
 
 export default {
@@ -158,6 +192,40 @@ export default {
     uploadProgress() {
       this.$emit("cloudStatusChanged", 1);
     },
+    async submitEditMode(rowId, rowFileName) {
+      try {
+        const { data: res } = await axios.post(api.changeName, {
+          user_id: this.user_id,
+          id: rowId,
+          file_name: rowFileName,
+        });
+        await this.changeEditMode(rowId, "disable");
+        this.$message({
+          message: res.msg,
+          type: "success",
+        });
+      } catch (e) {
+        console.log(e);
+        this.$message({
+          message: e.response.data.msg,
+          type: "error",
+        });
+      }
+    },
+    changeEditMode(rowId, action) {
+      for (let x = 0; x < this.tableData.length; x++) {
+        if (this.tableData[x].id == rowId) {
+          if (action == "enable") {
+            this.tableData[x].editMode = true;
+          }
+          if (action == "disable") {
+            this.tableData[x].editMode = false;
+          }
+          this.$set(this.tableData, x, this.tableData[x]);
+          break;
+        }
+      }
+    },
     async get() {
       try {
         const { data: res } = await axios.post(api.get, {
@@ -166,6 +234,9 @@ export default {
           current_page: this.pagination.currentPage,
         });
         this.tableData = res.data.list;
+        for (let x = 0; x < this.tableData.length; x++) {
+          this.tableData[x].editMode = false;
+        }
         this.pagination.total = res.data.total;
       } catch (e) {
         console.log(e);

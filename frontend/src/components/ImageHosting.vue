@@ -42,7 +42,7 @@
                     v-if="scope.row.editMode==false"
                     class="el-icon-edit"
                     style="cursor: pointer;"
-                    @click="enableEditMode(scope.row.id)"
+                    @click="changeEditMode(scope.row.id,'enable')"
                   ></i>
                   <el-input
                     v-if="scope.row.editMode==true"
@@ -50,6 +50,12 @@
                     placeholder="请输入内容"
                     size="mini"
                   ></el-input>
+                  <i
+                    v-if="scope.row.editMode==true"
+                    class="el-icon-cancle"
+                    style="cursor: pointer;"
+                    @click="changeEditMode(scope.row.id,'disable')"
+                  ></i>
                   <i
                     v-if="scope.row.editMode==true"
                     class="el-icon-check"
@@ -142,6 +148,7 @@ const api = {
   get: "/imageHosting/get",
   save: "/imageHosting/save",
   delete: "/imageHosting/delete",
+  changeName: "/imageHosting/changeName",
 };
 
 export default {
@@ -181,27 +188,39 @@ export default {
     open(url) {
       window.open(url);
     },
-    submitEditMode(rowId, rowFileName) {
-      console.log(rowId, rowFileName);
-      for (let x = 0; x < this.tableData.length; x++) {
-        if (this.tableData[x].id == rowId) {
-          this.tableData[x].editMode = false;
-          this.$set(this.tableData, x, this.tableData[x]);
-          break;
-        }
+    async submitEditMode(rowId, rowFileName) {
+      try {
+        const { data: res } = await axios.post(api.changeName, {
+          user_id: this.user_id,
+          id: rowId,
+          file_name: rowFileName,
+        });
+        await this.changeEditMode(rowId, "disable");
+        this.$message({
+          message: res.msg,
+          type: "success",
+        });
+      } catch (e) {
+        console.log(e);
+        this.$message({
+          message: e.response.data.msg,
+          type: "error",
+        });
       }
-      console.log(this.tableData);
     },
-    enableEditMode(rowId) {
-      console.log(rowId);
+    changeEditMode(rowId, action) {
       for (let x = 0; x < this.tableData.length; x++) {
         if (this.tableData[x].id == rowId) {
-          this.tableData[x].editMode = true;
+          if (action == "enable") {
+            this.tableData[x].editMode = true;
+          }
+          if (action == "disable") {
+            this.tableData[x].editMode = false;
+          }
           this.$set(this.tableData, x, this.tableData[x]);
           break;
         }
       }
-      console.log(this.tableData);
     },
     async get() {
       try {
