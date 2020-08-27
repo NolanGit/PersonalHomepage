@@ -15,7 +15,7 @@ from ..common_func import CommonFunc
 from ..login.login_funtion import User
 from ..short_url.function import set_content
 from ..privilege.privilege_control import permission_required
-from ..model.image_hosting_model import image_hosting as image_hosting_table
+fro.privilege.image_hosting_model import image_hosting as image_hosting_table
 from ..model.upload_model import upload as upload_table
 
 cf = configparser.ConfigParser()
@@ -43,6 +43,7 @@ def fetch():
 
 
 @image_hosting.route('/get', methods=['POST'])
+@permission_required(URL_PREFIX + '/get')
 def get():
     try:
         user_id = request.get_json()['user_id']
@@ -58,6 +59,7 @@ def get():
 
 
 @image_hosting.route('/save', methods=['POST'])
+@permission_required(URL_PREFIX + '/save')
 def save():
     try:
         file_id = request.get_json()['file_id']
@@ -75,6 +77,7 @@ def save():
 
 
 @image_hosting.route('/delete', methods=['POST'])
+@permission_required(URL_PREFIX + '/delete')
 def delete():
     try:
         user_id = request.get_json()['user_id']
@@ -87,6 +90,25 @@ def delete():
             _.is_valid = 0
             _.save()
             return rsp.success()
+    except Exception as e:
+        traceback.print_exc()
+        return rsp.failed(e), 500
+
+
+@image_hosting.route('/changeName', methods=['POST'])
+@permission_required(URL_PREFIX + '/changeName')
+def changeName():
+    try:
+        user_id = request.get_json()['user_id']
+        id = request.get_json()['id']
+        file_name = request.get_json()['file_name']
+        _ = image_hosting_table.get(image_hosting_table.id == id)
+        if int(_.user_id) != int(user_id):
+            return rsp.refuse('文件归属错误！'), 403
+        else:
+            _.file_name = file_name
+            _.save()
+        return rsp.success()
     except Exception as e:
         traceback.print_exc()
         return rsp.failed(e), 500

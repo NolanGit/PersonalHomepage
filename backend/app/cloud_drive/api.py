@@ -171,3 +171,21 @@ def cancel():
     except Exception as e:
         traceback.print_exc()
         return rsp.failed(e), 500
+
+@cloud_drive_blue_print.route('/changeName', methods=['POST'])
+@permission_required(URL_PREFIX + '/changeName')
+def changeName():
+    try:
+        user_id = request.get_json()['user_id']
+        id = request.get_json()['id']
+        file_name = request.get_json()['file_name']
+        _ = cloud_drive.get(cloud_drive.id == id)
+        if int(_.user_id) != int(user_id):
+            return rsp.refuse('文件归属错误！'), 403
+        else:
+            _.file_name = file_name
+            _.save()
+        return rsp.success()
+    except Exception as e:
+        traceback.print_exc()
+        return rsp.failed(e), 500
