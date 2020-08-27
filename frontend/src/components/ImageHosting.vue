@@ -36,14 +36,14 @@
             <el-table-column label="操作" width="280">
               <template slot-scope="scope">
                 <el-popover placement="left" width="400" trigger="hover">
-                  <div style="text-align: center">
+                  <div style="text-align: center; display: grid;">
                     <img
                       :src="scope.row.shorted_link"
                       @click="open(scope.row.shorted_link)"
                       class="image"
                       style="max-height: 300px; max-width: 300px; margin: 0 auto; cursor: pointer;"
                     />
-                    <div class="div-flex" style="margin: 0 auto;">
+                    <div style="margin: 0 auto; display: inline-flex;">
                       <i
                         class="el-icon-top"
                         style="color: #303133; padding-top: 0px; margin-top: 12px; margin-bottom: 10px"
