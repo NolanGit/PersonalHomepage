@@ -33,6 +33,16 @@
           <el-table :data="tableData" style="text-align: center;" size="small">
             <el-table-column label="名称">
               <template slot-scope="scope">
+                <span
+                  v-if="scope.row.editMode==false"
+                  style="margin-right: 10px"
+                >{{ scope.row.file_name }}</span>
+                <i
+                  v-if="scope.row.editMode==false"
+                  class="el-icon-edit"
+                  style="cursor: pointer;"
+                  @click="enableEditMode(scope.row.id)"
+                ></i>
                 <el-input
                   v-if="scope.row.editMode==true"
                   v-model="scope.row.file_name"
@@ -44,16 +54,6 @@
                   class="el-icon-check"
                   style="cursor: pointer;"
                   @click="submitEditMode(scope.row.id,scope.row.file_name)"
-                ></i>
-                <span
-                  v-if="scope.row.editMode==false"
-                  style="margin-right: 10px"
-                >{{ scope.row.file_name }}</span>
-                <i
-                  v-if="scope.row.editMode==false"
-                  class="el-icon-edit"
-                  style="cursor: pointer;"
-                  @click="enableEditMode(scope.row.id)"
                 ></i>
               </template>
             </el-table-column>
@@ -181,6 +181,12 @@ export default {
     },
     submitEditMode(rowId, rowFileName) {
       console.log(rowId, rowFileName);
+      for (let x = 0; x < this.tableData.length; x++) {
+        if (this.tableData[x].id == rowId) {
+          this.tableData[x].editMode = false;
+          break;
+        }
+      }
     },
     enableEditMode(rowId) {
       for (let x = 0; x < this.tableData.length; x++) {
