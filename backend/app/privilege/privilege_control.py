@@ -53,7 +53,7 @@ def permission_required(privilege):
                     short_msg = '[权限校验失败]登录状态已失效，请刷新页面'
                     print(msg)
                     return rsp.failed(short_msg), 401
-                user_key_in_redis = cf.md5_it(random_str + password)
+            user_key_in_redis = cf.md5_it(random_str + password)
 
             # cookie是否相同
             if user_key != user_key_in_redis:
