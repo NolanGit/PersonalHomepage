@@ -179,7 +179,7 @@ def changeName():
         user_id = request.get_json()['user_id']
         id = request.get_json()['id']
         file_name = request.get_json()['file_name']
-        _ = cloud_drive.get(cloud_drive.id == id)
+        _ = upload.get(upload.id == id)
         if int(_.user_id) != int(user_id):
             return rsp.refuse('文件归属错误！'), 403
         else:

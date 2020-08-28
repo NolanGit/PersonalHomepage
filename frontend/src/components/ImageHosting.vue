@@ -58,7 +58,7 @@
                   ></i>
                   <i
                     v-if="scope.row.editMode==true"
-                    class="el-icon-cancle"
+                    class="el-icon-close"
                     style="cursor: pointer; margin-top: 6px; font-size: 13px; color: #F56C6C; padding-left: 5px"
                     @click="changeEditMode(scope.row.id,'disable')"
                   ></i>
