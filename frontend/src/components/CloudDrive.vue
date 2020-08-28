@@ -41,7 +41,7 @@
                   <i
                     v-if="scope.row.editMode==false"
                     class="el-icon-edit"
-                    style="cursor: pointer; margin-top: 6px;"
+                    style="cursor: pointer; margin-top: 6px; font-size: 13px;"
                     @click="changeEditMode(scope.row.id,'enable')"
                   ></i>
                   <el-input
@@ -53,13 +53,13 @@
                   <i
                     v-if="scope.row.editMode==true"
                     class="el-icon-close"
-                    style="cursor: pointer; margin-top: 6px;"
+                    style="cursor: pointer; margin-top: 6px; font-size: 13px; color: #67C23A; padding-left: 5px"
                     @click="changeEditMode(scope.row.id,'disable')"
                   ></i>
                   <i
                     v-if="scope.row.editMode==true"
                     class="el-icon-check"
-                    style="cursor: pointer; margin-top: 6px;"
+                    style="cursor: pointer; margin-top: 6px; font-size: 13px; color: #F56C6C; padding-left: 5px"
                     @click="submitEditMode(scope.row.id,scope.row.file_name)"
                   ></i>
                 </div>
