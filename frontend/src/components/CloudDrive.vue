@@ -200,6 +200,7 @@ export default {
           file_name: rowFileName,
         });
         await this.changeEditMode(rowId, "disable");
+        this.get();
         this.$message({
           message: res.msg,
           type: "success",
