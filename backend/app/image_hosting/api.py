@@ -15,7 +15,7 @@ from ..common_func import CommonFunc
 from ..login.login_funtion import User
 from ..short_url.function import set_content
 from ..privilege.privilege_control import permission_required
-fro.privilege.image_hosting_model import image_hosting as image_hosting_table
+from.privilege.image_hosting_model import image_hosting as image_hosting_table
 from ..model.upload_model import upload as upload_table
 
 cf = configparser.ConfigParser()
