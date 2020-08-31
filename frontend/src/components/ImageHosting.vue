@@ -234,7 +234,6 @@ export default {
         for (let x = 0; x < this.tableData.length; x++) {
           this.tableData[x].editMode = false;
         }
-        console.log(this.tableData);
         this.pagination.total = res.data.total;
       } catch (e) {
         console.log(e);
