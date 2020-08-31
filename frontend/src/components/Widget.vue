@@ -69,6 +69,7 @@
               :flush="singleWidget.auto_update"
               @done="done(suiteIndex,index)"
             />
+            <translator v-if="singleWidget.name=='translator'" />
           </el-card>
         </transition>
       </el-col>
@@ -82,6 +83,7 @@ import bookmarks from "./Bookmarks.vue";
 import appMonitor from "./AppMonitor.vue";
 import gold from "./Gold.vue";
 import notes from "./Notes.vue";
+import translator from "./WidgetTranslator.vue";
 
 const api = {
   get: "/widget/get",
@@ -99,6 +101,7 @@ export default {
     appMonitor,
     gold,
     notes,
+    translator,
   },
   watch: {
     user_id(newVal, oldVal) {
