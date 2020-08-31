@@ -6,3 +6,5 @@ peewee==3.13.3
 pymysql==0.9.3
 redis==3.5.3
 pypinyin==0.38.0
+translators==4.6.20
+flask-limiter==1.4
