@@ -2,7 +2,7 @@
   <section>
     <el-row>
       <el-col :span="10">
-        <el-select size="mini" v-model="value" placeholder="请选择">
+        <el-select size="mini" v-model="fromLanguage" placeholder="请选择">
           <el-option
             v-for="item in options"
             :key="item.value"
@@ -12,10 +12,14 @@
         </el-select>
       </el-col>
       <el-col :span="2">
-        <i class="el-icon-refresh"></i>
+        <i
+          class="el-icon-refresh"
+          style="margin-top: 5px; cursor: pointer;"
+          @click="exchangeLanguage()"
+        ></i>
       </el-col>
       <el-col :span="10">
-        <el-select size="mini" v-model="value" placeholder="请选择">
+        <el-select size="mini" v-model="toLanguage" placeholder="请选择">
           <el-option
             v-for="item in options"
             :key="item.value"
@@ -25,14 +29,14 @@
         </el-select>
       </el-col>
       <el-col :span="2">
-        <el-button size="mini" type="primary">翻译</el-button>
+        <el-button size="mini" type="primary" style="margin-left: 5px;">译</el-button>
       </el-col>
     </el-row>
-    <el-row>
-      <el-col :span="12">
+    <el-row style="margin-top: 20px; ">
+      <el-col :span="10">
         <el-input type="textarea" :rows="2" placeholder="请输入内容" v-model="textarea"></el-input>
       </el-col>
-      <el-col :span="12">
+      <el-col :span="14">
         <el-input type="textarea" :rows="2" placeholder="请输入内容" v-model="textarea"></el-input>
       </el-col>
     </el-row>
@@ -64,10 +68,17 @@ export default {
         { value: "id", label: "印度尼西亚语" },
         { value: "vi", label: "越南语" },
       ],
-      value: "",
+      fromLanguage: "zh",
+      toLanguage: "en",
     };
   },
-  methods: {},
+  methods: {
+    exchangeLanguage() {
+      _temp = this.fromLanguage;
+      this.fromLanguage = this.toLanguage;
+      this.toLanguage = _temp;
+    },
+  },
   mounted() {
     this.$emit("done");
   },
