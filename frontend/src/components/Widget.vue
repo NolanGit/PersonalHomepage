@@ -69,7 +69,7 @@
               :flush="singleWidget.auto_update"
               @done="done(suiteIndex,index)"
             />
-            <translator v-if="singleWidget.name=='translator'" />
+            <translator v-if="singleWidget.name=='translator'" @done="done(suiteIndex,index)" />
           </el-card>
         </transition>
       </el-col>

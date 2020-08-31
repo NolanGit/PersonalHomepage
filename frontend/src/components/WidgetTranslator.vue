@@ -1,7 +1,7 @@
 <template>
   <section>
     <el-row>
-      <el-col>
+      <el-col :span="10">
         <el-select size="mini" v-model="value" placeholder="请选择">
           <el-option
             v-for="item in options"
@@ -11,10 +11,10 @@
           ></el-option>
         </el-select>
       </el-col>
-      <el-col>
+      <el-col :span="2">
         <i class="el-icon-refresh"></i>
       </el-col>
-      <el-col>
+      <el-col :span="10">
         <el-select size="mini" v-model="value" placeholder="请选择">
           <el-option
             v-for="item in options"
@@ -24,15 +24,15 @@
           ></el-option>
         </el-select>
       </el-col>
-      <el-col>
-        <el-button size="mini" type="primary">主要按钮</el-button>
+      <el-col :span="2">
+        <el-button size="mini" type="primary">翻译</el-button>
       </el-col>
     </el-row>
     <el-row>
-      <el-col>
+      <el-col :span="12">
         <el-input type="textarea" :rows="2" placeholder="请输入内容" v-model="textarea"></el-input>
       </el-col>
-      <el-col>
+      <el-col :span="12">
         <el-input type="textarea" :rows="2" placeholder="请输入内容" v-model="textarea"></el-input>
       </el-col>
     </el-row>
@@ -51,32 +51,26 @@ export default {
   data() {
     return {
       options: [
-        {
-          value: "选项1",
-          label: "黄金糕",
-        },
-        {
-          value: "选项2",
-          label: "双皮奶",
-        },
-        {
-          value: "选项3",
-          label: "蚵仔煎",
-        },
-        {
-          value: "选项4",
-          label: "龙须面",
-        },
-        {
-          value: "选项5",
-          label: "北京烤鸭",
-        },
+        { value: "zh", label: "简体中文" },
+        { value: "en", label: "英语" },
+        { value: "ru", label: "俄语" },
+        { value: "es", label: "西班牙语" },
+        { value: "fr", label: "法语" },
+        { value: "ar", label: "阿拉伯语" },
+        { value: "tr", label: "土耳其语" },
+        { value: "pt", label: "葡萄牙语" },
+        { value: "it", label: "意大利语" },
+        { value: "th", label: "泰语" },
+        { value: "id", label: "印度尼西亚语" },
+        { value: "vi", label: "越南语" },
       ],
       value: "",
     };
   },
   methods: {},
-  mounted() {},
+  mounted() {
+    this.$emit("done");
+  },
 };
 </script>
 </style>
