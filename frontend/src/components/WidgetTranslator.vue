@@ -34,10 +34,10 @@
     </el-row>
     <el-row style="margin-top: 20px; ">
       <el-col :span="10">
-        <el-input type="textarea" :rows="2" placeholder="请输入内容" v-model="textarea"></el-input>
+        <el-input type="textarea" :rows="2" placeholder="请输入内容" v-model="rawText"></el-input>
       </el-col>
       <el-col :span="14">
-        <el-input type="textarea" :rows="2" placeholder="请输入内容" v-model="textarea"></el-input>
+        <el-input type="textarea" :rows="2" placeholder="请输入内容" v-model="translatedText"></el-input>
       </el-col>
     </el-row>
   </section>
@@ -46,7 +46,7 @@
 import axios from "axios";
 
 const api = {
-  get: "/translator/get",
+  get: "/translator/translate",
 };
 
 export default {
@@ -70,6 +70,8 @@ export default {
       ],
       fromLanguage: "zh",
       toLanguage: "en",
+      rawText: "",
+      translatedText: "",
     };
   },
   methods: {
@@ -77,6 +79,25 @@ export default {
       _temp = this.fromLanguage;
       this.fromLanguage = this.toLanguage;
       this.toLanguage = _temp;
+    },
+    async translate() {
+      try {
+        const { data: res } = await axios.post(api.changeName, {
+          to_language: this.toLanguage,
+          text: this.rawText,
+        });
+        this.translatedText = res.data;
+        this.$message({
+          message: res.msg,
+          type: "success",
+        });
+      } catch (e) {
+        console.log(e);
+        this.$message({
+          message: e.response.data.msg,
+          type: "error",
+        });
+      }
     },
   },
   mounted() {

@@ -17,16 +17,17 @@ from ..privilege.privilege_control import permission_required
 rsp = MyResponse()
 
 URL_PREFIX = '/translator'
-LIMITER_FORBIDDEN_USER_AGENT = []                   # 禁止访问的User-Agent列表
-LIMITER_FREQUENCY = '1/seconds'                     # 接口限制的访问频次
+LIMITER_FORBIDDEN_USER_AGENT = []  # 禁止访问的User-Agent列表
+LIMITER_FREQUENCY = '1/seconds'  # 接口限制的访问频次
 
 
-@translator.route('', methods=['POST'])
+@translator.route('/translate', methods=['POST'])
 @limiter.user_agent_limit(LIMITER_FORBIDDEN_USER_AGENT)
 @limiter.limit(LIMITER_FREQUENCY)
 def fetch():
     to_language = request.get_json()['to_language']
     text = request.get_json()['text']
-    support_list=['en', 'zh', 'ru', 'es', 'fr', 'ar', 'tr', 'pt', 'it', 'th', 'id', 'vi']
-    # professional field
-    print(ts.alibaba(text, to_language=to_language, professional_field='general'))  # ("general","message","offer")
+    support_list = ['en', 'zh', 'ru', 'es', 'fr', 'ar', 'tr', 'pt', 'it', 'th', 'id', 'vi']
+    if to_language not in support_list:
+        return rsp.failed('错误的语言类型')
+    return rsp.success(ts.alibaba(text, to_language=to_language, professional_field='general'))  # ("general","message","offer")
