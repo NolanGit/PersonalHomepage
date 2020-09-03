@@ -39,7 +39,9 @@
           @input="translate()"
         ></el-input>
       </el-col>
-      <el-col :span="4"></el-col>
+      <el-col :span="4">
+        <div></div>
+      </el-col>
       <el-col :span="10">
         <el-input type="textarea" :rows="2" placeholder="请输入内容" v-model="translatedText"></el-input>
       </el-col>
@@ -50,7 +52,7 @@
 import axios from "axios";
 
 const api = {
-  get: "/translator/translate",
+  translate: "/translator/translate",
 };
 
 export default {
@@ -86,7 +88,7 @@ export default {
     },
     async translate() {
       try {
-        const { data: res } = await axios.post(api.changeName, {
+        const { data: res } = await axios.post(api.translate, {
           to_language: this.toLanguage,
           text: this.rawText,
         });
