@@ -1,7 +1,7 @@
 <template>
   <section>
     <el-row>
-      <el-col :span="10">
+      <el-col :span="11">
         <el-select size="mini" v-model="fromLanguage" placeholder="请选择">
           <el-option
             v-for="item in options"
@@ -18,7 +18,7 @@
           @click="exchangeLanguage()"
         ></i>
       </el-col>
-      <el-col :span="10">
+      <el-col :span="11">
         <el-select size="mini" v-model="toLanguage" placeholder="请选择">
           <el-option
             v-for="item in options"
@@ -28,15 +28,19 @@
           ></el-option>
         </el-select>
       </el-col>
-      <el-col :span="2">
-        <el-button size="mini" type="primary" style="margin-left: 5px;">译</el-button>
-      </el-col>
     </el-row>
     <el-row style="margin-top: 20px; ">
       <el-col :span="10">
-        <el-input type="textarea" :rows="2" placeholder="请输入内容" v-model="rawText"></el-input>
+        <el-input
+          type="textarea"
+          :rows="2"
+          placeholder="请输入内容"
+          v-model="rawText"
+          @input="translate()"
+        ></el-input>
       </el-col>
-      <el-col :span="14">
+      <el-col :span="4"></el-col>
+      <el-col :span="10">
         <el-input type="textarea" :rows="2" placeholder="请输入内容" v-model="translatedText"></el-input>
       </el-col>
     </el-row>
