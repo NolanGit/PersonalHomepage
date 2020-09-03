@@ -65,4 +65,7 @@ def create_app(config_name):
 
     from .image_hosting import image_hosting as  image_hosting_blueprint
     app.register_blueprint(image_hosting_blueprint, url_prefix='/imageHosting')
+
+    from .translator import translator as  translator_blueprint
+    app.register_blueprint(translator_blueprint, url_prefix='/translator')
     return app

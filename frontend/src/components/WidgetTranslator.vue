@@ -30,7 +30,7 @@
       </el-col>
     </el-row>
     <el-row style="margin-top: 20px; ">
-      <el-col :span="10">
+      <el-col :span="11">
         <el-input
           type="textarea"
           :rows="2"
@@ -40,9 +40,9 @@
         ></el-input>
       </el-col>
       <el-col :span="4">
-        <div></div>
+        <div style="min-height: 10px"></div>
       </el-col>
-      <el-col :span="10">
+      <el-col :span="11">
         <el-input type="textarea" :rows="2" placeholder="请输入内容" v-model="translatedText"></el-input>
       </el-col>
     </el-row>
