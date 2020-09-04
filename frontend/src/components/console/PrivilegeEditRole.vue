@@ -1,5 +1,5 @@
 <template>
-  <section>
+  <section class="scrollbar-div" style="max-height: 50vh;">
     <el-row class="main-row" :gutter="20">
       <div class="margin_left-large">
         <div v-if="action=='edit'">

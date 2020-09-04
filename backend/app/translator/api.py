@@ -24,7 +24,8 @@ LIMITER_FREQUENCY = '1/seconds'  # 接口限制的访问频次
 @translator.route('/translate', methods=['POST'])
 @limiter.user_agent_limit(LIMITER_FORBIDDEN_USER_AGENT)
 @limiter.limit(LIMITER_FREQUENCY)
-def fetch():
+@permission_required(URL_PREFIX + '/translate')
+def translate():
     to_language = request.get_json()['to_language']
     text = request.get_json()['text']
     support_list = ['en', 'zh', 'ru', 'es', 'fr', 'ar', 'tr', 'pt', 'it', 'th', 'id', 'vi']
