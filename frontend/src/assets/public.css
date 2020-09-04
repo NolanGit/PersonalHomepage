@@ -192,12 +192,6 @@
     padding-right: 19px;
 }
 
-.scrollbar-div {
-    width: 100%;
-    overflow-x: hidden;
-    overflow-y: overlay;
-}
-
 .scrollbar-div::-webkit-scrollbar {
     width: 5px;
     height: 1px;
@@ -281,12 +275,6 @@
 icon-medium::-webkit-scrollbar {
     width: 5px;
     height: 1px;
-}
-
-::-webkit-scrollbar-thumb {
-    border-radius: 10px;
-    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
-    background: rgba(83, 83, 83, 0.18);
 }
 
 .scrollbar-div {
@@ -425,4 +413,20 @@ icon-medium::-webkit-scrollbar {
     color: #333;
     font-weight: 400;
     border: 1px solid #ccc;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+    height: 1px;
+}
+
+ ::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    background-color: rgb(175, 74, 240);
+}
+
+ ::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+    background: #ededed;
+    border-radius: 5px;
 }
