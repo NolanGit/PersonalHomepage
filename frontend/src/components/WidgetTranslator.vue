@@ -25,6 +25,7 @@
             :key="item.value"
             :label="item.label"
             :value="item.value"
+            @change="translate()"
           ></el-option>
         </el-select>
       </el-col>
@@ -89,11 +90,13 @@ export default {
       var _temp = this.fromLanguage;
       this.fromLanguage = this.toLanguage;
       this.toLanguage = _temp;
+      this.translate();
     },
     exchangeText() {
       var _temp = this.rawText;
       this.rawText = this.translatedText;
       this.translatedText = _temp;
+      this.translate();
     },
     changed() {
       clearTimeout(this.timer);
