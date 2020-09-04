@@ -154,9 +154,9 @@
 
 ![image](https://user-images.githubusercontent.com/27627484/90026706-3fdb0e00-dcea-11ea-8d3a-78db7d28bf62.png)
 
-### 网盘
+### 网盘&图床
 
-入口：登陆后左上角hover用户名-网盘
+入口：登陆后左上角hover用户名-网盘/图床
 
 功能：一个简易的网盘功能，并支持通过下载链接分享，文件上传不限制大小，下载不限制速度，但是大文件上传时需要多等一会直到loading结束。文件存储于根目录的upload文件夹，并建立名称为日期的子文件夹。
 
@@ -227,4 +227,8 @@
 
 ![image](https://user-images.githubusercontent.com/27627484/89022948-69448300-d355-11ea-893d-2deb553072bc.png)
 
+### 小组件-翻译
 
+入口：主页小组件
+
+功能：使用[translators](https://github.com/UlionTse/translators)实现，用的阿里的接口
