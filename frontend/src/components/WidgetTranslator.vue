@@ -37,9 +37,8 @@
     <el-row style="margin-top: 20px; ">
       <el-col :span="11">
         <el-input
-          style="min-height: 200px;"
+          style="min-height: 232px; max-height: 232px;"
           type="textarea"
-          :rows="2"
           placeholder="请输入内容"
           v-model="rawText"
           @input="changed()"
@@ -54,9 +53,8 @@
       </el-col>
       <el-col :span="11">
         <el-input
-          style="min-height: 200px;"
+          style="min-height: 232px; max-height: 232px;"
           type="textarea"
-          :rows="2"
           placeholder
           v-model="translatedText"
         ></el-input>
