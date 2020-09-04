@@ -1,5 +1,10 @@
 <template>
   <section>
+    <el-row type="flex" justify="center">
+      <div>
+        <div class="widget-label">翻译</div>
+      </div>
+    </el-row>
     <el-row>
       <el-col :span="11">
         <el-select size="mini" v-model="fromLanguage" placeholder="请选择">
@@ -19,13 +24,12 @@
         ></i>
       </el-col>
       <el-col :span="11">
-        <el-select size="mini" v-model="toLanguage" placeholder="请选择">
+        <el-select size="mini" v-model="toLanguage" placeholder="请选择" @change="translate()">
           <el-option
             v-for="item in options"
             :key="item.value"
             :label="item.label"
             :value="item.value"
-            @change="translate()"
           ></el-option>
         </el-select>
       </el-col>
@@ -33,6 +37,7 @@
     <el-row style="margin-top: 20px; ">
       <el-col :span="11">
         <el-input
+          style="min-height: 200px;"
           type="textarea"
           :rows="2"
           placeholder="请输入内容"
@@ -48,7 +53,13 @@
         ></i>
       </el-col>
       <el-col :span="11">
-        <el-input type="textarea" :rows="2" placeholder v-model="translatedText"></el-input>
+        <el-input
+          style="min-height: 200px;"
+          type="textarea"
+          :rows="2"
+          placeholder
+          v-model="translatedText"
+        ></el-input>
       </el-col>
     </el-row>
   </section>
