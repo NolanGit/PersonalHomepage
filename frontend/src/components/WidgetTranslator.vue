@@ -36,10 +36,10 @@
           :rows="2"
           placeholder="请输入内容"
           v-model="rawText"
-          @input="translate()"
+          @input="changed()"
         ></el-input>
       </el-col>
-      <el-col :span="4">
+      <el-col :span="2">
         <div style="min-height: 10px"></div>
       </el-col>
       <el-col :span="11">
@@ -85,6 +85,19 @@ export default {
       _temp = this.fromLanguage;
       this.fromLanguage = this.toLanguage;
       this.toLanguage = _temp;
+    },
+    changed() {
+      clearTimeout(this.timer);
+      if (
+        this.rawText == undefined ||
+        this.rawText == "" ||
+        this.rawText == null
+      ) {
+        return;
+      }
+      this.timer = setTimeout(function () {
+        this.translate();
+      }, 500);
     },
     async translate() {
       try {
