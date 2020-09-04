@@ -33,7 +33,7 @@
             ></el-input>
           </div>
         </div>
-        <el-button class="noMargin" size="mini" plain type="primary" @click="submit()">确定</el-button>
+        <el-button class="noMargin" size="mini" plain type="primary" @click="submit()" style="margin-bottom: 50px;">确定</el-button>
       </div>
     </el-row>
   </section>
