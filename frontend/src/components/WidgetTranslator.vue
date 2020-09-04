@@ -40,10 +40,14 @@
         ></el-input>
       </el-col>
       <el-col :span="2">
-        <div style="min-height: 10px"></div>
+        <i
+          class="el-icon-refresh"
+          style="margin-top: 5px; cursor: pointer;"
+          @click="exchangeText()"
+        ></i>
       </el-col>
       <el-col :span="11">
-        <el-input type="textarea" :rows="2" placeholder="" v-model="translatedText"></el-input>
+        <el-input type="textarea" :rows="2" placeholder v-model="translatedText"></el-input>
       </el-col>
     </el-row>
   </section>
@@ -82,9 +86,14 @@ export default {
   },
   methods: {
     exchangeLanguage() {
-      _temp = this.fromLanguage;
+      var _temp = this.fromLanguage;
       this.fromLanguage = this.toLanguage;
       this.toLanguage = _temp;
+    },
+    exchangeText() {
+      var _temp = this.rawText;
+      this.rawText = this.translatedText;
+      this.translatedText = _temp;
     },
     changed() {
       clearTimeout(this.timer);
@@ -95,9 +104,7 @@ export default {
       ) {
         return;
       }
-      this.timer = setTimeout(function () {
-        this.translate;
-      }, 500);
+      this.timer = setTimeout(this.translate, 500);
     },
     async translate() {
       try {
@@ -106,10 +113,6 @@ export default {
           text: this.rawText,
         });
         this.translatedText = res.data;
-        this.$message({
-          message: res.msg,
-          type: "success",
-        });
       } catch (e) {
         console.log(e);
         this.$message({
