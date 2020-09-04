@@ -43,7 +43,7 @@
         <div style="min-height: 10px"></div>
       </el-col>
       <el-col :span="11">
-        <el-input type="textarea" :rows="2" placeholder="请输入内容" v-model="translatedText"></el-input>
+        <el-input type="textarea" :rows="2" placeholder="" v-model="translatedText"></el-input>
       </el-col>
     </el-row>
   </section>
@@ -96,7 +96,7 @@ export default {
         return;
       }
       this.timer = setTimeout(function () {
-        this.translate();
+        this.translate;
       }, 500);
     },
     async translate() {
