@@ -166,8 +166,10 @@
 
 图床：
   - 功能：上传图片并生成链接
+  - 按钮：预览&下载、复制图片链接、删除按钮
 
-![image](https://user-images.githubusercontent.com/27627484/90038134-9e5ab900-dcf7-11ea-9636-463cb8e6332f.png)
+![image](https://user-images.githubusercontent.com/27627484/92317142-2189d900-f030-11ea-9f34-b4859b6c7a59.png)
+![image](https://user-images.githubusercontent.com/27627484/92317155-38c8c680-f030-11ea-967c-f9c66431047d.png)
 
 
 ### 小组件-天气
@@ -236,4 +238,6 @@
 
 入口：主页小组件
 
-功能：使用[translators](https://github.com/UlionTse/translators)实现，用的阿里的接口
+功能：使用[translators](https://github.com/UlionTse/translators)实现，使用的是阿里的服务，当在左侧输入区输入文字后，一段间隔后，会根据上方选择的语言进行翻译。
+
+![image](https://user-images.githubusercontent.com/27627484/92317176-9ceb8a80-f030-11ea-9e73-0e6656fcbe73.png)
