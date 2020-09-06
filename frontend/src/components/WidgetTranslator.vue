@@ -3,7 +3,7 @@
     <el-row type="flex" justify="center">
       <div class="div-flex">
         <div class="widget-label">翻译</div>
-        <i v-show="loading" class="el-icon-loading widget-label"></i>
+        <i v-show="loading" class="el-icon-loading widget-label" style="padding-top: 3px;"></i>
       </div>
     </el-row>
     <el-row>
