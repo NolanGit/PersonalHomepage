@@ -320,7 +320,7 @@ icon-medium::-webkit-scrollbar {
     font-weight: 600;
     font-size: 20px;
     color: #303133;
-    padding-bottom: 20px;
+    margin-bottom: 20px;
 }
 
 .slick_list {
