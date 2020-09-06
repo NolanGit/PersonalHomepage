@@ -111,6 +111,9 @@ export default {
     },
     changed() {
       clearTimeout(this.timer);
+      this.timer = setTimeout(this.translate, 500);
+    },
+    async translate() {
       if (
         this.rawText == undefined ||
         this.rawText == "" ||
@@ -118,9 +121,6 @@ export default {
       ) {
         return;
       }
-      this.timer = setTimeout(this.translate, 500);
-    },
-    async translate() {
       try {
         const { data: res } = await axios.post(api.translate, {
           to_language: this.toLanguage,
