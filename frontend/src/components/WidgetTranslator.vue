@@ -1,8 +1,9 @@
 <template>
   <section>
     <el-row type="flex" justify="center">
-      <div>
+      <div class="div-flex">
         <div class="widget-label">翻译</div>
+        <i v-show="loading" class="el-icon-loading widget-label"></i>
       </div>
     </el-row>
     <el-row>
@@ -76,6 +77,7 @@ export default {
   watch: {},
   data() {
     return {
+      loading: false,
       options: [
         { value: "zh", label: "简体中文" },
         { value: "en", label: "英语" },
@@ -122,17 +124,20 @@ export default {
         return;
       }
       try {
+        this.loading = true;
         const { data: res } = await axios.post(api.translate, {
           to_language: this.toLanguage,
           text: this.rawText,
         });
         this.translatedText = res.data;
+        this.loading = false;
       } catch (e) {
         console.log(e);
         this.$message({
           message: e.response.data.msg,
           type: "error",
         });
+        this.loading = false;
       }
     },
   },
