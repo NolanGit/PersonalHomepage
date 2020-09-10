@@ -1,5 +1,8 @@
+import time
 import datetime
+import requests
 import traceback
+import configparser
 from ..base_model import Base
 from peewee import DoesNotExist
 
@@ -15,8 +18,13 @@ except:
 
 WEATHER_EXPIRE_HOUR = 3
 
+cf = configparser.ConfigParser()
+cf.read('app/homepage.config')
+KEY = cf.get('config', 'KEY')
+
 
 class WeatherData(Base):
+
     def __init__(self, location_id, location):
         '''
             location_id
@@ -26,12 +34,6 @@ class WeatherData(Base):
         self.location = location
 
     def get_weather_data_from_api(self):
-        import requests
-        import configparser
-
-        cf = configparser.ConfigParser()
-        cf.read('app/homepage.config')
-        KEY = cf.get('config', 'KEY')
 
         try:
             result = {}
@@ -167,22 +169,23 @@ class WeatherData(Base):
             新增一条数据，存储self
         '''
         try:
-            weather_data(location_id=self.location_id,
-                         aqi=self.aqi,
-                         cond_code_d=self.cond_code_d,
-                         cond_code_n=self.cond_code_n,
-                         cond_txt_d=self.cond_txt_d,
-                         cond_txt_n=self.cond_txt_n,
-                         fl=self.fl,
-                         tmp=self.tmp,
-                         tmp_max=self.tmp_max,
-                         tmp_min=self.tmp_min,
-                         tomorrow_cond_code_d=self.tomorrow_cond_code_d,
-                         tomorrow_cond_txt_d=self.tomorrow_cond_txt_d,
-                         tomorrow_tmp_max=self.tomorrow_tmp_max,
-                         tomorrow_tmp_min=self.tomorrow_tmp_min,
-                         wind=self.wind,
-                         update_time=datetime.datetime.now()).save()
+            weather_data(
+                location_id=self.location_id,
+                aqi=self.aqi,
+                cond_code_d=self.cond_code_d,
+                cond_code_n=self.cond_code_n,
+                cond_txt_d=self.cond_txt_d,
+                cond_txt_n=self.cond_txt_n,
+                fl=self.fl,
+                tmp=self.tmp,
+                tmp_max=self.tmp_max,
+                tmp_min=self.tmp_min,
+                tomorrow_cond_code_d=self.tomorrow_cond_code_d,
+                tomorrow_cond_txt_d=self.tomorrow_cond_txt_d,
+                tomorrow_tmp_max=self.tomorrow_tmp_max,
+                tomorrow_tmp_min=self.tomorrow_tmp_min,
+                wind=self.wind,
+                update_time=datetime.datetime.now()).save()
             return self
 
         except Exception as e:
@@ -192,6 +195,7 @@ class WeatherData(Base):
 
 
 class WeatherLocation(Base):
+
     def __init__(self, location=None, user_id=0, id=0, is_valid=1, update_time=datetime.datetime.now(), create_if_not_exist=False):
         '''
             id                      default:0
@@ -206,7 +210,7 @@ class WeatherLocation(Base):
         self.user_id = user_id
         self.is_valid = is_valid
         self.update_time = update_time
-        self.create_if_not_exist=create_if_not_exist
+        self.create_if_not_exist = create_if_not_exist
 
     def complete(self):
         try:
@@ -229,6 +233,7 @@ class WeatherLocation(Base):
 
 
 class WeatherLocationList(Base):
+
     def __init__(self, user_id=0, is_valid=1):
         '''
             user_id         default:0
@@ -271,6 +276,63 @@ class WeatherLocationList(Base):
             traceback.print_exc()
             print(e)
             return False
+
+
+class WeatherNotify():
+    location = None
+    user_id = None
+    notify_type = None
+
+    def __init__(self):
+        pass
+
+    def get(self):
+        pass
+
+    def _get_all_valid(self):
+        pass
+
+
+    def get_weather(self):
+        payload = {'location': 'beijing', 'key': KEY}
+        r = requests.get('https://free-api.heweather.com/s6/weather/forecast', params=payload)
+        today_forecast = r.json()['HeWeather6'][0]['daily_forecast'][0]
+        tomorrow_forecast = r.json()['HeWeather6'][0]['daily_forecast'][1]
+        today_code_n = today_forecast['cond_code_n']
+        tomorrow_code_d = tomorrow_forecast['cond_code_d']
+        print('today_code_n = ' + today_code_n)
+        print('tomorrow_code_d = ' + tomorrow_code_d)
+        weather_content = air_content = temprature_content = ''
+        today_txt_n = today_forecast['cond_txt_n']  # 今天夜间天气状况文字
+        tomorrow_txt_d = tomorrow_forecast['cond_txt_d']  # 明天白天天气状况文字
+        today_tmp_max = today_forecast['tmp_max']  # 今天最高气温
+        today_tmp_min = today_forecast['tmp_min']  # 今天最低气温
+        tomorrow_tmp_max = tomorrow_forecast['tmp_max']  # 明天最高气温
+        tomorrow_tmp_min = tomorrow_forecast['tmp_min']  # 明天最低气温
+
+        if 'rain' in self.notify_type:
+            if (int(today_code_n) > 299 and int(today_code_n) < 500) or (int(tomorrow_code_d) > 299 and int(tomorrow_code_d) < 500):
+                weather_content = '降水注意：' + '\n' + '今天夜间天气为【' + today_txt_n + '】，最高气温：' + str(today_tmp_max) + '°C，最低气温：' + str(today_tmp_min) + '°C；' + '\n' + '明天白天天气为【' + tomorrow_txt_d + '】，最高气温' + str(
+                    tomorrow_tmp_max) + '°C，最低气温' + str(tomorrow_tmp_min) + '°C。' + '\n'
+                print(weather_content)
+
+        if 'aqi' in self.notify_type:
+            if (int(today_code_n) > 501 and int(today_code_n) < 900) or (int(tomorrow_code_d) > 501 and int(tomorrow_code_d) < 900):
+                air_content = '空气质量注意：' + '\n' + '今天夜间天气为【' + today_txt_n + '】；' + '\n' + '明天白天天气为【' + tomorrow_txt_d + '】' + '\n'
+            current_month = time.strftime("%m", time.localtime())
+            
+        if 'temperature' in self.notify_type:
+            if (int(current_month) > 0 and int(current_month) < 5) or (int(current_month) > 8 and int(current_month) <= 12):
+                print('当前是%s月%s日' % (current_month, time.strftime("%d", time.localtime())))
+                if (int(tomorrow_tmp_min) - int(today_tmp_min)) <= -5:
+                    temprature_content = '温度注意：明日最低气温为' + tomorrow_tmp_min + '°C！' + '\n'
+
+            if int(current_month) > 4 and int(current_month) < 9:
+                print('当前是%s月%s日' % (current_month, time.strftime("%d", time.localtime())))
+                if ((int(tomorrow_tmp_max) - int(today_tmp_max)) >= 5) or (int(tomorrow_tmp_max) >= 30):
+                    temprature_content = '温度注意：明日最高气温为' + tomorrow_tmp_max + '°C！' + '\n'
+
+        return weather_content + air_content + temprature_content
 
 
 # 本来想用定时任务自动刷天气数据，访问的时候可以快一点，但是后来感觉没必要，还是有效时间内实时获取，二次访问时候用缓存

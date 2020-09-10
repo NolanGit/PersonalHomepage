@@ -37,5 +37,16 @@ class weather_data(BaseModel):
         table_name = 'weather_data'
 
 
+class weather_notify(BaseModel):
+    location_id = IntegerField()
+    user_id = IntegerField()
+    notify_type = CharField()
+    is_valid = IntegerField()
+    update_time = DateTimeField()
+
+    class Meta:
+        table_name = 'weather_notify'
+
 weather_location.create_table()
 weather_data.create_table()
+weather_notify.create_table()
