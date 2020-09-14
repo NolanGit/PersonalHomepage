@@ -9,12 +9,14 @@ from peewee import DoesNotExist
 try:
     from ..model.weather_model import weather_location
     from ..model.weather_model import weather_data
+    from ..model.weather_model import weather_notify
 except:
     import sys
     sys.path.append('../')
     sys.path.append('../../')
     from model.weather_model import weather_location
     from model.weather_model import weather_data
+    from model.weather_model import weather_notify
 
 WEATHER_EXPIRE_HOUR = 3
 
@@ -282,16 +284,12 @@ class WeatherNotify():
     location = None
     user_id = None
     notify_type = None
+    content = None
 
-    def __init__(self):
-        pass
-
-    def get(self):
-        pass
-
-    def _get_all_valid(self):
-        pass
-
+    def __init__(self, location, user_id, notify_type):
+        self.location = location
+        self.user_id = user_id
+        self.notify_type = notify_type
 
     def get_weather(self):
         payload = {'location': 'beijing', 'key': KEY}
@@ -312,15 +310,15 @@ class WeatherNotify():
 
         if 'rain' in self.notify_type:
             if (int(today_code_n) > 299 and int(today_code_n) < 500) or (int(tomorrow_code_d) > 299 and int(tomorrow_code_d) < 500):
-                weather_content = '降水注意：' + '\n' + '今天夜间天气为【' + today_txt_n + '】，最高气温：' + str(today_tmp_max) + '°C，最低气温：' + str(today_tmp_min) + '°C；' + '\n' + '明天白天天气为【' + tomorrow_txt_d + '】，最高气温' + str(
-                    tomorrow_tmp_max) + '°C，最低气温' + str(tomorrow_tmp_min) + '°C。' + '\n'
+                weather_content = '降水注意：' + '\n' + '今天夜间天气为【' + today_txt_n + '】，最高气温：' + str(today_tmp_max) + '°C，最低气温：' + str(
+                    today_tmp_min) + '°C；' + '\n' + '明天白天天气为【' + tomorrow_txt_d + '】，最高气温' + str(tomorrow_tmp_max) + '°C，最低气温' + str(tomorrow_tmp_min) + '°C。' + '\n'
                 print(weather_content)
 
         if 'aqi' in self.notify_type:
             if (int(today_code_n) > 501 and int(today_code_n) < 900) or (int(tomorrow_code_d) > 501 and int(tomorrow_code_d) < 900):
                 air_content = '空气质量注意：' + '\n' + '今天夜间天气为【' + today_txt_n + '】；' + '\n' + '明天白天天气为【' + tomorrow_txt_d + '】' + '\n'
             current_month = time.strftime("%m", time.localtime())
-            
+
         if 'temperature' in self.notify_type:
             if (int(current_month) > 0 and int(current_month) < 5) or (int(current_month) > 8 and int(current_month) <= 12):
                 print('当前是%s月%s日' % (current_month, time.strftime("%d", time.localtime())))
@@ -332,13 +330,17 @@ class WeatherNotify():
                 if ((int(tomorrow_tmp_max) - int(today_tmp_max)) >= 5) or (int(tomorrow_tmp_max) >= 30):
                     temprature_content = '温度注意：明日最高气温为' + tomorrow_tmp_max + '°C！' + '\n'
 
-        return weather_content + air_content + temprature_content
+        self.content = weather_content + air_content + temprature_content
+        return self
+
+    def send(self):
+        pass
 
 
 # 本来想用定时任务自动刷天气数据，访问的时候可以快一点，但是后来感觉没必要，还是有效时间内实时获取，二次访问时候用缓存
-# if __name__ == '__main__':
-#     weather_location_list = WeatherLocationList(limit_days_in=3).get().list
-#     for weather_location in weather_location_list:
-#         weather_data = WeatherData(weather_location.id, weather_location.location)
-#         weather_data.get_weather_data_from_api()
-#         weather_data.create()
+# 这部分主要是定时提醒在用
+if __name__ == '__main__':
+    _ = weather_notify.select().where(weather_notify.is_valid == 1).dicts()
+    for s_ in _:
+        wn = WeatherNotify(s_['location'], s_['user_id'], s_['notify_type'])
+        wn.get_weather().send()
