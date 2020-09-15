@@ -3,10 +3,10 @@ import datetime
 import requests
 import traceback
 import configparser
-from ..base_model import Base
 from peewee import DoesNotExist
 
 try:
+    from ..base_model import Base
     from ..model.weather_model import weather_location
     from ..model.weather_model import weather_data
     from ..model.weather_model import weather_notify
@@ -14,6 +14,7 @@ except:
     import sys
     sys.path.append('../')
     sys.path.append('../../')
+    from base_model import Base
     from model.weather_model import weather_location
     from model.weather_model import weather_data
     from model.weather_model import weather_notify
