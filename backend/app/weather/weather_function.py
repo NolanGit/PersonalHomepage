@@ -321,25 +321,25 @@ class WeatherNotify():
 
         if WEATHER_PUSH_TYPE_RAIN in self.notify_type:
             if (int(today_code_n) > 299 and int(today_code_n) < 500) or (int(tomorrow_code_d) > 299 and int(tomorrow_code_d) < 500):
-                weather_content = '降水注意：' + '\n' + '今天夜间天气为【' + today_txt_n + '】，最高气温：' + str(today_tmp_max) + '°C，最低气温：' + str(
+                weather_content = '【' + self.location + '】' + '降水注意：' + '\n' + '今天夜间天气为【' + today_txt_n + '】，最高气温：' + str(today_tmp_max) + '°C，最低气温：' + str(
                     today_tmp_min) + '°C；' + '\n' + '明天白天天气为【' + tomorrow_txt_d + '】，最高气温' + str(tomorrow_tmp_max) + '°C，最低气温' + str(tomorrow_tmp_min) + '°C。' + '\n'
                 print(weather_content)
 
         if WEATHER_PUSH_TYPE_AIR in self.notify_type:
             if (int(today_code_n) > 501 and int(today_code_n) < 900) or (int(tomorrow_code_d) > 501 and int(tomorrow_code_d) < 900):
-                air_content = '空气质量注意：' + '\n' + '今天夜间天气为【' + today_txt_n + '】；' + '\n' + '明天白天天气为【' + tomorrow_txt_d + '】' + '\n'
+                air_content = '【' + self.location + '】' + '空气质量注意：' + '\n' + '今天夜间天气为【' + today_txt_n + '】；' + '\n' + '明天白天天气为【' + tomorrow_txt_d + '】' + '\n'
             current_month = time.strftime("%m", time.localtime())
 
         if WEATHER_PUSH_TYPE_TEMPERATURE in self.notify_type:
             if (int(current_month) > 0 and int(current_month) < 5) or (int(current_month) > 8 and int(current_month) <= 12):
                 print('当前是%s月%s日' % (current_month, time.strftime("%d", time.localtime())))
                 if (int(tomorrow_tmp_min) - int(today_tmp_min)) <= -5:
-                    temprature_content = '温度注意：明日最低气温为' + tomorrow_tmp_min + '°C！' + '\n'
+                    temprature_content = '【' + self.location + '】' + '温度注意：明日最低气温为' + tomorrow_tmp_min + '°C！' + '\n'
 
             if int(current_month) > 4 and int(current_month) < 9:
                 print('当前是%s月%s日' % (current_month, time.strftime("%d", time.localtime())))
                 if ((int(tomorrow_tmp_max) - int(today_tmp_max)) >= 5) or (int(tomorrow_tmp_max) >= 30):
-                    temprature_content = '温度注意：明日最高气温为' + tomorrow_tmp_max + '°C！' + '\n'
+                    temprature_content = '【' + self.location + '】' + '温度注意：明日最高气温为' + tomorrow_tmp_max + '°C！' + '\n'
 
         self.content = weather_content + air_content + temprature_content
         print('天气推送内容：' + self.content)
@@ -359,7 +359,7 @@ class WeatherNotify():
                     user_id=self.user_id,
                     method=self.notify_method,
                     address=address,
-                    title=WEATHER_PUSH_TITLE,
+                    title='【%s】%s' % (self.location, WEATHER_PUSH_TITLE),
                     content=self.content,
                     status=0,
                     trigger_time=datetime.datetime.now(),
