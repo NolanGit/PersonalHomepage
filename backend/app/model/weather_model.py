@@ -37,7 +37,7 @@ class weather_data(BaseModel):
 
 
 class weather_notify(BaseModel):
-    location = IntegerField()
+    location = CharField()
     user_id = IntegerField()
     notify_type = CharField()
     notify_method = IntegerField()  # 1:微信,2:邮件
