@@ -365,7 +365,7 @@ class WeatherNotify():
                 trigger_time=datetime.datetime.now(),
                 log="",
                 create_time=datetime.datetime.now(),
-                update=datetime.datetime.now())
+                update_time=datetime.datetime.now())
             print('天气推送成功！参数：' + str(self.content))
             return True
         except Exception as e:
