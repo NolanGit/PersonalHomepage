@@ -4,7 +4,6 @@ import redis
 import datetime
 import requests
 import traceback
-import configparser
 from . import privilege
 from functools import wraps
 from flask_cors import cross_origin

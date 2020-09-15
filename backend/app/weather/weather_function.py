@@ -10,6 +10,10 @@ try:
     from ..model.weather_model import weather_location
     from ..model.weather_model import weather_data
     from ..model.weather_model import weather_notify
+    cf = configparser.ConfigParser()
+    cf.read('app/homepage.config')
+    KEY = cf.get('config', 'KEY')
+
 except:
     import sys
     sys.path.append('../')
@@ -18,12 +22,12 @@ except:
     from model.weather_model import weather_location
     from model.weather_model import weather_data
     from model.weather_model import weather_notify
+    cf = configparser.ConfigParser()
+    cf.read('../homepage.config')
+    KEY = cf.get('config', 'KEY')
+
 
 WEATHER_EXPIRE_HOUR = 3
-
-cf = configparser.ConfigParser()
-cf.read('app/homepage.config')
-KEY = cf.get('config', 'KEY')
 
 
 class WeatherData(Base):

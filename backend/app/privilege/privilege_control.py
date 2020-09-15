@@ -4,7 +4,6 @@ import redis
 import datetime
 import requests
 import traceback
-import configparser
 from functools import wraps
 from flask_cors import cross_origin
 from flask import session, redirect, url_for, current_app, flash, Response, request, jsonify, abort

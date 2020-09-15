@@ -1,6 +1,5 @@
 import os
 import peewee
-import configparser
 from peewee import CharField, IntegerField, DateTimeField
 from .model_function import BaseModel
 
