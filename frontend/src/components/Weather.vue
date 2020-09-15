@@ -91,6 +91,47 @@
         <el-button type="primary" size="small" @click="locationAdd()">确定</el-button>
       </span>
     </el-dialog>
+
+    <!-- 推送dialog -->
+    <el-dialog title="天气预警" :visible.sync="notify.visible">
+      <el-form ref="form" :model="notify.form" size="mini" class="padding_bottom-medium">
+        <el-button>添加</el-button>
+        <el-row>
+          <el-col>城市</el-col>
+          <el-col>
+            <el-row>
+              <el-col>提醒方式</el-col>
+              <el-select>
+                <el-option
+                  v-for="item in options"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                ></el-option>
+              </el-select>
+            </el-row>
+            <el-row>
+              <el-checkbox-group v-model="checkList">
+                <el-checkbox label="复选框 A"></el-checkbox>
+                <el-checkbox label="复选框 B"></el-checkbox>
+                <el-checkbox label="复选框 C"></el-checkbox>
+              </el-checkbox-group>
+            </el-row>
+          </el-col>
+          <el-col>
+            <i class="el-icon-close"></i>
+          </el-col>
+        </el-row>
+        <p
+          class="notesText"
+          style="font-size: 12px; color: red; padding-top: 0px; margin-top: 0px; margin-bottom: 0px"
+        >*设置天气异常提醒前，请确定脚本运行平台中的"异常天气推送"脚本正常定时运行</p>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" size="small" @click="notify.visible=false">取消</el-button>
+        <el-button type="primary" size="small" @click="notifySubmit()">确定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -100,7 +141,9 @@ import WidgetButton from "./common/WidgetButton.vue";
 const api = {
   weatherData: "/weather/get",
   locationAdd: "/weather/weatherLocationCreate",
-  locationListEdit: "/weather/weatherLocationListEdit"
+  locationListEdit: "/weather/weatherLocationListEdit",
+  weatherNotifyGet: "/weather/weatherNotifyGet",
+  weatherNotifySet: "/weather/weatherNotifySet",
 };
 
 export default {
@@ -109,18 +152,18 @@ export default {
     user_id: Number,
     widget_id: Number,
     buttons: Array,
-    flush: Number
+    flush: Number,
   },
   components: {
     SlickSort,
-    WidgetButton
+    WidgetButton,
   },
   watch: {},
   data() {
     return {
       locationEdit: {
         list: [],
-        visible: false
+        visible: false,
       },
       weathers: [
         {
@@ -133,18 +176,40 @@ export default {
             wind: "-",
             aqi: "-",
             tomorrow_tmp_min: "-",
-            tomorrow_tmp_max: "-"
+            tomorrow_tmp_max: "-",
           },
           iconfontWeatherClass: "el-icon-more",
           iconfontAqiClass: "el-icon-more",
-          iconfontTomorrowWeatherClass: "el-icon-more"
-        }
+          iconfontTomorrowWeatherClass: "el-icon-more",
+        },
       ],
       loading: true,
       edit: {
         visible: false,
-        location: ""
-      }
+        location: "",
+      },
+      notify: {
+        visible: false,
+        form: {
+          title: "",
+          content: "",
+          notifyMethod: {
+            select: 1,
+            options: [
+              {
+                value: 1,
+                label: "微信",
+              },
+              {
+                value: 2,
+                label: "邮件",
+              },
+            ],
+          },
+          triggerDate: "",
+          triggerTime: "",
+        },
+      },
     };
   },
   methods: {
@@ -155,7 +220,7 @@ export default {
       this.locationEdit.list = [];
       for (let x = 1; x < this.weathers.length; x++) {
         this.locationEdit.list.push({
-          name: this.weathers[x].location
+          name: this.weathers[x].location,
         });
       }
       this.locationEdit.visible = true;
@@ -168,11 +233,11 @@ export default {
         }
         const { data: res } = await axios.post(api.locationListEdit, {
           user_id: this.user_id,
-          locations: tempList
+          locations: tempList,
         });
         this.$message({
           message: res["msg"],
-          type: "success"
+          type: "success",
         });
         this.locationEdit.visible = false;
         this.weatherData();
@@ -180,7 +245,7 @@ export default {
         console.log(e);
         this.$message({
           message: e.response.data.msg,
-          type: "error"
+          type: "error",
         });
       }
     },
@@ -189,25 +254,25 @@ export default {
       try {
         const { data: res } = await axios.post(api.locationAdd, {
           user_id: this.user_id,
-          location: this.edit.location
+          location: this.edit.location,
         });
         this.$message({
           message: res["msg"],
-          type: "success"
+          type: "success",
         });
         this.weatherData();
       } catch (e) {
         console.log(e);
         this.$message({
           message: e.response.data.msg,
-          type: "error"
+          type: "error",
         });
       }
     },
     async weatherData(locations) {
       try {
         const { data: res } = await axios.post(api.weatherData, {
-          user_id: this.user_id
+          user_id: this.user_id,
         });
         this.weathers = [];
         for (
@@ -231,7 +296,7 @@ export default {
             tomorrow_cond_txt_d,
             tomorrow_tmp_max,
             tomorrow_tmp_min,
-            aqi
+            aqi,
           } = res.data[single_result];
           this.weathers.push({ weatherForm: {} });
           this.weathers[single_result].weatherForm.tmp = tmp;
@@ -470,10 +535,46 @@ export default {
         console.log(e);
         this.$message({
           message: e.response.data.msg,
-          type: "error"
+          type: "error",
         });
       }
-    }
+    },
+    async weatherNotifyGet() {
+      try {
+        const { data: res } = await axios.post(api.weatherNotifyGet, {
+          user_id: this.user_id,
+        });
+        this.$message({
+          message: res["msg"],
+          type: "success",
+        });
+      } catch (e) {
+        console.log(e);
+        this.$message({
+          message: e.response.data.msg,
+          type: "error",
+        });
+      }
+    },
+    async weatherNotifySet() {
+      try {
+        const { data: res } = await axios.post(api.locationAdd, {
+          user_id: this.user_id,
+          notify_type: "",
+          locations: "",
+        });
+        this.$message({
+          message: res["msg"],
+          type: "success",
+        });
+      } catch (e) {
+        console.log(e);
+        this.$message({
+          message: e.response.data.msg,
+          type: "error",
+        });
+      }
+    },
   },
   created() {},
   mounted() {
@@ -482,7 +583,7 @@ export default {
   },
   beforeDestroy() {
     window.clearInterval(this.timer);
-  }
+  },
 };
 </script>
 <style scoped>
