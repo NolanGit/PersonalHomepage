@@ -5,12 +5,12 @@ import traceback
 import configparser
 from peewee import DoesNotExist
 
+cf = configparser.ConfigParser()
+
 try:
     from ..base_model import Base
     from ..model.weather_model import weather_location
     from ..model.weather_model import weather_data
-    from ..model.weather_model import weather_notify
-    cf = configparser.ConfigParser()
     cf.read('app/homepage.config')
     KEY = cf.get('config', 'KEY')
 
@@ -22,12 +22,16 @@ except:
     from model.weather_model import weather_location
     from model.weather_model import weather_data
     from model.weather_model import weather_notify
-    cf = configparser.ConfigParser()
+    from login.login_funtion import User
+    from model.push_model import push_queue
     cf.read('../homepage.config')
     KEY = cf.get('config', 'KEY')
 
-
 WEATHER_EXPIRE_HOUR = 3
+WEATHER_PUSH_TITLE = '天气异常！'
+WEATHER_PUSH_TYPE_RAIN = 'rain'
+WEATHER_PUSH_TYPE_AQI = 'aqi'
+WEATHER_PUSH_TYPE_TEMPERATURE = 'temperature'
 
 
 class WeatherData(Base):
@@ -289,12 +293,14 @@ class WeatherNotify():
     location = None
     user_id = None
     notify_type = None
+    notify_method = None
     content = None
 
-    def __init__(self, location, user_id, notify_type):
+    def __init__(self, location, user_id, notify_type, notify_method):
         self.location = location
         self.user_id = user_id
         self.notify_type = notify_type
+        self.notify_method = notify_method
 
     def get_weather(self):
         payload = {'location': 'beijing', 'key': KEY}
@@ -313,18 +319,18 @@ class WeatherNotify():
         tomorrow_tmp_max = tomorrow_forecast['tmp_max']  # 明天最高气温
         tomorrow_tmp_min = tomorrow_forecast['tmp_min']  # 明天最低气温
 
-        if 'rain' in self.notify_type:
+        if WEATHER_PUSH_TYPE_RAIN in self.notify_type:
             if (int(today_code_n) > 299 and int(today_code_n) < 500) or (int(tomorrow_code_d) > 299 and int(tomorrow_code_d) < 500):
                 weather_content = '降水注意：' + '\n' + '今天夜间天气为【' + today_txt_n + '】，最高气温：' + str(today_tmp_max) + '°C，最低气温：' + str(
                     today_tmp_min) + '°C；' + '\n' + '明天白天天气为【' + tomorrow_txt_d + '】，最高气温' + str(tomorrow_tmp_max) + '°C，最低气温' + str(tomorrow_tmp_min) + '°C。' + '\n'
                 print(weather_content)
 
-        if 'aqi' in self.notify_type:
+        if WEATHER_PUSH_TYPE_AQI in self.notify_type:
             if (int(today_code_n) > 501 and int(today_code_n) < 900) or (int(tomorrow_code_d) > 501 and int(tomorrow_code_d) < 900):
                 air_content = '空气质量注意：' + '\n' + '今天夜间天气为【' + today_txt_n + '】；' + '\n' + '明天白天天气为【' + tomorrow_txt_d + '】' + '\n'
             current_month = time.strftime("%m", time.localtime())
 
-        if 'temperature' in self.notify_type:
+        if WEATHER_PUSH_TYPE_TEMPERATURE in self.notify_type:
             if (int(current_month) > 0 and int(current_month) < 5) or (int(current_month) > 8 and int(current_month) <= 12):
                 print('当前是%s月%s日' % (current_month, time.strftime("%d", time.localtime())))
                 if (int(tomorrow_tmp_min) - int(today_tmp_min)) <= -5:
@@ -336,10 +342,35 @@ class WeatherNotify():
                     temprature_content = '温度注意：明日最高气温为' + tomorrow_tmp_max + '°C！' + '\n'
 
         self.content = weather_content + air_content + temprature_content
+        print('天气推送内容：' + self.content)
         return self
 
     def send(self):
-        pass
+        try:
+            user = User(user_id=self.user_id)
+            if self.notify_method == 1:
+                address = user.wechat_key
+            elif self.notify_method == 2:
+                address = user.email
+            else:
+                return False
+
+            push_queue.create(
+                user_id=self.user_id,
+                method=self.notify_method,
+                address=address,
+                title=WEATHER_PUSH_TITLE,
+                content=self.content,
+                status=0,
+                trigger_time=datetime.datetime.now(),
+                log="",
+                create_time=datetime.datetime.now(),
+                update=datetime.datetime.now())
+            print('天气推送成功！参数：' + str(self.content))
+            return True
+        except Exception as e:
+            print('天气推送失败！原因：' + str(e))
+            return False
 
 
 # 本来想用定时任务自动刷天气数据，访问的时候可以快一点，但是后来感觉没必要，还是有效时间内实时获取，二次访问时候用缓存
@@ -347,5 +378,5 @@ class WeatherNotify():
 if __name__ == '__main__':
     _ = weather_notify.select().where(weather_notify.is_valid == 1).dicts()
     for s_ in _:
-        wn = WeatherNotify(s_['location'], s_['user_id'], s_['notify_type'])
+        wn = WeatherNotify(s_['location'], s_['user_id'], s_['notify_type'], s_['notify_method'])
         wn.get_weather().send()

@@ -40,6 +40,7 @@ class weather_notify(BaseModel):
     location_id = IntegerField()
     user_id = IntegerField()
     notify_type = CharField()
+    notify_method = IntegerField()  # 1:微信,2:邮件
     is_valid = IntegerField()
     update_time = DateTimeField()
 
