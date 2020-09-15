@@ -30,7 +30,7 @@ except:
 WEATHER_EXPIRE_HOUR = 3
 WEATHER_PUSH_TITLE = '天气异常！'
 WEATHER_PUSH_TYPE_RAIN = 'rain'
-WEATHER_PUSH_TYPE_AQI = 'aqi'
+WEATHER_PUSH_TYPE_AIR = 'air'
 WEATHER_PUSH_TYPE_TEMPERATURE = 'temperature'
 
 
@@ -303,7 +303,7 @@ class WeatherNotify():
         self.notify_method = notify_method
 
     def get_weather(self):
-        payload = {'location': 'beijing', 'key': KEY}
+        payload = {'location': self.location, 'key': KEY}
         r = requests.get('https://free-api.heweather.com/s6/weather/forecast', params=payload)
         today_forecast = r.json()['HeWeather6'][0]['daily_forecast'][0]
         tomorrow_forecast = r.json()['HeWeather6'][0]['daily_forecast'][1]
@@ -325,7 +325,7 @@ class WeatherNotify():
                     today_tmp_min) + '°C；' + '\n' + '明天白天天气为【' + tomorrow_txt_d + '】，最高气温' + str(tomorrow_tmp_max) + '°C，最低气温' + str(tomorrow_tmp_min) + '°C。' + '\n'
                 print(weather_content)
 
-        if WEATHER_PUSH_TYPE_AQI in self.notify_type:
+        if WEATHER_PUSH_TYPE_AIR in self.notify_type:
             if (int(today_code_n) > 501 and int(today_code_n) < 900) or (int(tomorrow_code_d) > 501 and int(tomorrow_code_d) < 900):
                 air_content = '空气质量注意：' + '\n' + '今天夜间天气为【' + today_txt_n + '】；' + '\n' + '明天白天天气为【' + tomorrow_txt_d + '】' + '\n'
             current_month = time.strftime("%m", time.localtime())
