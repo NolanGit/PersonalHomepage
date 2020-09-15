@@ -354,19 +354,21 @@ class WeatherNotify():
                 address = user.email
             else:
                 return False
-
-            push_queue.create(
-                user_id=self.user_id,
-                method=self.notify_method,
-                address=address,
-                title=WEATHER_PUSH_TITLE,
-                content=self.content,
-                status=0,
-                trigger_time=datetime.datetime.now(),
-                log="",
-                create_time=datetime.datetime.now(),
-                update_time=datetime.datetime.now())
-            print('天气推送成功！参数：' + str(self.content))
+            if self.content != '':
+                push_queue.create(
+                    user_id=self.user_id,
+                    method=self.notify_method,
+                    address=address,
+                    title=WEATHER_PUSH_TITLE,
+                    content=self.content,
+                    status=0,
+                    trigger_time=datetime.datetime.now(),
+                    log="",
+                    create_time=datetime.datetime.now(),
+                    update_time=datetime.datetime.now())
+                print('天气推送成功！参数：' + str(self.content))
+            else:
+                print('没有需要推送的内容')
             return True
         except Exception as e:
             print('天气推送失败！原因：' + str(e))
