@@ -110,8 +110,8 @@ def notifySet():
         weather_notify.update(is_valid=0).where((weather_notify.user_id == user_id) & (weather_notify.is_valid == 1)).execute()
         data_source = []
         for location in locations:
-            data_source.append((location['location'], user_id, location['notify_type'], 1, datetime.datetime.now()))
-        field = [weather_notify.location, weather_notify.user_id, weather_notify.notify_type, weather_notify.is_valid, weather_notify.update_time]
+            data_source.append((location['location'], user_id, location['notify_type'], location['notify_method'], 1, datetime.datetime.now()))
+        field = [weather_notify.location, weather_notify.user_id, weather_notify.notify_type, weather_notify.notify_method, weather_notify.is_valid, weather_notify.update_time]
         weather_notify.insert_many(data_source, field).execute()
 
         return rsp.success()
