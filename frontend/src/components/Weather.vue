@@ -244,9 +244,9 @@ export default {
       if ((await this.locationCheck()) == false) {
         return;
       } else {
-        if ((this.edit.action = "addLocation")) {
+        if (this.edit.action == "addLocation") {
           this.locationAdd();
-        } else if ((this.edit.action = "addNotifyLocation")) {
+        } else if (this.edit.action == "addNotifyLocation") {
           this.notifyForm.locations.push({
             location: this.edit.location,
             notify_method: 1,
