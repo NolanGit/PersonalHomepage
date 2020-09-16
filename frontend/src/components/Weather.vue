@@ -98,7 +98,7 @@
       <el-button class="margin_bottom-large" size="mini" @click="addNotifyLocation()">添加</el-button>
       <el-row
         class="margin_bottom-small"
-        v-for="notifyLocation in notifyForm.locations"
+        v-for="(notifyLocation, index) in notifyForm.locations"
         :key="notifyLocation"
       >
         <el-card shadow="never">
@@ -131,7 +131,7 @@
             </el-row>
           </el-col>
           <el-col :span="2">
-            <i class="el-icon-close"></i>
+            <i class="el-icon-close" @click="removeNotifyLocation(index)"></i>
           </el-col>
         </el-card>
       </el-row>
@@ -240,6 +240,9 @@ export default {
       this.edit.visible = true;
       this.edit.action = "addNotifyLocation";
     },
+    removeNotifyLocation(index) {
+      this.notifyForm.locations.splice(index, 1);
+    },
     async addSubmit() {
       if ((await this.locationCheck()) == false) {
         return;
@@ -250,9 +253,10 @@ export default {
           this.notifyForm.locations.push({
             location: this.edit.location,
             notify_method: 1,
-            notify_type: ["rain", "air", "temperature"],
+            notify_type_ch: [],
           });
         }
+        this.edit.visible = false;
       }
     },
     async locationEditSubmit(list) {

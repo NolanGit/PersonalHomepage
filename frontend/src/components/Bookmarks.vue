@@ -256,10 +256,6 @@ export default {
         icon: item.icon
       };
     },
-    bookmarksDeleteSubmit(item, index) {
-      this.bookmarksEdit.list.splice(index, 1);
-      console.log(item, index);
-    },
     async bookmarksIconFront() {
       try {
         const { data: res } = await axios.get(api.icon, {
