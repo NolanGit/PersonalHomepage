@@ -105,7 +105,6 @@
           <el-col :span="4">
             <p>{{notifyLocation.location}}</p>
           </el-col>
-          <el-divider direction="vertical"></el-divider>
           <el-col :span="18">
             <el-row class="margin_bottom-medium">
               <el-col :span="4">提醒方式</el-col>
@@ -120,7 +119,7 @@
                 </el-select>
               </el-col>
             </el-row>
-            <el-row>
+            <el-row class="margin_bottom-medium">
               <el-col :span="4">提醒内容</el-col>
               <el-col :span="20">
                 <el-checkbox-group v-model="notifyLocation.notify_type_ch">
@@ -131,7 +130,6 @@
               </el-col>
             </el-row>
           </el-col>
-          <el-divider direction="vertical"></el-divider>
           <el-col :span="2">
             <i class="el-icon-close"></i>
           </el-col>
@@ -554,7 +552,7 @@ export default {
         const { data: res } = await axios.post(api.weatherNotifyGet, {
           user_id: this.user_id,
         });
-        function getNotifyTypZh(x) {
+        function getNotifyTypeZh(x) {
           if (x == "rain") {
             return "雨雪";
           }
@@ -567,15 +565,10 @@ export default {
         }
         for (let x = 0; x < res.data.length; x++) {
           res.data[x].notify_type_ch = res.data[x].notify_type.map(
-            getNotifyTypZh
+            getNotifyTypeZh
           );
         }
         this.notifyForm.notifyLocations = res.data;
-        console.log(this.notifyForm.notifyLocations);
-        this.$message({
-          message: res["msg"],
-          type: "success",
-        });
       } catch (e) {
         console.log(e);
         this.$message({
@@ -585,6 +578,22 @@ export default {
       }
     },
     async notifySubmit() {
+      function convertNotifyType(x) {
+        if (x == "雨雪") {
+          return "rain";
+        }
+        if (x == "空气") {
+          return "air";
+        }
+        if (x == "温度") {
+          return "temperature";
+        }
+      }
+      for (let x = 0; x < res.data.length; x++) {
+        res.data[x].notify_type = res.data[x].notify_type_ch.map(
+          convertNotifyType
+        );
+      }
       console.log(this.notifyForm.notifyLocations);
       try {
         const { data: res } = await axios.post(api.locationAdd, {
