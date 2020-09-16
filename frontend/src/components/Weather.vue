@@ -65,6 +65,7 @@
         :buttons="buttons"
         @add="add()"
         @sort="sort()"
+        @notify="notify()"
       ></WidgetButton>
     </el-row>
 
@@ -96,14 +97,16 @@
     <el-dialog title="天气预警" :visible.sync="notify.visible">
       <el-form ref="form" :model="notify.form" size="mini" class="padding_bottom-medium">
         <el-button>添加</el-button>
-        <el-row>
-          <el-col>城市</el-col>
+        <el-row v-for="notifyLocation in notify.notifyLocations" :key="notifyLocation">
+          <el-col>
+            <p>{{notifyLocation.location}}</p>
+          </el-col>
           <el-col>
             <el-row>
               <el-col>提醒方式</el-col>
-              <el-select>
+              <el-select v-model="notifyLocation.notify_method">
                 <el-option
-                  v-for="item in options"
+                  v-for="item in notifyMethod"
                   :key="item.value"
                   :label="item.label"
                   :value="item.value"
@@ -111,10 +114,10 @@
               </el-select>
             </el-row>
             <el-row>
-              <el-checkbox-group v-model="checkList">
-                <el-checkbox label="复选框 A"></el-checkbox>
-                <el-checkbox label="复选框 B"></el-checkbox>
-                <el-checkbox label="复选框 C"></el-checkbox>
+              <el-checkbox-group v-model="notifyLocation.notify_type">
+                <el-checkbox key="rain" label="下雨"></el-checkbox>
+                <el-checkbox key="air" label="空气"></el-checkbox>
+                <el-checkbox key="temperature" label="温度"></el-checkbox>
               </el-checkbox-group>
             </el-row>
           </el-col>
@@ -190,24 +193,18 @@ export default {
       },
       notify: {
         visible: false,
-        form: {
-          title: "",
-          content: "",
-          notifyMethod: {
-            select: 1,
-            options: [
-              {
-                value: 1,
-                label: "微信",
-              },
-              {
-                value: 2,
-                label: "邮件",
-              },
-            ],
-          },
-          triggerDate: "",
-          triggerTime: "",
+        notifyLocations: [],
+        notifyMethod: {
+          options: [
+            {
+              value: 1,
+              label: "微信",
+            },
+            {
+              value: 2,
+              label: "邮件",
+            },
+          ],
         },
       },
     };
@@ -224,6 +221,10 @@ export default {
         });
       }
       this.locationEdit.visible = true;
+    },
+    notify() {
+      this.weatherNotifyGet();
+      this.notify.visible = true;
     },
     async locationEditSubmit(list) {
       try {
@@ -544,6 +545,7 @@ export default {
         const { data: res } = await axios.post(api.weatherNotifyGet, {
           user_id: this.user_id,
         });
+        this.notify.notifyLocations = res.data;
         this.$message({
           message: res["msg"],
           type: "success",
