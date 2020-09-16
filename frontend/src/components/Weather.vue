@@ -549,12 +549,15 @@ export default {
           user_id: this.user_id,
         });
         function getNotifyTypZh(x) {
-          const notifyDict = {
-            rain: "雨雪",
-            air: "空气",
-            temperature: "温度",
-          };
-          return notifyDict.x;
+          if (x == "rain") {
+            return "雨雪";
+          }
+          if (x == "air") {
+            return "空气";
+          }
+          if (x == "temperature") {
+            return "温度";
+          }
         }
         for (let x = 0; x < res.data.length; x++) {
           res.data[x].notify_type_ch = res.data[x].notify_type.map(
