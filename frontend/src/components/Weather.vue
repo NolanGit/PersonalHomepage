@@ -95,50 +95,48 @@
 
     <!-- 推送dialog -->
     <el-dialog title="天气预警" :visible.sync="notifyForm.visible">
-      <el-form ref="form" :model="notifyForm.form" size="mini" class="padding_bottom-medium">
-        <el-button>添加</el-button>
-        <el-row v-for="notifyLocation in notifyForm.notifyLocations" :key="notifyLocation">
-          <el-col :span="4">
-            <p>{{notifyLocation.location}}</p>
-          </el-col>
-          <el-col :span="18">
-            <el-row>
-              <el-col :span="4">提醒方式</el-col>
-              <el-col :span="20">
-                <el-select v-model="notifyLocation.notify_method">
-                  <el-option
-                    v-for="item in notifyMethod"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value"
-                  ></el-option>
-                </el-select>
-              </el-col>
-            </el-row>
-            <el-row>
-              <el-col :span="4">提醒内容</el-col>
-              <el-col :span="20">
-                <el-checkbox-group v-model="notifyLocation.notify_type">
-                  <el-checkbox key="rain" label="rain"></el-checkbox>
-                  <el-checkbox key="air" label="air"></el-checkbox>
-                  <el-checkbox key="temperature" label="temperature"></el-checkbox>
-                </el-checkbox-group>
-              </el-col>
-            </el-row>
-          </el-col>
-          <el-col :span="2">
-            <i class="el-icon-close"></i>
-          </el-col>
-        </el-row>
-        <p
-          class="notesText"
-          style="font-size: 12px; color: red; padding-top: 0px; margin-top: 0px; margin-bottom: 0px"
-        >*设置天气异常提醒前，请确定脚本运行平台中的"异常天气推送"脚本正常定时运行</p>
-      </el-form>
-      <span slot="footer" class="dialog-footer">
-        <el-button type="primary" size="small" @click="notify.visible=false">取消</el-button>
+      <el-button size="mini">添加</el-button>
+      <el-row v-for="notifyLocation in notifyForm.notifyLocations" :key="notifyLocation">
+        <el-col :span="4">
+          <p>{{notifyLocation.location}}</p>
+        </el-col>
+        <el-col :span="18">
+          <el-row>
+            <el-col :span="4">提醒方式</el-col>
+            <el-col :span="20">
+              <el-select size="mini" v-model="notifyLocation.notify_method">
+                <el-option
+                  v-for="item in notifyMethod"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                ></el-option>
+              </el-select>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="4">提醒内容</el-col>
+            <el-col :span="20">
+              <el-checkbox-group v-model="notifyLocation.notify_type">
+                <el-checkbox value="rain" label="下雨"></el-checkbox>
+                <el-checkbox value="air" label="天气"></el-checkbox>
+                <el-checkbox value="temperature" label="温度"></el-checkbox>
+              </el-checkbox-group>
+            </el-col>
+          </el-row>
+        </el-col>
+        <el-col :span="2">
+          <i class="el-icon-close"></i>
+        </el-col>
+      </el-row>
+      <p
+        class="notesText"
+        style="font-size: 12px; color: red; padding-top: 0px; margin-top: 0px; margin-bottom: 0px"
+      >*设置天气异常提醒前，请确定脚本运行平台中的"异常天气推送"脚本正常定时运行</p>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" size="small" @click="notifyForm.visible=false">取消</el-button>
         <el-button type="primary" size="small" @click="notifySubmit()">确定</el-button>
-      </span>
+      </div>
     </el-dialog>
   </div>
 </template>
