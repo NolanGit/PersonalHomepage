@@ -117,10 +117,10 @@
           <el-row>
             <el-col :span="4">提醒内容</el-col>
             <el-col :span="20">
-              <el-checkbox-group v-model="notifyLocation.notify_type">
-                <el-checkbox value="rain" label="rain"></el-checkbox>
-                <el-checkbox value="天气" label="air"></el-checkbox>
-                <el-checkbox value="temperature" label="温度"></el-checkbox>
+              <el-checkbox-group v-model="notifyLocation.notify_type_ch">
+                <el-checkbox value="雨雪" label="雨雪"></el-checkbox>
+                <el-checkbox value="空气" label="空气"></el-checkbox>
+                <el-checkbox value="温度" label="温度"></el-checkbox>
               </el-checkbox-group>
             </el-col>
           </el-row>
@@ -150,6 +150,11 @@ const api = {
   locationListEdit: "/weather/weatherLocationListEdit",
   weatherNotifyGet: "/weather/weatherNotifyGet",
   weatherNotifySet: "/weather/weatherNotifySet",
+};
+const notifyDict = {
+  rain: "雨雪",
+  air: "空气",
+  temperature: "温度",
 };
 
 export default {
@@ -548,7 +553,14 @@ export default {
         const { data: res } = await axios.post(api.weatherNotifyGet, {
           user_id: this.user_id,
         });
+        function getNotifyTypZh(x) {
+          return this.notifyDict.x;
+        }
+        for (let x = 0; x < res.data.length; x++) {
+          res.data.notify_type_ch = res.data.notify_type.map(getNotifyTypZh);
+        }
         this.notifyForm.notifyLocations = res.data;
+        console.log(this.notifyForm.notifyLocations)
         this.$message({
           message: res["msg"],
           type: "success",
