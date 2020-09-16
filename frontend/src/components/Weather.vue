@@ -80,7 +80,7 @@
     </el-dialog>
 
     <!--编辑界面-->
-    <el-dialog title="添加城市" :visible.sync="edit.visible" width="40%">
+    <el-dialog title="添加城市" :visible.sync="edit.visible" width="40%" @closed="addClosed()">
       <el-form ref="form" :model="edit" size="mini">
         <el-form-item label="城市名称">
           <div class="div-flex">
@@ -131,7 +131,7 @@
             </el-row>
           </el-col>
           <el-col :span="2">
-            <i class="el-icon-close" @click="removeNotifyLocation(index)"></i>
+            <i class="el-icon-close" @click="removeNotifyLocation(index,notifyLocation.location)"></i>
           </el-col>
         </el-card>
       </el-row>
@@ -240,8 +240,10 @@ export default {
       this.edit.visible = true;
       this.edit.action = "addNotifyLocation";
     },
-    removeNotifyLocation(index) {
-      this.notifyForm.locations.splice(index, 1);
+    removeNotifyLocation(index, location) {
+      this.$confirm("确认删除[" + location + "]吗?", "提示", {}).then(
+        this.notifyForm.locations.splice(index, 1)
+      );
     },
     async addSubmit() {
       if ((await this.locationCheck()) == false) {
@@ -258,6 +260,9 @@ export default {
         }
         this.edit.visible = false;
       }
+    },
+    addClosed() {
+      this.edit.location = "";
     },
     async locationEditSubmit(list) {
       try {
@@ -639,9 +644,9 @@ export default {
       try {
         const { data: res } = await axios.post(api.locationAdd, {
           user_id: this.user_id,
-          notify_type: "",
-          locations: "",
+          locations: this.notifyForm.locations,
         });
+        this.notifyForm.visible = false;
         this.$message({
           message: res["msg"],
           type: "success",
