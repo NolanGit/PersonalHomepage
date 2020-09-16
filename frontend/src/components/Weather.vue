@@ -242,7 +242,9 @@ export default {
     },
     removeNotifyLocation(index, location) {
       this.$confirm("确认删除[" + location + "]吗?", "提示", {}).then(
-        this.notifyForm.locations.splice(index, 1)
+        async () => {
+          this.notifyForm.locations.splice(index, 1);
+        }
       );
     },
     async addSubmit() {
@@ -642,7 +644,7 @@ export default {
       }
       console.log(this.notifyForm.locations);
       try {
-        const { data: res } = await axios.post(api.locationAdd, {
+        const { data: res } = await axios.post(api.notifySet, {
           user_id: this.user_id,
           locations: this.notifyForm.locations,
         });
