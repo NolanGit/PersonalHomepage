@@ -98,30 +98,35 @@
       <el-form ref="form" :model="notifyForm.form" size="mini" class="padding_bottom-medium">
         <el-button>添加</el-button>
         <el-row v-for="notifyLocation in notifyForm.notifyLocations" :key="notifyLocation">
-          <el-col>
+          <el-col :span="4">
             <p>{{notifyLocation.location}}</p>
           </el-col>
-          <el-col>
+          <el-col :span="18">
             <el-row>
-              <el-col>提醒方式</el-col>
-              <el-select v-model="notifyLocation.notify_method">
-                <el-option
-                  v-for="item in notifyMethod"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                ></el-option>
-              </el-select>
+              <el-col :span="4">提醒方式</el-col>
+              <el-col :span="20">
+                <el-select v-model="notifyLocation.notify_method">
+                  <el-option
+                    v-for="item in notifyMethod"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
+                  ></el-option>
+                </el-select>
+              </el-col>
             </el-row>
             <el-row>
-              <el-checkbox-group v-model="notifyLocation.notify_type">
-                <el-checkbox key="rain" label="下雨"></el-checkbox>
-                <el-checkbox key="air" label="空气"></el-checkbox>
-                <el-checkbox key="temperature" label="温度"></el-checkbox>
-              </el-checkbox-group>
+              <el-col :span="4">提醒内容</el-col>
+              <el-col :span="20">
+                <el-checkbox-group v-model="notifyLocation.notify_type">
+                  <el-checkbox key="rain" label="rain"></el-checkbox>
+                  <el-checkbox key="air" label="air"></el-checkbox>
+                  <el-checkbox key="temperature" label="temperature"></el-checkbox>
+                </el-checkbox-group>
+              </el-col>
             </el-row>
           </el-col>
-          <el-col>
+          <el-col :span="2">
             <i class="el-icon-close"></i>
           </el-col>
         </el-row>
