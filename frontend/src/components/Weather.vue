@@ -98,7 +98,7 @@
       <el-button class="margin_bottom-large" size="mini">添加</el-button>
       <el-row
         class="margin_bottom-small"
-        v-for="notifyLocation in notifyForm.notifyLocations"
+        v-for="notifyLocation in notifyForm.locations"
         :key="notifyLocation"
       >
         <el-card shadow="never">
@@ -152,10 +152,11 @@ import SlickSort from "./common/SlickSort.vue";
 import WidgetButton from "./common/WidgetButton.vue";
 const api = {
   weatherData: "/weather/get",
+  locationCheck: "/weather/check",
   locationAdd: "/weather/weatherLocationCreate",
   locationListEdit: "/weather/weatherLocationListEdit",
-  weatherNotifyGet: "/weather/weatherNotifyGet",
-  weatherNotifySet: "/weather/weatherNotifySet",
+  notifyGet: "/weather/notifyGet",
+  notifySet: "/weather/notifySet",
 };
 
 export default {
@@ -202,7 +203,7 @@ export default {
       },
       notifyForm: {
         visible: false,
-        notifyLocations: [],
+        locations: [],
         notifyMethodOptions: [
           {
             value: 1,
@@ -230,7 +231,7 @@ export default {
       this.locationEdit.visible = true;
     },
     notify() {
-      this.weatherNotifyGet();
+      this.notifyGet();
       this.notifyForm.visible = true;
     },
     async locationEditSubmit(list) {
@@ -257,24 +258,43 @@ export default {
         });
       }
     },
-    async locationAdd() {
-      this.edit.visible = false;
+    async locationCheck() {
       try {
-        const { data: res } = await axios.post(api.locationAdd, {
-          user_id: this.user_id,
+        const { data: res } = await axios.post(api.locationCheck, {
           location: this.edit.location,
         });
-        this.$message({
-          message: res["msg"],
-          type: "success",
-        });
-        this.weatherData();
+        return true;
       } catch (e) {
         console.log(e);
         this.$message({
           message: e.response.data.msg,
           type: "error",
         });
+        return false;
+      }
+    },
+    async locationAdd() {
+      this.edit.visible = false;
+      if (this.locationCheck() == false) {
+        return;
+      } else {
+        try {
+          const { data: res } = await axios.post(api.locationAdd, {
+            user_id: this.user_id,
+            location: this.edit.location,
+          });
+          this.$message({
+            message: res["msg"],
+            type: "success",
+          });
+          this.weatherData();
+        } catch (e) {
+          console.log(e);
+          this.$message({
+            message: e.response.data.msg,
+            type: "error",
+          });
+        }
       }
     },
     async weatherData(locations) {
@@ -547,9 +567,9 @@ export default {
         });
       }
     },
-    async weatherNotifyGet() {
+    async notifyGet() {
       try {
-        const { data: res } = await axios.post(api.weatherNotifyGet, {
+        const { data: res } = await axios.post(api.notifyGet, {
           user_id: this.user_id,
         });
         function getNotifyTypeZh(x) {
@@ -568,7 +588,7 @@ export default {
             getNotifyTypeZh
           );
         }
-        this.notifyForm.notifyLocations = res.data;
+        this.notifyForm.locations = res.data;
       } catch (e) {
         console.log(e);
         this.$message({
@@ -589,12 +609,12 @@ export default {
           return "temperature";
         }
       }
-      for (let x = 0; x < res.data.length; x++) {
-        res.data[x].notify_type = res.data[x].notify_type_ch.map(
-          convertNotifyType
-        );
+      for (let x = 0; x < this.notifyForm.locations.length; x++) {
+        this.notifyForm.locations[x].notify_type = this.notifyForm.locations[
+          x
+        ].notify_type_ch.map(convertNotifyType);
       }
-      console.log(this.notifyForm.notifyLocations);
+      console.log(this.notifyForm.locations);
       try {
         const { data: res } = await axios.post(api.locationAdd, {
           user_id: this.user_id,

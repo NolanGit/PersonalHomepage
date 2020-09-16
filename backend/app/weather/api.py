@@ -81,10 +81,10 @@ def weatherLocationCreate():
         return rsp.failed(e), 500
 
 
-@weather.route('/weatherNotifyGet', methods=['POST'])
-@permission_required(URL_PREFIX + '/weatherNotifyGet')
+@weather.route('/notifyGet', methods=['POST'])
+@permission_required(URL_PREFIX + '/notifyGet')
 @cross_origin()
-def weatherNotifyGet():
+def notifyGet():
     try:
         user_id = request.get_json()['user_id']
         _ = weather_notify.select().where((weather_notify.user_id == user_id) & (weather_notify.is_valid == 1)).dicts()
@@ -99,10 +99,10 @@ def weatherNotifyGet():
         return rsp.failed(e), 500
 
 
-@weather.route('/weatherNotifySet', methods=['POST'])
-@permission_required(URL_PREFIX + '/weatherNotifySet')
+@weather.route('/notifySet', methods=['POST'])
+@permission_required(URL_PREFIX + '/notifySet')
 @cross_origin()
-def weatherNotifySet():
+def notifySet():
     try:
         user_id = request.get_json()['user_id']
         notify_type = request.get_json()['notify_type']
@@ -116,6 +116,22 @@ def weatherNotifySet():
         weather_notify.insert_many(data_source, field).execute()
 
         return rsp.success()
+    except Exception as e:
+        traceback.print_exc()
+        return rsp.failed(e), 500
+
+
+@weather.route('/check', methods=['POST'])
+@permission_required(URL_PREFIX + '/check')
+@cross_origin()
+def check():
+    try:
+        location = request.get_json()['location']
+        result = WeatherData(0, location).get_weather_data_from_api()
+        if result == {}:
+            return rsp.failed('非法的地理位置！')
+        else:
+            return rsp.success()
     except Exception as e:
         traceback.print_exc()
         return rsp.failed(e), 500
