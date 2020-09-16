@@ -224,7 +224,7 @@ export default {
     },
     notify() {
       this.weatherNotifyGet();
-      this.notify.visible = true;
+      this.notifyForm.visible = true;
     },
     async locationEditSubmit(list) {
       try {
