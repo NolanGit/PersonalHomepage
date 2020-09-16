@@ -151,11 +151,6 @@ const api = {
   weatherNotifyGet: "/weather/weatherNotifyGet",
   weatherNotifySet: "/weather/weatherNotifySet",
 };
-const notifyDict = {
-  rain: "雨雪",
-  air: "空气",
-  temperature: "温度",
-};
 
 export default {
   name: "weather",
@@ -554,7 +549,12 @@ export default {
           user_id: this.user_id,
         });
         function getNotifyTypZh(x) {
-          return this.notifyDict.x;
+          const notifyDict = {
+            rain: "雨雪",
+            air: "空气",
+            temperature: "温度",
+          };
+          return notifyDict.x;
         }
         for (let x = 0; x < res.data.length; x++) {
           res.data[x].notify_type_ch = res.data[x].notify_type.map(
