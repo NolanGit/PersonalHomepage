@@ -106,7 +106,7 @@
             <el-col :span="20">
               <el-select size="mini" v-model="notifyLocation.notify_method">
                 <el-option
-                  v-for="item in notifyMethod"
+                  v-for="item in notifyForm.notifyMethod"
                   :key="item.value"
                   :label="item.label"
                   :value="item.value"
@@ -118,8 +118,8 @@
             <el-col :span="4">提醒内容</el-col>
             <el-col :span="20">
               <el-checkbox-group v-model="notifyLocation.notify_type">
-                <el-checkbox value="rain" label="下雨"></el-checkbox>
-                <el-checkbox value="air" label="天气"></el-checkbox>
+                <el-checkbox value="rain" label="rain"></el-checkbox>
+                <el-checkbox value="天气" label="air"></el-checkbox>
                 <el-checkbox value="temperature" label="温度"></el-checkbox>
               </el-checkbox-group>
             </el-col>
@@ -561,7 +561,8 @@ export default {
         });
       }
     },
-    async weatherNotifySet() {
+    async notifySubmit() {
+      console.log(this.notifyForm.notifyLocations);
       try {
         const { data: res } = await axios.post(api.locationAdd, {
           user_id: this.user_id,
