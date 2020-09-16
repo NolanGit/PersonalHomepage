@@ -95,43 +95,51 @@
 
     <!-- 推送dialog -->
     <el-dialog title="天气预警" :visible.sync="notifyForm.visible">
-      <el-button size="mini">添加</el-button>
-      <el-row v-for="notifyLocation in notifyForm.notifyLocations" :key="notifyLocation">
-        <el-col :span="4">
-          <p>{{notifyLocation.location}}</p>
-        </el-col>
-        <el-col :span="18">
-          <el-row>
-            <el-col :span="4">提醒方式</el-col>
-            <el-col :span="20">
-              <el-select size="mini" v-model="notifyLocation.notify_method">
-                <el-option
-                  v-for="item in notifyForm.notifyMethod"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                ></el-option>
-              </el-select>
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="4">提醒内容</el-col>
-            <el-col :span="20">
-              <el-checkbox-group v-model="notifyLocation.notify_type_ch">
-                <el-checkbox value="雨雪" label="雨雪"></el-checkbox>
-                <el-checkbox value="空气" label="空气"></el-checkbox>
-                <el-checkbox value="温度" label="温度"></el-checkbox>
-              </el-checkbox-group>
-            </el-col>
-          </el-row>
-        </el-col>
-        <el-col :span="2">
-          <i class="el-icon-close"></i>
-        </el-col>
+      <el-button class="margin_bottom-large" size="mini">添加</el-button>
+      <el-row
+        class="margin_bottom-small"
+        v-for="notifyLocation in notifyForm.notifyLocations"
+        :key="notifyLocation"
+      >
+        <el-card shadow="never">
+          <el-col :span="4">
+            <p>{{notifyLocation.location}}</p>
+          </el-col>
+          <el-divider direction="vertical"></el-divider>
+          <el-col :span="18">
+            <el-row class="margin_bottom-medium">
+              <el-col :span="4">提醒方式</el-col>
+              <el-col :span="20">
+                <el-select size="mini" v-model="notifyLocation.notify_method">
+                  <el-option
+                    v-for="item in notifyForm.notifyMethodOptions"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
+                  ></el-option>
+                </el-select>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="4">提醒内容</el-col>
+              <el-col :span="20">
+                <el-checkbox-group v-model="notifyLocation.notify_type_ch">
+                  <el-checkbox value="雨雪" label="雨雪"></el-checkbox>
+                  <el-checkbox value="空气" label="空气"></el-checkbox>
+                  <el-checkbox value="温度" label="温度"></el-checkbox>
+                </el-checkbox-group>
+              </el-col>
+            </el-row>
+          </el-col>
+          <el-divider direction="vertical"></el-divider>
+          <el-col :span="2">
+            <i class="el-icon-close"></i>
+          </el-col>
+        </el-card>
       </el-row>
       <p
-        class="notesText"
-        style="font-size: 12px; color: red; padding-top: 0px; margin-top: 0px; margin-bottom: 0px"
+        class="notesText margin_top-small"
+        style="font-size: 12px; color: red; padding-top: 0px; margin-bottom: 0px"
       >*设置天气异常提醒前，请确定脚本运行平台中的"异常天气推送"脚本正常定时运行</p>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" size="small" @click="notifyForm.visible=false">取消</el-button>
@@ -197,18 +205,16 @@ export default {
       notifyForm: {
         visible: false,
         notifyLocations: [],
-        notifyMethod: {
-          options: [
-            {
-              value: 1,
-              label: "微信",
-            },
-            {
-              value: 2,
-              label: "邮件",
-            },
-          ],
-        },
+        notifyMethodOptions: [
+          {
+            value: 1,
+            label: "微信",
+          },
+          {
+            value: 2,
+            label: "邮件",
+          },
+        ],
       },
     };
   },

@@ -225,6 +225,10 @@
     margin-top: 20px;
 }
 
+.margin_top-small {
+    margin-top: 10px;
+}
+
 .margin_bottom-medium {
     margin-bottom: 20px;
 }
