@@ -557,10 +557,12 @@ export default {
           return this.notifyDict.x;
         }
         for (let x = 0; x < res.data.length; x++) {
-          res.data.notify_type_ch = res.data.notify_type.map(getNotifyTypZh);
+          res.data[x].notify_type_ch = res.data[x].notify_type.map(
+            getNotifyTypZh
+          );
         }
         this.notifyForm.notifyLocations = res.data;
-        console.log(this.notifyForm.notifyLocations)
+        console.log(this.notifyForm.notifyLocations);
         this.$message({
           message: res["msg"],
           type: "success",
