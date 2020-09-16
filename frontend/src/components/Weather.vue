@@ -275,7 +275,7 @@ export default {
     },
     async locationAdd() {
       this.edit.visible = false;
-      if (this.locationCheck() == false) {
+      if ((await this.locationCheck()) == false) {
         return;
       } else {
         try {

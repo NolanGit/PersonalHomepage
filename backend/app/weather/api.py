@@ -129,7 +129,7 @@ def check():
         location = request.get_json()['location']
         result = WeatherData(0, location).get_weather_data_from_api()
         if result == {}:
-            return rsp.failed('非法的地理位置！')
+            return rsp.failed('非法的地理位置！'), 500
         else:
             return rsp.success()
     except Exception as e:
