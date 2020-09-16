@@ -89,7 +89,7 @@
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" size="small" @click="locationAdd()">确定</el-button>
+        <el-button type="primary" size="small" @click="addSubmit()">确定</el-button>
       </span>
     </el-dialog>
 
@@ -199,6 +199,7 @@ export default {
       loading: true,
       edit: {
         visible: false,
+        action: "",
         location: "",
       },
       notifyForm: {
@@ -220,6 +221,7 @@ export default {
   methods: {
     add() {
       this.edit.visible = true;
+      this.edit.action = "addLocation";
     },
     sort() {
       this.locationEdit.list = [];
@@ -233,6 +235,25 @@ export default {
     notify() {
       this.notifyGet();
       this.notifyForm.visible = true;
+    },
+    addNotifyLocation() {
+      this.edit.visible = true;
+      this.edit.action = "addNotifyLocation";
+    },
+    async addSubmit() {
+      if ((await this.locationCheck()) == false) {
+        return;
+      } else {
+        if ((this.edit.action = "addLocation")) {
+          this.locationAdd();
+        } else if ((this.edit.action = "addNotifyLocation")) {
+          this.notifyForm.locations.push({
+            location: this.edit.location,
+            notify_method: 1,
+            notify_type: ["rain", "air", "temperature"],
+          });
+        }
+      }
     },
     async locationEditSubmit(list) {
       try {
@@ -274,27 +295,23 @@ export default {
       }
     },
     async locationAdd() {
-      this.edit.visible = false;
-      if ((await this.locationCheck()) == false) {
-        return;
-      } else {
-        try {
-          const { data: res } = await axios.post(api.locationAdd, {
-            user_id: this.user_id,
-            location: this.edit.location,
-          });
-          this.$message({
-            message: res["msg"],
-            type: "success",
-          });
-          this.weatherData();
-        } catch (e) {
-          console.log(e);
-          this.$message({
-            message: e.response.data.msg,
-            type: "error",
-          });
-        }
+      try {
+        const { data: res } = await axios.post(api.locationAdd, {
+          user_id: this.user_id,
+          location: this.edit.location,
+        });
+        this.$message({
+          message: res["msg"],
+          type: "success",
+        });
+        this.edit.visible = false;
+        this.weatherData();
+      } catch (e) {
+        console.log(e);
+        this.$message({
+          message: e.response.data.msg,
+          type: "error",
+        });
       }
     },
     async weatherData(locations) {
