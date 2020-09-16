@@ -95,7 +95,7 @@
 
     <!-- 推送dialog -->
     <el-dialog title="天气预警" :visible.sync="notifyForm.visible">
-      <el-button class="margin_bottom-large" size="mini">添加</el-button>
+      <el-button class="margin_bottom-large" size="mini" @click="addNotifyLocation()">添加</el-button>
       <el-row
         class="margin_bottom-small"
         v-for="notifyLocation in notifyForm.locations"
