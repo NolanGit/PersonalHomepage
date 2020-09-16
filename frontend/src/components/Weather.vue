@@ -94,10 +94,10 @@
     </el-dialog>
 
     <!-- 推送dialog -->
-    <el-dialog title="天气预警" :visible.sync="notify.visible">
-      <el-form ref="form" :model="notify.form" size="mini" class="padding_bottom-medium">
+    <el-dialog title="天气预警" :visible.sync="notifyForm.visible">
+      <el-form ref="form" :model="notifyForm.form" size="mini" class="padding_bottom-medium">
         <el-button>添加</el-button>
-        <el-row v-for="notifyLocation in notify.notifyLocations" :key="notifyLocation">
+        <el-row v-for="notifyLocation in notifyForm.notifyLocations" :key="notifyLocation">
           <el-col>
             <p>{{notifyLocation.location}}</p>
           </el-col>
@@ -191,7 +191,7 @@ export default {
         visible: false,
         location: "",
       },
-      notify: {
+      notifyForm: {
         visible: false,
         notifyLocations: [],
         notifyMethod: {
@@ -545,7 +545,7 @@ export default {
         const { data: res } = await axios.post(api.weatherNotifyGet, {
           user_id: this.user_id,
         });
-        this.notify.notifyLocations = res.data;
+        this.notifyForm.notifyLocations = res.data;
         this.$message({
           message: res["msg"],
           type: "success",
