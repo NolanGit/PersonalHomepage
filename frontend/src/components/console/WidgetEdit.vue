@@ -3,7 +3,7 @@
     <el-row class="margin_left-large">
       <p
         class="notesText"
-        style="font-size: 12px; color: red; padding-top: 0px; margin-top: 0px; margin-bottom: 10px"
+        style="font-size: 12px; color: #F56C6C; padding-top: 0px; margin-top: 0px; margin-bottom: 10px"
       >*拖动以排序</p>
       <SlickList
         :lockToContainerEdges="true"

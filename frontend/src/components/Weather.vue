@@ -110,11 +110,11 @@
       >
         <el-card shadow="never">
           <el-col :span="4" style="text-align: left;">
-            <p class="better_font_style bold" style="font-size: 20px;">{{notifyLocation.location}}</p>
+            <p class="better_font_style bold" style="font-size: 20px; margin-left: 20px;">{{notifyLocation.location}}</p>
           </el-col>
           <el-col :span="1" style="text-align: left;">
             <div
-              style="float:left;margin-top: 30px;width:1px;height: 40px; background: darkgray;margin-left: 25px;margin-right: 25px;"
+              style="float:left; margin-top: 6px; width:1px; height: 57px; background: darkgray; margin-right: 25px;"
             ></div>
           </el-col>
           <el-col :span="17" style="text-align: left;">
@@ -145,7 +145,7 @@
           <el-col :span="2" style="text-align: left;">
             <i
               class="el-icon-close"
-              style="font-size: 20px"
+              style="font-size: 20px; color: #F56C6C;"
               @click="removeNotifyLocation(index,notifyLocation.location)"
             ></i>
           </el-col>
@@ -153,7 +153,7 @@
       </el-row>
       <p
         class="notesText margin_top-small"
-        style="font-size: 12px; color: red; padding-top: 0px; margin-bottom: 0px"
+        style="font-size: 12px; color: #F56C6C; padding-top: 0px; margin-bottom: 0px"
       >*设置天气异常提醒前，请确定脚本运行平台中的"异常天气推送"脚本正常定时运行</p>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" size="small" @click="notifyForm.visible=false">取消</el-button>

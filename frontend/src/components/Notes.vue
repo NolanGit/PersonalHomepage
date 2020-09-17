@@ -137,7 +137,7 @@
         </el-form-item>
         <p
           class="notesText"
-          style="font-size: 12px; color: red; padding-top: 0px; margin-top: 0px; margin-bottom: 0px"
+          style="font-size: 12px; color: #F56C6C; padding-top: 0px; margin-top: 0px; margin-bottom: 0px"
         >*提交后不能取消，但可以多次提交。</p>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -150,7 +150,7 @@
     <el-dialog title="时间机器" :visible.sync="revert.visible">
       <p
         class="notesText"
-        style="font-size: 12px; color: red; padding-top: 0px; margin-top: 0px; margin-bottom: 0px"
+        style="font-size: 12px; color: #F56C6C; padding-top: 0px; margin-top: 0px; margin-bottom: 0px"
       >*可以恢复到最近的五个版本中的任意一个，此操作不会对过去的版本产生影响，而是会使用以前版本的内容生成一个新版本。</p>
       <el-table :data="revert.data" style="text-align: center; margin-bottom: 20px;" size="small">
         <el-table-column prop="update_time" label="版本"></el-table-column>
