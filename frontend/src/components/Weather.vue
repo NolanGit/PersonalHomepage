@@ -94,7 +94,7 @@
     </el-dialog>
 
     <!-- 推送dialog -->
-    <el-dialog title="天气预警" :visible.sync="notifyForm.visible">
+    <el-dialog title="天气异常提醒" :visible.sync="notifyForm.visible">
       <el-row style="text-align: left;">
         <el-button class="margin_bottom-medium" size="small" @click="addNotifyLocation()">添加</el-button>
       </el-row>
@@ -135,7 +135,7 @@
                 <el-checkbox-group v-model="notifyLocation.notify_type_ch">
                   <el-checkbox value="雨雪" label="雨雪"></el-checkbox>
                   <el-checkbox value="空气" label="空气"></el-checkbox>
-                  <el-checkbox value="温度" label="温度"></el-checkbox>
+                  <el-checkbox value="温度骤变" label="温度骤变"></el-checkbox>
                 </el-checkbox-group>
               </el-col>
             </el-row>
@@ -626,7 +626,7 @@ export default {
             return "空气";
           }
           if (x == "temperature") {
-            return "温度";
+            return "温度骤变";
           }
         }
         for (let x = 0; x < res.data.length; x++) {
@@ -651,7 +651,7 @@ export default {
         if (x == "空气") {
           return "air";
         }
-        if (x == "温度") {
+        if (x == "温度骤变") {
           return "temperature";
         }
       }
