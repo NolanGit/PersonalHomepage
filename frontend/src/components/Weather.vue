@@ -99,9 +99,9 @@
         <el-button
           type="primary"
           class="margin_bottom-large"
-          size="mini"
+          size="small"
           @click="addNotifyLocation()"
-        >添加关注</el-button>
+        >添加</el-button>
       </el-row>
       <el-row
         class="margin_bottom-small"
@@ -145,7 +145,7 @@
           <el-col :span="2" style="text-align: left;">
             <i
               class="el-icon-close"
-              style="font-size: 20px; color: #F56C6C;"
+              style="font-size: 25px; color: #F56C6C;"
               @click="removeNotifyLocation(index,notifyLocation.location)"
             ></i>
           </el-col>
@@ -156,7 +156,7 @@
         style="font-size: 12px; color: #F56C6C; padding-top: 0px; margin-bottom: 0px"
       >*设置天气异常提醒前，请确定脚本运行平台中的"异常天气推送"脚本正常定时运行</p>
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary" size="small" @click="notifyForm.visible=false">取消</el-button>
+        <el-button size="small" @click="notifyForm.visible=false">取消</el-button>
         <el-button type="primary" size="small" @click="notifySubmit()">确定</el-button>
       </div>
     </el-dialog>
