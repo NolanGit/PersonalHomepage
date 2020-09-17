@@ -89,19 +89,14 @@
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" size="small" @click="addSubmit()">确定</el-button>
+        <el-button :loading="edit.loading" type="primary" size="small" @click="addSubmit()">确定</el-button>
       </span>
     </el-dialog>
 
     <!-- 推送dialog -->
     <el-dialog title="天气预警" :visible.sync="notifyForm.visible">
       <el-row style="text-align: left;">
-        <el-button
-          type="primary"
-          class="margin_bottom-large"
-          size="small"
-          @click="addNotifyLocation()"
-        >添加</el-button>
+        <el-button class="margin_bottom-medium" size="small" @click="addNotifyLocation()">添加</el-button>
       </el-row>
       <el-row
         class="margin_bottom-small"
@@ -110,7 +105,10 @@
       >
         <el-card shadow="never">
           <el-col :span="4" style="text-align: left;">
-            <p class="better_font_style bold" style="font-size: 20px; margin-left: 20px;">{{notifyLocation.location}}</p>
+            <p
+              class="better_font_style bold"
+              style="font-size: 20px; margin-left: 20px;"
+            >{{notifyLocation.location}}</p>
           </el-col>
           <el-col :span="1" style="text-align: left;">
             <div
@@ -153,7 +151,7 @@
       </el-row>
       <p
         class="notesText margin_top-small"
-        style="font-size: 12px; color: #F56C6C; padding-top: 0px; margin-bottom: 0px"
+        style="text-align: left; font-size: 12px; color: #F56C6C; padding-top: 0px; margin-bottom: 0px"
       >*设置天气异常提醒前，请确定脚本运行平台中的"异常天气推送"脚本正常定时运行</p>
       <div slot="footer" class="dialog-footer">
         <el-button size="small" @click="notifyForm.visible=false">取消</el-button>
@@ -217,6 +215,7 @@ export default {
         visible: false,
         action: "",
         location: "",
+        loading: false,
       },
       notifyForm: {
         visible: false,
@@ -264,7 +263,9 @@ export default {
       );
     },
     async addSubmit() {
+      this.edit.loading = true;
       if ((await this.locationCheck()) == false) {
+        this.edit.loading = false;
         return;
       } else {
         if (this.edit.action == "addLocation") {
@@ -276,6 +277,7 @@ export default {
             notify_type_ch: [],
           });
         }
+        this.edit.loading = false;
         this.edit.visible = false;
       }
     },

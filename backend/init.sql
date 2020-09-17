@@ -323,6 +323,9 @@ INSERT INTO `privilege` (`id`, `name`, `mark`, `remark`, `is_valid`, `update_tim
 INSERT INTO `privilege` (`id`, `name`, `mark`, `remark`, `is_valid`, `update_time`) VALUES ('66', '图床-删除', '/imageHosting/delete', '', '1', '2020-08-28 23:30:15');
 INSERT INTO `privilege` (`id`, `name`, `mark`, `remark`, `is_valid`, `update_time`) VALUES ('67', '图床-保存', '/imageHosting/save', '', '1', '2020-08-29 21:48:47');
 INSERT INTO `privilege` (`id`, `name`, `mark`, `remark`, `is_valid`, `update_time`) VALUES ('68', '翻译-翻译文本', '/translator/translate', '', '1', '2020-09-04 17:44:33');
+INSERT INTO `privilege` (`id`, `name`, `mark`, `remark`, `is_valid`, `update_time`) VALUES ('69', '天气-获取推送', '/weather/notifyGet', '', '1', '2020-09-16 11:25:46');
+INSERT INTO `privilege` (`id`, `name`, `mark`, `remark`, `is_valid`, `update_time`) VALUES ('70', '天气-编辑推送', '/weather/notifySet', '', '1', '2020-09-16 11:26:40');
+INSERT INTO `privilege` (`id`, `name`, `mark`, `remark`, `is_valid`, `update_time`) VALUES ('71', '天气-校验地理位置', '/weather/check', '', '1', '2020-09-16 17:56:39');
 INSERT INTO `privilege_role` (`id`, `privilege_id`, `role_id`, `is_valid`) VALUES ('1', '1', '1', '1');
 INSERT INTO `privilege_role` (`id`, `privilege_id`, `role_id`, `is_valid`) VALUES ('2', '2', '1', '1');
 INSERT INTO `privilege_role` (`id`, `privilege_id`, `role_id`, `is_valid`) VALUES ('3', '3', '1', '1');
@@ -391,6 +394,9 @@ INSERT INTO `privilege_role` (`id`, `privilege_id`, `role_id`, `is_valid`) VALUE
 INSERT INTO `privilege_role` (`id`, `privilege_id`, `role_id`, `is_valid`) VALUES ('66', '66', '1', '1');
 INSERT INTO `privilege_role` (`id`, `privilege_id`, `role_id`, `is_valid`) VALUES ('67', '67', '1', '1');
 INSERT INTO `privilege_role` (`id`, `privilege_id`, `role_id`, `is_valid`) VALUES ('68', '68', '1', '1');
+INSERT INTO `privilege_role` (`id`, `privilege_id`, `role_id`, `is_valid`) VALUES ('69', '69', '1', '1');
+INSERT INTO `privilege_role` (`id`, `privilege_id`, `role_id`, `is_valid`) VALUES ('70', '60', '1', '1');
+INSERT INTO `privilege_role` (`id`, `privilege_id`, `role_id`, `is_valid`) VALUES ('71', '61', '1', '1');
 INSERT INTO `user` (`id`, `name`, `login_name`, `password`, `stable_salt`, `salt`, `salt_expire_time`, `role_id`, `email`, `wechat_key`, `is_valid`, `create_time`, `update_time`) VALUES (1, '管理员', 'admin', '71f11204b9cbf6ef09e83e43dda7399e', 'fndTb5mWFA6JYtdW1AKJvQSzZ3ERpVt0YupukTjI', 'SX2JQywwb13zhlt7uPPXh8Bne6V40JL2RwD3L6Wh', '2019-10-28 11:35:37', 1, 'my_email@my_email.cn', 'my_wechat_key', 1, '2019-08-21 16:46:21.981898', '2019-08-21 16:46:21.981898');
 INSERT INTO `role` (`id`, `name`, `is_valid`, `update_time`) VALUES ('1', '管理员', '1', '2019-10-28 11:35:37');
 INSERT INTO `widget` (`id`, `name`, `is_valid`, `span`, `buttons`, `auto_update`, `update_time`) VALUES ('1', 'weather', '1', '8', '[\'add\', \'sort\']', '1800000', '2019-10-28 11:35:37');
@@ -418,3 +424,5 @@ INSERT INTO `script_schedule` (`id`, `script_id`, `command`, `detail`, `version`
 INSERT INTO `weather_location` (`id`, `location`, `user_id`, `is_valid`, `update_time`) VALUES ('1', '长春', '1', '1', '2019-10-28 11:35:37');
 INSERT INTO `app` (`id`, `name`, `url`, `user_id`, `expect_price`, `order`, `is_valid`, `update_time`) VALUES ('1', 'gorogoa', 'https://apps.apple.com/cn/app/gorogoa/id1269225754?ign-mpt=uo%3D4', '1', '0', '1', '1', '2020-07-22 15:20:46');
 INSERT INTO `gold_price` (`id`, `price`, `update_time`) VALUES ('1', '400.7', '2020-07-01 16:51:51');
+INSERT INTO `weather_notify` (`id`, `location`, `user_id`, `notify_type`, `notify_method`, `is_valid`, `update_time`) VALUES ('1', '北京', '1', '[\'rain\', \'air\', \'temperature\']', '1', '1', '2020-09-17 11:18:24');
+INSERT INTO `weather_notify` (`id`, `location`, `user_id`, `notify_type`, `notify_method`, `is_valid`, `update_time`) VALUES ('2', '深圳', '1', '[\'rain\', \'air\', \'temperature\']', '1', '1', '2020-09-17 11:18:24');
