@@ -68,6 +68,14 @@
     font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, SimSun, sans-serif;
 }
 
+.better_font_style {
+    font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, SimSun, sans-serif;
+}
+
+.bold {
+    font-weight: bold;
+}
+
 .padding_right-small {
     padding-right: 8px;
 }

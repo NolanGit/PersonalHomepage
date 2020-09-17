@@ -95,20 +95,20 @@
 
     <!-- 推送dialog -->
     <el-dialog title="天气预警" :visible.sync="notifyForm.visible">
-      <el-button class="margin_bottom-large" size="mini" @click="addNotifyLocation()">添加</el-button>
+      <el-button type="primary" class="margin_bottom-large" size="mini" @click="addNotifyLocation()">添加关注</el-button>
       <el-row
         class="margin_bottom-small"
         v-for="(notifyLocation, index) in notifyForm.locations"
         :key="notifyLocation"
       >
         <el-card shadow="never">
-          <el-col :span="4">
-            <p>{{notifyLocation.location}}</p>
+          <el-col :span="4" style="text-align: left;">
+            <p class="better_font_style bold" style="font-size: 20px;">{{notifyLocation.location}}</p>
           </el-col>
-          <el-col :span="18">
+          <el-col :span="18" style="text-align: left;">
             <el-row class="margin_bottom-medium">
-              <el-col :span="4">提醒方式</el-col>
-              <el-col :span="20">
+              <el-col :span="4" style="text-align: left;" class="better_font_style">提醒方式</el-col>
+              <el-col :span="20" style="text-align: left;">
                 <el-select size="mini" v-model="notifyLocation.notify_method">
                   <el-option
                     v-for="item in notifyForm.notifyMethodOptions"
@@ -120,8 +120,8 @@
               </el-col>
             </el-row>
             <el-row class="margin_bottom-medium">
-              <el-col :span="4">提醒内容</el-col>
-              <el-col :span="20">
+              <el-col :span="4" style="text-align: left;" class="better_font_style">提醒内容</el-col>
+              <el-col :span="20" style="text-align: left;">
                 <el-checkbox-group v-model="notifyLocation.notify_type_ch">
                   <el-checkbox value="雨雪" label="雨雪"></el-checkbox>
                   <el-checkbox value="空气" label="空气"></el-checkbox>
@@ -130,7 +130,7 @@
               </el-col>
             </el-row>
           </el-col>
-          <el-col :span="2">
+          <el-col :span="2" style="text-align: left;">
             <i class="el-icon-close" @click="removeNotifyLocation(index,notifyLocation.location)"></i>
           </el-col>
         </el-card>
