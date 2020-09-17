@@ -95,7 +95,14 @@
 
     <!-- 推送dialog -->
     <el-dialog title="天气预警" :visible.sync="notifyForm.visible">
-      <el-button type="primary" class="margin_bottom-large" size="mini" @click="addNotifyLocation()">添加关注</el-button>
+      <el-row>
+        <el-button
+          type="primary"
+          class="margin_bottom-large"
+          size="mini"
+          @click="addNotifyLocation()"
+        >添加关注</el-button>
+      </el-row>
       <el-row
         class="margin_bottom-small"
         v-for="(notifyLocation, index) in notifyForm.locations"
@@ -104,6 +111,9 @@
         <el-card shadow="never">
           <el-col :span="4" style="text-align: left;">
             <p class="better_font_style bold" style="font-size: 20px;">{{notifyLocation.location}}</p>
+            <div
+              style="float:left;margin-top: 30px;width:1px;height: 175px; background: darkgray;margin-left: 25px;margin-right: 25px;"
+            ></div>
           </el-col>
           <el-col :span="18" style="text-align: left;">
             <el-row class="margin_bottom-medium">
@@ -131,7 +141,11 @@
             </el-row>
           </el-col>
           <el-col :span="2" style="text-align: left;">
-            <i class="el-icon-close" @click="removeNotifyLocation(index,notifyLocation.location)"></i>
+            <i
+              class="el-icon-close"
+              style="font-size: 20px"
+              @click="removeNotifyLocation(index,notifyLocation.location)"
+            ></i>
           </el-col>
         </el-card>
       </el-row>
