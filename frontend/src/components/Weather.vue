@@ -95,7 +95,7 @@
 
     <!-- 推送dialog -->
     <el-dialog title="天气预警" :visible.sync="notifyForm.visible">
-      <el-row>
+      <el-row style="text-align: left;">
         <el-button
           type="primary"
           class="margin_bottom-large"
@@ -111,11 +111,13 @@
         <el-card shadow="never">
           <el-col :span="4" style="text-align: left;">
             <p class="better_font_style bold" style="font-size: 20px;">{{notifyLocation.location}}</p>
+          </el-col>
+          <el-col :span="1" style="text-align: left;">
             <div
-              style="float:left;margin-top: 30px;width:1px;height: 175px; background: darkgray;margin-left: 25px;margin-right: 25px;"
+              style="float:left;margin-top: 30px;width:1px;height: 40px; background: darkgray;margin-left: 25px;margin-right: 25px;"
             ></div>
           </el-col>
-          <el-col :span="18" style="text-align: left;">
+          <el-col :span="17" style="text-align: left;">
             <el-row class="margin_bottom-medium">
               <el-col :span="4" style="text-align: left;" class="better_font_style">提醒方式</el-col>
               <el-col :span="20" style="text-align: left;">
