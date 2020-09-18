@@ -478,14 +478,16 @@
     >
       <div class="margin_left-medium margin_right-medium">
         <div class="min_height-medium scrollbar-div max_height-large">
-          <el-table :data="cloneSettings.script.data" size="mini">
-            <el-table-column label="名称" width="250" prop="name"></el-table-column>
-            <el-table-column label="操作">
-              <template slot-scope="scope">
-                <el-button size="mini" @click="editFormClone(scope.$index, scope.row)">选择</el-button>
-              </template>
-            </el-table-column>
-          </el-table>
+          <div class="margin_right-small">
+            <el-table :data="cloneSettings.script.data" size="mini">
+              <el-table-column label="名称" width="250" prop="name"></el-table-column>
+              <el-table-column label="操作">
+                <template slot-scope="scope">
+                  <el-button size="mini" @click="editFormClone(scope.$index, scope.row)">选择</el-button>
+                </template>
+              </el-table-column>
+            </el-table>
+          </div>
         </div>
       </div>
     </el-drawer>
@@ -515,7 +517,12 @@
                   :content="singleDataOption.label"
                   placement="top"
                 >
-                  <el-input style="width: 12vw;" size="small" v-model="singleDataOption.label" placeholder="请输入选项展示文字"></el-input>
+                  <el-input
+                    style="width: 12vw;"
+                    size="small"
+                    v-model="singleDataOption.label"
+                    placeholder="请输入选项展示文字"
+                  ></el-input>
                 </el-tooltip>
               </td>
               <td type="flex" class="td--label--short">
@@ -528,7 +535,12 @@
                   :content="singleDataOption.value"
                   placement="top"
                 >
-                  <el-input style="width: 16vw;" size="small" v-model="singleDataOption.value" placeholder="请输入选项实际的值"></el-input>
+                  <el-input
+                    style="width: 16vw;"
+                    size="small"
+                    v-model="singleDataOption.value"
+                    placeholder="请输入选项实际的值"
+                  ></el-input>
                 </el-tooltip>
               </td>
               <td>
@@ -557,28 +569,28 @@ import axios from "axios";
 import { deepClone } from "../../js/common";
 const api = {
   edit: "/script/edit",
-  scriptAll: "/script/scriptAll"
+  scriptAll: "/script/scriptAll",
 };
 export default {
   name: "ScriptEdit",
   props: {
     user_id: Number,
-    edit: Array
+    edit: Array,
   },
   data() {
     return {
       singleDataOptionDialog: {
         visible: false,
         index: 0,
-        data: []
+        data: [],
       },
       cloneSettings: {
         visible: false,
         script: {
           value: "",
-          data: []
-        }
-      }
+          data: [],
+        },
+      },
     };
   },
   watch: {},
@@ -598,7 +610,7 @@ export default {
         createable: "",
         disabled: "",
         is_important: "",
-        remark: ""
+        remark: "",
       });
     },
     //删除组件
@@ -612,7 +624,7 @@ export default {
       } else {
         this.$message({
           message: "已经是第一位，不能再上移了哦",
-          type: "info"
+          type: "info",
         });
       }
     },
@@ -623,7 +635,7 @@ export default {
       } else {
         this.$message({
           message: "已经是最后一位，不能再下移了哦",
-          type: "info"
+          type: "info",
         });
       }
     },
@@ -646,7 +658,7 @@ export default {
     singleDataOptionDialogAddSingleData() {
       this.singleDataOptionDialog.data.push({
         label: "",
-        value: ""
+        value: "",
       });
     },
     //选择器组件提交
@@ -663,7 +675,7 @@ export default {
         if (res["code"] !== 200) {
           this.$message({
             message: res["msg"],
-            type: "error"
+            type: "error",
           });
         } else {
           this.cloneSettings.script.data = res.data;
@@ -673,7 +685,7 @@ export default {
         console.log(e);
         this.$message({
           message: e.response.data.msg,
-          type: "error"
+          type: "error",
         });
       }
     },
@@ -681,7 +693,7 @@ export default {
       this.edit.formData = row.detail;
       this.$message({
         message: "成功",
-        type: "success"
+        type: "success",
       });
     },
     //编辑脚本提交
@@ -696,11 +708,11 @@ export default {
           start_script: this.edit.start_script,
           type: Number(this.edit.type),
           detail: this.edit.formData,
-          user_id: this.user_id
+          user_id: this.user_id,
         });
         this.$message({
           message: res.msg,
-          type: "success"
+          type: "success",
         });
         this.edit.visible = false;
         this.$emit("done");
@@ -708,12 +720,12 @@ export default {
         console.log(e);
         this.$message({
           message: e.response.data.msg,
-          type: "error"
+          type: "error",
         });
       }
       this.edit.buttonLoading = false;
-    }
-  }
+    },
+  },
 };
 </script>
 
