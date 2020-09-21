@@ -145,6 +145,7 @@ install(REQUIREMENTS_PATH)
 import pymysql
 import configparser
 
+print('接下来，我们将填写一些配置，所有的配置将仅保存在您的本地，如有顾虑，可以对代码进行审查')
 admin_email = input('[第1步/共8步]请输入管理员邮箱，用于接收推送邮件:')
 print(admin_email)
 print('')
@@ -160,7 +161,7 @@ print('')
 mail_sender_address = input('[第5步/共8步]请输入用于发送的邮件地址:')
 print(mail_sender_address)
 print('')
-mail_sender_password = input('[第6步/共8步]请输入发送的邮件地址的口令(非邮箱密码):')
+mail_sender_password = input('[第6步/共8步]请输入发送的邮件地址的口令(非邮箱密码，qq邮箱获取方法见：https://service.mail.qq.com/cgi-bin/help?subtype=1&id=28&no=166):')
 print(mail_sender_password)
 print('')
 mysql_password = input('[第7步/共8步]请输入本地MySQL的root账号的密码:')
