@@ -1,6 +1,6 @@
 <template>
   <div class="weather">
-    <el-main style="height: 315px; padding-bottom: 0px;">
+    <el-main class="noPadding" style="height: 300px;">
       <el-carousel height="250px" trigger="click" interval="5000" indicator-position="outside">
         <el-carousel-item v-for="weather in weathers" :key="weather">
           <el-row type="flex" justify="center" ref="weatherForm" :model="weather.weatherForm">

@@ -1,6 +1,6 @@
 <template>
   <section>
-    <el-main style="height: 315px; padding-bottom: 0px;">
+    <el-main class="noPadding" style="height: 300px;">
       <el-row type="flex" justify="center">
           <div class="widget-label">便签</div>
       </el-row>

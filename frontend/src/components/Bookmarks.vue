@@ -1,6 +1,6 @@
 <template>
   <div class="bookmarks-main">
-    <el-main style="height: 315px; padding-bottom: 0px;">
+    <el-main class="noPadding" style="height: 300px;">
       <el-row type="flex" justify="center">
           <div class="widget-label">书签</div>
       </el-row>
