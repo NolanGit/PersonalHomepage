@@ -1,6 +1,6 @@
 <template>
   <div class="gold-main">
-    <el-main style="height: 280px;">
+    <el-main style="height: 260px;">
       <el-row type="flex" justify="center">
         <div class="widget-label">黄金价格</div>
       </el-row>

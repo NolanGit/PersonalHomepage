@@ -1,6 +1,6 @@
 <template>
   <section>
-    <el-main style="height: 280px;">
+    <el-main style="height: 260px;">
       <el-row type="flex" justify="center">
         <div class="widget-label">APP</div>
       </el-row>

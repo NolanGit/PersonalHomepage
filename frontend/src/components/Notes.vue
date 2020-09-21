@@ -1,10 +1,8 @@
 <template>
   <section>
-    <el-main style="height: 280px;">
+    <el-main style="height: 260px;">
       <el-row type="flex" justify="center">
-        <div>
           <div class="widget-label">便签</div>
-        </div>
       </el-row>
       <el-tabs
         tab-position="left"
