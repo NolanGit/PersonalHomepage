@@ -28,6 +28,7 @@
           <el-card
             shadow="hover"
             v-show="singleWidget.show"
+            style="height: 370px;"
             class="margin_left-medium margin_right-medium"
           >
             <weather
