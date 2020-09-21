@@ -40,7 +40,7 @@
         <p class="notesText">{{singleNotesData.content}}</p>
       </el-tab-pane>
     </el-tabs>
-    <el-row type="flex" justify="center" v-show="user_id!=0">
+    <el-footer height="50px" style="justify-content: center; display: flex;" v-show="user_id != 0">
       <WidgetButton
         :user_id="user_id"
         :widget_id="widget_id"
@@ -48,7 +48,7 @@
         @add="add()"
         @revert="revertClicked()"
       ></WidgetButton>
-    </el-row>
+    </el-footer>
 
     <!-- 编辑dialog -->
     <el-dialog :title="edit.dialogTitle" :visible.sync="edit.visible" :close-on-click-modal="false">

@@ -15,7 +15,7 @@
       </el-carousel-item>
     </el-carousel>
 
-    <el-row v-show="user_id != 0">
+    <el-footer height="50px" style="justify-content: center; display: flex;" v-show="user_id != 0">
       <WidgetButton
         :user_id="user_id"
         :widget_id="widget_id"
@@ -24,7 +24,7 @@
         @sort="sort()"
         @notify="notify()"
       ></WidgetButton>
-    </el-row>
+    </el-footer>
 
     <!--编辑界面-->
     <el-dialog :title="edit.title" :visible.sync="edit.visible" width="40%">
@@ -84,7 +84,7 @@ import { deepClone } from "../js/common";
 const api = {
   get: "/app/get",
   add: "/app/add",
-  edit: "/app/edit"
+  edit: "/app/edit",
 };
 
 export default {
@@ -93,25 +93,25 @@ export default {
     user_id: Number,
     widget_id: Number,
     buttons: Array,
-    flush: Boolean
+    flush: Boolean,
   },
   components: {
     SlickSort,
     WidgetButton,
-    PushEdit
+    PushEdit,
   },
   watch: {
     flush(newVal, oldVal) {
       if (newVal) {
         this.appGet();
       }
-    }
+    },
   },
   data() {
     return {
       appSortEdit: {
         visible: false,
-        list: []
+        list: [],
       },
       notifyVisible: false,
       appRawData: [],
@@ -123,9 +123,9 @@ export default {
           index: "",
           name: "",
           url: "",
-          expect_price: 0
-        }
-      }
+          expect_price: 0,
+        },
+      },
     };
   },
   methods: {
@@ -151,7 +151,7 @@ export default {
     async appGet() {
       try {
         const { data: res } = await axios.post(api.get, {
-          user_id: this.user_id
+          user_id: this.user_id,
         });
         this.appRawData = res.data;
         const STEP = 4; // 每页几行
@@ -170,7 +170,7 @@ export default {
         console.log(e);
         this.$message({
           message: e.response.data.msg,
-          type: "error"
+          type: "error",
         });
       }
     },
@@ -181,7 +181,7 @@ export default {
             user_id: this.user_id,
             name: this.edit.form.name,
             url: this.edit.form.url,
-            expect_price: this.edit.form.expect_price
+            expect_price: this.edit.form.expect_price,
           });
           this.appGet();
           this.edit.visible = false;
@@ -189,7 +189,7 @@ export default {
           console.log(e);
           this.$message({
             message: e.response.data.msg,
-            type: "error"
+            type: "error",
           });
         }
       } else if ((this.edit.title = "编辑App")) {
@@ -207,11 +207,11 @@ export default {
       try {
         const { data: res } = await axios.post(api.edit, {
           apps: list,
-          user_id: this.user_id
+          user_id: this.user_id,
         });
         this.$message({
           message: res["msg"],
-          type: "success"
+          type: "success",
         });
         this.appSortEdit.visible = false;
         this.appGet();
@@ -219,10 +219,10 @@ export default {
         console.log(e);
         this.$message({
           message: e.response.data.msg,
-          type: "error"
+          type: "error",
         });
       }
-    }
+    },
   },
   mounted() {
     this.appGet();
@@ -230,7 +230,7 @@ export default {
   },
   beforeDestroy() {
     window.clearInterval(this.timer);
-  }
+  },
 };
 </script>
 
