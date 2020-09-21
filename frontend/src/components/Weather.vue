@@ -1,62 +1,64 @@
 <template>
   <div class="weather">
-    <el-carousel height="250px" trigger="click" interval="5000" indicator-position="outside">
-      <el-carousel-item v-for="weather in weathers" :key="weather">
-        <el-row type="flex" justify="center" ref="weatherForm" :model="weather.weatherForm">
-          <div>
-            <div class="location">{{ weather.location }}</div>
-          </div>
-        </el-row>
-        <el-row type="flex" justify="center" ref="weatherForm" :model="weather.weatherForm">
-          <td>
-            <el-row type="flex" justify="left">
-              <td class="todayWeatherIcon">
-                <i :class="weather.iconfontWeatherClass" style="font-size:100px;"></i>
-              </td>
-              <td class="todayWeatherText">
-                <div class="todayWeatherTextDiv">{{ weather.weatherForm.tmp }}°C</div>
-              </td>
-            </el-row>
+    <el-main style="height: 280px;">
+      <el-carousel height="250px" trigger="click" interval="5000" indicator-position="outside">
+        <el-carousel-item v-for="weather in weathers" :key="weather">
+          <el-row type="flex" justify="center" ref="weatherForm" :model="weather.weatherForm">
+            <div>
+              <div class="location">{{ weather.location }}</div>
+            </div>
+          </el-row>
+          <el-row type="flex" justify="center" ref="weatherForm" :model="weather.weatherForm">
+            <td>
+              <el-row type="flex" justify="left">
+                <td class="todayWeatherIcon">
+                  <i :class="weather.iconfontWeatherClass" style="font-size:100px;"></i>
+                </td>
+                <td class="todayWeatherText">
+                  <div class="todayWeatherTextDiv">{{ weather.weatherForm.tmp }}°C</div>
+                </td>
+              </el-row>
 
-            <el-row type="flex" justify="left">
-              <td class="todayAqiIcon">
-                <i :class="weather.iconfontAqiClass" style="font-size:50px;"></i>
-              </td>
-              <td class="todayAqiText">
-                <div class="todayAqiTextDiv">AQI:{{ weather.weatherForm.aqi }}</div>
-              </td>
-            </el-row>
+              <el-row type="flex" justify="left">
+                <td class="todayAqiIcon">
+                  <i :class="weather.iconfontAqiClass" style="font-size:50px;"></i>
+                </td>
+                <td class="todayAqiText">
+                  <div class="todayAqiTextDiv">AQI:{{ weather.weatherForm.aqi }}</div>
+                </td>
+              </el-row>
 
-            <el-row type="flex" justify="left">
-              <td class="tomorrowWeatherIcon">
-                <i :class="weather.iconfontTomorrowWeatherClass" style="font-size:50px;"></i>
-              </td>
-              <td class="tomorrowWeatherText">
-                <div class="tomorrowWeatherTextDiv">
-                  明日:{{ weather.weatherForm.tomorrow_tmp_min }}°C-{{
-                  weather.weatherForm.tomorrow_tmp_max
+              <el-row type="flex" justify="left">
+                <td class="tomorrowWeatherIcon">
+                  <i :class="weather.iconfontTomorrowWeatherClass" style="font-size:50px;"></i>
+                </td>
+                <td class="tomorrowWeatherText">
+                  <div class="tomorrowWeatherTextDiv">
+                    明日:{{ weather.weatherForm.tomorrow_tmp_min }}°C-{{
+                    weather.weatherForm.tomorrow_tmp_max
+                    }}°C
+                  </div>
+                </td>
+              </el-row>
+            </td>
+            <div
+              style="float:left;margin-top: 30px;width:1px;height: 175px; background: darkgray;margin-left: 25px;margin-right: 25px;"
+            ></div>
+            <div class="weatherSideText">
+              <td>
+                <div class="weatherSideTextDetail">
+                  今日: {{ weather.weatherForm.tmp_min }}°C-{{
+                  weather.weatherForm.tmp_max
                   }}°C
                 </div>
+                <div class="weatherSideTextDetail">风力: {{ weather.weatherForm.wind }}</div>
+                <div class="weatherSideTextDetail">体感: {{ weather.weatherForm.fl }}°C</div>
               </td>
-            </el-row>
-          </td>
-          <div
-            style="float:left;margin-top: 30px;width:1px;height: 175px; background: darkgray;margin-left: 25px;margin-right: 25px;"
-          ></div>
-          <div class="weatherSideText">
-            <td>
-              <div class="weatherSideTextDetail">
-                今日: {{ weather.weatherForm.tmp_min }}°C-{{
-                weather.weatherForm.tmp_max
-                }}°C
-              </div>
-              <div class="weatherSideTextDetail">风力: {{ weather.weatherForm.wind }}</div>
-              <div class="weatherSideTextDetail">体感: {{ weather.weatherForm.fl }}°C</div>
-            </td>
-          </div>
-        </el-row>
-      </el-carousel-item>
-    </el-carousel>
+            </div>
+          </el-row>
+        </el-carousel-item>
+      </el-carousel>
+    </el-main>
 
     <el-footer height="50px" style="justify-content: center; display: flex;" v-show="user_id != 0">
       <WidgetButton

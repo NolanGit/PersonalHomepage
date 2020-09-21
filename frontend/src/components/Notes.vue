@@ -1,45 +1,47 @@
 <template>
   <section>
-    <el-row type="flex" justify="center">
-      <div>
-        <div class="widget-label">便签</div>
-      </div>
-    </el-row>
-    <el-tabs
-      tab-position="left"
-      class="scrollbar-div"
-      style="max-height: 210px; min-height: 210px;"
-      v-model="activeNote"
-    >
-      <el-tab-pane
-        v-for="singleNotesData in notesData"
-        :key="singleNotesData"
-        :label="singleNotesData.name"
-        :name="singleNotesData.token"
-        style="padding-left:0px;"
+    <el-main style="height: 280px;">
+      <el-row type="flex" justify="center">
+        <div>
+          <div class="widget-label">便签</div>
+        </div>
+      </el-row>
+      <el-tabs
+        tab-position="left"
+        class="scrollbar-div"
+        style="max-height: 210px; min-height: 210px;"
+        v-model="activeNote"
       >
-        <span slot="label">
-          <el-dropdown
-            @command="actionClicked"
-            size="small"
-            v-show="activeNote==singleNotesData.token"
-            show-timeout="50"
-            placement="bottom"
-          >
-            <span class="el-dropdown-link">
-              <i class="el-icon-more" style="margin-right: 4px;"></i>
-            </span>
-            <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item style="color:#409EFF" command="edit" icon="el-icon-edit">编辑</el-dropdown-item>
-              <el-dropdown-item style="color:#E6A23C" command="bell" icon="el-icon-bell">提醒</el-dropdown-item>
-              <el-dropdown-item style="color:#F56C6C" command="delete" icon="el-icon-delete">删除</el-dropdown-item>
-            </el-dropdown-menu>
-          </el-dropdown>
-          {{singleNotesData.name}}
-        </span>
-        <p class="notesText">{{singleNotesData.content}}</p>
-      </el-tab-pane>
-    </el-tabs>
+        <el-tab-pane
+          v-for="singleNotesData in notesData"
+          :key="singleNotesData"
+          :label="singleNotesData.name"
+          :name="singleNotesData.token"
+          style="padding-left:0px;"
+        >
+          <span slot="label">
+            <el-dropdown
+              @command="actionClicked"
+              size="small"
+              v-show="activeNote==singleNotesData.token"
+              show-timeout="50"
+              placement="bottom"
+            >
+              <span class="el-dropdown-link">
+                <i class="el-icon-more" style="margin-right: 4px;"></i>
+              </span>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item style="color:#409EFF" command="edit" icon="el-icon-edit">编辑</el-dropdown-item>
+                <el-dropdown-item style="color:#E6A23C" command="bell" icon="el-icon-bell">提醒</el-dropdown-item>
+                <el-dropdown-item style="color:#F56C6C" command="delete" icon="el-icon-delete">删除</el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
+            {{singleNotesData.name}}
+          </span>
+          <p class="notesText">{{singleNotesData.content}}</p>
+        </el-tab-pane>
+      </el-tabs>
+    </el-main>
     <el-footer height="50px" style="justify-content: center; display: flex;" v-show="user_id != 0">
       <WidgetButton
         :user_id="user_id"

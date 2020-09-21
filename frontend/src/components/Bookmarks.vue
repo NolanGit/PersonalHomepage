@@ -1,33 +1,33 @@
 <template>
   <div class="bookmarks-main">
-    <el-row type="flex" justify="center">
-      <div>
-        <div class="widget-label">书签</div>
-      </div>
-    </el-row>
+    <el-main style="height: 280px;">
+      <el-row type="flex" justify="center">
+          <div class="widget-label">书签</div>
+      </el-row>
 
-    <div class="bookmarks-data-row-main">
-      <el-carousel height="198px" trigger="click" :autoplay="false" indicator-position="outside">
-        <el-carousel-item v-for="bookmarksSuite in bookmarksSuites" :key="bookmarksSuite">
-          <el-row
-            class="margin_bottom-medium"
-            v-for="bookmarksArray in bookmarksSuite"
-            :key="bookmarksArray"
-          >
-            <el-col :span="6" v-for="bookmark in bookmarksArray" :key="bookmark">
-              <el-button
-                class="bookmarks-main-button"
-                size="small"
-                @click="bookmarksClicked(bookmark.url)"
-              >
-                <i :class="bookmark.icon" style="margin-right: 5px; font-size: 15px"></i>
-                {{bookmark.name}}
-              </el-button>
-            </el-col>
-          </el-row>
-        </el-carousel-item>
-      </el-carousel>
-    </div>
+      <div class="bookmarks-data-row-main">
+        <el-carousel height="198px" trigger="click" :autoplay="false" indicator-position="outside">
+          <el-carousel-item v-for="bookmarksSuite in bookmarksSuites" :key="bookmarksSuite">
+            <el-row
+              class="margin_bottom-medium"
+              v-for="bookmarksArray in bookmarksSuite"
+              :key="bookmarksArray"
+            >
+              <el-col :span="6" v-for="bookmark in bookmarksArray" :key="bookmark">
+                <el-button
+                  class="bookmarks-main-button"
+                  size="small"
+                  @click="bookmarksClicked(bookmark.url)"
+                >
+                  <i :class="bookmark.icon" style="margin-right: 5px; font-size: 15px"></i>
+                  {{bookmark.name}}
+                </el-button>
+              </el-col>
+            </el-row>
+          </el-carousel-item>
+        </el-carousel>
+      </div>
+    </el-main>
 
     <el-footer height="50px" style="justify-content: center; display: flex;" v-show="user_id != 0">
       <WidgetButton

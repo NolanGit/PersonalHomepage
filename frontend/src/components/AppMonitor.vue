@@ -1,19 +1,19 @@
 <template>
   <section>
-    <el-row type="flex" justify="center">
-      <div>
+    <el-main style="height: 280px;">
+      <el-row type="flex" justify="center">
         <div class="widget-label">APP</div>
-      </div>
-    </el-row>
-    <el-carousel height="180px" trigger="click" interval="5000" indicator-position="outside">
-      <el-carousel-item v-for="appData in appSuite" :key="appData">
-        <el-table :data="appData" style="width: 100%" size="mini">
-          <el-table-column prop="name" label="名称"></el-table-column>
-          <el-table-column prop="price" label="当前价格" width="80"></el-table-column>
-          <el-table-column prop="update_time" label="更新时间" width="180"></el-table-column>
-        </el-table>
-      </el-carousel-item>
-    </el-carousel>
+      </el-row>
+      <el-carousel height="180px" trigger="click" interval="5000" indicator-position="outside">
+        <el-carousel-item v-for="appData in appSuite" :key="appData">
+          <el-table :data="appData" style="width: 100%" size="mini">
+            <el-table-column prop="name" label="名称"></el-table-column>
+            <el-table-column prop="price" label="当前价格" width="80"></el-table-column>
+            <el-table-column prop="update_time" label="更新时间" width="180"></el-table-column>
+          </el-table>
+        </el-carousel-item>
+      </el-carousel>
+    </el-main>
 
     <el-footer height="50px" style="justify-content: center; display: flex;" v-show="user_id != 0">
       <WidgetButton

@@ -1,17 +1,17 @@
 <template>
   <div class="gold-main">
-    <el-row type="flex" justify="center">
-      <div>
+    <el-main style="height: 280px;">
+      <el-row type="flex" justify="center">
         <div class="widget-label">黄金价格</div>
-      </div>
-    </el-row>
-    <ve-line
-      height="228px"
-      :settings="chartSettings"
-      :data="chartData"
-      ref="chart"
-      :legend-visible="false"
-    ></ve-line>
+      </el-row>
+      <ve-line
+        height="228px"
+        :settings="chartSettings"
+        :data="chartData"
+        ref="chart"
+        :legend-visible="false"
+      ></ve-line>
+    </el-main>
     <el-footer height="50px" style="justify-content: center; display: flex;" v-show="user_id != 0">
       <WidgetButton
         :user_id="user_id"
