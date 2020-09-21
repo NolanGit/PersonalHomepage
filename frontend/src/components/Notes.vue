@@ -40,7 +40,7 @@
         </el-tab-pane>
       </el-tabs>
     </el-main>
-    <el-footer style="justify-content: center; display: flex;" v-show="user_id != 0">
+    <el-footer height="32px" style="justify-content: center; display: flex;" v-show="user_id != 0">
       <WidgetButton
         :user_id="user_id"
         :widget_id="widget_id"
