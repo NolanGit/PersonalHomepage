@@ -1,6 +1,6 @@
 <template>
   <section>
-    <el-main style="height: 315px;">
+    <el-main style="height: 315px; padding-bottom: 0px;">
       <el-row type="flex" justify="center">
           <div class="widget-label">便签</div>
       </el-row>
@@ -40,7 +40,7 @@
         </el-tab-pane>
       </el-tabs>
     </el-main>
-    <el-footer height="50px" style="justify-content: center; display: flex;" v-show="user_id != 0">
+    <el-footer height="40px" style="justify-content: center; display: flex;" v-show="user_id != 0">
       <WidgetButton
         :user_id="user_id"
         :widget_id="widget_id"

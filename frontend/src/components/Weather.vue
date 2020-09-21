@@ -1,6 +1,6 @@
 <template>
   <div class="weather">
-    <el-main style="height: 315px;">
+    <el-main style="height: 315px; padding-bottom: 0px;">
       <el-carousel height="250px" trigger="click" interval="5000" indicator-position="outside">
         <el-carousel-item v-for="weather in weathers" :key="weather">
           <el-row type="flex" justify="center" ref="weatherForm" :model="weather.weatherForm">
@@ -60,7 +60,7 @@
       </el-carousel>
     </el-main>
 
-    <el-footer height="50px" style="justify-content: center; display: flex;" v-show="user_id != 0">
+    <el-footer height="40px" style="justify-content: center; display: flex;" v-show="user_id != 0">
       <WidgetButton
         :user_id="user_id"
         :widget_id="widget_id"
