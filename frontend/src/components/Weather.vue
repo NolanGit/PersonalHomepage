@@ -58,7 +58,7 @@
       </el-carousel-item>
     </el-carousel>
 
-    <el-row type="flex" justify="center" v-show="user_id != 0">
+    <el-footer height="50px" style="justify-content: center; display: flex;" v-show="user_id != 0">
       <WidgetButton
         :user_id="user_id"
         :widget_id="widget_id"
@@ -67,7 +67,7 @@
         @sort="sort()"
         @notify="notify()"
       ></WidgetButton>
-    </el-row>
+    </el-footer>
 
     <!--编辑顺序界面-->
     <el-dialog title="编辑地区" :visible.sync="locationEdit.visible" width="40%">
