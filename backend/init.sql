@@ -399,11 +399,11 @@ INSERT INTO `privilege_role` (`id`, `privilege_id`, `role_id`, `is_valid`) VALUE
 INSERT INTO `privilege_role` (`id`, `privilege_id`, `role_id`, `is_valid`) VALUES ('71', '61', '1', '1');
 INSERT INTO `user` (`id`, `name`, `login_name`, `password`, `stable_salt`, `salt`, `salt_expire_time`, `role_id`, `email`, `wechat_key`, `is_valid`, `create_time`, `update_time`) VALUES (1, '管理员', 'admin', '71f11204b9cbf6ef09e83e43dda7399e', 'fndTb5mWFA6JYtdW1AKJvQSzZ3ERpVt0YupukTjI', 'SX2JQywwb13zhlt7uPPXh8Bne6V40JL2RwD3L6Wh', '2019-10-28 11:35:37', 1, 'my_email@my_email.cn', 'my_wechat_key', 1, '2019-08-21 16:46:21.981898', '2019-08-21 16:46:21.981898');
 INSERT INTO `role` (`id`, `name`, `is_valid`, `update_time`) VALUES ('1', '管理员', '1', '2019-10-28 11:35:37');
-INSERT INTO `widget` (`id`, `name`, `is_valid`, `span`, `buttons`, `auto_update`, `update_time`) VALUES ('1', 'weather', '1', '8', '[\'add\', \'sort\']', '1800000', '2019-10-28 11:35:37');
-INSERT INTO `widget` (`id`, `name`, `is_valid`, `span`, `buttons`, `auto_update`, `update_time`) VALUES ('2', 'bookmarks', '1', '8', '[\'add\', \'sort\']', '0', '2019-10-28 11:35:37');
-INSERT INTO `widget` (`id`, `name`, `is_valid`, `span`, `buttons`, `auto_update`, `update_time`) VALUES ('3', 'app', '1', '8', '[\'add\', \'sort\', \'notify\']', '1800000', '2019-10-28 11:35:37');
-INSERT INTO `widget` (`id`, `name`, `is_valid`, `span`, `buttons`, `auto_update`, `update_time`) VALUES ('4', 'gold', '1', '8', '[\'setting\', \'notify\']', '1800000', '2019-10-28 11:35:37');
-INSERT INTO `widget` (`id`, `name`, `is_valid`, `span`, `buttons`, `auto_update`, `update_time`) VALUES ('5', 'notes', '1', '8', '[\'add\', \'revert\']', '180000', '2019-10-28 11:35:37');
+INSERT INTO `widget` (`id`, `name`, `name_zh`, `is_valid`, `span`, `buttons`, `auto_update`, `update_time`) VALUES ('1', 'weather', '天气', '1', '8', '[\'add\', \'sort\', \'notify\']', '1800000', '2019-10-28 11:35:37');
+INSERT INTO `widget` (`id`, `name`, `name_zh`, `is_valid`, `span`, `buttons`, `auto_update`, `update_time`) VALUES ('2', 'bookmarks', '书签', '1', '8', '[\'add\', \'sort\']', '0', '2019-10-28 11:35:37');
+INSERT INTO `widget` (`id`, `name`, `name_zh`, `is_valid`, `span`, `buttons`, `auto_update`, `update_time`) VALUES ('3', 'app', 'AppStore监控', '1', '8', '[\'add\', \'sort\', \'notify\']', '1800000', '2019-10-28 11:35:37');
+INSERT INTO `widget` (`id`, `name`, `name_zh`, `is_valid`, `span`, `buttons`, `auto_update`, `update_time`) VALUES ('4', 'gold', '黄金价格', '1', '8', '[\'setting\', \'notify\']', '1800000', '2019-10-28 11:35:37');
+INSERT INTO `widget` (`id`, `name`, `name_zh`, `is_valid`, `span`, `buttons`, `auto_update`, `update_time`) VALUES ('5', 'notes', '便签', '1', '8', '[\'add\',\'revert\']', '180000', '2019-10-28 11:35:37');
 INSERT INTO `widget` (`id`, `name`, `name_zh`, `is_valid`, `span`, `buttons`, `auto_update`, `update_time`) VALUES ('6', 'translator', '翻译', '1', '8', '[]', '0', '2019-10-28 11:35:37');
 INSERT INTO `widget_suite` (`id`, `name`, `user_id`, `order`, `is_valid`, `detail`, `update_time`) VALUES ('1', '基本组件', '0', '1', '1', '[1,2,4]', '2019-10-28 11:35:37');
 INSERT INTO `widget_suite` (`id`, `name`, `user_id`, `order`, `is_valid`, `detail`, `update_time`) VALUES ('2', '常用', '1', '1', '1', '[1,2,6]', '2019-10-28 11:35:37');

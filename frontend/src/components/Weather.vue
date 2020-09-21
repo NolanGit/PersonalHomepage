@@ -1,64 +1,66 @@
 <template>
   <div class="weather">
-    <el-carousel height="250px" trigger="click" interval="5000" indicator-position="outside">
-      <el-carousel-item v-for="weather in weathers" :key="weather">
-        <el-row type="flex" justify="center" ref="weatherForm" :model="weather.weatherForm">
-          <div>
-            <div class="location">{{ weather.location }}</div>
-          </div>
-        </el-row>
-        <el-row type="flex" justify="center" ref="weatherForm" :model="weather.weatherForm">
-          <td>
-            <el-row type="flex" justify="left">
-              <td class="todayWeatherIcon">
-                <i :class="weather.iconfontWeatherClass" style="font-size:100px;"></i>
-              </td>
-              <td class="todayWeatherText">
-                <div class="todayWeatherTextDiv">{{ weather.weatherForm.tmp }}°C</div>
-              </td>
-            </el-row>
+    <el-main class="noPadding" style="height: 300px;">
+      <el-carousel height="250px" trigger="click" interval="5000" indicator-position="outside">
+        <el-carousel-item v-for="weather in weathers" :key="weather">
+          <el-row type="flex" justify="center" ref="weatherForm" :model="weather.weatherForm">
+            <div>
+              <div class="location">{{ weather.location }}</div>
+            </div>
+          </el-row>
+          <el-row type="flex" justify="center" ref="weatherForm" :model="weather.weatherForm">
+            <td>
+              <el-row type="flex" justify="left">
+                <td class="todayWeatherIcon">
+                  <i :class="weather.iconfontWeatherClass" style="font-size:100px;"></i>
+                </td>
+                <td class="todayWeatherText">
+                  <div class="todayWeatherTextDiv">{{ weather.weatherForm.tmp }}°C</div>
+                </td>
+              </el-row>
 
-            <el-row type="flex" justify="left">
-              <td class="todayAqiIcon">
-                <i :class="weather.iconfontAqiClass" style="font-size:50px;"></i>
-              </td>
-              <td class="todayAqiText">
-                <div class="todayAqiTextDiv">AQI:{{ weather.weatherForm.aqi }}</div>
-              </td>
-            </el-row>
+              <el-row type="flex" justify="left">
+                <td class="todayAqiIcon">
+                  <i :class="weather.iconfontAqiClass" style="font-size:50px;"></i>
+                </td>
+                <td class="todayAqiText">
+                  <div class="todayAqiTextDiv">AQI:{{ weather.weatherForm.aqi }}</div>
+                </td>
+              </el-row>
 
-            <el-row type="flex" justify="left">
-              <td class="tomorrowWeatherIcon">
-                <i :class="weather.iconfontTomorrowWeatherClass" style="font-size:50px;"></i>
-              </td>
-              <td class="tomorrowWeatherText">
-                <div class="tomorrowWeatherTextDiv">
-                  明日:{{ weather.weatherForm.tomorrow_tmp_min }}°C-{{
-                  weather.weatherForm.tomorrow_tmp_max
+              <el-row type="flex" justify="left">
+                <td class="tomorrowWeatherIcon">
+                  <i :class="weather.iconfontTomorrowWeatherClass" style="font-size:50px;"></i>
+                </td>
+                <td class="tomorrowWeatherText">
+                  <div class="tomorrowWeatherTextDiv">
+                    明日:{{ weather.weatherForm.tomorrow_tmp_min }}°C-{{
+                    weather.weatherForm.tomorrow_tmp_max
+                    }}°C
+                  </div>
+                </td>
+              </el-row>
+            </td>
+            <div
+              style="float:left;margin-top: 30px;width:1px;height: 175px; background: darkgray;margin-left: 25px;margin-right: 25px;"
+            ></div>
+            <div class="weatherSideText">
+              <td>
+                <div class="weatherSideTextDetail">
+                  今日: {{ weather.weatherForm.tmp_min }}°C-{{
+                  weather.weatherForm.tmp_max
                   }}°C
                 </div>
+                <div class="weatherSideTextDetail">风力: {{ weather.weatherForm.wind }}</div>
+                <div class="weatherSideTextDetail">体感: {{ weather.weatherForm.fl }}°C</div>
               </td>
-            </el-row>
-          </td>
-          <div
-            style="float:left;margin-top: 30px;width:1px;height: 175px; background: darkgray;margin-left: 25px;margin-right: 25px;"
-          ></div>
-          <div class="weatherSideText">
-            <td>
-              <div class="weatherSideTextDetail">
-                今日: {{ weather.weatherForm.tmp_min }}°C-{{
-                weather.weatherForm.tmp_max
-                }}°C
-              </div>
-              <div class="weatherSideTextDetail">风力: {{ weather.weatherForm.wind }}</div>
-              <div class="weatherSideTextDetail">体感: {{ weather.weatherForm.fl }}°C</div>
-            </td>
-          </div>
-        </el-row>
-      </el-carousel-item>
-    </el-carousel>
+            </div>
+          </el-row>
+        </el-carousel-item>
+      </el-carousel>
+    </el-main>
 
-    <el-row type="flex" justify="center" v-show="user_id != 0">
+    <el-footer height="31px" style="justify-content: center; display: flex;" v-show="user_id != 0">
       <WidgetButton
         :user_id="user_id"
         :widget_id="widget_id"
@@ -67,7 +69,7 @@
         @sort="sort()"
         @notify="notify()"
       ></WidgetButton>
-    </el-row>
+    </el-footer>
 
     <!--编辑顺序界面-->
     <el-dialog title="编辑地区" :visible.sync="locationEdit.visible" width="40%">
@@ -94,7 +96,7 @@
     </el-dialog>
 
     <!-- 推送dialog -->
-    <el-dialog title="天气预警" :visible.sync="notifyForm.visible">
+    <el-dialog title="天气异常提醒" :visible.sync="notifyForm.visible">
       <el-row style="text-align: left;">
         <el-button class="margin_bottom-medium" size="small" @click="addNotifyLocation()">添加</el-button>
       </el-row>
@@ -135,7 +137,7 @@
                 <el-checkbox-group v-model="notifyLocation.notify_type_ch">
                   <el-checkbox value="雨雪" label="雨雪"></el-checkbox>
                   <el-checkbox value="空气" label="空气"></el-checkbox>
-                  <el-checkbox value="温度" label="温度"></el-checkbox>
+                  <el-checkbox value="温度骤变" label="温度骤变"></el-checkbox>
                 </el-checkbox-group>
               </el-col>
             </el-row>
@@ -626,7 +628,7 @@ export default {
             return "空气";
           }
           if (x == "temperature") {
-            return "温度";
+            return "温度骤变";
           }
         }
         for (let x = 0; x < res.data.length; x++) {
@@ -651,7 +653,7 @@ export default {
         if (x == "空气") {
           return "air";
         }
-        if (x == "温度") {
+        if (x == "温度骤变") {
           return "temperature";
         }
       }

@@ -1,6 +1,6 @@
 // widget的按钮区域
 <template>
-  <el-row type="flex" justify="center" class="margin_top-medium">
+  <el-row type="flex" justify="center">
     <el-tooltip class="item" effect="dark" content="新增" placement="top">
       <el-button
         class="margin_left-mini margin_right-mini"

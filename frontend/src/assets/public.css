@@ -196,6 +196,13 @@
     margin-bottom: 0px;
 }
 
+.noPadding {
+    padding-left: 0px;
+    padding-top: 0px;
+    padding-right: 0px;
+    padding-bottom: 0px;
+}
+
 .padding-right-19 {
     padding-right: 19px;
 }

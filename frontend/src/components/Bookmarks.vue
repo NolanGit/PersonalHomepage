@@ -1,35 +1,35 @@
 <template>
   <div class="bookmarks-main">
-    <el-row type="flex" justify="center">
-      <div>
-        <div class="widget-label">书签</div>
+    <el-main class="noPadding" style="height: 300px;">
+      <el-row type="flex" justify="center">
+          <div class="widget-label">书签</div>
+      </el-row>
+
+      <div class="bookmarks-data-row-main">
+        <el-carousel height="198px" trigger="click" :autoplay="false" indicator-position="outside">
+          <el-carousel-item v-for="bookmarksSuite in bookmarksSuites" :key="bookmarksSuite">
+            <el-row
+              class="margin_bottom-medium"
+              v-for="bookmarksArray in bookmarksSuite"
+              :key="bookmarksArray"
+            >
+              <el-col :span="6" v-for="bookmark in bookmarksArray" :key="bookmark">
+                <el-button
+                  class="bookmarks-main-button"
+                  size="small"
+                  @click="bookmarksClicked(bookmark.url)"
+                >
+                  <i :class="bookmark.icon" style="margin-right: 5px; font-size: 15px"></i>
+                  {{bookmark.name}}
+                </el-button>
+              </el-col>
+            </el-row>
+          </el-carousel-item>
+        </el-carousel>
       </div>
-    </el-row>
+    </el-main>
 
-    <div class="bookmarks-data-row-main">
-      <el-carousel height="198px" trigger="click" :autoplay="false" indicator-position="outside">
-        <el-carousel-item v-for="bookmarksSuite in bookmarksSuites" :key="bookmarksSuite">
-          <el-row
-            class="margin_bottom-medium"
-            v-for="bookmarksArray in bookmarksSuite"
-            :key="bookmarksArray"
-          >
-            <el-col :span="6" v-for="bookmark in bookmarksArray" :key="bookmark">
-              <el-button
-                class="bookmarks-main-button"
-                size="small"
-                @click="bookmarksClicked(bookmark.url)"
-              >
-                <i :class="bookmark.icon" style="margin-right: 5px; font-size: 15px"></i>
-                {{bookmark.name}}
-              </el-button>
-            </el-col>
-          </el-row>
-        </el-carousel-item>
-      </el-carousel>
-    </div>
-
-    <el-row type="flex" justify="center" v-show="user_id!=0">
+    <el-footer height="31px" style="justify-content: center; display: flex;" v-show="user_id != 0">
       <WidgetButton
         :user_id="user_id"
         :widget_id="widget_id"
@@ -38,7 +38,7 @@
         @sort="sort()"
         @notify="notify()"
       ></WidgetButton>
-    </el-row>
+    </el-footer>
 
     <!--编辑界面-->
     <el-dialog
@@ -101,19 +101,19 @@ const api = {
   get: "/bookmarks/get",
   bookmarksAdd: "/bookmarks/bookmarksAdd",
   bookmarksEdit: "/bookmarks/bookmarksEdit",
-  icon: "/icon"
+  icon: "/icon",
 };
 export default {
   name: "bookmarks",
   props: {
     user_id: Number,
     widget_id: Number,
-    buttons: Array
+    buttons: Array,
   },
   components: {
     IconComponet,
     SlickSort,
-    WidgetButton
+    WidgetButton,
   },
   data() {
     return {
@@ -121,19 +121,19 @@ export default {
       bookmarksSuites: [], //分组后的数据，原始数据
       bookmarksEdit: {
         visible: false,
-        list: []
+        list: [],
       },
       bookmarksEditForm: {
         visible: false,
         name: "",
         url: "https://",
-        icon: ""
+        icon: "",
       },
       bookmarksEditTempIndex: 0,
       icon: {
         visible: false,
-        data: []
-      }
+        data: [],
+      },
     };
   },
   methods: {
@@ -164,7 +164,7 @@ export default {
     async bookmarksGet() {
       try {
         const { data: res } = await axios.post(api.get, {
-          user_id: this.user_id
+          user_id: this.user_id,
         });
         this.bookmarksDataRaw = res.data;
         this.bookmarksSuitesGenerate();
@@ -173,7 +173,7 @@ export default {
         console.log(e);
         this.$message({
           message: e.response.data.msg,
-          type: "error"
+          type: "error",
         });
       }
     },
@@ -184,18 +184,18 @@ export default {
             url: this.bookmarksEditForm.url,
             name: this.bookmarksEditForm.name,
             icon: this.bookmarksEditForm.icon,
-            user_id: this.user_id
+            user_id: this.user_id,
           });
           this.$message({
             message: res["msg"],
-            type: "success"
+            type: "success",
           });
           this.bookmarksGet();
         } catch (e) {
           console.log(e);
           this.$message({
             message: e.response.data.msg,
-            type: "error"
+            type: "error",
           });
         }
       } else if (this.bookmarksEditForm.title == "编辑书签") {
@@ -216,7 +216,7 @@ export default {
         visible: true,
         name: "",
         url: "https://",
-        icon: ""
+        icon: "",
       };
     },
     sort() {
@@ -230,11 +230,11 @@ export default {
       try {
         const { data: res } = await axios.post(api.bookmarksEdit, {
           bookmarks: list,
-          user_id: this.user_id
+          user_id: this.user_id,
         });
         this.$message({
           message: res["msg"],
-          type: "success"
+          type: "success",
         });
         this.bookmarksEdit.visible = false;
         this.bookmarksGet();
@@ -242,7 +242,7 @@ export default {
         console.log(e);
         this.$message({
           message: e.response.data.msg,
-          type: "error"
+          type: "error",
         });
       }
     },
@@ -253,14 +253,14 @@ export default {
         visible: true,
         name: item.name,
         url: item.url,
-        icon: item.icon
+        icon: item.icon,
       };
     },
     async bookmarksIconFront() {
       try {
         const { data: res } = await axios.get(api.icon, {
           bookmarks: this.bookmarksEdit.list,
-          user_id: this.user_id
+          user_id: this.user_id,
         });
         this.icon.visible = true;
         this.icon.data = res.data;
@@ -268,18 +268,18 @@ export default {
         console.log(e);
         this.$message({
           message: e.response.data.msg,
-          type: "error"
+          type: "error",
         });
       }
     },
     iconNameGet(data) {
       this.bookmarksEditForm.icon = data;
       this.icon.visible = false;
-    }
+    },
   },
   mounted() {
     this.bookmarksGet();
-  }
+  },
 };
 </script>
 <style scoped>
