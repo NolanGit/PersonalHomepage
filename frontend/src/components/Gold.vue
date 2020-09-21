@@ -12,7 +12,7 @@
         :legend-visible="false"
       ></ve-line>
     </el-main>
-    <el-footer height="40px" style="justify-content: center; display: flex;" v-show="user_id != 0">
+    <el-footer style="justify-content: center; display: flex;" v-show="user_id != 0">
       <WidgetButton
         :user_id="user_id"
         :widget_id="widget_id"
