@@ -60,8 +60,8 @@
 import md5 from "js-md5";
 import axios from "axios";
 import Router from "vue-router";
-import Console from "./Console.vue";
-import CloudDriveAndImageHosting from "./CloudDrive&ImageHosting.vue";
+import Console from "./loginDropdowns/Console.vue";
+import CloudDriveAndImageHosting from "./loginDropdowns/CloudDrive&ImageHosting.vue";
 const api = {
   userLogin: "/login/userLogin",
   userLoginSalt: "/login/userLoginSalt"
