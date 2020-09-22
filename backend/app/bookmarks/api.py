@@ -7,7 +7,7 @@ import urllib.request
 from . import bookmarks
 from flask_cors import cross_origin
 from flask import render_template, session, redirect, url_for, current_app, flash, Response, request, jsonify
-from ..model.bookmarks_model import icon
+
 from ..model.bookmarks_model import bookmarks as bookmarks_table
 from ..login.login_funtion import User
 from ..privilege.privilege_control import permission_required

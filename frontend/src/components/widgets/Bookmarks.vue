@@ -2,7 +2,7 @@
   <div class="bookmarks-main">
     <el-main class="noPadding" style="height: 300px;">
       <el-row type="flex" justify="center">
-          <div class="widget-label">书签</div>
+        <div class="widget-label">书签</div>
       </el-row>
 
       <div class="bookmarks-data-row-main">
@@ -64,7 +64,7 @@
         <el-form-item label="图标名称">
           <div class="div-flex">
             <el-input size="small" v-model="bookmarksEditForm.icon" placeholder="图标名称" disabled></el-input>
-            <el-button size="small" @click="bookmarksIconFront()">选择图标</el-button>
+            <el-button size="small" @click="iconChoose()">选择图标</el-button>
           </div>
         </el-form-item>
       </el-form>
@@ -86,7 +86,7 @@
 
     <!--选择图标界面-->
     <el-dialog title="选择喜欢的图标" :visible.sync="icon.visible" width="70%">
-      <IconComponet @iconName="iconNameGet" :icons="icon.data"></IconComponet>
+      <IconComponet @iconName="iconNameGet"></IconComponet>
     </el-dialog>
   </div>
 </template>
@@ -101,7 +101,6 @@ const api = {
   get: "/bookmarks/get",
   bookmarksAdd: "/bookmarks/bookmarksAdd",
   bookmarksEdit: "/bookmarks/bookmarksEdit",
-  icon: "/icon",
 };
 export default {
   name: "bookmarks",
@@ -132,7 +131,6 @@ export default {
       bookmarksEditTempIndex: 0,
       icon: {
         visible: false,
-        data: [],
       },
     };
   },
@@ -256,21 +254,8 @@ export default {
         icon: item.icon,
       };
     },
-    async bookmarksIconFront() {
-      try {
-        const { data: res } = await axios.get(api.icon, {
-          bookmarks: this.bookmarksEdit.list,
-          user_id: this.user_id,
-        });
-        this.icon.visible = true;
-        this.icon.data = res.data;
-      } catch (e) {
-        console.log(e);
-        this.$message({
-          message: e.response.data.msg,
-          type: "error",
-        });
-      }
+    iconChoose() {
+      this.icon.visible = true;
     },
     iconNameGet(data) {
       this.bookmarksEditForm.icon = data;

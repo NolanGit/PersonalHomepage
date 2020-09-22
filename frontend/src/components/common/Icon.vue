@@ -10,19 +10,25 @@
   </div>
 </template>
 <script>
+import axios from "axios";
+
+const api = {
+  icon: "/icon",
+  iconCategory: "/iconCategory",
+};
 export default {
   name: "IconComponet",
   props: {
-    icons: Array
+    icons: Array,
   },
   watch: {
     icons(newVal, oldVal) {
       this.iconInit();
-    }
+    },
   },
   data() {
     return {
-      iconData: []
+      iconData: [],
     };
   },
   methods: {
@@ -43,11 +49,25 @@ export default {
           this.iconData[this.iconData.length - 1].push(this.icons[x * 12 + y]);
         }
       }
-    }
+    },
+    async iconGet() {
+      try {
+        const { data: res } = await axios.get(api.icon);
+        this.icon.visible = true;
+        this.iconData = res.data;
+        this.iconInit();
+      } catch (e) {
+        console.log(e);
+        this.$message({
+          message: e.response.data.msg,
+          type: "error",
+        });
+      }
+    },
   },
   mounted() {
-    this.iconInit();
-  }
+    this.iconGet();
+  },
 };
 </script>
 <style scoped>
