@@ -134,6 +134,7 @@
 <script>
 import axios from "axios";
 import { SlickList, SlickItem } from "vue-slicksort";
+
 const api = {
   suiteDetail: "/widget/suite/detail",
   suiteSave: "/widget/suite/save",

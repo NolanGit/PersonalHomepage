@@ -180,7 +180,6 @@
 import axios from "axios";
 import md5 from "js-md5";
 import BScroll from "better-scroll";
-import { deepClone } from "../../js/common";
 import ScriptButtons from "./ScriptButtons";
 import ScriptEdit from "./ScriptEdit";
 const api = {

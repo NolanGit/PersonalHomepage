@@ -566,7 +566,8 @@
 
 <script>
 import axios from "axios";
-import { deepClone } from "../../js/common";
+import { deepClone } from "../../../js/common";
+
 const api = {
   edit: "/script/edit",
   scriptAll: "/script/scriptAll",

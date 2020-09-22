@@ -25,7 +25,6 @@
 
 <script>
 import axios from "axios";
-import { deepClone } from "../../js/common";
 import ScriptColumn from "./ScriptColumn";
 import ScriptDetail from "./ScriptDetail";
 
