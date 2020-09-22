@@ -200,7 +200,7 @@
 ![image](https://user-images.githubusercontent.com/27627484/87288878-8512f100-c52e-11ea-8a2a-4c771ff32143.png)
 - 修改书签图标
 
-![image](https://user-images.githubusercontent.com/27627484/87288937-965bfd80-c52e-11ea-9ff2-e3d49c84d7b5.png)
+![image](https://user-images.githubusercontent.com/27627484/93906905-5172f500-fd2f-11ea-9627-6c42936dc21e.png)
 
 ### 小组件-黄金价格
 
