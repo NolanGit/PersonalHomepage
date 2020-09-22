@@ -29,7 +29,7 @@
       </div>
     </el-main>
 
-    <el-footer height="31px" style="justify-content: center; display: flex;" v-show="user_id != 0">
+    <el-footer height="31px" style="justify-content: center; display: flex;" v-if="user_id != 0">
       <WidgetButton
         :user_id="user_id"
         :widget_id="widget_id"
