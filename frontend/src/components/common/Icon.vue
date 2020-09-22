@@ -1,12 +1,12 @@
 <template>
   <div>
     <el-tabs v-model="iconCategory.active" type="card" @tab-click="changeCategory">
-      <el-tab-pane label="全部" name="全部"></el-tab-pane>
+      <el-tab-pane label="全部" name="0"></el-tab-pane>
       <el-tab-pane
         v-for="singleIconCategory in iconCategory.data"
         :key="singleIconCategory"
         :label="singleIconCategory.name"
-        :name="singleIconCategory.name"
+        :name="singleIconCategory.id"
       ></el-tab-pane>
     </el-tabs>
     <el-row v-for="iconsuite in iconData" :key="iconsuite" class="margin_bottom-medium">
@@ -82,6 +82,20 @@ export default {
           message: e.response.data.msg,
           type: "error",
         });
+      }
+    },
+    changeCategory(tab) {
+      var category = Number(tab.name);
+      if (tab.name == "0") {
+        this.icons = this.iconsRaw;
+        this.iconInit();
+      } else {
+        for (let x = 0; x < this.iconsRaw.length; x++) {
+          if (this.iconsRaw[x].category == category) {
+            this.icons.push(this.iconsRaw[x]);
+          }
+        }
+        this.iconInit();
       }
     },
   },
