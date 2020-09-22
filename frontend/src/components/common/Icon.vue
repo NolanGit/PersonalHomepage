@@ -21,6 +21,7 @@ export default {
   watch: {},
   data() {
     return {
+      icons: [],
       iconData: [],
     };
   },
@@ -46,7 +47,7 @@ export default {
     async iconGet() {
       try {
         const { data: res } = await axios.get(api.icon);
-        this.iconData = res.data;
+        this.icons = res.data;
         this.iconInit();
       } catch (e) {
         console.log(e);
