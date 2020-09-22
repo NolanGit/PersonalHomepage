@@ -46,8 +46,8 @@
 </template>
 <script>
 import axios from "axios";
-import WidgetButton from "./common/WidgetButton.vue";
-import PushEdit from "./common/PushEdit.vue";
+import WidgetButton from "../common/WidgetButton.vue";
+import PushEdit from "../common/PushEdit.vue";
 
 const api = {
   get: "/gold/get",

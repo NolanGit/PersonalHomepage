@@ -92,10 +92,10 @@
 </template>
 <script>
 import axios from "axios";
-import IconComponet from "./common/Icon.vue";
-import SlickSort from "./common/SlickSort.vue";
-import WidgetButton from "./common/WidgetButton.vue";
-import { deepClone } from "../js/common";
+import IconComponet from "../common/Icon.vue";
+import SlickSort from "../common/SlickSort.vue";
+import WidgetButton from "../common/WidgetButton.vue";
+import { deepClone } from "../../js/common";
 
 const api = {
   get: "/bookmarks/get",

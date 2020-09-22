@@ -197,7 +197,7 @@
 </template>
 <script>
 import axios from "axios";
-import WidgetButton from "./common/WidgetButton.vue";
+import WidgetButton from "../common/WidgetButton.vue";
 
 const api = {
   get: "/notes/get",

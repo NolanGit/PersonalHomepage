@@ -164,8 +164,8 @@
 </template>
 <script>
 import axios from "axios";
-import SlickSort from "./common/SlickSort.vue";
-import WidgetButton from "./common/WidgetButton.vue";
+import SlickSort from "../common/SlickSort.vue";
+import WidgetButton from "../common/WidgetButton.vue";
 const api = {
   weatherData: "/weather/get",
   locationCheck: "/weather/check",

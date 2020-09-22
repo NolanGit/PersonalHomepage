@@ -77,10 +77,10 @@
 
 <script>
 import axios from "axios";
-import SlickSort from "./common/SlickSort.vue";
-import WidgetButton from "./common/WidgetButton.vue";
-import PushEdit from "./common/PushEdit.vue";
-import { deepClone } from "../js/common";
+import SlickSort from "../common/SlickSort.vue";
+import WidgetButton from "../common/WidgetButton.vue";
+import PushEdit from "../common/PushEdit.vue";
+import { deepClone } from "../../js/common";
 const api = {
   get: "/app/get",
   add: "/app/add",
