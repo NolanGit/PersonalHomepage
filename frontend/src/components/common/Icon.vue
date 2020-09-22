@@ -1,5 +1,14 @@
 <template>
   <div>
+    <el-tabs v-model="iconCategory.active" type="card" @tab-click="changeCategory">
+      <el-tab-pane label="全部" name="全部"></el-tab-pane>
+      <el-tab-pane
+        v-for="singleIconCategory in iconCategory.data"
+        :key="singleIconCategory"
+        :label="singleIconCategory.name"
+        :name="singleIconCategory.name"
+      ></el-tab-pane>
+    </el-tabs>
     <el-row v-for="iconsuite in iconData" :key="iconsuite" class="margin_bottom-medium">
       <el-col :span="2" v-for="icon in iconsuite" :key="icon">
         <el-button size="medium" @click="iconChoosed(icon.name)">
@@ -22,6 +31,11 @@ export default {
   data() {
     return {
       icons: [],
+      iconsRaw: [],
+      iconCategory: {
+        active: "全部",
+        data: [],
+      },
       iconData: [],
     };
   },
@@ -47,8 +61,21 @@ export default {
     async iconGet() {
       try {
         const { data: res } = await axios.get(api.icon);
-        this.icons = res.data;
+        this.iconsRaw = res.data;
+        this.icons = this.iconsRaw;
         this.iconInit();
+      } catch (e) {
+        console.log(e);
+        this.$message({
+          message: e.response.data.msg,
+          type: "error",
+        });
+      }
+    },
+    async iconCategoryGet() {
+      try {
+        const { data: res } = await axios.get(api.iconCategory);
+        this.iconCategory.data = res.data;
       } catch (e) {
         console.log(e);
         this.$message({
@@ -59,6 +86,7 @@ export default {
     },
   },
   mounted() {
+    this.iconCategoryGet();
     this.iconGet();
   },
 };
