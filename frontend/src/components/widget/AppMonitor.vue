@@ -88,7 +88,7 @@ const api = {
 };
 
 export default {
-  name: "AppMonitor",
+  name: "appPriceMonitor",
   props: {
     user_id: Number,
     widget_id: Number,

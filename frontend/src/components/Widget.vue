@@ -79,12 +79,12 @@
 </template>
 <script>
 import axios from "axios";
-import weather from "./Weather.vue";
-import bookmarks from "./Bookmarks.vue";
-import appMonitor from "./AppMonitor.vue";
-import gold from "./Gold.vue";
-import notes from "./Notes.vue";
-import translator from "./WidgetTranslator.vue";
+import weather from "./widget/Weather.vue";
+import bookmarks from "./widget/Bookmarks.vue";
+import appMonitor from "./widget/AppMonitor.vue";
+import gold from "./widget/GoldPrice.vue";
+import notes from "./widget/Notes.vue";
+import translator from "./widget/Translator.vue";
 
 const api = {
   get: "/widget/get",
