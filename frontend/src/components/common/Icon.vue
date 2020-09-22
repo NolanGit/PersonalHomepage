@@ -18,14 +18,7 @@ const api = {
 };
 export default {
   name: "IconComponet",
-  props: {
-    icons: Array,
-  },
-  watch: {
-    icons(newVal, oldVal) {
-      this.iconInit();
-    },
-  },
+  watch: {},
   data() {
     return {
       iconData: [],
@@ -53,7 +46,6 @@ export default {
     async iconGet() {
       try {
         const { data: res } = await axios.get(api.icon);
-        this.icon.visible = true;
         this.iconData = res.data;
         this.iconInit();
       } catch (e) {
