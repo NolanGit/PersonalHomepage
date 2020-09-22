@@ -33,7 +33,7 @@ export default {
       icons: [],
       iconsRaw: [],
       iconCategory: {
-        active: "全部",
+        active: "0",
         data: [],
       },
       iconData: [],
@@ -86,11 +86,14 @@ export default {
     },
     changeCategory(tab) {
       var category = Number(tab.name);
+      console.log(category);
       if (tab.name == "0") {
         this.icons = this.iconsRaw;
         this.iconInit();
       } else {
+        this.icons = [];
         for (let x = 0; x < this.iconsRaw.length; x++) {
+          console.log(this.iconsRaw[x]);
           if (this.iconsRaw[x].category == category) {
             this.icons.push(this.iconsRaw[x]);
           }
