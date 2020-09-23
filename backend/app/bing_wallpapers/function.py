@@ -17,7 +17,7 @@ result['date'] = r.json()['images'][0]['startdate']
 result['copyright'] = r.json()['images'][0]['copyright']
 result['copyrightlink'] = r.json()['images'][0]['copyrightlink']
 
-img_data = requests.get(url=r['url']).content
+img_data = requests.get(url=result['url']).content
 
 folder_path = BING_WALLPAPERS_PATH
 if not os.path.exists(folder_path):
