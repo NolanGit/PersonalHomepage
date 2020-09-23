@@ -5,23 +5,25 @@ import requests
 import datetime
 import traceback
 import threading
+import configparser
 from peewee import DoesNotExist
 from pypinyin import lazy_pinyin
-from werkzeug.utils import secure_filename
-
-from flask import render_template, session, redirect, url_for, current_app, request, jsonify, Response, send_file, make_response
-from . import main
 from flask_cors import cross_origin
-from ..model.search_model import search_engines, search_engines_log
-from ..model.bookmarks_model import bookmarks as bookmarks_table
+from werkzeug.utils import secure_filename
+from flask import render_template, session, redirect, url_for, current_app, request, jsonify, Response, send_file, make_response
+
+from ..model.bookmarks_model import icon_category
 from ..model.bookmarks_model import icon as icon_table
 from ..model.widget_model import widget as widget_table
+from ..model.bookmarks_model import bookmarks as bookmarks_table
+from ..model.search_model import search_engines, search_engines_log
 from ..model.upload_model import upload as upload_table, cloud_drive
+
+from . import main
 from ..login.login_funtion import User
+from ..response import Response as MyResponse
 from ..privilege.privilege_control import privilegeFunction
 from ..privilege.privilege_control import permission_required
-import configparser
-from ..response import Response as MyResponse
 
 rsp = MyResponse()
 cf = configparser.ConfigParser()
@@ -70,12 +72,22 @@ def icon():
         result = []
         icon_query = icon_table.select().dicts()
         for row in icon_query:
-            result.append({'id': row['id'], 'name': row['name']})
-        response = {'code': 200, 'msg': '成功！', 'data': result}
-        return jsonify(response)
+            result.append({'id': row['id'], 'name': row['name'], 'category': row['category']})
+        return rsp.success(result)
     except Exception as e:
-        response = {'code': 500, 'msg': '失败！错误信息：' + str(e) + '，请联系管理员。', 'data': []}
-        return jsonify(response), 500
+        return rsp.failed(e), 500
+
+
+@main.route('/iconCategory', methods=['GET'])
+def iconCategory():
+    try:
+        icon_query = icon_category.select().dicts()
+        result = []
+        for row in icon_query:
+            result.append({'id': row['id'], 'name': row['name']})
+        return rsp.success(result)
+    except Exception as e:
+        return rsp.failed(e), 500
 
 
 @main.route('/upload', methods=['POST'])

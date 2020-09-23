@@ -36,6 +36,18 @@ def subprocess_run(command):
     return len(running_subprocess) - 1
 
 
+def subprocess_clean():
+    global running_subprocess
+
+    temp_status = True
+    for x in range(len(running_subprocess)):
+        if running_subprocess[x].poll() == None:  # 存在运行状态的子线程
+            temp_status = False
+            break
+    if temp_status:
+        running_subprocess = []
+
+
 @script.route('/subSystem', methods=['GET'])
 @permission_required(URL_PREFIX + '/subSystem')
 @cross_origin()
@@ -153,16 +165,7 @@ def run():
     if sign != request.get_json()['sign']:
         return rsp.failed('错误的签名'), 403
 
-    global running_subprocess
-
-    # 解决多人协作输出混乱问题，如果输出仍然混乱，不得已的情况下可以删除下方7行代码，但可能会有资源的耗费
-    temp_status = True
-    for x in range(len(running_subprocess)):
-        if running_subprocess[x].poll() == None:  # 存在运行状态的子线程
-            temp_status = False
-            break
-    if temp_status:
-        running_subprocess = []
+    subprocess_clean()
 
     try:
 
@@ -209,7 +212,7 @@ def terminate():
     process_id = request.get_json()['process_id']
     try:
         running_subprocess[process_id].terminate()
-        response = {'code': 200, 'msg': '任务已成功停止！', 'data': {}}
+        response = {'code': 200, 'msg': '成功发送了终止命令，任务将很快终止！'}
         return jsonify(response)
     except Exception as e:
         print(e)
@@ -225,7 +228,7 @@ def runOutput():
     try:
         process_id = request.get_json()['process_id']
         if running_subprocess == []:
-            response = {'code': 200, 'msg': '无运行中的任务。', 'data': {'output': '', 'status': -1}}
+            return rsp.success({'output': '', 'status': -1})
         else:
             output = ''
             status = 1 if running_subprocess[process_id].poll() == None else 0
@@ -236,30 +239,12 @@ def runOutput():
                 except:
                     output = output + str(running_subprocess[process_id].stdout.readline(), encoding='gbk')  #每次readline()后就会清理输出，见https://www.cnblogs.com/alan-babyblog/p/5261497.html
             if status == 0:
-                while 1000:
-                    try:
-                        temp = running_subprocess[process_id].stdout.readline()
-                        try:
-                            output = output + str(temp, encoding='utf-8')
-                        except:
-                            output = output + str(temp, encoding='gbk')
-                        if temp == b"":
-                            break
-                    except Exception as e:
-                        print(e)
-                        traceback.print_exc()
-                        response = {
-                            'code': 500,
-                            'msg': str(e),
-                        }
-                        return jsonify(response)
-            response = {'code': 200, 'msg': '成功！', 'data': {'output': output, 'status': status}}
+                subprocess_clean()
+        return rsp.success({'output': output, 'status': status})
     except Exception as e:
         print(e)
         traceback.print_exc()
         return rsp.failed(e), 500
-    finally:
-        return jsonify(response)
 
 
 @script.route('/edit', methods=['POST'])
@@ -283,16 +268,17 @@ def edit():
             }
             return jsonify(response)
         if script_id == 0:
-            script_table_model.create(name=name,
-                                      sub_system_id=sub_system_id,
-                                      start_folder=start_folder,
-                                      start_script=start_script,
-                                      type=type,
-                                      runs=0,
-                                      is_valid=1,
-                                      version=1,
-                                      user=user_name,
-                                      update_time=datetime.datetime.now())
+            script_table_model.create(
+                name=name,
+                sub_system_id=sub_system_id,
+                start_folder=start_folder,
+                start_script=start_script,
+                type=type,
+                runs=0,
+                is_valid=1,
+                version=1,
+                user=user_name,
+                update_time=datetime.datetime.now())
             script_table_model_query = script_table_model.select().order_by(-script_table_model.id).limit(1).dicts()
             for row in script_table_model_query:
                 script_id = row['id']
@@ -357,24 +343,25 @@ def edit():
                 except:
                     extra_button_script = ''
                 print(value, place_holder, options, createable, disabled, remark)
-                script_detail.create(script_id=script_id,
-                                     type=detail[x]['type'],
-                                     label=detail[x]['label'],
-                                     value=value,
-                                     place_holder=place_holder,
-                                     options=options,
-                                     createable=createable,
-                                     disabled=disabled,
-                                     remark=remark,
-                                     is_important=is_important,
-                                     extra_button=extra_button,
-                                     extra_button_label=extra_button_label,
-                                     extra_button_script=extra_button_script,
-                                     is_valid=1,
-                                     visible=visible,
-                                     version=1,
-                                     user=user_name,
-                                     update_time=datetime.datetime.now())
+                script_detail.create(
+                    script_id=script_id,
+                    type=detail[x]['type'],
+                    label=detail[x]['label'],
+                    value=value,
+                    place_holder=place_holder,
+                    options=options,
+                    createable=createable,
+                    disabled=disabled,
+                    remark=remark,
+                    is_important=is_important,
+                    extra_button=extra_button,
+                    extra_button_label=extra_button_label,
+                    extra_button_script=extra_button_script,
+                    is_valid=1,
+                    visible=visible,
+                    version=1,
+                    user=user_name,
+                    update_time=datetime.datetime.now())
             response = {
                 'code': 200,
                 'msg': '新增成功！',
@@ -384,9 +371,10 @@ def edit():
             for row in script_table_model_query:
                 version = row['version'] + 1
 
-            script_table_model.update(name=name, start_folder=start_folder, start_script=start_script, type=type, version=version, user=user_name,
-                                      update_time=datetime.datetime.now()).where((script_table_model.id == script_id)
-                                                                                 & (script_table_model.is_valid == 1)).execute()
+            script_table_model.update(
+                name=name, start_folder=start_folder, start_script=start_script, type=type, version=version, user=user_name,
+                update_time=datetime.datetime.now()).where((script_table_model.id == script_id)
+                                                           & (script_table_model.is_valid == 1)).execute()
             script_detail.update(is_valid=0).where(script_detail.script_id == script_id).execute()
 
             for x in range(len(detail)):
@@ -450,24 +438,25 @@ def edit():
                 except:
                     extra_button_script = ''
                 print(detail[x])
-                script_detail.create(script_id=script_id,
-                                     type=detail[x]['type'],
-                                     label=detail[x]['label'],
-                                     value=value,
-                                     place_holder=place_holder,
-                                     options=options,
-                                     createable=createable,
-                                     disabled=disabled,
-                                     remark=remark,
-                                     is_important=is_important,
-                                     extra_button=extra_button,
-                                     extra_button_label=extra_button_label,
-                                     extra_button_script=extra_button_script,
-                                     is_valid=1,
-                                     visible=visible,
-                                     version=version,
-                                     user=user_name,
-                                     update_time=datetime.datetime.now())
+                script_detail.create(
+                    script_id=script_id,
+                    type=detail[x]['type'],
+                    label=detail[x]['label'],
+                    value=value,
+                    place_holder=place_holder,
+                    options=options,
+                    createable=createable,
+                    disabled=disabled,
+                    remark=remark,
+                    is_important=is_important,
+                    extra_button=extra_button,
+                    extra_button_label=extra_button_label,
+                    extra_button_script=extra_button_script,
+                    is_valid=1,
+                    visible=visible,
+                    version=version,
+                    user=user_name,
+                    update_time=datetime.datetime.now())
             response = {
                 'code': 200,
                 'msg': '修改成功！',
@@ -660,18 +649,19 @@ def scheduleEdit():
         schedule_id = request.get_json()['schedule_id']
         if schedule_id == 0:
             if is_automatic == 0:
-                script_schedule.create(script_id=script_id,
-                                       command=command,
-                                       detail=detail,
-                                       version=version,
-                                       user_id=user_id,
-                                       is_automatic=is_automatic,
-                                       trigger_time=trigger_time,
-                                       interval=0,
-                                       interval_raw=0,
-                                       interval_unit=0,
-                                       is_valid=1,
-                                       update_time=datetime.datetime.now())
+                script_schedule.create(
+                    script_id=script_id,
+                    command=command,
+                    detail=detail,
+                    version=version,
+                    user_id=user_id,
+                    is_automatic=is_automatic,
+                    trigger_time=trigger_time,
+                    interval=0,
+                    interval_raw=0,
+                    interval_unit=0,
+                    is_valid=1,
+                    update_time=datetime.datetime.now())
             elif is_automatic == 1:
                 interval_raw = int(request.get_json()['interval_raw'])
                 interval_unit = int(request.get_json()['interval_unit'])
@@ -684,30 +674,32 @@ def scheduleEdit():
                 elif interval_unit == SCHEDULE_CODE_DAY:
                     interval = interval_raw * DAY_HOURS * HOUR_MINUTES
 
-                script_schedule.create(script_id=script_id,
-                                       command=command,
-                                       detail=detail,
-                                       version=version,
-                                       user_id=user_id,
-                                       is_automatic=is_automatic,
-                                       trigger_time=trigger_time,
-                                       interval=interval,
-                                       interval_raw=interval_raw,
-                                       interval_unit=interval_unit,
-                                       is_valid=1,
-                                       update_time=datetime.datetime.now())
+                script_schedule.create(
+                    script_id=script_id,
+                    command=command,
+                    detail=detail,
+                    version=version,
+                    user_id=user_id,
+                    is_automatic=is_automatic,
+                    trigger_time=trigger_time,
+                    interval=interval,
+                    interval_raw=interval_raw,
+                    interval_unit=interval_unit,
+                    is_valid=1,
+                    update_time=datetime.datetime.now())
         elif schedule_id != 0:
             if is_automatic == 0:
-                script_schedule.update(script_id=script_id,
-                                       version=version,
-                                       user_id=user_id,
-                                       is_automatic=is_automatic,
-                                       trigger_time=trigger_time,
-                                       interval=0,
-                                       interval_raw=0,
-                                       interval_unit=0,
-                                       is_valid=1,
-                                       update_time=datetime.datetime.now()).where(script_schedule.id == schedule_id).execute()
+                script_schedule.update(
+                    script_id=script_id,
+                    version=version,
+                    user_id=user_id,
+                    is_automatic=is_automatic,
+                    trigger_time=trigger_time,
+                    interval=0,
+                    interval_raw=0,
+                    interval_unit=0,
+                    is_valid=1,
+                    update_time=datetime.datetime.now()).where(script_schedule.id == schedule_id).execute()
             elif is_automatic == 1:
                 interval_raw = int(request.get_json()['interval_raw'])
                 interval_unit = int(request.get_json()['interval_unit'])
@@ -719,16 +711,17 @@ def scheduleEdit():
                     interval = interval_raw * HOUR_MINUTES
                 elif interval_unit == SCHEDULE_CODE_DAY:
                     interval = interval_raw * DAY_HOURS * HOUR_MINUTES
-                script_schedule.update(script_id=script_id,
-                                       version=version,
-                                       user_id=user_id,
-                                       is_automatic=is_automatic,
-                                       trigger_time=trigger_time,
-                                       interval=interval,
-                                       interval_raw=interval_raw,
-                                       interval_unit=interval_unit,
-                                       is_valid=1,
-                                       update_time=datetime.datetime.now()).where(script_schedule.id == schedule_id).execute()
+                script_schedule.update(
+                    script_id=script_id,
+                    version=version,
+                    user_id=user_id,
+                    is_automatic=is_automatic,
+                    trigger_time=trigger_time,
+                    interval=interval,
+                    interval_raw=interval_raw,
+                    interval_unit=interval_unit,
+                    is_valid=1,
+                    update_time=datetime.datetime.now()).where(script_schedule.id == schedule_id).execute()
         response = {'code': 200, 'msg': '成功', 'data': []}
         return jsonify(response)
     except Exception as e:
