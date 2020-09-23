@@ -212,7 +212,8 @@ def terminate():
     process_id = request.get_json()['process_id']
     try:
         running_subprocess[process_id].terminate()
-        return rsp.success('成功发送了终止命令，任务将很快终止！')
+        response = {'code': 200, 'msg': '成功发送了终止命令，任务将很快终止！'}
+        return jsonify(response)
     except Exception as e:
         print(e)
         traceback.print_exc()
