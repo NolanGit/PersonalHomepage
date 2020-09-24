@@ -33,7 +33,7 @@ export default {
     githubConner,
     search,
     login,
-    widget
+    widgets
   },
   data() {
     return {
