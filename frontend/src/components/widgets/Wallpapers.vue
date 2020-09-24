@@ -8,10 +8,14 @@
     >
       <el-carousel-item v-for="wallpaper in wallpapersData" :key="wallpaper">
         <div>
-          <img :src="wallpaper.url" class="image" />
+          <img @click="open(wallpaper.url)" :src="wallpaper.url" class="image" />
           <div style="height: 30px; margin-top: 10px;">
-            <b class="better_font_style" style="font-size: 15px;">{{'「'+wallpaper.date+'」'}}</b>
+            <!-- <b class="better_font_style" style="font-size: 15px;">{{'「'+wallpaper.date+'」'}}</b> -->
             <span class="better_font_style" style="font-size: 15px;">{{wallpaper.copyright}}</span>
+            <span
+              @click="open(wallpaper.copyrightlink)"
+              style="color: #409eff;font-size: 15px;cursor: pointer;margin-left: 10px;"
+            >了解更多</span>
           </div>
         </div>
       </el-carousel-item>
@@ -45,6 +49,9 @@ export default {
         });
       }
     },
+    open(url) {
+      window.open(url);
+    },
   },
   mounted() {
     this.wallpapersGet();
@@ -55,5 +62,7 @@ export default {
 .image {
   width: 22vw;
   height: 100%;
+  cursor: pointer;
+  box-shadow: 3px 3px 2px rgba(0, 0, 0, 0.5);
 }
 </style>
