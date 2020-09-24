@@ -4,6 +4,7 @@
       <el-carousel-item v-for="wallpaper in wallpapersData" :key="wallpaper">
         <img :src="wallpaper.url" class="image" />
         <div style="padding: 14px;">
+          <p class="time">{{ wallpapers.date }}</p>
           <span>{{wallpapers.copyright}}</span>
         </div>
       </el-carousel-item>
@@ -44,4 +45,12 @@ export default {
 };
 </script>
 <style scoped>
+.image {
+  width: 100%;
+  display: block;
+}
+.time {
+  font-size: 13px;
+  color: #999;
+}
 </style>

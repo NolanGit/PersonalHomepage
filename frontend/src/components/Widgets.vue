@@ -105,6 +105,7 @@ export default {
     gold,
     notes,
     translator,
+    wallpapers
   },
   watch: {
     user_id(newVal, oldVal) {
