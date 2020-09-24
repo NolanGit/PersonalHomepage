@@ -2,10 +2,12 @@
   <section>
     <el-carousel height="198px" trigger="click" :autoplay="false" indicator-position="outside">
       <el-carousel-item v-for="wallpaper in wallpapersData" :key="wallpaper">
-        <img :src="wallpaper.url" class="image" />
-        <div style="padding: 14px;">
-          <p class="time">{{ wallpaper.date }}</p>
-          <span>{{wallpaper.copyright}}</span>
+        <div>
+          <img :src="wallpaper.url" class="image" />
+          <div style="padding: 14px;">
+            <p class="time">{{ wallpaper.date }}</p>
+            <span>{{wallpaper.copyright}}</span>
+          </div>
         </div>
       </el-carousel-item>
     </el-carousel>
