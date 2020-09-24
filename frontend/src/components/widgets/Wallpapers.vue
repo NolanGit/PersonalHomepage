@@ -10,8 +10,8 @@
         <div>
           <img :src="wallpaper.url" class="image" />
           <div style="height: 30px; margin-top: 10px;">
-            <b>{{'「'+wallpaper.date+'」'}}</b>
-            <span>{{wallpaper.copyright}}</span>
+            <b class="better_font_style" style="font-size: 15px;">{{'「'+wallpaper.date+'」'}}</b>
+            <span class="better_font_style" style="font-size: 15px;">{{wallpaper.copyright}}</span>
           </div>
         </div>
       </el-carousel-item>
@@ -53,12 +53,7 @@ export default {
 </script>
 <style scoped>
 .image {
-  width: 90%;
+  width: 22vw;
   height: 100%;
-  display: block;
-}
-.time {
-  font-size: 13px;
-  color: #999;
 }
 </style>
