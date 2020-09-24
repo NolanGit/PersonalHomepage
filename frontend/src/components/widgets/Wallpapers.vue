@@ -9,8 +9,9 @@
       <el-carousel-item v-for="wallpaper in wallpapersData" :key="wallpaper">
         <div>
           <img :src="wallpaper.url" class="image" />
-          <div style="height: 30px;">
-            <span>{{wallpaper.date+wallpaper.copyright}}</span>
+          <div style="height: 30px; margin-top: 10px;">
+            <b>{{'「'+wallpaper.date+'」'}}</b>
+            <span>{{wallpaper.copyright}}</span>
           </div>
         </div>
       </el-carousel-item>

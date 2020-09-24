@@ -19,7 +19,8 @@ WALLPAPERS_PATH = cf.get('config', 'WALLPAPERS_PATH')
 base_url = "https://cn.bing.com/HPImageArchive.aspx?format=js&idx=0&n=2"
 r = requests.get(base_url)
 url = 'https://www.bing.com' + r.json()['images'][0]['url'].split('&')[0]
-date = r.json()['images'][0]['startdate']
+date_raw = str(r.json()['images'][0]['startdate'])
+date = date_raw[:4] + '-' + date_raw[4:6] + '-' + date_raw[6:]
 copyright = r.json()['images'][0]['copyright']
 copyrightlink = r.json()['images'][0]['copyrightlink']
 
