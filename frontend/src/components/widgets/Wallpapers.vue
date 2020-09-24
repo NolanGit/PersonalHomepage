@@ -1,10 +1,15 @@
 <template>
   <section>
-    <el-carousel height="198px" trigger="click" :autoplay="false" indicator-position="outside">
+    <el-carousel
+      style="height: 14.76vw;"
+      trigger="click"
+      :autoplay="false"
+      indicator-position="outside"
+    >
       <el-carousel-item v-for="wallpaper in wallpapersData" :key="wallpaper">
         <div>
           <img :src="wallpaper.url" class="image" />
-          <div style="padding: 14px;">
+          <div style="height: 30px;">
             <p class="time">{{ wallpaper.date }}</p>
             <span>{{wallpaper.copyright}}</span>
           </div>
@@ -49,7 +54,7 @@ export default {
 <style scoped>
 .image {
   width: 100%;
-  height: calc(0.5625 * 100vw * 0.2624);
+  height: calc(100%-30px);
   display: block;
 }
 .time {
