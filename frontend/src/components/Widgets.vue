@@ -71,6 +71,7 @@
               @done="done(suiteIndex,index)"
             />
             <translator v-if="singleWidget.name=='translator'" @done="done(suiteIndex,index)" />
+            <wallpapers v-if="singleWidget.name=='wallpapers'" @done="done(suiteIndex,index)" />
           </el-card>
         </transition>
       </el-col>
@@ -85,6 +86,7 @@ import appMonitor from "./widgets/AppMonitor.vue";
 import gold from "./widgets/GoldPrice.vue";
 import notes from "./widgets/Notes.vue";
 import translator from "./widgets/Translator.vue";
+import wallpapers from "./widgets/Wallpapers.vue";
 
 const api = {
   get: "/widget/get",
@@ -92,7 +94,7 @@ const api = {
 };
 
 export default {
-  name: "widget",
+  name: "widgets",
   props: {
     user_id: Number,
   },

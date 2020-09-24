@@ -68,4 +68,8 @@ def create_app(config_name):
 
     from .translator import translator as  translator_blueprint
     app.register_blueprint(translator_blueprint, url_prefix='/translator')
+
+    from .wallpapers import wallpapers as  wallpapers_blueprint
+    app.register_blueprint(wallpapers_blueprint, url_prefix='/wallpapers')
+
     return app
