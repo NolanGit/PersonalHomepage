@@ -49,6 +49,7 @@ export default {
 <style scoped>
 .image {
   width: 100%;
+  height: calc(0.5625 * 100vw * 0.2624);
   display: block;
 }
 .time {
