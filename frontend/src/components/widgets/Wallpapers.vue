@@ -53,8 +53,8 @@ export default {
 </script>
 <style scoped>
 .image {
-  width: 100%;
-  height: calc(100%-40px);
+  width: 90%;
+  height: 100%;
   display: block;
 }
 .time {
