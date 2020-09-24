@@ -1,7 +1,7 @@
 <template>
   <section>
     <el-carousel
-      style="height: 14.76vw;"
+      style="height: 100%;"
       trigger="click"
       :autoplay="false"
       indicator-position="outside"
@@ -10,8 +10,7 @@
         <div>
           <img :src="wallpaper.url" class="image" />
           <div style="height: 30px;">
-            <p class="time">{{ wallpaper.date }}</p>
-            <span>{{wallpaper.copyright}}</span>
+            <span>{{wallpaper.date+wallpaper.copyright}}</span>
           </div>
         </div>
       </el-carousel-item>
