@@ -13,12 +13,12 @@ except:
     from model.wallpapers_model import wallpapers as wallpapers_table
 
 cf = configparser.ConfigParser()
-cf.read('app/homepage.config')
+cf.read('../homepage.config')
 WALLPAPERS_PATH = cf.get('config', 'WALLPAPERS_PATH')
 
 base_url = "https://cn.bing.com/HPImageArchive.aspx?format=js&idx=0&n=2"
 r = requests.get(base_url)
-url = 'https://www.bing.com/' + r.json()['images'][0]['url'].split('&')[0]
+url = 'https://www.bing.com' + r.json()['images'][0]['url'].split('&')[0]
 date = r.json()['images'][0]['startdate']
 copyright = r.json()['images'][0]['copyright']
 copyrightlink = r.json()['images'][0]['copyrightlink']
