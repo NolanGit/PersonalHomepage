@@ -3,7 +3,8 @@
     <el-carousel
       style="height: 100%"
       trigger="click"
-      :autoplay="false"
+      :autoplay="true"
+      :interval="5000"
       indicator-position="outside"
     >
       <el-carousel-item v-for="wallpaper in wallpapersData" :key="wallpaper">
