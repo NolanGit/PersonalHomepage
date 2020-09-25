@@ -12,7 +12,7 @@
       <search :user_id="user_id" />
     </el-row>
     <div class="cardRow">
-      <widget :user_id="user_id" />
+      <widgets :user_id="user_id" />
     </div>
   </div>
 </template>
@@ -22,7 +22,7 @@ import axios from "axios";
 import githubConner from "./components/common/GithubConner";
 import search from "./components/Search.vue";
 import login from "./components/Login.vue";
-import widget from "./components/Widget.vue";
+import widgets from "./components/Widgets.vue";
 
 const api = {
   userInfo: "/userInfo"
@@ -33,7 +33,7 @@ export default {
     githubConner,
     search,
     login,
-    widget
+    widgets
   },
   data() {
     return {

@@ -15,6 +15,7 @@ CONFIG_PATH = CURRENT_RUNNING_PATH + '/backend/app/homepage.config'
 REQUIREMENTS_PATH = CURRENT_RUNNING_PATH + '/requirements.txt'
 SCHEDULE_SCRIPT_PATH = CURRENT_RUNNING_PATH + '/backend/app/script/schedule_monitor.sh'
 UPLOAD_FILE_PATH = CURRENT_RUNNING_PATH + '/upload/'
+BING_WALLPAPERS_PATH = CURRENT_RUNNING_PATH + '/wallpapers/'
 BYE = ['海内存知己，天涯若比邻。', '何当重相见，樽酒慰离颜。', '日暮征帆何处泊？天涯一望断人肠。', '日暮酒醒人已远，满天风雨下西楼。', '离心不异西江水，直送征帆万里行。', '劝君更尽一杯酒，西出阳关无故人。', '人情却似杨柳絮，悠扬便逐春风去。', '衰兰送客咸阳道，天若有情天亦老。']
 
 
@@ -183,8 +184,8 @@ flag = True
 try:
     print('%s开始配置' % CONFIG_PATH)
     backup(CONFIG_PATH)
-    homepage_text = '[config]\nWIDGET_ID_WEATHER = 1\nWIDGET_ID_BOOKMARKS = 2\nWIDGET_ID_APP = 3\nWIDGET_ID_GOLD = 4\nWIDGET_ID_NOTES = 5\nADMIN_EMAIL = %s\nSENDER = %s\nPASSWORD = %s\nDB_PASS=%s\nKEY = %s\nLOCATION = %s\nUPLOAD_FILE_PATH = %s\nDOMAIN_NAME = %s\n' % (
-        admin_email, mail_sender_address, mail_sender_password, mysql_password, weather_api_key, weather_default_location, UPLOAD_FILE_PATH, domain)
+    homepage_text = '[config]\nWIDGET_ID_WEATHER = 1\nWIDGET_ID_BOOKMARKS = 2\nWIDGET_ID_APP = 3\nWIDGET_ID_GOLD = 4\nWIDGET_ID_NOTES = 5\nWIDGET_ID_TRANSLATOR = 6\nADMIN_EMAIL = %s\nSENDER = %s\nPASSWORD = %s\nDB_PASS=%s\nKEY = %s\nLOCATION = %s\nUPLOAD_FILE_PATH = %s\nBING_WALLPAPERS_PATH = %s\nDOMAIN_NAME = %s\' % (
+        admin_email, mail_sender_address, mail_sender_password, mysql_password, weather_api_key, weather_default_location, UPLOAD_FILE_PATH, BING_WALLPAPERS_PATH,domain)
     with open(CONFIG_PATH, 'w') as w:
         w.write(homepage_text)
         print('%s配置成功' % CONFIG_PATH)
