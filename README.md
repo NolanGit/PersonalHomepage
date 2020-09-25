@@ -243,3 +243,10 @@
 功能：使用[translators](https://github.com/UlionTse/translators)实现，使用的是阿里的服务，当在左侧输入区输入文字后，一段间隔后，会根据上方选择的语言进行翻译。
 
 ![image](https://user-images.githubusercontent.com/27627484/92317176-9ceb8a80-f030-11ea-9e73-0e6656fcbe73.png)
+
+
+### 小组件-必应每日壁纸
+
+入口：主页小组件
+
+功能：系统使用「脚本运行平台」驱动脚本来每天爬取一张必应壁纸，小组件上则展示7天内的壁纸
