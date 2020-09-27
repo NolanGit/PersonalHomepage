@@ -51,14 +51,14 @@
       <el-input
         placeholder="请输入内容"
         v-model="edit.searchContent"
-        class="input-with-select"
-        size="mini"
+        class="margin_bottom-medium"
+        size="small"
       >
         <el-select
           v-model="edit.searchArea"
           slot="prepend"
           placeholder="请选择"
-          size="mini"
+          size="small"
           style="width: 130px"
         >
           <el-option label="国区" value="cn"></el-option>
@@ -68,16 +68,16 @@
           slot="append"
           icon="el-icon-search"
           @click="search()"
-          size="mini"
+          size="small"
         ></el-button>
       </el-input>
       <el-table
         size="mini"
-        height="200"
+        height="400"
         :data="edit.searchResultList"
         stripe
         style="width: 100%"
-        v-loading="searchLoading"
+        v-loading="edit.searchLoading"
       >
         <el-table-column
           prop="trackName"
@@ -213,6 +213,7 @@ export default {
       edit: {
         searchFormTitle: "",
         searchFormVisible: false,
+        searchLoading: false,
         searchContent: "",
         searchArea: "cn",
         searchResultList: [],
