@@ -1,21 +1,38 @@
 <template>
   <section>
-    <el-main class="noPadding" style="height: 300px;">
+    <el-main class="noPadding" style="height: 300px">
       <el-row type="flex" justify="center">
         <div class="widget-label">APP</div>
       </el-row>
-      <el-carousel height="180px" trigger="click" interval="5000" indicator-position="outside">
+      <el-carousel
+        height="180px"
+        trigger="click"
+        interval="5000"
+        indicator-position="outside"
+      >
         <el-carousel-item v-for="appData in appSuite" :key="appData">
           <el-table :data="appData" style="width: 100%" size="mini">
             <el-table-column prop="name" label="名称"></el-table-column>
-            <el-table-column prop="price" label="当前价格" width="80"></el-table-column>
-            <el-table-column prop="update_time" label="更新时间" width="180"></el-table-column>
+            <el-table-column
+              prop="price"
+              label="当前价格"
+              width="80"
+            ></el-table-column>
+            <el-table-column
+              prop="update_time"
+              label="更新时间"
+              width="180"
+            ></el-table-column>
           </el-table>
         </el-carousel-item>
       </el-carousel>
     </el-main>
 
-    <el-footer height="31px" style="justify-content: center; display: flex;" v-if="user_id != 0">
+    <el-footer
+      height="31px"
+      style="justify-content: center; display: flex"
+      v-if="user_id != 0"
+    >
       <WidgetButton
         :user_id="user_id"
         :widget_id="widget_id"
@@ -26,12 +43,78 @@
       ></WidgetButton>
     </el-footer>
 
+    <el-dialog
+      :title="edit.searchFormTitle"
+      :visible.sync="edit.searchFormVisible"
+      width="40%"
+    >
+      <el-input
+        placeholder="请输入内容"
+        v-model="edit.searchContent"
+        class="input-with-select"
+      >
+        <el-select
+          v-model="edit.searchArea"
+          slot="prepend"
+          placeholder="请选择"
+        >
+          <el-option label="国区" value="cn"></el-option>
+          <el-option label="美区" value="us"></el-option>
+        </el-select>
+        <el-button
+          slot="append"
+          icon="el-icon-search"
+          @click="search()"
+        ></el-button>
+      </el-input>
+      <el-table
+        size="mini"
+        height="200"
+        :data="searchResult"
+        stripe
+        style="width: 100%"
+      >
+        <el-table-column
+          prop="trackName"
+          label="名称"
+          width="80"
+        ></el-table-column>
+        <el-table-column prop="formattedPrice" label="价格"></el-table-column>
+        <el-table-column
+          prop="artistName"
+          label="开发者"
+          width="80"
+        ></el-table-column>
+        <el-table-column label="操作" width="100">
+          <template slot-scope="scope">
+            <el-button
+              class="noMargin"
+              size="mini"
+              plain
+              type="primary"
+              @click="submit(scope.row.trackViewUrl)"
+              >选择</el-button
+            >
+          </template>
+        </el-table-column>
+      </el-table>
+    </el-dialog>
+    <!-- iTunes 有提供接口：https://itunes.apple.com/search?term=Gorogoa &country=cn&media=software，后期可以改 -->
+
     <!--编辑界面-->
-    <el-dialog :title="edit.title" :visible.sync="edit.visible" width="40%">
+    <el-dialog
+      :title="edit.chooseFormTitle"
+      :visible.sync="edit.chooseFormVisible"
+      width="40%"
+    >
       <el-form ref="form" :model="edit.form" size="mini">
         <el-form-item label="App名称">
           <div class="div-flex">
-            <el-input size="small" v-model="edit.form.name" placeholder="名称"></el-input>
+            <el-input
+              size="small"
+              v-model="edit.form.name"
+              placeholder="名称"
+            ></el-input>
           </div>
         </el-form-item>
         <el-form-item label="AppURL">
@@ -54,12 +137,19 @@
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" size="small" @click="editSubmit()">确定</el-button>
+        <el-button type="primary" size="small" @click="editSubmit()"
+          >确定</el-button
+        >
       </span>
     </el-dialog>
 
     <el-dialog title="提醒" :visible.sync="notifyVisible" width="40%">
-      <PushEdit :user_id="user_id" :widget_id="widget_id" v-if="notifyVisible" @done="notify()"></PushEdit>
+      <PushEdit
+        :user_id="user_id"
+        :widget_id="widget_id"
+        v-if="notifyVisible"
+        @done="notify()"
+      ></PushEdit>
     </el-dialog>
 
     <!--编辑顺序界面-->
@@ -117,8 +207,13 @@ export default {
       appRawData: [],
       appSuite: [],
       edit: {
-        visible: false,
-        title: "",
+        searchFormTitle: "",
+        searchFormVisible: false,
+        searchContent: "",
+        searchArea: "cn",
+        searchResult: [],
+        chooseFormVisible: false,
+        chooseFormTitle: "",
         form: {
           index: "",
           name: "",
@@ -130,8 +225,8 @@ export default {
   },
   methods: {
     add() {
-      this.edit.title = "新增App";
-      this.edit.visible = true;
+      this.edit.chooseFormTitle = "新增App";
+      this.edit.chooseFormVisible = true;
     },
     notify() {
       this.notifyVisible = !this.notifyVisible;
@@ -141,12 +236,30 @@ export default {
       this.appSortEdit.list = deepClone(this.appRawData);
     },
     appSortEditSetting(item, index) {
-      this.edit.title = "编辑App";
+      this.edit.chooseFormTitle = "编辑App";
       this.edit.form.name = item.name;
       this.edit.form.url = item.url;
       this.edit.form.expect_price = item.expect_price;
       this.edit.form.index = index;
-      this.edit.visible = true;
+      this.edit.chooseFormVisible = true;
+    },
+    async search() {
+      try {
+        url =
+          "https://itunes.apple.com/search?term=" +
+          this.edit.searchContent +
+          "&country=" +
+          this.edit.searchArea +
+          "&media=software";
+        const { data: res } = await axios.get(url);
+        console.log(res);
+      } catch (e) {
+        console.log(e);
+        this.$message({
+          message: e.response.data.msg,
+          type: "error",
+        });
+      }
     },
     async appGet() {
       try {
@@ -175,7 +288,7 @@ export default {
       }
     },
     async editSubmit() {
-      if (this.edit.title == "新增App") {
+      if (this.edit.chooseFormTitle == "新增App") {
         try {
           const { data: res } = await axios.post(api.add, {
             user_id: this.user_id,
@@ -184,7 +297,7 @@ export default {
             expect_price: this.edit.form.expect_price,
           });
           this.appGet();
-          this.edit.visible = false;
+          this.edit.chooseFormVisible = false;
         } catch (e) {
           console.log(e);
           this.$message({
@@ -192,12 +305,12 @@ export default {
             type: "error",
           });
         }
-      } else if ((this.edit.title = "编辑App")) {
+      } else if ((this.edit.chooseFormTitle = "编辑App")) {
         let index = this.edit.form.index;
         this.appSortEdit.list[index].name = this.edit.form.name;
         this.appSortEdit.list[index].url = this.edit.form.url;
         this.appSortEdit.list[index].expect_price = this.edit.form.expect_price;
-        this.edit.visible = false;
+        this.edit.chooseFormVisible = false;
       }
     },
     async appSortEditSubmit(list) {
