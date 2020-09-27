@@ -59,6 +59,7 @@
           slot="prepend"
           placeholder="请选择"
           size="mini"
+          style="width: 130px"
         >
           <el-option label="国区" value="cn"></el-option>
           <el-option label="美区" value="us"></el-option>
@@ -76,18 +77,19 @@
         :data="edit.searchResultList"
         stripe
         style="width: 100%"
+        v-loading="searchLoading"
       >
         <el-table-column
           prop="trackName"
           label="名称"
-          width="80"
+          width="200"
         ></el-table-column>
-        <el-table-column prop="formattedPrice" label="价格"></el-table-column>
         <el-table-column
-          prop="artistName"
-          label="开发者"
+          prop="formattedPrice"
+          label="价格"
           width="80"
         ></el-table-column>
+        <el-table-column prop="artistName" label="开发者"></el-table-column>
         <el-table-column label="操作" width="100">
           <template slot-scope="scope">
             <el-button
@@ -95,7 +97,7 @@
               size="mini"
               plain
               type="primary"
-              @click="choosed(scope.row.trackViewUrl)"
+              @click="choosed(scope.row.trackName, scope.row.trackViewUrl)"
               >选择</el-button
             >
           </template>
@@ -253,6 +255,7 @@ export default {
     },
     async search() {
       try {
+        this.edit.searchLoading = true;
         var url =
           "https://itunes.apple.com/search?term=" +
           this.edit.searchContent +
@@ -260,8 +263,8 @@ export default {
           this.edit.searchArea +
           "&media=software";
         const { data: res } = await axios.get(url);
-        console.log(res);
         this.edit.searchResultList = res.results;
+        this.edit.searchLoading = false;
       } catch (e) {
         console.log(e);
         this.$message({
