@@ -252,3 +252,8 @@
 功能：系统使用「脚本运行平台」驱动脚本来每天爬取一张必应壁纸，小组件上则滚动展示7天内的壁纸，点击图片可以下载原图。
 
 ![image](https://user-images.githubusercontent.com/27627484/94260304-8024e180-ff62-11ea-860a-2e27b7827d8c.png)
+
+## License
+
+[MPL-2.0](https://opensource.org/licenses/MPL-2.0)
+
