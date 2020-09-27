@@ -46,7 +46,7 @@
     <el-dialog
       :title="edit.searchFormTitle"
       :visible.sync="edit.searchFormVisible"
-      width="40%"
+      width="60%"
     >
       <el-input
         placeholder="请输入内容"
@@ -68,6 +68,7 @@
           slot="append"
           icon="el-icon-search"
           @click="search()"
+          @keyup.enter.native="search()"
           size="small"
         ></el-button>
       </el-input>
@@ -82,7 +83,7 @@
         <el-table-column
           prop="trackName"
           label="名称"
-          width="200"
+          width="250"
         ></el-table-column>
         <el-table-column
           prop="formattedPrice"
