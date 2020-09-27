@@ -17,7 +17,7 @@ except:
     from model.widget_model import widget
 
 count = 0
-WIDGET_ID_GOLD = widget.get(widget.name == 'app').id
+WIDGET_ID_GOLD = widget.get(widget.name == 'gold').id
 print('WIDGET_ID_GOLD:' + str(WIDGET_ID_GOLD))
 
 
@@ -60,7 +60,6 @@ def gold_price_push_generator(price):
     '''
         首先获取所有需要推送数据，然后去价格表查最新的一条，将要推送的数据写入队列
     '''
-    from common_func import Config
     from login.login_funtion import User
     from push.push_function import PushList, PushData
     from model.gold_price_model import gold_price_push_option

@@ -25,7 +25,6 @@ from model.widget_model import widget
 
 count = 0
 WIDGET_ID_APP = widget.get(widget.name == 'app').id
-print('WIDGET_ID_APP:' + str(WIDGET_ID_APP))
 
 
 class App(object):
@@ -80,8 +79,6 @@ def app_price_push_generator():
     '''
         首先获取所有需要推送数据，然后去价格表查最新的一条，将要推送的数据写入队列
     '''
-    from common_func import Config
-
     app_push_data_list = PushList(widget_id=WIDGET_ID_APP).push_list_get(is_need_2_push=True).push_list
     print('有%s条数据到达推送时间，需要检测是否满足推送条件' % str(len(app_push_data_list)))
     for app_push_data in app_push_data_list:
