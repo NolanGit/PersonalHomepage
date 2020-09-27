@@ -73,8 +73,8 @@ export default {
 </script>
 <style scoped>
 .image {
-  width: 100%;
   max-height: 245px;
+  object-fit: cover;
   cursor: pointer;
   box-shadow: 3px 3px 2px rgba(0, 0, 0, 0.5);
 }
