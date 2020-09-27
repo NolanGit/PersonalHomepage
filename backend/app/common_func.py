@@ -4,14 +4,6 @@ import hashlib
 import inspect
 
 
-class Config(object):
-    def get(self, key):
-        import configparser
-        cf = configparser.ConfigParser()
-        cf.read('../homepage.config')
-        return cf.get('config', key)
-
-
 class CommonFunc(object):
     def random_str(self, num):
         H = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'

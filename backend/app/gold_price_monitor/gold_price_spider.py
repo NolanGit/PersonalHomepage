@@ -8,11 +8,17 @@ from bs4 import BeautifulSoup
 
 try:
     from ..model.gold_price_model import gold_price
+    from ..model.widget_model import widget
 except:
     import sys
     sys.path.append('../')
     sys.path.append('../../')
     from model.gold_price_model import gold_price
+    from model.widget_model import widget
+
+count = 0
+WIDGET_ID_GOLD = widget.get(widget.name == 'gold').id
+print('WIDGET_ID_GOLD:' + str(WIDGET_ID_GOLD))
 
 
 def get_gold_price():
@@ -54,13 +60,12 @@ def gold_price_push_generator(price):
     '''
         首先获取所有需要推送数据，然后去价格表查最新的一条，将要推送的数据写入队列
     '''
-    from common_func import Config
     from login.login_funtion import User
     from push.push_function import PushList, PushData
     from model.gold_price_model import gold_price_push_option
     from peewee import DoesNotExist
 
-    push_data_list = PushList(widget_id=Config().get('WIDGET_ID_GOLD')).push_list_get(is_need_2_push=True).push_list
+    push_data_list = PushList(widget_id=WIDGET_ID_GOLD).push_list_get(is_need_2_push=True).push_list
     print('有%s条数据到达推送时间，需要检测是否满足推送条件' % str(len(push_data_list)))
     for push_data in push_data_list:
         user_id = push_data.user_id
