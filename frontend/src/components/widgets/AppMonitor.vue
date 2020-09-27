@@ -52,11 +52,13 @@
         placeholder="请输入内容"
         v-model="edit.searchContent"
         class="input-with-select"
+        size="mini"
       >
         <el-select
           v-model="edit.searchArea"
           slot="prepend"
           placeholder="请选择"
+          size="mini"
         >
           <el-option label="国区" value="cn"></el-option>
           <el-option label="美区" value="us"></el-option>
@@ -65,12 +67,13 @@
           slot="append"
           icon="el-icon-search"
           @click="search()"
+          size="mini"
         ></el-button>
       </el-input>
       <el-table
         size="mini"
         height="200"
-        :data="searchResultList"
+        :data="edit.searchResultList"
         stripe
         style="width: 100%"
       >
