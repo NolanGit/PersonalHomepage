@@ -70,7 +70,7 @@
       <el-table
         size="mini"
         height="200"
-        :data="searchResult"
+        :data="searchResultList"
         stripe
         style="width: 100%"
       >
@@ -210,7 +210,7 @@ export default {
         searchFormVisible: false,
         searchContent: "",
         searchArea: "cn",
-        searchResult: [],
+        searchResultList: [],
         chooseFormVisible: false,
         chooseFormTitle: "",
         form: {
@@ -250,7 +250,7 @@ export default {
     },
     async search() {
       try {
-        url =
+        var url =
           "https://itunes.apple.com/search?term=" +
           this.edit.searchContent +
           "&country=" +
@@ -258,6 +258,7 @@ export default {
           "&media=software";
         const { data: res } = await axios.get(url);
         console.log(res);
+        this.edit.searchResultList = res.results;
       } catch (e) {
         console.log(e);
         this.$message({
