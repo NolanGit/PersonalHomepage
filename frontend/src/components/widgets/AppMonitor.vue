@@ -92,14 +92,13 @@
               size="mini"
               plain
               type="primary"
-              @click="submit(scope.row.trackViewUrl)"
+              @click="choosed(scope.row.trackViewUrl)"
               >选择</el-button
             >
           </template>
         </el-table-column>
       </el-table>
     </el-dialog>
-    <!-- iTunes 有提供接口：https://itunes.apple.com/search?term=Gorogoa &country=cn&media=software，后期可以改 -->
 
     <!--编辑界面-->
     <el-dialog
@@ -225,6 +224,12 @@ export default {
   },
   methods: {
     add() {
+      this.edit.searchFormTitle = "查找App";
+      this.edit.searchFormVisible = true;
+    },
+    choosed(name, url) {
+      this.edit.form.name = name;
+      this.edit.form.url = url;
       this.edit.chooseFormTitle = "新增App";
       this.edit.chooseFormVisible = true;
     },
