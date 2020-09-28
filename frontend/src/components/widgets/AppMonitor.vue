@@ -54,6 +54,7 @@
         v-model="edit.searchContent"
         class="margin_bottom-medium"
         size="small"
+        @keyup.enter.native="search()"
       >
         <el-select
           v-model="edit.searchArea"
@@ -69,7 +70,6 @@
           slot="append"
           icon="el-icon-search"
           @click="search()"
-          @keyup.enter.native="search()"
           size="small"
         ></el-button>
       </el-input>
@@ -340,6 +340,10 @@ export default {
             url: this.edit.form.url,
             expect_price: this.edit.form.expect_price,
           });
+          this.$message({
+            message: res["msg"],
+            type: "success",
+          });
           this.appGet();
           this.edit.chooseFormVisible = false;
           this.edit.searchFormVisible = false;
@@ -355,6 +359,10 @@ export default {
         this.appSortEdit.list[index].name = this.edit.form.name;
         this.appSortEdit.list[index].url = this.edit.form.url;
         this.appSortEdit.list[index].expect_price = this.edit.form.expect_price;
+        this.$message({
+          message: res["msg"],
+          type: "success",
+        });
         this.edit.chooseFormVisible = false;
         this.edit.searchFormVisible = false;
       }
@@ -396,9 +404,5 @@ export default {
 <style scoped>
 .noMargin {
   margin: 0;
-}
-.el-tooltip__popper {
-  max-width: 400px;
-  line-height: 180%;
 }
 </style>
