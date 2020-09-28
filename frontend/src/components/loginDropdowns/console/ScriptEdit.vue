@@ -1,7 +1,10 @@
 <template>
   <section>
     <div class="edit-form-card margin_left-medium margin_right-medium">
-      <div class="scrollbar-div max_height-large padding-right-19" ref="scrollbarDiv">
+      <div
+        class="scrollbar-div max_height-large padding-right-19"
+        ref="scrollbarDiv"
+      >
         <el-card shadow="never">
           <div class="margin_bottom-medium">
             <el-card>
@@ -10,7 +13,12 @@
                   <p class="td__p--label">脚本名称：</p>
                 </td>
                 <td>
-                  <el-tooltip open-delay="1000" effect="dark" :content="edit.title" placement="top">
+                  <el-tooltip
+                    open-delay="1000"
+                    effect="dark"
+                    :content="edit.title"
+                    placement="top"
+                  >
                     <el-input
                       size="small"
                       v-model="edit.title"
@@ -136,18 +144,24 @@
                       </el-select>
                     </td>
                   </div>
-                  <div v-if="singleData.type=='select'">
+                  <div v-if="singleData.type == 'select'">
                     <td type="flex" class="td--label">
                       <p class="td__p--label">选项：</p>
                     </td>
                     <td>
                       <el-button
                         size="small"
-                        @click.native="singleDataOptionDialogClicked(edit.formData.indexOf(singleData),singleData.options)"
-                      >编辑选项</el-button>
+                        @click.native="
+                          singleDataOptionDialogClicked(
+                            edit.formData.indexOf(singleData),
+                            singleData.options
+                          )
+                        "
+                        >编辑选项</el-button
+                      >
                     </td>
                   </div>
-                  <div v-if="singleData.type=='select'">
+                  <div v-if="singleData.type == 'select'">
                     <td type="flex" class="td--label">
                       <p class="td__p--label">是否可创建选项：</p>
                     </td>
@@ -169,11 +183,16 @@
                       </el-select>
                     </td>
                   </div>
-                  <div v-if="singleData.type!='date'&&singleData.type!='dateRange'">
+                  <div
+                    v-if="
+                      singleData.type != 'date' &&
+                      singleData.type != 'dateRange'
+                    "
+                  >
                     <td type="flex" class="td--label">
                       <p class="td__p--label">默认值：</p>
                     </td>
-                    <td v-if="singleData.type!='select'">
+                    <td v-if="singleData.type != 'select'">
                       <el-tooltip
                         open-delay="1000"
                         effect="dark"
@@ -188,7 +207,7 @@
                         ></el-input>
                       </el-tooltip>
                     </td>
-                    <td v-if="singleData.type=='select'">
+                    <td v-if="singleData.type == 'select'">
                       <el-tooltip
                         open-delay="1000"
                         effect="dark"
@@ -203,7 +222,7 @@
                         ></el-input>
                       </el-tooltip>
                     </td>
-                    <td v-if="singleData.type=='select'">
+                    <td v-if="singleData.type == 'select'">
                       <el-tooltip
                         class="edit-form-question-mark question-mark"
                         effect="dark"
@@ -236,7 +255,7 @@
                       </el-select>
                     </td>
                   </div>
-                  <div v-if="singleData.type!='dateRange'">
+                  <div v-if="singleData.type != 'dateRange'">
                     <td type="flex" class="td--label">
                       <p class="td__p--label">占位文字：</p>
                     </td>
@@ -308,7 +327,7 @@
                       </el-tooltip>
                     </td>
                   </div>
-                  <div v-if="singleData.extra_button==1">
+                  <div v-if="singleData.extra_button == 1">
                     <td type="flex" class="td--label">
                       <p class="td__p--label">额外按钮名称：</p>
                     </td>
@@ -328,7 +347,7 @@
                       </el-tooltip>
                     </td>
                   </div>
-                  <div v-if="singleData.extra_button==1">
+                  <div v-if="singleData.extra_button == 1">
                     <td type="flex" class="td--label">
                       <p class="td__p--label">额外按钮运行脚本：</p>
                     </td>
@@ -428,19 +447,25 @@
                     <div>
                       <i
                         class="editFormRightButton editFormMoveUp el-icon-top"
-                        @click="editFormMoveUp(edit.formData.indexOf(singleData))"
+                        @click="
+                          editFormMoveUp(edit.formData.indexOf(singleData))
+                        "
                       ></i>
                     </div>
                     <div>
                       <i
                         class="editFormRightButton editFormMoveDown el-icon-bottom"
-                        @click="editFormMoveDown(edit.formData.indexOf(singleData))"
+                        @click="
+                          editFormMoveDown(edit.formData.indexOf(singleData))
+                        "
                       ></i>
                     </div>
                     <div>
                       <i
                         class="editFormRightButton editFormDeleted el-icon-close"
-                        @click="editFormDeleted(edit.formData.indexOf(singleData))"
+                        @click="
+                          editFormDeleted(edit.formData.indexOf(singleData))
+                        "
                       ></i>
                     </div>
                   </div>
@@ -448,7 +473,11 @@
               </el-card>
             </div>
           </div>
-          <div class="add" style="width: 99.87%;" @click="editFormAddSingleData()">
+          <div
+            class="add"
+            style="width: 99.87%"
+            @click="editFormAddSingleData()"
+          >
             <span>+ 添加参数</span>
           </div>
         </el-card>
@@ -458,14 +487,18 @@
           slot="reference"
           size="small"
           @click.native="editFormCloneButtonActive()"
-        >复制现有脚本的组件配置</el-button>
-        <el-button size="small" @click.native="edit.visible=false">关闭</el-button>
+          >复制现有脚本的组件配置</el-button
+        >
+        <el-button size="small" @click.native="edit.visible = false"
+          >关闭</el-button
+        >
         <el-button
           type="primary"
           size="small"
           :loading="edit.buttonLoading"
           @click.native="editFormSubmited()"
-        >提交</el-button>
+          >提交</el-button
+        >
       </div>
     </div>
 
@@ -480,10 +513,18 @@
         <div class="min_height-medium scrollbar-div max_height-large">
           <div class="margin_right-small">
             <el-table :data="cloneSettings.script.data" size="mini">
-              <el-table-column label="名称" width="250" prop="name"></el-table-column>
+              <el-table-column
+                label="名称"
+                width="250"
+                prop="name"
+              ></el-table-column>
               <el-table-column label="操作">
                 <template slot-scope="scope">
-                  <el-button size="mini" @click="editFormClone(scope.$index, scope.row)">选择</el-button>
+                  <el-button
+                    size="mini"
+                    @click="editFormClone(scope.$index, scope.row)"
+                    >选择</el-button
+                  >
                 </template>
               </el-table-column>
             </el-table>
@@ -505,7 +546,10 @@
           class="scrollbar-div max_height-large padding-right-19 padding_bottom-medium"
           ref="scrollbarDiv"
         >
-          <div v-for="singleDataOption in singleDataOptionDialog.data" :key="singleDataOption.key">
+          <div
+            v-for="singleDataOption in singleDataOptionDialog.data"
+            :key="singleDataOption.key"
+          >
             <div>
               <td type="flex" class="td--label--short">
                 <p class="td__p--label">标签：</p>
@@ -518,7 +562,7 @@
                   placement="top"
                 >
                   <el-input
-                    style="width: 12vw;"
+                    style="width: 12vw"
                     size="small"
                     v-model="singleDataOption.label"
                     placeholder="请输入选项展示文字"
@@ -536,7 +580,7 @@
                   placement="top"
                 >
                   <el-input
-                    style="width: 16vw;"
+                    style="width: 16vw"
                     size="small"
                     v-model="singleDataOption.value"
                     placeholder="请输入选项实际的值"
@@ -546,18 +590,35 @@
               <td>
                 <i
                   class="singleDataOptionDialogDeleted el-icon-delete"
-                  @click="singleDataOptionDialogDeleted(singleDataOptionDialog.data.indexOf(singleDataOption))"
+                  @click="
+                    singleDataOptionDialogDeleted(
+                      singleDataOptionDialog.data.indexOf(singleDataOption)
+                    )
+                  "
                 ></i>
               </td>
             </div>
           </div>
-          <div class="add" style="width: 99.87%;" @click="singleDataOptionDialogAddSingleData()">
+          <div
+            class="add"
+            style="width: 99.87%"
+            @click="singleDataOptionDialogAddSingleData()"
+          >
             <span>+ 添加选项</span>
           </div>
         </div>
         <div class="dialog-footer">
-          <el-button size="small" @click="singleDataOptionDialog.visible = false">关闭</el-button>
-          <el-button type="primary" size="small" @click="singleDataOptionDialogSubmited()">保存</el-button>
+          <el-button
+            size="small"
+            @click="singleDataOptionDialog.visible = false"
+            >关闭</el-button
+          >
+          <el-button
+            type="primary"
+            size="small"
+            @click="singleDataOptionDialogSubmited()"
+            >保存</el-button
+          >
         </div>
       </div>
     </el-drawer>
@@ -571,6 +632,7 @@ import { deepClone } from "../../../js/common";
 const api = {
   edit: "/script/edit",
   scriptAll: "/script/scriptAll",
+  subSystemScript: "/script/subSystemScript",
 };
 export default {
   name: "ScriptEdit",
@@ -672,7 +734,9 @@ export default {
     //编辑脚本复制
     async editFormCloneButtonActive() {
       try {
-        const { data: res } = await axios.post(api.scriptAll);
+        const { data: res } = await axios.post(api.subSystemScript, {
+          sub_system_id: 0,
+        });
         if (res["code"] !== 200) {
           this.$message({
             message: res["msg"],

@@ -55,12 +55,11 @@ def subprocess_clean():
 @permission_required(URL_PREFIX + '/subSystem')
 @cross_origin()
 def subSystem():
-    result = []
     try:
         script_sub_system_query = script_sub_system.select().where((script_sub_system.is_valid == 1)).dicts()
         return rsp.success([{'id': row['id'], 'name': row['name'], 'user_id': row['user_id'], 'update_time': row['update_time']} for row in script_sub_system_query])
     except Exception as e:
-        return rsp.failed(e)
+        return rsp.failed(e), 500
 
 
 @script.route('/subSystemAdd', methods=['POST'])
@@ -71,10 +70,9 @@ def subSystemAdd():
         sub_system_name = request.get_json()['sub_system_name']
         user_id = request.get_json()['user_id']
         ScriptSubSystem(name=sub_system_name, user_id=user_id).create()
-        response = {'code': 200, 'msg': '成功！'}
-        return jsonify(response)
+        return rsp.success()
     except Exception as e:
-        return rsp.failed(e)
+        return rsp.failed(e), 500
 
 
 @script.route('/subSystemDelete', methods=['POST'])
@@ -88,10 +86,9 @@ def subSystemDelete():
         s.is_valid = 0
         s.user_id = user_id
         s.save()
-        response = {'code': 200, 'msg': '成功！'}
-        return jsonify(response)
+        return rsp.success()
     except Exception as e:
-        return rsp.failed(e)
+        return rsp.failed(e), 500
 
 
 @script.route('/subSystemScript', methods=['POST'])
@@ -101,7 +98,10 @@ def subSystemScript():
     sub_system_id = request.get_json()['sub_system_id']
     data = []
     try:
-        script_table_model_query = script_table_model.select().where((script_table_model.is_valid == 1) & (script_table_model.sub_system_id == sub_system_id)).dicts()
+        if sub_system_id != 0:
+            script_table_model_query = script_table_model.select().where((script_table_model.is_valid == 1) & (script_table_model.sub_system_id == sub_system_id)).dicts()
+        else:
+            script_table_model_query = script_table_model.select().where((script_table_model.is_valid == 1)).order_by(script_table_model.sub_system_id).dicts()
         if len(script_table_model_query) == 0:
             response = {'code': 200, 'msg': '成功！', 'data': []}
             return jsonify(response)
@@ -137,11 +137,9 @@ def subSystemScript():
                     data[-1]['detail'][-1]['extra_button_label'] = row2['extra_button_label']
                     data[-1]['detail'][-1]['extra_button_script'] = row2['extra_button_script']
                     data[-1]['detail'][-1]['version'] = row2['version']
-        response = {'code': 200, 'msg': '成功！', 'data': data}
-        return jsonify(response)
+        return rsp.success(data)
     except Exception as e:
-        traceback.print_exc()
-        return rsp.failed(e)
+        return rsp.failed(e), 500
 
 
 @script.route('/run', methods=['POST'])
@@ -185,17 +183,8 @@ def run():
         #运行
         process_id = subprocess_run(command)
 
-        response = {
-            'code': 200,
-            'msg': '成功！',
-            'data': {
-                'process_id': process_id,
-                'log_id': script_log_query.id,
-            }
-        }
-        return jsonify(response)
+        return rsp.success({'process_id': process_id, 'log_id': script_log_query.id})
     except Exception as e:
-        print(e)
         traceback.print_exc()
         return rsp.failed(e), 500
 
@@ -204,14 +193,12 @@ def run():
 @permission_required(URL_PREFIX + '/terminate')
 @cross_origin()
 def terminate():
-    global running_subprocess
-    process_id = request.get_json()['process_id']
     try:
+        global running_subprocess
+        process_id = request.get_json()['process_id']
         running_subprocess[process_id].terminate()
-        response = {'code': 200, 'msg': '成功发送了终止命令，任务将很快终止！'}
-        return jsonify(response)
+        return rsp.success('成功发送了终止命令，任务将很快终止！')
     except Exception as e:
-        print(e)
         traceback.print_exc()
         return rsp.failed(e), 500
 
@@ -220,8 +207,8 @@ def terminate():
 @permission_required(URL_PREFIX + '/runOutput')
 @cross_origin()
 def runOutput():
-    global running_subprocess
     try:
+        global running_subprocess
         process_id = request.get_json()['process_id']
         if running_subprocess == []:
             return rsp.success({'output': '', 'status': -1})
@@ -238,7 +225,6 @@ def runOutput():
                 subprocess_clean()
         return rsp.success({'output': output, 'status': status})
     except Exception as e:
-        print(e)
         traceback.print_exc()
         return rsp.failed(e), 500
 
@@ -358,10 +344,7 @@ def edit():
                     version=1,
                     user=user_name,
                     update_time=datetime.datetime.now())
-            response = {
-                'code': 200,
-                'msg': '新增成功！',
-            }
+            return rsp.success()
         else:
             script_table_model_query = script_table_model.select().where(script_table_model.id == script_id).order_by(-script_table_model.id).limit(1).dicts()
             for row in script_table_model_query:
@@ -453,13 +436,8 @@ def edit():
                     version=version,
                     user=user_name,
                     update_time=datetime.datetime.now())
-            response = {
-                'code': 200,
-                'msg': '修改成功！',
-            }
-        return jsonify(response)
+            return rsp.success()
     except Exception as e:
-        print(e)
         traceback.print_exc()
         return rsp.failed(e), 500
 
@@ -480,12 +458,10 @@ def replay():
                 command = row['command']
                 version = row['version']
                 update_time = row['start_time']
-            response = {'code': 200, 'msg': '成功', 'data': {'id': id, 'detail': detail, 'command': command, 'version': version, 'update_time': update_time}}
+            return rsp.success({'id': id, 'detail': detail, 'command': command, 'version': version, 'update_time': update_time})
         else:
-            response = {'code': 500, 'msg': '未查询到' + user_name + '的上次脚本运行参数，如想使用其他人的参数，请使用“查看全部运行记录”按钮', 'data': {}}
-        return jsonify(response)
+            return rsp.failed('未查询到' + user_name + '的上次脚本运行参数，如想使用其他人的参数，请使用“查看全部运行记录”按钮')
     except Exception as e:
-        print(e)
         traceback.print_exc()
         return rsp.failed(e), 500
 
@@ -499,10 +475,8 @@ def delete():
         user_name = User(user_id=user_id).user_name
         script_id = request.get_json()['script_id']
         script_table_model.update(is_valid=0, user=user_name, update_time=datetime.datetime.now()).where((script_table_model.id == script_id) & (script_table_model.is_valid == 1)).execute()
-        response = {'code': 200, 'msg': '删除成功', 'data': {}}
-        return jsonify(response)
+        return rsp.success()
     except Exception as e:
-        print(e)
         traceback.print_exc()
         return rsp.failed(e), 500
 
@@ -515,10 +489,8 @@ def saveOutput():
         log_id = request.get_json()['log_id']
         output = request.get_json()['output']
         script_log.update(output=output, end_time=datetime.datetime.now()).where((script_log.id == log_id)).execute()
-        response = {'code': 200, 'msg': '成功', 'data': {}}
-        return jsonify(response)
+        return rsp.success()
     except Exception as e:
-        print(e)
         traceback.print_exc()
         return rsp.failed(e), 500
 
@@ -549,10 +521,8 @@ def getLogs():
         for row in script_detail_query:
             if row['is_important'] == 1:
                 important_fields.append(row['label'])
-        response = {'code': 200, 'msg': '成功', 'data': {'logs': result, 'important_fields': important_fields}}
-        return jsonify(response)
+        return rsp.success({'logs': result, 'important_fields': important_fields})
     except Exception as e:
-        print(e)
         traceback.print_exc()
         return rsp.failed(e), 500
 
@@ -566,24 +536,19 @@ def getNewestLog():
         user_name = User(user_id=user_id).user_name
         script_id = request.get_json()['script_id']
         script_log_query = script_log.select().where((script_log.script_id == script_id) & (script_log.user == User(user_id=user_id).user_name)).limit(1).order_by(-script_log.id).dicts()
-        result = []
         if len(script_log_query) != 0:
-            for row in script_log_query:
-                result.append({
-                    'log_id': row['id'],
-                    'user': row['user'],
-                    'command': row['command'],
-                    'detail': eval(row['detail']),
-                    'output': row['output'],
-                    'version': row['version'],
-                    'update_time': row['start_time'].strftime("%Y-%m-%d %H:%M:%S"),
-                })
-            response = {'code': 200, 'msg': '成功', 'data': result}
+            return rsp.success([{
+                'log_id': row['id'],
+                'user': row['user'],
+                'command': row['command'],
+                'detail': eval(row['detail']),
+                'output': row['output'],
+                'version': row['version'],
+                'update_time': row['start_time'].strftime("%Y-%m-%d %H:%M:%S"),
+            } for row in script_log_query])
         else:
-            response = {'code': 500, 'msg': '未查询到' + user_name + '的上次脚本运行日志，如想查看其他人的日志，请使用“查看全部运行记录”按钮', 'data': {}}
-        return jsonify(response)
+            return rsp.failed('未查询到' + user_name + '的上次脚本运行日志，如想查看其他人的日志，请使用“查看全部运行记录”按钮')
     except Exception as e:
-        print(e)
         traceback.print_exc()
         return rsp.failed(e), 500
 
@@ -596,29 +561,23 @@ def schedule():
         user_id = request.get_json()['user_id']
         script_id = request.get_json()['script_id']
         script_schedule_query = script_schedule.select().where((script_schedule.script_id == script_id) & (script_schedule.is_valid == 1)).order_by(script_schedule.id).dicts()
-        result = []
-        for row in script_schedule_query:
-            user_name = User(user_id=row['user_id']).user_name
-            result.append({
-                'schedule_id': row['id'],
-                'script_id': row['script_id'],
-                'command': row['command'],
-                'detail': eval(row['detail']),
-                'version': row['version'],
-                'user_id': row['user_id'],
-                'user_name': user_name,
-                'is_automatic': row['is_automatic'],
-                'is_automatic_text': '是' if row['is_automatic'] else '否',
-                'interval': row['interval'],
-                'interval_raw': row['interval_raw'],
-                'interval_unit': row['interval_unit'],
-                'trigger_time': row['trigger_time'].strftime("%Y-%m-%d %H:%M:%S"),
-                'update_time': row['update_time'].strftime("%Y-%m-%d %H:%M:%S"),
-            })
-        response = {'code': 200, 'msg': '成功', 'data': result}
-        return jsonify(response)
+        return rsp.success([{
+            'schedule_id': row['id'],
+            'script_id': row['script_id'],
+            'command': row['command'],
+            'detail': eval(row['detail']),
+            'version': row['version'],
+            'user_id': row['user_id'],
+            'user_name': User(user_id=row['user_id']).user_name,
+            'is_automatic': row['is_automatic'],
+            'is_automatic_text': '是' if row['is_automatic'] else '否',
+            'interval': row['interval'],
+            'interval_raw': row['interval_raw'],
+            'interval_unit': row['interval_unit'],
+            'trigger_time': row['trigger_time'].strftime("%Y-%m-%d %H:%M:%S"),
+            'update_time': row['update_time'].strftime("%Y-%m-%d %H:%M:%S"),
+        }] for row in script_schedule_query)
     except Exception as e:
-        print(e)
         traceback.print_exc()
         return rsp.failed(e), 500
 
@@ -637,11 +596,7 @@ def scheduleEdit():
         is_automatic = request.get_json()['is_automatic']
         trigger_time = datetime.datetime.strptime(request.get_json()['trigger_time'], "%Y-%m-%d %H:%M")
         if trigger_time < datetime.datetime.now():
-            response = {
-                'code': 500,
-                'msg': '定时运行时间不可以小于当前时间',
-            }
-            return jsonify(response), 500
+            return rsp.failed('定时运行时间不可以小于当前时间'), 500
         schedule_id = request.get_json()['schedule_id']
         if schedule_id == 0:
             if is_automatic == 0:
@@ -718,10 +673,8 @@ def scheduleEdit():
                     interval_unit=interval_unit,
                     is_valid=1,
                     update_time=datetime.datetime.now()).where(script_schedule.id == schedule_id).execute()
-        response = {'code': 200, 'msg': '成功', 'data': []}
-        return jsonify(response)
+        return rsp.success()
     except Exception as e:
-        print(e)
         traceback.print_exc()
         return rsp.failed(e), 500
 
@@ -735,10 +688,8 @@ def scheduleDelete():
         user_name = User(user_id=user_id).user_name
         schedule_id = request.get_json()['schedule_id']
         script_schedule.update(is_valid=0, update_time=datetime.datetime.now()).where(script_schedule.id == schedule_id).execute()
-        response = {'code': 200, 'msg': '成功', 'data': []}
-        return jsonify(response)
+        return rsp.success()
     except Exception as e:
-        print(e)
         traceback.print_exc()
         return rsp.failed(e), 500
 
@@ -753,66 +704,55 @@ def extraButtonScriptRun():
         #运行
         command = request.get_json()['command']
         process_id = subprocess_run(command)
-
-        response = {
-            'code': 200,
-            'msg': '成功！',
-            'data': {
-                'process_id': process_id,
-            }
-        }
-        return jsonify(response)
+        return rsp.success({'process_id': process_id})
     except Exception as e:
-        print(e)
         traceback.print_exc()
         return rsp.failed(e), 500
 
 
-@script.route('/scriptAll', methods=['POST'])
-@permission_required(URL_PREFIX + '/scriptAll')
-@cross_origin()
-def scriptAll():
-    data = []
-    try:
-        script_table_model_query = script_table_model.select().where((script_table_model.is_valid == 1)).order_by(script_table_model.sub_system_id).dicts()
-        if len(script_table_model_query) == 0:
-            response = {'code': 200, 'msg': '成功！', 'data': []}
-            return jsonify(response)
-        else:
-            for row in script_table_model_query:
-                script_detail_query = script_detail.select().where((script_detail.script_id == row['id']) & (script_detail.is_valid == 1)).dicts()
-                data.append({})
-                data[-1]["id"] = row['id']
-                data[-1]["sub_system_id"] = row['sub_system_id']
-                data[-1]["name"] = row['name']
-                data[-1]['start_folder'] = row['start_folder']
-                data[-1]['start_script'] = row['start_script']
-                data[-1]["type"] = row['type']
-                data[-1]["runs"] = row['runs']
-                data[-1]["version"] = row['version']
-                data[-1]["user"] = row['user']
-                data[-1]["update_time"] = row['update_time'].strftime("%Y-%m-%d %H:%M:%S")
-                data[-1]['detail'] = []
-                for row2 in script_detail_query:
-                    data[-1]['detail'].append({})
-                    data[-1]['detail'][-1]['script_id'] = row2['script_id']
-                    data[-1]['detail'][-1]['type'] = row2['type']
-                    data[-1]['detail'][-1]['label'] = row2['label']
-                    data[-1]['detail'][-1]['value'] = row2['value']
-                    data[-1]['detail'][-1]['place_holder'] = row2['place_holder']
-                    data[-1]['detail'][-1]['options'] = eval(row2['options']) if row2['options'] != '' else {}
-                    data[-1]['detail'][-1]['createable'] = row2['createable']
-                    data[-1]['detail'][-1]['disabled'] = row2['disabled']
-                    data[-1]['detail'][-1]['remark'] = row2['remark']
-                    data[-1]['detail'][-1]['is_important'] = row2['is_important']
-                    data[-1]['detail'][-1]['visible'] = row2['visible']
-                    data[-1]['detail'][-1]['extra_button'] = row2['extra_button']
-                    data[-1]['detail'][-1]['extra_button_label'] = row2['extra_button_label']
-                    data[-1]['detail'][-1]['extra_button_script'] = row2['extra_button_script']
-                    data[-1]['detail'][-1]['version'] = row2['version']
-    except Exception as e:
-        traceback.print_exc()
-        response = {'code': 500, 'msg': '失败！错误信息：' + str(e) + '，请联系管理员。', 'data': []}
-        return jsonify(response)
-    response = {'code': 200, 'msg': '成功！', 'data': data}
-    return jsonify(response)
+# @script.route('/scriptAll', methods=['POST'])
+# @permission_required(URL_PREFIX + '/scriptAll')
+# @cross_origin()
+# def scriptAll():
+#     data = []
+#     try:
+#         script_table_model_query = script_table_model.select().where((script_table_model.is_valid == 1)).order_by(script_table_model.sub_system_id).dicts()
+#         if len(script_table_model_query) == 0:
+#             response = {'code': 200, 'msg': '成功！', 'data': []}
+#             return jsonify(response)
+#         else:
+#             for row in script_table_model_query:
+#                 script_detail_query = script_detail.select().where((script_detail.script_id == row['id']) & (script_detail.is_valid == 1)).dicts()
+#                 data.append({})
+#                 data[-1]["id"] = row['id']
+#                 data[-1]["sub_system_id"] = row['sub_system_id']
+#                 data[-1]["name"] = row['name']
+#                 data[-1]['start_folder'] = row['start_folder']
+#                 data[-1]['start_script'] = row['start_script']
+#                 data[-1]["type"] = row['type']
+#                 data[-1]["runs"] = row['runs']
+#                 data[-1]["version"] = row['version']
+#                 data[-1]["user"] = row['user']
+#                 data[-1]["update_time"] = row['update_time'].strftime("%Y-%m-%d %H:%M:%S")
+#                 data[-1]['detail'] = []
+#                 for row2 in script_detail_query:
+#                     data[-1]['detail'].append({})
+#                     data[-1]['detail'][-1]['script_id'] = row2['script_id']
+#                     data[-1]['detail'][-1]['type'] = row2['type']
+#                     data[-1]['detail'][-1]['label'] = row2['label']
+#                     data[-1]['detail'][-1]['value'] = row2['value']
+#                     data[-1]['detail'][-1]['place_holder'] = row2['place_holder']
+#                     data[-1]['detail'][-1]['options'] = eval(row2['options']) if row2['options'] != '' else {}
+#                     data[-1]['detail'][-1]['createable'] = row2['createable']
+#                     data[-1]['detail'][-1]['disabled'] = row2['disabled']
+#                     data[-1]['detail'][-1]['remark'] = row2['remark']
+#                     data[-1]['detail'][-1]['is_important'] = row2['is_important']
+#                     data[-1]['detail'][-1]['visible'] = row2['visible']
+#                     data[-1]['detail'][-1]['extra_button'] = row2['extra_button']
+#                     data[-1]['detail'][-1]['extra_button_label'] = row2['extra_button_label']
+#                     data[-1]['detail'][-1]['extra_button_script'] = row2['extra_button_script']
+#                     data[-1]['detail'][-1]['version'] = row2['version']
+#                 return rsp.success(data)
+#     except Exception as e:
+#         traceback.print_exc()
+#         return rsp.failed(e), 500
