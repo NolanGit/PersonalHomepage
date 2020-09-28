@@ -84,10 +84,10 @@
         <el-table-column prop="trackName" label="名称" width="250">
           <template slot-scope="scope">
             <el-tooltip
-              class="item"
               effect="dark"
               :content="scope.row.description"
               placement="top"
+              style="max-width: 40vw"
             >
               <el-button
                 class="noMargin"
@@ -104,7 +104,7 @@
           label="价格"
           width="80"
         ></el-table-column>
-        <el-table-column prop="genres" label="类别">
+        <el-table-column prop="genres" label="类别" width="200">
           <template slot-scope="scope">
             <p
               class="noMargin"
@@ -112,7 +112,7 @@
               v-for="text in scope.row.genres"
               :key="text"
             >
-              {{ scope.text }}
+              {{ text }}
             </p>
           </template>
         </el-table-column>
