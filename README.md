@@ -226,7 +226,9 @@
 
 入口：主页小组件
 
-功能：监控苹果软件商店应用的价格，当小于设定的阈值时，提醒用户。需要填写AppStore应用链接，此链接可以百度'想要关注的app名字+" site:apps.apple.com"'来获取，如"gorogoa site:apps.apple.com"，然后打开中文商店的页面(这样价格爬取到的才是中文)，此时的页面链接即为AppStore应用链接，如"https://apps.apple.com/cn/app/id1269225754"。
+功能：查找苹果软件商店d呃应用并监控其价格，当小于设定的阈值时，提醒用户。
+
+![image](https://user-images.githubusercontent.com/27627484/94397623-cebac180-0196-11eb-962b-b87e9891cf8b.png)
 
 ![image](https://user-images.githubusercontent.com/27627484/87305689-7a198a00-c549-11ea-9925-d944bdb839e5.png)
 
