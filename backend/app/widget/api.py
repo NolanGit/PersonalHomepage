@@ -6,14 +6,14 @@ from . import widget as widget_blue_print
 from flask_cors import cross_origin
 from flask import session, redirect, url_for, current_app, request, jsonify
 
-from ..response import Response
 from ..login.login_funtion import User
+from ..model.widget_model import widget_suite
+from ..response import Response as MyResponse
+from ..model.widget_model import widget as widget_table
 from ..privilege.privilege_control import permission_required
 from .widget_fuction import Widget, widget_suite_get, widget_get, widget_all, widget_suite_delete
-from ..model.widget_model import widget as widget_table
-from ..model.widget_model import widget_suite
 
-rsp = Response()
+rsp = MyResponse()
 URL_PREFIX = '/widget'
 
 

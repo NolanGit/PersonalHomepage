@@ -6,16 +6,17 @@ import traceback
 import configparser
 from . import weather
 from flask_cors import cross_origin
-from flask import render_template, session, redirect, url_for, current_app, flash, Response, request, jsonify
+from flask import render_template, session, redirect, url_for, current_app, flash, request, jsonify
+
+from ..common_func import CommonFunc
 from ..login.login_funtion import User
+from .ip_location_function import IpLocation
+from ..response import Response as MyResponse
+from ..model.weather_model import weather_notify
 from ..privilege.privilege_control import permission_required
 from .weather_function import WeatherData, WeatherLocation, WeatherLocationList
-from .ip_location_function import IpLocation
-from ..response import Response
-from ..common_func import CommonFunc
-from ..model.weather_model import weather_notify
 
-rsp = Response()
+rsp = MyResponse()
 cf = CommonFunc()
 
 URL_PREFIX = '/weather'

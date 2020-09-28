@@ -11,8 +11,8 @@ from flask import session, redirect, url_for, current_app, flash, Response, requ
 
 from . import translator
 from ..check import Check
-from ..response import Response as MyResponse
 from ..common_func import CommonFunc
+from ..response import Response as MyResponse
 from ..privilege.privilege_control import permission_required
 
 rsp = MyResponse()
