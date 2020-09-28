@@ -46,6 +46,7 @@
     <el-dialog
       :title="edit.searchFormTitle"
       :visible.sync="edit.searchFormVisible"
+      :before-close="searchFormClosed()"
       width="60%"
     >
       <el-input
@@ -62,7 +63,7 @@
           style="width: 130px"
         >
           <el-option label="国区" value="cn"></el-option>
-          <el-option label="美区" value="us"></el-option>
+          <!-- <el-option label="美区" value="us"></el-option> -->
         </el-select>
         <el-button
           slot="append"
@@ -80,16 +81,37 @@
         style="width: 100%"
         v-loading="edit.searchLoading"
       >
-        <el-table-column
-          prop="trackName"
-          label="名称"
-          width="250"
-        ></el-table-column>
+        <el-table-column prop="trackName" label="名称" width="250">
+          <el-tooltip
+            class="item"
+            effect="dark"
+            :content="scope.row.description"
+            placement="top"
+          >
+            <el-button
+              class="noMargin"
+              size="mini"
+              type="text"
+              @click="oepn(scope.row.trackViewUrl)"
+              >{{ scope.row.trackName }}</el-button
+            >
+          </el-tooltip>
+        </el-table-column>
         <el-table-column
           prop="formattedPrice"
           label="价格"
           width="80"
         ></el-table-column>
+        <el-table-column prop="genres" label="类别">
+          <p
+            class="noMargin"
+            size="mini"
+            v-for="text in scope.row.genres"
+            :key="text"
+          >
+            {{ scope.text }}
+          </p>
+        </el-table-column>
         <el-table-column prop="artistName" label="开发者"></el-table-column>
         <el-table-column label="操作" width="100">
           <template slot-scope="scope">
@@ -240,6 +262,11 @@ export default {
       this.edit.chooseFormTitle = "新增App";
       this.edit.chooseFormVisible = true;
     },
+    searchFormClosed(done) {
+      this.searchContent = "";
+      this.searchResultList = [];
+      done();
+    },
     notify() {
       this.notifyVisible = !this.notifyVisible;
     },
@@ -312,6 +339,7 @@ export default {
           });
           this.appGet();
           this.edit.chooseFormVisible = false;
+          this.edit.searchFormVisible = false;
         } catch (e) {
           console.log(e);
           this.$message({
@@ -325,6 +353,7 @@ export default {
         this.appSortEdit.list[index].url = this.edit.form.url;
         this.appSortEdit.list[index].expect_price = this.edit.form.expect_price;
         this.edit.chooseFormVisible = false;
+        this.edit.searchFormVisible = false;
       }
     },
     async appSortEditSubmit(list) {
