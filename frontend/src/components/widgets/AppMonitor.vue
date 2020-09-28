@@ -92,7 +92,7 @@
                 class="noMargin"
                 size="mini"
                 type="text"
-                @click="oepn(scope.row.trackViewUrl)"
+                @click="open(scope.row.trackViewUrl)"
                 >{{ scope.row.trackName }}</el-button
               >
             </el-tooltip>
@@ -258,6 +258,9 @@ export default {
     add() {
       this.edit.searchFormTitle = "查找App";
       this.edit.searchFormVisible = true;
+    },
+    open(url) {
+      window.open(url);
     },
     choosed(name, url) {
       this.edit.form.name = name;
