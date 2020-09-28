@@ -82,20 +82,22 @@
         v-loading="edit.searchLoading"
       >
         <el-table-column prop="trackName" label="名称" width="250">
-          <el-tooltip
-            class="item"
-            effect="dark"
-            :content="scope.row.description"
-            placement="top"
-          >
-            <el-button
-              class="noMargin"
-              size="mini"
-              type="text"
-              @click="oepn(scope.row.trackViewUrl)"
-              >{{ scope.row.trackName }}</el-button
+          <template slot-scope="scope">
+            <el-tooltip
+              class="item"
+              effect="dark"
+              :content="scope.row.description"
+              placement="top"
             >
-          </el-tooltip>
+              <el-button
+                class="noMargin"
+                size="mini"
+                type="text"
+                @click="oepn(scope.row.trackViewUrl)"
+                >{{ scope.row.trackName }}</el-button
+              >
+            </el-tooltip>
+          </template>
         </el-table-column>
         <el-table-column
           prop="formattedPrice"
@@ -103,14 +105,16 @@
           width="80"
         ></el-table-column>
         <el-table-column prop="genres" label="类别">
-          <p
-            class="noMargin"
-            size="mini"
-            v-for="text in scope.row.genres"
-            :key="text"
-          >
-            {{ scope.text }}
-          </p>
+          <template slot-scope="scope">
+            <p
+              class="noMargin"
+              size="mini"
+              v-for="text in scope.row.genres"
+              :key="text"
+            >
+              {{ scope.text }}
+            </p>
+          </template>
         </el-table-column>
         <el-table-column prop="artistName" label="开发者"></el-table-column>
         <el-table-column label="操作" width="100">
