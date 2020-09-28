@@ -4,18 +4,18 @@ import requests
 import datetime
 import traceback
 import urllib.request
-from . import gold_price_monitor
+from peewee import DoesNotExist
 from flask_cors import cross_origin
 from flask import session, redirect, url_for, current_app, flash, Response, request, jsonify
-from ..model.gold_price_model import gold_price as gold_price_table
-from ..model.gold_price_model import gold_price_push_option
-from ..login.login_funtion import User
-from ..privilege.privilege_control import permission_required
+
 from ..response import Response
-from peewee import DoesNotExist
+from . import gold_price_monitor
+from ..login.login_funtion import User
+from ..model.gold_price_model import gold_price_push_option
+from ..privilege.privilege_control import permission_required
+from ..model.gold_price_model import gold_price as gold_price_table
 
 rsp = Response()
-
 URL_PREFIX = '/gold'
 
 

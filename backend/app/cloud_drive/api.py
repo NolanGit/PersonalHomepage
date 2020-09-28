@@ -167,7 +167,6 @@ def cancel():
         _.save()
 
         return rsp.success()
-
     except Exception as e:
         traceback.print_exc()
         return rsp.failed(e), 500

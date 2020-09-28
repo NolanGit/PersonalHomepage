@@ -7,7 +7,6 @@ import urllib.request
 from flask_cors import cross_origin
 from flask import session, redirect, url_for, current_app, flash, Response, request, jsonify
 
-
 from ..response import Response
 from ..login.login_funtion import User
 from ..privilege.privilege_control import permission_required
@@ -30,10 +29,9 @@ def get():
         for x in range(len(user_app_list)):
             user_app_list[x]['price'], user_app_list[x]['update_time'] = app_price_get(user_app_list[x]['id'])
         return rsp.success(user_app_list)
-
     except Exception as e:
         traceback.print_exc()
-        return rsp.failed(e)
+        return rsp.failed(e), 500
 
 
 @app_price_monitor.route('/add', methods=['POST'])
@@ -47,7 +45,7 @@ def add():
         expect_price = request.get_json()['expect_price']
 
         app_table_query = app_table.select().where((app_table.user_id == user_id) & (app_table.is_valid == 1)).order_by(app_table.order).dicts()
-        order = app_table_query[-1]['order'] + 1 if len(app_table_query)!=0 else 1
+        order = app_table_query[-1]['order'] + 1 if len(app_table_query) != 0 else 1
 
         app_table.create(
             name=name,
@@ -59,10 +57,9 @@ def add():
             update_time=datetime.datetime.now(),
         )
         return rsp.success()
-
     except Exception as e:
         traceback.print_exc()
-        return rsp.failed(e)
+        return rsp.failed(e), 500
 
 
 @app_price_monitor.route('/edit', methods=['POST'])
@@ -84,7 +81,6 @@ def edit():
                 update_time=datetime.datetime.now(),
             )
         return rsp.success()
-
     except Exception as e:
         traceback.print_exc()
-        return rsp.failed(e)
+        return rsp.failed(e), 500

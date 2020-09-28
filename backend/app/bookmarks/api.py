@@ -29,8 +29,7 @@ def userInfo():
             user_id = 0
 
         bookmarks_query = bookmarks_table.select().where((bookmarks_table.user_id == user_id) & (bookmarks_table.is_valid == 1)).order_by(bookmarks_table.order).dicts()
-        result = [{'id': row['id'], 'name': row['name'], 'url': row['url'], 'icon': row['icon'], 'update_time': row['update_time']} for row in bookmarks_query]
-        return rsp.success(result)
+        return rsp.success([{'id': row['id'], 'name': row['name'], 'url': row['url'], 'icon': row['icon'], 'update_time': row['update_time']} for row in bookmarks_query])
     except Exception as e:
         traceback.print_exc()
         return rsp.failed(e), 500
