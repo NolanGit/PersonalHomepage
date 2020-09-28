@@ -46,7 +46,7 @@
     <el-dialog
       :title="edit.searchFormTitle"
       :visible.sync="edit.searchFormVisible"
-      :before-close="searchFormClosed()"
+      :before-close="searchFormClosed"
       width="60%"
     >
       <el-input
