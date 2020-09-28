@@ -87,7 +87,6 @@
               effect="dark"
               :content="scope.row.description"
               placement="top"
-              style="max-width: 40vw"
             >
               <el-button
                 class="noMargin"
@@ -106,14 +105,14 @@
         ></el-table-column>
         <el-table-column prop="genres" label="类别" width="200">
           <template slot-scope="scope">
-            <p
+            <span
               class="noMargin"
               size="mini"
               v-for="text in scope.row.genres"
               :key="text"
             >
               {{ text }}
-            </p>
+            </span>
           </template>
         </el-table-column>
         <el-table-column prop="artistName" label="开发者"></el-table-column>
@@ -267,8 +266,8 @@ export default {
       this.edit.chooseFormVisible = true;
     },
     searchFormClosed(done) {
-      this.searchContent = "";
-      this.searchResultList = [];
+      this.edit.searchContent = "";
+      this.edit.searchResultList = [];
       done();
     },
     notify() {
@@ -397,5 +396,9 @@ export default {
 <style scoped>
 .noMargin {
   margin: 0;
+}
+.el-tooltip__popper {
+  max-width: 400px;
+  line-height: 180%;
 }
 </style>
