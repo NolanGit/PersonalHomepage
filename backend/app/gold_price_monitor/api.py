@@ -6,16 +6,16 @@ import traceback
 import urllib.request
 from peewee import DoesNotExist
 from flask_cors import cross_origin
-from flask import session, redirect, url_for, current_app, flash, Response, request, jsonify
+from flask import session, redirect, url_for, current_app, flash, request, jsonify
 
-from ..response import Response
 from . import gold_price_monitor
 from ..login.login_funtion import User
+from ..response import Response as MyResponse
 from ..model.gold_price_model import gold_price_push_option
 from ..privilege.privilege_control import permission_required
 from ..model.gold_price_model import gold_price as gold_price_table
 
-rsp = Response()
+rsp = MyResponse()
 URL_PREFIX = '/gold'
 
 

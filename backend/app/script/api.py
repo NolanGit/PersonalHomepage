@@ -5,26 +5,29 @@ import datetime
 import traceback
 import subprocess
 import collections
-from . import script
 from flask_cors import cross_origin
-from flask import render_template, session, redirect, url_for, current_app, flash, Response, request, jsonify
-from ..model.script_model import script as script_table_model
-from ..model.script_model import script_sub_system, script_detail, script_log, script_schedule
-from ..privilege.privilege_control import permission_required
-from ..privilege.privilege_control import privilegeFunction
+from flask import render_template, session, redirect, url_for, current_app, flash, request, jsonify
+
+from . import script
+from ..common_func import CommonFunc
 from ..login.login_funtion import User
 from .script_model import ScriptSubSystem
-from ..response import Response
-from ..common_func import CommonFunc
+from ..response import Response as MyResponse
+from ..privilege.privilege_control import privilegeFunction
+from ..model.script_model import script as script_table_model
+from ..privilege.privilege_control import permission_required
+from ..model.script_model import script_sub_system, script_detail, script_log, script_schedule
 
-rsp = Response()
 cf = CommonFunc()
-SCHEDULE_CODE_MINUTES = 0  # 库中0代表分钟
-SCHEDULE_CODE_HOUR = 1  # 库中1代表小时
-SCHEDULE_CODE_DAY = 2  # 库中2代表天
-HOUR_MINUTES = 60  # 每小时有60分钟
-DAY_HOURS = 24  # 每天有24小时
+rsp = MyResponse()
+
 URL_PREFIX = '/script'
+DAY_HOURS = 24  # 每天有24小时
+HOUR_MINUTES = 60  # 每小时有60分钟
+SCHEDULE_CODE_DAY = 2  # 库中2代表天
+SCHEDULE_CODE_HOUR = 1  # 库中1代表小时
+SCHEDULE_CODE_MINUTES = 0  # 库中0代表分钟
+
 running_subprocess = []
 
 
@@ -55,13 +58,9 @@ def subSystem():
     result = []
     try:
         script_sub_system_query = script_sub_system.select().where((script_sub_system.is_valid == 1)).dicts()
-        for row in script_sub_system_query:
-            result.append({'id': row['id'], 'name': row['name'], 'user_id': row['user_id'], 'update_time': row['update_time']})
-        response = {'code': 200, 'msg': '成功！', 'data': result}
-        return jsonify(response)
+        return rsp.success([{'id': row['id'], 'name': row['name'], 'user_id': row['user_id'], 'update_time': row['update_time']} for row in script_sub_system_query])
     except Exception as e:
-        response = {'code': 500, 'msg': '失败！错误信息：' + str(e) + '，请联系管理员。', 'data': []}
-        return jsonify(response), 500
+        return rsp.failed(e)
 
 
 @script.route('/subSystemAdd', methods=['POST'])
@@ -75,8 +74,7 @@ def subSystemAdd():
         response = {'code': 200, 'msg': '成功！'}
         return jsonify(response)
     except Exception as e:
-        response = {'code': 500, 'msg': '失败！错误信息：' + str(e) + '，请联系管理员。', 'data': []}
-        return jsonify(response), 500
+        return rsp.failed(e)
 
 
 @script.route('/subSystemDelete', methods=['POST'])
@@ -93,8 +91,7 @@ def subSystemDelete():
         response = {'code': 200, 'msg': '成功！'}
         return jsonify(response)
     except Exception as e:
-        response = {'code': 500, 'msg': '失败！错误信息：' + str(e) + '，请联系管理员。', 'data': []}
-        return jsonify(response), 500
+        return rsp.failed(e)
 
 
 @script.route('/subSystemScript', methods=['POST'])
@@ -144,8 +141,7 @@ def subSystemScript():
         return jsonify(response)
     except Exception as e:
         traceback.print_exc()
-        response = {'code': 500, 'msg': '失败！错误信息：' + str(e) + '，请联系管理员。', 'data': []}
-        return jsonify(response), 500
+        return rsp.failed(e)
 
 
 @script.route('/run', methods=['POST'])

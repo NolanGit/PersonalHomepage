@@ -49,13 +49,10 @@ def userInfo():
         except:
             user_id = 0
             user_name = ''
-
-        response = {'code': 200, 'msg': '成功！', 'data': {'user_id': user_id, 'user_name': user_name}}
-        return jsonify(response)
+        return rsp.success({'user_id': user_id, 'user_name': user_name})
     except Exception as e:
         traceback.print_exc()
-        response = {'code': 500, 'msg': '失败！错误信息：' + str(e) + '，请联系管理员。', 'data': []}
-        return jsonify(response), 500
+        return rsp.failed(e), 500
 
 
 @main.route('/favicon.ico', methods=['GET'])
@@ -71,9 +68,7 @@ def icon():
     try:
         result = []
         icon_query = icon_table.select().dicts()
-        for row in icon_query:
-            result.append({'id': row['id'], 'name': row['name'], 'category': row['category']})
-        return rsp.success(result)
+        return rsp.success([{'id': row['id'], 'name': row['name'], 'category': row['category']} for row in icon_query])
     except Exception as e:
         return rsp.failed(e), 500
 
@@ -83,9 +78,7 @@ def iconCategory():
     try:
         icon_query = icon_category.select().dicts()
         result = []
-        for row in icon_query:
-            result.append({'id': row['id'], 'name': row['name']})
-        return rsp.success(result)
+        return rsp.success([{'id': row['id'], 'name': row['name']} for row in icon_query])
     except Exception as e:
         return rsp.failed(e), 500
 
@@ -108,8 +101,7 @@ def upload():
     fsize = str(round(float(int(os.path.getsize(upload_path)) / 1000000), 2)) + 'MB'
     _ = upload_table(file_name=f.filename, file_path=upload_path, size=fsize, user_id=user_id, update_time=datetime.datetime.now())
     _.save()
-    response = {'code': 200, 'msg': '成功！', 'data': {'id': _.id, 'name': f.filename}}
-    return jsonify(response)
+    return rsp.success({'id': _.id, 'name': f.filename})
 
 
 @main.route('/download', methods=['GET'])
@@ -172,9 +164,7 @@ def gitHook():
                 break
         thread = threading.Thread(target=pull) if pull else thread
         thread.start()
-        response = {'code': 200, 'msg': 'pulling codes' if pull else 'pulling and building codes'}
-        return jsonify(response)
+        return rsp.success('pulling codes' if pull else 'pulling and building codes')
     except Exception as e:
         print(e)
-        response = {'code': 500, 'msg': 'success', 'data': str(e)}
-        return jsonify(response)
+        return rsp.failed(e), 500

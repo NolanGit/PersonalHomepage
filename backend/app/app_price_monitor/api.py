@@ -7,15 +7,14 @@ import urllib.request
 from flask_cors import cross_origin
 from flask import session, redirect, url_for, current_app, flash, Response, request, jsonify
 
-from ..response import Response
-from ..login.login_funtion import User
-from ..privilege.privilege_control import permission_required
-
 from . import app_price_monitor
+from ..login.login_funtion import User
+from ..response import Response as MyResponse
 from ..model.app_model import app as app_table
+from ..privilege.privilege_control import permission_required
 from .app_function import app_get, app_del_all, app_price_get
 
-rsp = Response()
+rsp = MyResponse()
 URL_PREFIX = '/app'
 
 
