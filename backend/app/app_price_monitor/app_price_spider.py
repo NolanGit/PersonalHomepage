@@ -27,7 +27,7 @@ count = 0
 WIDGET_ID_APP = widget.get(widget.name == 'app').id
 
 
-def get_app_price(app_url):
+def get_app_price(app_id, app_url):
     '''
         爬取数据：接收app的Url后缀，返回app的名字和价格。
     '''
@@ -64,6 +64,7 @@ def get_app_price(app_url):
     print('已经爬取%s的价格' % app_name)
     print('%s 的价格为 ￥%s' % (app_name, app_price))
 
+    app_price.create(app_id=app_id, price=app_price, update_time=datetime.datetime.now())
     return (app_name, app_price)
 
 
@@ -92,15 +93,36 @@ def app_price_push_generator():
 
 
 # 爬取数据
+print(datetime.datetime.now())
 app_table_query = app_table.select().where(app_table.is_valid == 1).dicts()
 import threading
 for single_app_table_query in app_table_query:
     try:
         # t = threading.Thread(target=worker,args=(i,))
-        app_name,app_price = get_app_price(single_app_table_query['url'])
-        app_price.create(app_id=single_app_table_query['id'], price=app_price, update_time=datetime.datetime.now())
+        app_name, app_price = get_app_price(single_app_table_query['id'], single_app_table_query['url'])
     except:
         continue
 
 #加入推送队列
 app_price_push_generator()
+print(datetime.datetime.now())
+
+# 爬取数据
+print(datetime.datetime.now())
+app_table_query = app_table.select().where(app_table.is_valid == 1).dicts()
+import threading
+threads = []
+for single_app_table_query in app_table_query:
+    threads.append(threading.Thread(target=get_app_price, args=(
+        single_app_table_query['id'],
+        single_app_table_query['url'],
+    )))
+
+for t in threads:
+    t.start()
+for t in threads:
+    t.join()
+
+#加入推送队列
+app_price_push_generator()
+print(datetime.datetime.now())
