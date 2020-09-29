@@ -27,52 +27,44 @@ count = 0
 WIDGET_ID_APP = widget.get(widget.name == 'app').id
 
 
-class App(object):
-    price = 0.00
-    name = '',
-    url = '',
+def get_app_price(app_url):
+    '''
+        爬取数据：接收app的Url后缀，返回app的名字和价格。
+    '''
+    global count
+    count += 1
 
-    def __init__(self, app_url):
-        self.name, self.price = self.get_app_price(app_url)
+    response = requests.get(app_url)
+    soup = BeautifulSoup(response.text, 'lxml')
 
-    def get_app_price(self, app_url):
-        '''
-            爬取数据：接收app的Url后缀，返回app的名字和价格。
-        '''
-        global count
-        count += 1
+    app_name = soup.find(class_='product-header__title app-header__title')
 
-        response = requests.get(app_url)
-        soup = BeautifulSoup(response.text, 'lxml')
+    app_price = soup.find(class_='inline-list__item inline-list__item--bulleted')
+    if app_price == None or app_price == '' or app_price == 'None':
+        app_price = soup.find(class_='inline-list__item inline-list__item--bulleted app-header__list__item--price')
 
-        app_name = soup.find(class_='product-header__title app-header__title')
+    if app_name == None or app_price == None or app_price == '' or app_price == 'None':
 
-        app_price = soup.find(class_='inline-list__item inline-list__item--bulleted')
-        if app_price == None or app_price == '' or app_price == 'None':
-            app_price = soup.find(class_='inline-list__item inline-list__item--bulleted app-header__list__item--price')
-
-        if app_name == None or app_price == None or app_price == '' or app_price == 'None':
-
-            if count >= 20:
-                # To Do :爬取失败告警功能
-                print(soup)
-                return (None, None)
-            else:
-                self.get_app_price(app_url)
-
-        for name in app_name.strings:
-            app_name = name.strip()
-            break
-
-        if app_price.text == '免费':
-            app_price = 0.0
+        if count >= 20:
+            # To Do :爬取失败告警功能
+            print(soup)
+            return (None, None)
         else:
-            app_price = float(app_price.text.split('¥')[1])
+            self.get_app_price(app_url)
 
-        print('已经爬取%s的价格' % app_name)
-        print('%s 的价格为 ￥%s' % (app_name, app_price))
+    for name in app_name.strings:
+        app_name = name.strip()
+        break
 
-        return (app_name, app_price)
+    if app_price.text == '免费':
+        app_price = 0.0
+    else:
+        app_price = float(app_price.text.split('¥')[1])
+
+    print('已经爬取%s的价格' % app_name)
+    print('%s 的价格为 ￥%s' % (app_name, app_price))
+
+    return (app_name, app_price)
 
 
 def app_price_push_generator():
@@ -101,10 +93,12 @@ def app_price_push_generator():
 
 # 爬取数据
 app_table_query = app_table.select().where(app_table.is_valid == 1).dicts()
+import threading
 for single_app_table_query in app_table_query:
     try:
-        app = App(single_app_table_query['url'])
-        app_price.create(app_id=single_app_table_query['id'], price=app.price, update_time=datetime.datetime.now())
+        # t = threading.Thread(target=worker,args=(i,))
+        app_name,app_price = get_app_price(single_app_table_query['url'])
+        app_price.create(app_id=single_app_table_query['id'], price=app_price, update_time=datetime.datetime.now())
     except:
         continue
 
