@@ -92,23 +92,12 @@ def app_price_push_generator():
             print('不满足推送条件')
 
 
-# 爬取数据
-print(datetime.datetime.now())
-app_table_query = app_table.select().where(app_table.is_valid == 1).dicts()
-import threading
-for single_app_table_query in app_table_query:
-    try:
-        # t = threading.Thread(target=worker,args=(i,))
-        app_name, app_price = get_app_price(single_app_table_query['id'], single_app_table_query['url'])
-    except:
-        continue
+# 单线程爬取数据
+# app_table_query = app_table.select().where(app_table.is_valid == 1).dicts()
+# for single_app_table_query in app_table_query:
+#     app_name, app_price = get_app_price(single_app_table_query['id'], single_app_table_query['url'])
 
-#加入推送队列
-app_price_push_generator()
-print(datetime.datetime.now())
-
-# 爬取数据
-print(datetime.datetime.now())
+# 多线程爬取数据
 app_table_query = app_table.select().where(app_table.is_valid == 1).dicts()
 import threading
 threads = []
@@ -117,7 +106,6 @@ for single_app_table_query in app_table_query:
         single_app_table_query['id'],
         single_app_table_query['url'],
     )))
-
 for t in threads:
     t.start()
 for t in threads:
@@ -125,4 +113,3 @@ for t in threads:
 
 #加入推送队列
 app_price_push_generator()
-print(datetime.datetime.now())
