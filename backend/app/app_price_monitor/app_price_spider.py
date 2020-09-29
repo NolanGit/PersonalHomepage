@@ -15,7 +15,7 @@ sys.path.append('../')
 sys.path.append('../../')
 from bs4 import BeautifulSoup
 from model.app_model import app as app_table
-from model.app_model import app_price
+from model.app_model import app_price as app_price_table
 
 from app_function import app_get, app_price_get
 from model.push_model import push
@@ -64,7 +64,7 @@ def get_app_price(app_id, app_url):
     print('已经爬取%s的价格' % app_name)
     print('%s 的价格为 ￥%s' % (app_name, app_price))
 
-    app_price.create(app_id=app_id, price=app_price, update_time=datetime.datetime.now())
+    app_price_table.create(app_id=app_id, price=app_price, update_time=datetime.datetime.now())
     return (app_name, app_price)
 
 
