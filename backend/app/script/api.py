@@ -198,6 +198,11 @@ def terminate():
         process_id = request.get_json()['process_id']
         running_subprocess[process_id].terminate()
         return rsp.success('成功发送了终止命令，任务将很快终止！')
+        # subprocess没有办法在设置了shell=True的情况下顺利terminate任务，stackoverflow上均有讨论此问题
+        # 虽然terminate后，subprocess.Popen().poll()的状态变了，但是其实仍然是在继续运行的
+        # 而设置shell=False的话会导致在Windows环境下不能运行脚本，这里也测试了树莓派，也不能正常运行
+        # 因此，为了terminate后释放掉资源，判断了存储子线程的数组中的子线程的运行状态，如果均为运行结束状态，则把数组置空
+        
     except Exception as e:
         traceback.print_exc()
         return rsp.failed(e), 500
