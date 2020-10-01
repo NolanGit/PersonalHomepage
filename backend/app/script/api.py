@@ -511,6 +511,8 @@ def getLogs():
         limit =int(request.get_json()['limit'])
         try:
             user_id = request.get_json()['user_id']
+        except:
+            pass
         script_log_query = script_log.select().where(script_log.script_id == script_id).limit(limit).order_by(-script_log.id).dicts()
         result = []
         for row in script_log_query:
