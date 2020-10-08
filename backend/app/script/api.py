@@ -548,7 +548,7 @@ def schedule():
             'interval_unit': row['interval_unit'],
             'trigger_time': row['trigger_time'].strftime("%Y-%m-%d %H:%M:%S"),
             'update_time': row['update_time'].strftime("%Y-%m-%d %H:%M:%S"),
-        }] for row in script_schedule_query)
+        } for row in script_schedule_query])
     except Exception as e:
         traceback.print_exc()
         return rsp.failed(e), 500
