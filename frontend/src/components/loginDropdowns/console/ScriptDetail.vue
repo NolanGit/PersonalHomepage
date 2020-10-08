@@ -189,7 +189,6 @@ const api = {
   runOutput: "/script/runOutput",
   edit: "/script/edit",
   saveOutput: "/script/saveOutput",
-  getLogs: "/script/getLogs",
   extraButtonScriptRun: "/script/extraButtonScriptRun",
 };
 export default {

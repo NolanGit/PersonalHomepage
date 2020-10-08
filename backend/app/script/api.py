@@ -202,7 +202,7 @@ def terminate():
         # 虽然terminate后，subprocess.Popen().poll()的状态变了，但是其实仍然是在继续运行的
         # 而设置shell=False的话会导致在Windows环境下不能运行脚本，这里也测试了树莓派，也不能正常运行
         # 因此，为了terminate后释放掉资源，判断了存储子线程的数组中的子线程的运行状态，如果均为运行结束状态，则把数组置空
-        
+
     except Exception as e:
         traceback.print_exc()
         return rsp.failed(e), 500
@@ -505,63 +505,74 @@ def saveOutput():
 @cross_origin()
 def getLogs():
     try:
-        user_id = request.get_json()['user_id']
-        script_id = request.get_json()['script_id']
-        # todo
-        limit =int(request.get_json()['limit'])
         try:
             user_id = request.get_json()['user_id']
         except:
-            pass
-        script_log_query = script_log.select().where(script_log.script_id == script_id).limit(limit).order_by(-script_log.id).dicts()
-        result = []
-        for row in script_log_query:
-            result.append({
-                'log_id': row['id'],
-                'user': row['user'],
-                'command': row['command'],
-                'detail': eval(row['detail']),
-                'output': row['output'],
-                'version': row['version'],
-                'update_time': row['start_time'].strftime("%Y-%m-%d %H:%M:%S"),
-                'end_time': row['end_time'].strftime("%Y-%m-%d %H:%M:%S") if row['end_time'] != None else None,
-                'duration': str((row['end_time'] - row['start_time']).seconds) + '秒' if row['end_time'] != None else '无数据'
-            })
+            user_id = 0
+        script_id = request.get_json()['script_id']
+        limit = int(request.get_json()['limit'])
+
+        if user_id == 0:
+            # 查询所有人的运行记录
+            user_name = User(user_id=user_id).user_name
+            script_log_query = script_log.select().where(script_log.script_id == script_id).limit(limit).order_by(-script_log.id).dicts()
+            if len(script_log_query) == 0:
+                return rsp.failed('未查询到脚本运行日志')
+        else:
+            # 查询特定人的运行记录
+            user_name = User(user_id=user_id).user_name
+            script_log_query = script_log.select().where((script_log.script_id == script_id) & (script_log.user_id == user_id)).limit(limit).order_by(-script_log.id).dicts()
+            if len(script_log_query) == 0:
+                return rsp.failed('未查询到' + user_name + '的上次脚本运行日志，如想查看其他人的日志，请使用“查看全部运行记录”按钮')
+
+        result = [{
+            'log_id': row['id'],
+            'user': row['user'],
+            'command': row['command'],
+            'detail': eval(row['detail']),
+            'output': row['output'],
+            'version': row['version'],
+            'update_time': row['start_time'].strftime("%Y-%m-%d %H:%M:%S"),
+            'end_time': row['end_time'].strftime("%Y-%m-%d %H:%M:%S") if row['end_time'] != None else None,
+            'duration': str((row['end_time'] - row['start_time']).seconds) + '秒' if row['end_time'] != None else '无数据'
+        } for row in script_log_query]
+
         important_fields = []
         script_detail_query = script_detail.select().where((script_detail.script_id == script_id) & (script_detail.is_valid == 1)).dicts()
         for row in script_detail_query:
             if row['is_important'] == 1:
                 important_fields.append(row['label'])
+
         return rsp.success({'logs': result, 'important_fields': important_fields})
     except Exception as e:
         traceback.print_exc()
         return rsp.failed(e), 500
 
 
-@script.route('/getNewestLog', methods=['POST'])
-@permission_required(URL_PREFIX + '/getNewestLog')
-@cross_origin()
-def getNewestLog():
-    try:
-        user_id = request.get_json()['user_id']
-        user_name = User(user_id=user_id).user_name
-        script_id = request.get_json()['script_id']
-        script_log_query = script_log.select().where((script_log.script_id == script_id) & (script_log.user == User(user_id=user_id).user_name)).limit(1).order_by(-script_log.id).dicts()
-        if len(script_log_query) != 0:
-            return rsp.success([{
-                'log_id': row['id'],
-                'user': row['user'],
-                'command': row['command'],
-                'detail': eval(row['detail']),
-                'output': row['output'],
-                'version': row['version'],
-                'update_time': row['start_time'].strftime("%Y-%m-%d %H:%M:%S"),
-            } for row in script_log_query])
-        else:
-            return rsp.failed('未查询到' + user_name + '的上次脚本运行日志，如想查看其他人的日志，请使用“查看全部运行记录”按钮')
-    except Exception as e:
-        traceback.print_exc()
-        return rsp.failed(e), 500
+# @script.route('/getNewestLog', methods=['POST'])
+# @permission_required(URL_PREFIX + '/getNewestLog')
+# @cross_origin()
+# def getNewestLog():
+#     try:
+#         user_id = request.get_json()['user_id']
+#         user_name = User(user_id=user_id).user_name
+#         script_id = request.get_json()['script_id']
+#         script_log_query = script_log.select().where((script_log.script_id == script_id) & (script_log.user == User(user_id=user_id).user_name)).limit(1).order_by(-script_log.id).dicts()
+#         if len(script_log_query) != 0:
+#             return rsp.success([{
+#                 'log_id': row['id'],
+#                 'user': row['user'],
+#                 'command': row['command'],
+#                 'detail': eval(row['detail']),
+#                 'output': row['output'],
+#                 'version': row['version'],
+#                 'update_time': row['start_time'].strftime("%Y-%m-%d %H:%M:%S"),
+#             } for row in script_log_query])
+#         else:
+#             return rsp.failed('未查询到' + user_name + '的上次脚本运行日志，如想查看其他人的日志，请使用“查看全部运行记录”按钮')
+#     except Exception as e:
+#         traceback.print_exc()
+#         return rsp.failed(e), 500
 
 
 @script.route('/schedule', methods=['POST'])

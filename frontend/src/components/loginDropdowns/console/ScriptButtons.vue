@@ -1,7 +1,11 @@
 <template>
   <section>
     <div class="single-data-setting">
-      <el-tooltip effect="dark" content="回放最近一次由我运行的参数" placement="top">
+      <el-tooltip
+        effect="dark"
+        content="回放最近一次由我运行的参数"
+        placement="top"
+      >
         <el-button
           type="primary"
           plain
@@ -11,7 +15,11 @@
           class="noMargin"
         ></el-button>
       </el-tooltip>
-      <el-tooltip effect="dark" content="查看最近一次由我运行的日志" placement="top">
+      <el-tooltip
+        effect="dark"
+        content="查看最近一次由我运行的日志"
+        placement="top"
+      >
         <el-button
           type="primary"
           plain
@@ -21,11 +29,25 @@
           class="noMargin"
         ></el-button>
       </el-tooltip>
-      <el-tooltip class="question-mark" effect="dark" content="查看最近50次运行记录" placement="top">
+      <el-tooltip
+        class="question-mark"
+        effect="dark"
+        content="查看最近50次运行记录"
+        placement="top"
+      >
         <el-popover placement="left" width="1010" trigger="click">
           <div class="scrollbar-div max_height-medium" ref="scrollbarDiv">
-            <el-table size="small" :data="output.logs" stripe v-loading="output.loading">
-              <el-table-column width="110" property="user" label="运行人"></el-table-column>
+            <el-table
+              size="small"
+              :data="output.logs"
+              stripe
+              v-loading="output.loading"
+            >
+              <el-table-column
+                width="110"
+                property="user"
+                label="运行人"
+              ></el-table-column>
               <el-table-column
                 v-for="important_field in output.important_fields"
                 :key="important_field"
@@ -42,14 +64,15 @@
                     type="primary"
                     icon="el-icon-tickets"
                     @click="log_output(scope.row.output)"
-                  >日志</el-button>
+                    >日志</el-button
+                  >
                   <el-popover placement="right" width="350" trigger="hover">
                     <tr v-for="key in scope.row.detail" :key="key">
                       <td class="td--label">
-                        <b>{{key.label+":"}}</b>
+                        <b>{{ key.label + ":" }}</b>
                       </td>
-                      <td v-if="key.type=='select'">{{key.optionLabel}}</td>
-                      <td v-if="key.type!='select'">{{key.value}}</td>
+                      <td v-if="key.type == 'select'">{{ key.optionLabel }}</td>
+                      <td v-if="key.type != 'select'">{{ key.value }}</td>
                     </tr>
                     <el-button
                       class="noMargin"
@@ -57,15 +80,28 @@
                       size="mini"
                       type="primary"
                       icon="el-icon-refresh-left"
-                      @click="log_replay(scope.row.version,scope.row.detail)"
+                      @click="log_replay(scope.row.version, scope.row.detail)"
                       slot="reference"
-                    >回放</el-button>
+                      >回放</el-button
+                    >
                   </el-popover>
                 </template>
               </el-table-column>
-              <el-table-column width="150" property="update_time" label="运行开始时间"></el-table-column>
-              <el-table-column width="80" property="duration" label="耗时"></el-table-column>
-              <el-table-column width="80" property="log_id" label="运行ID"></el-table-column>
+              <el-table-column
+                width="150"
+                property="update_time"
+                label="运行开始时间"
+              ></el-table-column>
+              <el-table-column
+                width="80"
+                property="duration"
+                label="耗时"
+              ></el-table-column>
+              <el-table-column
+                width="80"
+                property="log_id"
+                label="运行ID"
+              ></el-table-column>
             </el-table>
           </div>
           <el-button
@@ -79,23 +115,57 @@
           ></el-button>
         </el-popover>
       </el-tooltip>
-      <el-tooltip class="question-mark" effect="dark" content="定时运行" placement="top">
-        <el-popover placement="left" width="900" trigger="click" :v-model="schedule.popoverVisible">
-          <el-table :data="schedule.schedules" stripe v-loading="schedule.loading">
-            <el-table-column width="100" property="schedule_id" label="定时任务ID"></el-table-column>
-            <el-table-column width="80" property="user_name" label="创建人"></el-table-column>
-            <el-table-column width="50" property="is_automatic_text" label="重复"></el-table-column>
-            <el-table-column width="180" property="trigger_time" label="下次运行时间"></el-table-column>
-            <el-table-column width="180" property="update_time" label="创建时间"></el-table-column>
+      <el-tooltip
+        class="question-mark"
+        effect="dark"
+        content="定时运行"
+        placement="top"
+      >
+        <el-popover
+          placement="left"
+          width="900"
+          trigger="click"
+          :v-model="schedule.popoverVisible"
+        >
+          <el-table
+            :data="schedule.schedules"
+            stripe
+            v-loading="schedule.loading"
+          >
+            <el-table-column
+              width="100"
+              property="schedule_id"
+              label="定时任务ID"
+            ></el-table-column>
+            <el-table-column
+              width="80"
+              property="user_name"
+              label="创建人"
+            ></el-table-column>
+            <el-table-column
+              width="50"
+              property="is_automatic_text"
+              label="重复"
+            ></el-table-column>
+            <el-table-column
+              width="180"
+              property="trigger_time"
+              label="下次运行时间"
+            ></el-table-column>
+            <el-table-column
+              width="180"
+              property="update_time"
+              label="创建时间"
+            ></el-table-column>
             <el-table-column min-width="250" property="options" label="操作">
               <template slot-scope="scope">
                 <el-popover placement="left" width="350" trigger="hover">
                   <tr v-for="key in scope.row.detail" :key="key">
                     <td class="td--label">
-                      <b>{{key.label+":"}}</b>
+                      <b>{{ key.label + ":" }}</b>
                     </td>
-                    <td v-if="key.type=='select'">{{key.optionLabel}}</td>
-                    <td v-if="key.type!='select'">{{key.value}}</td>
+                    <td v-if="key.type == 'select'">{{ key.optionLabel }}</td>
+                    <td v-if="key.type != 'select'">{{ key.value }}</td>
                   </tr>
                   <el-button
                     plain
@@ -103,7 +173,8 @@
                     type="primary"
                     icon="el-icon-set-up"
                     slot="reference"
-                  >参数</el-button>
+                    >参数</el-button
+                  >
                 </el-popover>
                 <el-button
                   class="noMargin"
@@ -112,7 +183,8 @@
                   type="primary"
                   icon="el-icon-edit"
                   @click="scheduleEdit(scope.row)"
-                >编辑</el-button>
+                  >编辑</el-button
+                >
                 <el-button
                   class="noMargin"
                   size="mini"
@@ -120,11 +192,16 @@
                   type="danger"
                   icon="el-icon-delete"
                   @click="scheduleDelete(scope.row.schedule_id)"
-                >停止</el-button>
+                  >停止</el-button
+                >
               </template>
             </el-table-column>
           </el-table>
-          <div class="add" style="width: 99.87%;" @click="schedule.dialogVisible = true">
+          <div
+            class="add"
+            style="width: 99.87%"
+            @click="schedule.dialogVisible = true"
+          >
             <span>
               + 使用
               <b>当前表单填写的参数</b> 创建定时任务
@@ -144,27 +221,27 @@
         <el-popover placement="bottom-end" width="250" trigger="hover">
           <tr>
             <td class="td--label--medium">
-              <b>{{"最后修改人:"}}</b>
+              <b>{{ "最后修改人:" }}</b>
             </td>
-            <td>{{singleForm.user}}</td>
+            <td>{{ singleForm.user }}</td>
           </tr>
           <tr>
             <td class="td--label--medium">
-              <b>{{"版本:"}}</b>
+              <b>{{ "版本:" }}</b>
             </td>
-            <td>{{"V"+singleForm.version}}</td>
+            <td>{{ "V" + singleForm.version }}</td>
           </tr>
           <tr>
             <td class="td--label--medium">
-              <b>{{"运行次数:"}}</b>
+              <b>{{ "运行次数:" }}</b>
             </td>
-            <td>{{singleForm.runs+"次"}}</td>
+            <td>{{ singleForm.runs + "次" }}</td>
           </tr>
           <tr>
             <td class="td--label--medium">
-              <b>{{"更新时间:"}}</b>
+              <b>{{ "更新时间:" }}</b>
             </td>
-            <td>{{singleForm.update_time}}</td>
+            <td>{{ singleForm.update_time }}</td>
           </tr>
           <el-button
             type="primary"
@@ -177,7 +254,13 @@
         </el-popover>
       </el-tooltip>
       <el-tooltip effect="dark" content="删除脚本" placement="top">
-        <el-button type="danger" plain icon="el-icon-delete" circle @click="singleDataDelete()"></el-button>
+        <el-button
+          type="danger"
+          plain
+          icon="el-icon-delete"
+          circle
+          @click="singleDataDelete()"
+        ></el-button>
       </el-tooltip>
     </div>
 
@@ -208,10 +291,10 @@
             <el-time-select
               v-model="schedule.scheduleData.triggerTime"
               :picker-options="{
-              start: '00:00',
-              step: '00:15',
-              end: '24:00'
-            }"
+                start: '00:00',
+                step: '00:15',
+                end: '24:00',
+              }"
               placeholder="选择时间"
               size="small"
               class="main_select--medium"
@@ -230,10 +313,10 @@
               inactive-color="#80868C"
             ></el-switch>
           </td>
-          <td v-show="schedule.scheduleData.is_automatic==true">
+          <td v-show="schedule.scheduleData.is_automatic == true">
             <p class="inline_margin--medium">每</p>
           </td>
-          <td v-show="schedule.scheduleData.is_automatic==true">
+          <td v-show="schedule.scheduleData.is_automatic == true">
             <el-input
               v-model="schedule.scheduleData.interval.value"
               placeholder="请输入"
@@ -241,7 +324,7 @@
               class="main_input--tiny inline_margin--small"
             ></el-input>
           </td>
-          <td v-show="schedule.scheduleData.is_automatic==true">
+          <td v-show="schedule.scheduleData.is_automatic == true">
             <el-select
               v-model="schedule.scheduleData.interval.unit.select"
               placeholder="请选择"
@@ -258,8 +341,12 @@
           </td>
         </div>
         <div class="dialog-footer">
-          <el-button size="small" @click="schedule.dialogVisible = false">关闭</el-button>
-          <el-button type="primary" size="small" @click="scheduleAdd()">提交</el-button>
+          <el-button size="small" @click="schedule.dialogVisible = false"
+            >关闭</el-button
+          >
+          <el-button type="primary" size="small" @click="scheduleAdd()"
+            >提交</el-button
+          >
         </div>
       </div>
     </el-drawer>
@@ -273,7 +360,6 @@ const api = {
   replay: "/script/replay",
   delete: "/script/delete",
   getLogs: "/script/getLogs",
-  getNewestLog: "/script/getNewestLog",
   schedule: "/script/schedule",
   scheduleAdd: "/script/scheduleEdit",
   scheduleDelete: "/script/scheduleDelete",
@@ -399,9 +485,10 @@ export default {
     //展示最近一次由我运行的脚本日志
     async singleDataLog() {
       try {
-        const { data: res } = await axios.post(api.getNewestLog, {
+        const { data: res } = await axios.post(api.getLogs, {
           script_id: this.singleForm.id,
           user_id: this.user_id,
+          limit: 1,
         });
         this.$emit("output", res.data[0].output);
       } catch (e) {
@@ -419,7 +506,7 @@ export default {
       try {
         const { data: res } = await axios.post(api.getLogs, {
           script_id: this.singleForm.id,
-          user_id: this.user_id,
+          limit: 50,
         });
         this.output.logs = res.data.logs;
         this.output.important_fields = res.data.important_fields;
