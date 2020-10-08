@@ -177,7 +177,7 @@ def run():
         user_id = request.get_json()['user_id']
         detail = request.get_json()['detail']
         version = request.get_json()['version']
-        script_log_query = script_log(script_id=id, command=command, detail=detail, version=version, user=User(user_id=user_id).user_name, start_time=datetime.datetime.now())
+        script_log_query = script_log(script_id=id, command=command, detail=detail, version=version, user=User(user_id=user_id).user_name, user_id=user_id, start_time=datetime.datetime.now())
         script_log_query.save()
 
         #运行

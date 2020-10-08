@@ -14,10 +14,11 @@ except:
     from model.script_model import script_sub_system, script, script_detail, script_detail, script_log, script_schedule
     from login.login_funtion import User
 
-TAST_TO_BE_RUN = 1
-TASK_FAILED = -1
-TASK_RUNNING = 2
-TASK_SUCCESS = 0
+TAST_TO_BE_RUN = 1          # 任务未被运行
+TASK_FAILED = -1            # 任务运行失败
+TASK_RUNNING = 2            # 任务运行中
+TASK_SUCCESS = 0            # 任务运行成功
+SCHEDULE_USER_ID = -1       # 由定时任务触发的任务记录的用户id记为-1
 
 
 def schedule_get():
@@ -66,6 +67,7 @@ def run(schedules):
                     version=schedule['version'],
                     output=schedule['command'] + '<br>' + str(output).replace('\n', '<br>').replace(' ', '&nbsp;'),
                     user=User(user_id=schedule['user_id']).user_name + '(定时)',
+                    user_id=SCHEDULE_USER_ID,
                     start_time=start_time,
                     end_time=datetime.datetime.now())
                 generate_next_schedule(schedule)
