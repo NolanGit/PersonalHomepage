@@ -447,30 +447,6 @@ def edit():
         return rsp.failed(e), 500
 
 
-@script.route('/replay', methods=['POST'])
-@permission_required(URL_PREFIX + '/replay')
-@cross_origin()
-def replay():
-    try:
-        user_id = request.get_json()['user_id']
-        user_name = User(user_id=user_id).user_name
-        script_id = request.get_json()['script_id']
-        script_log_query = script_log.select().order_by(-script_log.id).limit(1).where((script_log.script_id == script_id) & (script_log.user == user_name)).dicts()
-        if len(script_log_query) != 0:
-            for row in script_log_query:
-                id = row['id']
-                detail = eval(row['detail'])
-                command = row['command']
-                version = row['version']
-                update_time = row['start_time']
-            return rsp.success({'id': id, 'detail': detail, 'command': command, 'version': version, 'update_time': update_time})
-        else:
-            return rsp.failed('未查询到' + user_name + '的上次脚本运行参数，如想使用其他人的参数，请使用“查看全部运行记录”按钮')
-    except Exception as e:
-        traceback.print_exc()
-        return rsp.failed(e), 500
-
-
 @script.route('/delete', methods=['POST'])
 @permission_required(URL_PREFIX + '/delete')
 @cross_origin()
@@ -547,32 +523,6 @@ def getLogs():
     except Exception as e:
         traceback.print_exc()
         return rsp.failed(e), 500
-
-
-# @script.route('/getNewestLog', methods=['POST'])
-# @permission_required(URL_PREFIX + '/getNewestLog')
-# @cross_origin()
-# def getNewestLog():
-#     try:
-#         user_id = request.get_json()['user_id']
-#         user_name = User(user_id=user_id).user_name
-#         script_id = request.get_json()['script_id']
-#         script_log_query = script_log.select().where((script_log.script_id == script_id) & (script_log.user == User(user_id=user_id).user_name)).limit(1).order_by(-script_log.id).dicts()
-#         if len(script_log_query) != 0:
-#             return rsp.success([{
-#                 'log_id': row['id'],
-#                 'user': row['user'],
-#                 'command': row['command'],
-#                 'detail': eval(row['detail']),
-#                 'output': row['output'],
-#                 'version': row['version'],
-#                 'update_time': row['start_time'].strftime("%Y-%m-%d %H:%M:%S"),
-#             } for row in script_log_query])
-#         else:
-#             return rsp.failed('未查询到' + user_name + '的上次脚本运行日志，如想查看其他人的日志，请使用“查看全部运行记录”按钮')
-#     except Exception as e:
-#         traceback.print_exc()
-#         return rsp.failed(e), 500
 
 
 @script.route('/schedule', methods=['POST'])

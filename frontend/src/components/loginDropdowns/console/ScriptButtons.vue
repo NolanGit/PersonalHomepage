@@ -424,9 +424,10 @@ export default {
     //回放上一次由我运行的脚本参数
     async singleDataReplay() {
       try {
-        const { data: res } = await axios.post(api.replay, {
+        const { data: res } = await axios.post(api.getLogs, {
           script_id: this.singleForm.id,
           user_id: this.user_id,
+          limit: 1,
         });
         if (res.code != 200) {
           this.$message({
@@ -435,14 +436,14 @@ export default {
           });
         }
         for (var f = 0; f < this.singleForm.formDataDetail.length; f++) {
-          for (let x = 0; x < res.data.detail.length; x++) {
+          for (let x = 0; x < res.data.logs[0].detail.length; x++) {
             try {
               if (
-                res.data.detail[x].label ==
+                res.data.logs[0].detail[x].label ==
                 this.singleForm.formDataDetail[f].label
               ) {
                 this.singleForm.formDataDetail[f].value =
-                  res.data.detail[x].value;
+                  res.data.logs[0].detail[x].value;
               }
             } catch (err) {
               console.log(
@@ -455,14 +456,12 @@ export default {
             }
           }
         }
-        if (this.singleForm.version != res.data.version) {
+        if (this.singleForm.version != res.data.logs[0].version) {
           this.$message({
             message:
-              "检测到脚本配置发生过修改(" +
-              "V" +
+              "检测到脚本配置发生过修改(V" +
               res.data.version +
-              "→" +
-              "V" +
+              "→V" +
               this.singleForm.version +
               ")，可能无法完美恢复上一次参数",
             type: "info",
@@ -490,7 +489,7 @@ export default {
           user_id: this.user_id,
           limit: 1,
         });
-        this.$emit("output", res.data[0].output);
+        this.$emit("output", res.data.logs[0].output);
       } catch (e) {
         console.log(e);
         this.$message({
