@@ -32,7 +32,10 @@ def get_valid_stock():
 
 
 def get_stock_price(stock_code):
+    print('正在获取['+stock_code+']的价格...')
     r = requests.get('http://hq.sinajs.cn/list=' + str(stock_code))
+    price=float(r.text.split('\"')[1].split(',')[3])
+    print('['+stock_code+']的价格为:'+str(price)+'元')
     return (float(r.text.split('\"')[1].split(',')[3]))
 
 
@@ -42,7 +45,7 @@ def save_valid_stock_price():
 
     for x in range(len(valid_stock_list)):
         valid_stock_list[x]['stock_price'] = get_stock_price(valid_stock_list[x]['stock_code'])
-        data_source.append(valid_stock_list[x]['stock_id'], valid_stock_list[x]['stock_price'], datetime.datetime.now())
+        data_source.append((valid_stock_list[x]['stock_id'], valid_stock_list[x]['stock_price'], datetime.datetime.now()))
 
     field = [stock_price.stock_id, stock_price.price, stock_price.update_time]
     stock_price.insert_many(data_source, field).execute()
