@@ -77,8 +77,6 @@ def get_stock_price(stock_id, stock_code, market):
 
 
 if __name__ == '__main__':
-    global data_source
-
     valid_stock_list = get_valid_stock()
     threads = []
     for x in range(len(valid_stock_list)):
