@@ -1,0 +1,36 @@
+import os
+import peewee
+from peewee import CharField, IntegerField, DateTimeField, FloatField
+from .model_function import BaseModel
+
+
+class stock(BaseModel):
+    code = CharField()
+    name = CharField()
+
+    class Meta:
+        table_name = 'stock'
+
+
+class stock_price(BaseModel):
+    stock_id = IntegerField()
+    price = FloatField()
+    update_time = DateTimeField()
+
+    class Meta:
+        table_name = 'stock_price'
+
+
+class stock_belong(BaseModel):
+    stock_id = CharField()
+    user_id = IntegerField()
+    is_valid = IntegerField()
+    update_time = DateTimeField()
+
+    class Meta:
+        table_name = 'stock_belong'
+
+
+stock.create_table()
+stock_price.create_table()
+stock_belong.create_table()

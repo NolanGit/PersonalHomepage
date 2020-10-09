@@ -34,7 +34,7 @@ class CommonFunc(object):
             temp = True
             try:
                 temp = list[index][key] == value
-            except Exception as e:
+            except:
                 temp = False
             if temp:
                 result = list[index][target_key]

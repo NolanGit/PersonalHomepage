@@ -1,10 +1,8 @@
 import time
 import json
-import requests
 import datetime
 import traceback
 import subprocess
-import collections
 from flask_cors import cross_origin
 from flask import render_template, session, redirect, url_for, current_app, flash, request, jsonify
 
@@ -56,7 +54,7 @@ def subprocess_clean():
 @cross_origin()
 def subSystem():
     try:
-        script_sub_system_query = script_sub_system.select().where((script_sub_system.is_valid == 1)).dicts()
+        script_sub_system_query = script_sub_system.select().where(script_sub_system.is_valid == 1).dicts()
         return rsp.success([{'id': row['id'], 'name': row['name'], 'user_id': row['user_id'], 'update_time': row['update_time']} for row in script_sub_system_query])
     except Exception as e:
         return rsp.failed(e), 500

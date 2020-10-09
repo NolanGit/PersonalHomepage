@@ -173,11 +173,13 @@ def rolePrivilegeEdit():
         role_id = request.get_json()['role_id']
         checked_privilege_id = request.get_json()['checked_privilege_id']
         privilege_role.update(is_valid=0).where(privilege_role.role_id == role_id).execute()
+
         data_source = []
         for single_checked_privilege_id in checked_privilege_id:
             data_source.append((single_checked_privilege_id, role_id, 1))
         field = [privilege_role.privilege_id, privilege_role.role_id, privilege_role.is_valid]
         privilege_role.insert_many(data_source, field).execute()
+        
         pf.flush_role_privilege_to_redis(role_id)
         return rsp.success()
     except Exception as e:
