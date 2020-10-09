@@ -51,17 +51,23 @@ def get_stock_price(stock_code, market):
     # http://hq.sinajs.cn/list=int_nasdaq           纳斯达克
     # http://hq.sinajs.cn/list=int_sp500            标普500
     # http://hq.sinajs.cn/list=int_ftse             英金融时报指数
-    print('正在获取[' + stock_code + '.' + MARKET_TEXT[market + 1] + ']的价格...')
-    r = requests.get('http://hq.sinajs.cn/list=' + MARKET_PREFIX[market + 1] + str(stock_code))
+    code_text = stock_code + '.' + MARKET_TEXT[market - 1]
+    code_url = MARKET_PREFIX[market - 1] + str(stock_code)
+
+    print('正在获取[' + code_text + ']的价格...')
+    r = requests.get('http://hq.sinajs.cn/list=' + code_url)
+    splited_text = r.text.split('\"')[1].split(',')
+
     if market == 1 or market == 2:
-        price = float(r.text.split('\"')[1].split(',')[3])
-        print('[' + stock_code + '.' + MARKET_TEXT[market + 1] + ']的价格为:' + str(price) + '元')
+        price = float(splited_text[3])
+        print('[' + code_text + ']的价格为:' + str(price) + '元')
     if market == 3:
-        price = float(r.text.split('\"')[1].split(',')[6])
-        print('[' + stock_code + '.' + MARKET_TEXT[market + 1] + ']的价格为:' + str(price) + '港币')
+        price = float(splited_text[6])
+        print('[' + code_text + ']的价格为:' + str(price) + '港币')
     if market == 4:
-        price = float(r.text.split('\"')[1].split(',')[1])
-        print('[' + stock_code + '.' + MARKET_TEXT[market + 1] + ']的价格为:' + str(price) + '美元')
+        price = float(splited_text[1])
+        print('[' + code_text + ']的价格为:' + str(price) + '美元')
+
     return (price)
 
 
