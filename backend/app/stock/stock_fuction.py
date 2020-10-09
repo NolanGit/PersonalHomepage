@@ -1,5 +1,6 @@
 import requests
 import datetime
+import threading
 
 import sys
 sys.path.append('../')
@@ -18,6 +19,8 @@ CODE_HK: 3
 CODE_US: 4
 MARKET_PREFIX = ['sh', 'sz', 'hk', 'gb_']  # 顺序与上方code严格对应
 MARKET_TEXT = ['SH', 'SZ', 'HK', 'US']  # 顺序与上方code严格对应
+
+data_source = []
 
 
 def get_valid_stock_id():
@@ -39,7 +42,7 @@ def get_valid_stock():
     return valid_stock_list
 
 
-def get_stock_price(stock_code, market):
+def get_stock_price(stock_id, stock_code, market):
     # http://hq.sinajs.cn/list=sh000001             上证指数
     # http://hq.sinajs.cn/list=sz399001             深证成指
     # http://hq.sinajs.cn/list=hk00700              港股
@@ -51,6 +54,8 @@ def get_stock_price(stock_code, market):
     # http://hq.sinajs.cn/list=int_nasdaq           纳斯达克
     # http://hq.sinajs.cn/list=int_sp500            标普500
     # http://hq.sinajs.cn/list=int_ftse             英金融时报指数
+    global data_source
+
     code_text = stock_code + '.' + MARKET_TEXT[market - 1]
     code_url = MARKET_PREFIX[market - 1] + str(stock_code)
 
@@ -68,20 +73,20 @@ def get_stock_price(stock_code, market):
         price = float(splited_text[1])
         print('[' + code_text + ']的价格为:' + str(price) + '美元')
 
-    return (price)
-
-
-def save_valid_stock_price():
-    valid_stock_list = get_valid_stock()
-    data_source = []
-
-    for x in range(len(valid_stock_list)):
-        valid_stock_list[x]['stock_price'] = get_stock_price(valid_stock_list[x]['stock_code'], valid_stock_list[x]['market'])
-        data_source.append((valid_stock_list[x]['stock_id'], valid_stock_list[x]['stock_price'], datetime.datetime.now()))
-
-    field = [stock_price.stock_id, stock_price.price, stock_price.update_time]
-    stock_price.insert_many(data_source, field).execute()
+    data_source.append((stock_id, price, datetime.datetime.now()))
 
 
 if __name__ == '__main__':
-    save_valid_stock_price()
+    global data_source
+
+    valid_stock_list = get_valid_stock()
+    threads = []
+    for x in range(len(valid_stock_list)):
+        threads.append(threading.Thread(target=get_stock_price, args=(valid_stock_list[x]['stock_id'], valid_stock_list[x]['stock_code'], valid_stock_list[x]['market'])))
+    for t in threads:
+        t.start()
+    for t in threads:
+        t.join()
+
+    field = [stock_price.stock_id, stock_price.price, stock_price.update_time]
+    stock_price.insert_many(data_source, field).execute()
