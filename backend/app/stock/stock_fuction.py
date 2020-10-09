@@ -15,12 +15,12 @@ cf = CommonFunc()
 
 def get_valid_stock_id():
     stock_belong_query = stock_belong.select().where(stock_belong.is_valid == 1).dicts()
-    return [{'stock_id': ['stock_id']} for _ in stock_belong_query]
+    return [{'stock_id': _['stock_id']} for _ in stock_belong_query]
 
 
 def get_stock():
     stock_query = stock_table.select().dicts()
-    return [{'stock_id': ['id'], 'stock_code': ['code']} for _ in stock_query]
+    return [{'stock_id':_['id'], 'stock_code': _['code']} for _ in stock_query]
 
 
 def get_valid_stock():
@@ -33,7 +33,7 @@ def get_valid_stock():
 
 def get_stock_price(stock_code):
     r = requests.get('http://hq.sinajs.cn/list=' + str(stock_code))
-    return (float(r.split('\"')[1].split(',')[3]))
+    return (float(r.text.split('\"')[1].split(',')[3]))
 
 
 def save_valid_stock_price():
