@@ -22,7 +22,7 @@ class stock_price(BaseModel):
 
 
 class stock_belong(BaseModel):
-    stock_id = CharField()
+    stock_id = IntegerField()
     user_id = IntegerField()
     is_valid = IntegerField()
     update_time = DateTimeField()
