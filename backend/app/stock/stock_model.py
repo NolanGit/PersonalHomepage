@@ -1,5 +1,5 @@
-from ..model.stock_model import stock as stock_table
-from ..model.stock_model import stock_price, stock_belong
+from model.stock_model import stock as stock_table
+from model.stock_model import stock_price, stock_belong
 
 
 class Stock(object):

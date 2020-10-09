@@ -72,4 +72,6 @@ def create_app(config_name):
     from .wallpapers import wallpapers as  wallpapers_blueprint
     app.register_blueprint(wallpapers_blueprint, url_prefix='/wallpapers')
 
+    from .stock import stock as  stock_blueprint
+    app.register_blueprint(stock_blueprint, url_prefix='/stock')
     return app
