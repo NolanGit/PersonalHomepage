@@ -14,7 +14,7 @@ cf = CommonFunc()
 
 
 def get_valid_stock_id():
-    stock_belong_query = stock_belong.select().where(stock_belong.is_calid == 1).dicts()
+    stock_belong_query = stock_belong.select().where(stock_belong.is_valid == 1).dicts()
     return [{'stock_id': ['stock_id']} for _ in stock_belong_query]
 
 
