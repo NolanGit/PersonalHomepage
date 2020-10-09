@@ -7,6 +7,7 @@ from .model_function import BaseModel
 class stock(BaseModel):
     code = CharField()
     name = CharField()
+    market=IntegerField() # 1:SH; 2:SZ; 3:HK; 4:US;
 
     class Meta:
         table_name = 'stock'
