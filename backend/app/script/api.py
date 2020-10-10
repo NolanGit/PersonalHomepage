@@ -51,7 +51,6 @@ def subprocess_clean():
 
 @script.route('/subSystem', methods=['GET'])
 @permission_required(URL_PREFIX + '/subSystem')
-@cross_origin()
 def subSystem():
     try:
         script_sub_system_query = script_sub_system.select().where(script_sub_system.is_valid == 1).dicts()
@@ -62,7 +61,6 @@ def subSystem():
 
 @script.route('/subSystemAdd', methods=['POST'])
 @permission_required(URL_PREFIX + '/subSystemAdd')
-@cross_origin()
 def subSystemAdd():
     try:
         sub_system_name = request.get_json()['sub_system_name']
@@ -75,7 +73,6 @@ def subSystemAdd():
 
 @script.route('/subSystemDelete', methods=['POST'])
 @permission_required(URL_PREFIX + '/subSystemDelete')
-@cross_origin()
 def subSystemDelete():
     try:
         sub_system_id = request.get_json()['sub_system_id']
@@ -91,7 +88,6 @@ def subSystemDelete():
 
 @script.route('/subSystemScript', methods=['POST'])
 @permission_required(URL_PREFIX + '/subSystemScript')
-@cross_origin()
 def subSystemScript():
     sub_system_id = request.get_json()['sub_system_id']
     data = []
@@ -142,7 +138,6 @@ def subSystemScript():
 
 @script.route('/run', methods=['POST'])
 @permission_required(URL_PREFIX + '/run')
-@cross_origin()
 def run():
     # 校验sign值，防止接口模拟参数
     id = request.get_json()['id']
@@ -189,7 +184,6 @@ def run():
 
 @script.route('/terminate', methods=['POST'])
 @permission_required(URL_PREFIX + '/terminate')
-@cross_origin()
 def terminate():
     try:
         global running_subprocess
@@ -208,7 +202,6 @@ def terminate():
 
 @script.route('/runOutput', methods=['POST'])
 @permission_required(URL_PREFIX + '/runOutput')
-@cross_origin()
 def runOutput():
     try:
         global running_subprocess
@@ -234,7 +227,6 @@ def runOutput():
 
 @script.route('/edit', methods=['POST'])
 @permission_required(URL_PREFIX + '/edit')
-@cross_origin()
 def edit():
     try:
         sub_system_id = request.get_json()['sub_system_id']
@@ -447,7 +439,6 @@ def edit():
 
 @script.route('/delete', methods=['POST'])
 @permission_required(URL_PREFIX + '/delete')
-@cross_origin()
 def delete():
     try:
         user_id = request.get_json()['user_id']
@@ -462,7 +453,6 @@ def delete():
 
 @script.route('/saveOutput', methods=['POST'])
 @permission_required(URL_PREFIX + '/saveOutput')
-@cross_origin()
 def saveOutput():
     try:
         log_id = request.get_json()['log_id']
@@ -476,7 +466,6 @@ def saveOutput():
 
 @script.route('/getLogs', methods=['POST'])
 @permission_required(URL_PREFIX + '/getLogs')
-@cross_origin()
 def getLogs():
     try:
         try:
@@ -525,7 +514,6 @@ def getLogs():
 
 @script.route('/schedule', methods=['POST'])
 @permission_required(URL_PREFIX + '/schedule')
-@cross_origin()
 def schedule():
     try:
         user_id = request.get_json()['user_id']
@@ -554,7 +542,6 @@ def schedule():
 
 @script.route('/scheduleEdit', methods=['POST'])
 @permission_required(URL_PREFIX + '/scheduleEdit')
-@cross_origin()
 def scheduleEdit():
     try:
         user_id = request.get_json()['user_id']
@@ -651,7 +638,6 @@ def scheduleEdit():
 
 @script.route('/scheduleDelete', methods=['POST'])
 @permission_required(URL_PREFIX + '/scheduleDelete')
-@cross_origin()
 def scheduleDelete():
     try:
         user_id = request.get_json()['user_id']
@@ -665,7 +651,6 @@ def scheduleDelete():
 
 @script.route('/extraButtonScriptRun', methods=['POST'])
 @permission_required(URL_PREFIX + '/extraButtonScriptRun')
-@cross_origin()
 def extraButtonScriptRun():
     global running_subprocess
 

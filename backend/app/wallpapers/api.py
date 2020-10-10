@@ -17,7 +17,6 @@ URL_PREFIX = '/wallpapers'
 
 
 @wallpapers.route('/get', methods=['GET'])
-@cross_origin()
 def get():
     try:
         _ = wallpapers_table.select().order_by(-wallpapers_table.update_time).limit(7).dicts()

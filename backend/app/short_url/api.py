@@ -16,7 +16,6 @@ CONTENT_TYPE = {1: 'URL'}
 
 
 @short_url_blue_print.route('', methods=['GET'])
-@cross_origin()
 def t():
     try:
         c = request.args.get('c')
@@ -38,7 +37,6 @@ def t():
 # 避免复杂化，暂时使用脚本运行平台运行脚本(function.py)来生成短链接，而非新做一个组件
 # @short_url_blue_print.route('/short_content/set', methods=['POST'])
 # @permission_required(URL_PREFIX + '/short_content/set')
-# @cross_origin()
 # def set():
 #     try:
 #         content = request.get_json('content')

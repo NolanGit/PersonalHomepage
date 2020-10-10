@@ -23,7 +23,6 @@ URL_PREFIX = '/weather'
 
 
 @weather.route('/get', methods=['POST'])
-@cross_origin()
 def get():
     '''
         当未登陆时，应该显示ip所在地的天气，登陆后显示ip所在地加收藏的，但是显示ip所在地天气要考虑安全问题
@@ -52,7 +51,6 @@ def get():
 
 @weather.route('/weatherLocationListEdit', methods=['POST'])
 @permission_required(URL_PREFIX + '/weatherLocationListEdit')
-@cross_origin()
 def weatherLocationListEdit():
     try:
         user_id = request.get_json()['user_id']
@@ -70,7 +68,6 @@ def weatherLocationListEdit():
 
 @weather.route('/weatherLocationCreate', methods=['POST'])
 @permission_required(URL_PREFIX + '/weatherLocationCreate')
-@cross_origin()
 def weatherLocationCreate():
     try:
         user_id = request.get_json()['user_id']
@@ -84,7 +81,6 @@ def weatherLocationCreate():
 
 @weather.route('/notifyGet', methods=['POST'])
 @permission_required(URL_PREFIX + '/notifyGet')
-@cross_origin()
 def notifyGet():
     try:
         user_id = request.get_json()['user_id']
@@ -102,7 +98,6 @@ def notifyGet():
 
 @weather.route('/notifySet', methods=['POST'])
 @permission_required(URL_PREFIX + '/notifySet')
-@cross_origin()
 def notifySet():
     try:
         user_id = request.get_json()['user_id']
@@ -123,7 +118,6 @@ def notifySet():
 
 @weather.route('/check', methods=['POST'])
 @permission_required(URL_PREFIX + '/check')
-@cross_origin()
 def check():
     try:
         location = request.get_json()['location']

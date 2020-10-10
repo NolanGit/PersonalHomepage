@@ -25,7 +25,6 @@ DAY_HOURS = 24  # 每天有24小时
 
 @push.route('/get', methods=['POST'])
 @permission_required(URL_PREFIX + '/get')
-@cross_origin()
 def get():
     try:
         user_id = request.get_json()['user_id']
@@ -42,7 +41,6 @@ def get():
 
 @push.route('/add', methods=['POST'])
 @permission_required(URL_PREFIX + '/add')
-@cross_origin()
 def add():
     try:
         notify_interval_raw = request.get_json()['notify_interval_raw']
@@ -82,7 +80,6 @@ def add():
 
 @push.route('/edit', methods=['POST'])
 @permission_required(URL_PREFIX + '/edit')
-@cross_origin()
 def edit():
     try:
         notify_interval_raw = request.get_json()['notify_interval_raw']

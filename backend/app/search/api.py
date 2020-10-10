@@ -15,7 +15,6 @@ from ..model.search_model import search_engines, search_engines_log
 rsp = MyResponse()
 
 @search.route('/searchEnginesData', methods=['GET'])
-@cross_origin()
 def searchEnginesData():
     result = []
     try:
@@ -26,7 +25,6 @@ def searchEnginesData():
 
 
 @search.route('/searchEnginesAutoComplete', methods=['POST'])
-@cross_origin()
 def searchEnginesAutoComplete():
     try:
         return rsp.success(eval(requests.get(request.get_json()['autoCompleteUrl']).text.split('s:')[1].split('});')[0]))
@@ -36,7 +34,6 @@ def searchEnginesAutoComplete():
 
 
 @search.route('/searchEnginesSearch', methods=['POST'])
-@cross_origin()
 def searchEnginesSearch():
     try:
         if request.get_json()['name'] == '百度':
@@ -47,7 +44,6 @@ def searchEnginesSearch():
 
 
 @search.route('/searchLog', methods=['POST'])
-@cross_origin()
 def searchLog():
     try:
         user_id = request.get_json()['user_id']

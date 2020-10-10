@@ -19,7 +19,6 @@ URL_PREFIX = '/widget'
 
 @widget_blue_print.route('/suite/get', methods=['POST'])
 #@permission_required(URL_PREFIX + '/suite/get')
-@cross_origin()
 def widgetSuite():
     try:
         try:
@@ -34,7 +33,6 @@ def widgetSuite():
 
 @widget_blue_print.route('/get', methods=['POST'])
 #@permission_required(URL_PREFIX + '/get')
-@cross_origin()
 def widget():
     try:
         user_id = request.get_json()['user_id']
@@ -47,7 +45,6 @@ def widget():
 
 @widget_blue_print.route('/get_all', methods=['POST'])
 @permission_required(URL_PREFIX + '/get_all')
-@cross_origin()
 def widget_get_all():
     try:
         return rsp.success(widget_all())
@@ -58,7 +55,6 @@ def widget_get_all():
 
 @widget_blue_print.route('/suite/detail', methods=['POST'])
 @permission_required(URL_PREFIX + '/suite/detail')
-@cross_origin()
 def widgetSuiteDetail():
     try:
         user_id = request.get_json()['user_id']
@@ -73,7 +69,6 @@ def widgetSuiteDetail():
 
 @widget_blue_print.route('/suite/save', methods=['POST'])
 @permission_required(URL_PREFIX + '/suite/save')
-@cross_origin()
 def widgetSuiteSave():
     try:
         user_id = request.get_json()['user_id']
