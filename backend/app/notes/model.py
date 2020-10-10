@@ -21,9 +21,6 @@ class Notes(Base):
         self.is_valid = is_valid
         self.update_time = update_time
 
-    def complete(self):
-        self.base_complete(notes_table)
-
     def save(self):
         self.base_save(notes_table)
 

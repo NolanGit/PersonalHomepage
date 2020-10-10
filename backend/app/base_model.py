@@ -19,7 +19,7 @@ class Base(object):
             for attr in pop_attr:
                 self_dict.pop(attr)
             for key in self_dict:
-                self_dict[key] = _[key]
+                setattr(self, key, _[key])
         else:
             raise AttributeError
         return self
