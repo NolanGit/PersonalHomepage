@@ -1,9 +1,11 @@
 import datetime
-from ..model.widget_model import widget as widget_table
+
 from ..base_model import Base
-from ..login.login_funtion import User
-from ..model.widget_model import widget_suite
 from ..common_func import CommonFunc
+from ..login.login_funtion import User
+
+from ..model.widget_model import widget_suite
+from ..model.widget_model import widget as widget_table
 
 cf = CommonFunc()
 

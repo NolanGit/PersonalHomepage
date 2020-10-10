@@ -67,4 +67,4 @@ class CommonFunc(object):
         ccc = {}
         for b in bbb:
             ccc[b[0]] = b[1]
-        return (ccc)
+        return ccc

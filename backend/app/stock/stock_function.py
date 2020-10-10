@@ -1,15 +1,12 @@
+import time
 import requests
 import datetime
 import threading
 
-import sys
-sys.path.append('../')
-sys.path.append('../../')
+from ..common_func import CommonFunc
 
-from common_func import CommonFunc
-
-from model.stock_model import stock as stock_table
-from model.stock_model import stock_price, stock_belong
+from ..model.stock_model import stock as stock_table
+from ..model.stock_model import stock_price, stock_belong
 
 cf = CommonFunc()
 
@@ -56,6 +53,9 @@ def get_stock_price(stock_id, stock_code, market):
     # http://hq.sinajs.cn/list=int_ftse             英金融时报指数
     global data_source
 
+    if not check_time(market):
+        return
+
     code_text = stock_code + '.' + MARKET_TEXT[market - 1]
     code_url = MARKET_PREFIX[market - 1] + str(stock_code)
 
@@ -74,6 +74,19 @@ def get_stock_price(stock_id, stock_code, market):
         print('[' + code_text + ']的价格为:' + str(price) + '美元')
 
     data_source.append((stock_id, price, datetime.datetime.now()))
+
+
+def check_time(market):
+    current_hour = int(time.strftime('%H', time.localtime(time.time())))
+    current_minute = int(time.strftime('%M', time.localtime(time.time())))
+    current_time = current_hour + current_minute / 100
+    current_week = int(time.strftime('%w', time.localtime(time.time())))
+
+    if market == 0 or market == 1:
+        if current_week != 5 and current_week != 6:  # 非周六周日
+            if 9.30 < current_time < 11.30 or 13 < current_time < 15:  # 国内开盘时间
+                return True
+    return False
 
 
 if __name__ == '__main__':
