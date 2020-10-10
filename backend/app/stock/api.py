@@ -24,11 +24,21 @@ rsp = MyResponse()
 URL_PREFIX = '/stock'
 
 
-@stock.route('/defaultStock', methods=['GET'])
-@cross_origin()
-def defaultStock():
+@stock.route('/get', methods=['GET'])
+def get():
     try:
-        stock_belong_query = stock_belong.select().where(stock_belong.user_id == 0).dicts()
+        user_id = request.get_json()['user_id']
+
+        if user_id != 0:
+            user_key = request.cookies.get('user_key')
+            redis_conn = privilegeFunction().get_redis_conn0()
+            if user_key == None or redis_conn.exists(user_key) == 0:
+                user_id = 0
+            user_id_in_redis = redis_conn.get(user_key)
+            if user_id != user_id_in_redis:
+                return rsp.failed('无权访问'), 403
+
+        stock_belong_query = stock_belong.select().where(stock_belong.user_id == user_id).dicts()
         return rsp.success([cf.attr_to_dict(Stock(id=_['stock_id']).complete().get_price(50)) for _ in stock_belong_query])
     except Exception as e:
         traceback.print_exc()
