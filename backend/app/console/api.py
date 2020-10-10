@@ -19,7 +19,6 @@ URL_PREFIX = '/console'
 
 @console.route('/get', methods=['GET'])
 @permission_required(URL_PREFIX + '/get')
-@cross_origin()
 def consoleGet():
     try:
         console_model_query = console_model.select().where(console_model.is_valid == 1).order_by(console_model.order).dicts()

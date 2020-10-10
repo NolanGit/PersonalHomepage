@@ -20,7 +20,6 @@ URL_PREFIX = '/bookmarks'
 
 @bookmarks.route('/get', methods=['POST'])
 #@permission_required(URL_PREFIX + '/get')
-@cross_origin()
 def userInfo():
     try:
         try:
@@ -37,7 +36,6 @@ def userInfo():
 
 @bookmarks.route('/bookmarksAdd', methods=['POST'])
 @permission_required(URL_PREFIX + '/bookmarksAdd')
-@cross_origin()
 def bookmarksAdd():
     try:
         user_id = request.get_json()['user_id']
@@ -54,7 +52,6 @@ def bookmarksAdd():
 
 @bookmarks.route('/bookmarksEdit', methods=['POST'])
 @permission_required(URL_PREFIX + '/bookmarksEdit')
-@cross_origin()
 def bookmarksEdit():
     try:
         user_id = request.get_json()['user_id']

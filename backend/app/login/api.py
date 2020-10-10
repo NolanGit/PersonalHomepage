@@ -63,7 +63,6 @@ def check_pass(login_name, password):
 
 
 @login.route('/userLogin', methods=['POST'])
-@cross_origin()
 def userLogin():
     '''
         用户登录逻辑：
@@ -90,7 +89,6 @@ def userLogin():
 
 
 @login.route('/userLoginSalt', methods=['POST'])
-@cross_origin()
 def userLoginSalt():
     try:
         login_name = request.get_json()['login_name']
@@ -111,7 +109,6 @@ def userLoginSalt():
 
 
 @login.route('/userChangePassword', methods=['POST'])
-@cross_origin()
 def userChangePassword():
     try:
         login_name = request.get_json()['login_name']
@@ -140,7 +137,6 @@ def userChangePassword():
 
 
 @login.route('/userAdd', methods=['POST'])
-@cross_origin()
 def userAdd():
     try:
         login_name = request.get_json()['login_name']

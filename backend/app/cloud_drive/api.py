@@ -25,7 +25,6 @@ URL_PREFIX = '/cloudDrive'
 
 @cloud_drive_blue_print.route('/save', methods=['POST'])
 @permission_required(URL_PREFIX + '/save')
-@cross_origin()
 def save():
     try:
         user_id = request.get_json()['user_id']
@@ -39,7 +38,6 @@ def save():
 
 @cloud_drive_blue_print.route('/get', methods=['POST'])
 @permission_required(URL_PREFIX + '/get')
-@cross_origin()
 def get():
     try:
         user_id = request.get_json()['user_id']
@@ -79,7 +77,6 @@ def get():
 
 @cloud_drive_blue_print.route('/delete', methods=['POST'])
 @permission_required(URL_PREFIX + '/delete')
-@cross_origin()
 def delete():
     try:
         user_id = request.get_json()['user_id']
@@ -98,7 +95,6 @@ def delete():
 
 @cloud_drive_blue_print.route('/share/set', methods=['POST'])
 @permission_required(URL_PREFIX + '/share/set')
-@cross_origin()
 def share_set():
     try:
         user_id = request.get_json()['user_id']
@@ -140,7 +136,6 @@ def share_set():
 
 @cloud_drive_blue_print.route('/share/cancel', methods=['POST'])
 @permission_required(URL_PREFIX + '/share/cancel')
-@cross_origin()
 def cancel():
     try:
         user_id = request.get_json()['user_id']

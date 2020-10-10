@@ -20,7 +20,6 @@ URL_PREFIX = '/app'
 
 @app_price_monitor.route('/get', methods=['POST'])
 @permission_required(URL_PREFIX + '/get')
-@cross_origin()
 def get():
     try:
         user_id = request.get_json()['user_id']
@@ -35,7 +34,6 @@ def get():
 
 @app_price_monitor.route('/add', methods=['POST'])
 @permission_required(URL_PREFIX + '/add')
-@cross_origin()
 def add():
     try:
         user_id = request.get_json()['user_id']
@@ -63,7 +61,6 @@ def add():
 
 @app_price_monitor.route('/edit', methods=['POST'])
 @permission_required(URL_PREFIX + '/edit')
-@cross_origin()
 def edit():
     try:
         user_id = request.get_json()['user_id']

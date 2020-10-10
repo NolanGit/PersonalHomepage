@@ -19,7 +19,6 @@ URL_PREFIX = '/notes'
 
 @notes_blue_print.route('/get', methods=['POST'])
 @permission_required(URL_PREFIX + '/get')
-@cross_origin()
 def get():
     try:
         user_id = request.get_json()['user_id']
@@ -40,7 +39,6 @@ def get():
 
 @notes_blue_print.route('/save', methods=['POST'])
 @permission_required(URL_PREFIX + '/save')
-@cross_origin()
 def save():
     try:
         user_id = request.get_json()['user_id']
@@ -61,7 +59,6 @@ def save():
 
 @notes_blue_print.route('/notify', methods=['POST'])
 @permission_required(URL_PREFIX + '/notify')
-@cross_origin()
 def notify():
     try:
         _ = request.get_json()
@@ -101,7 +98,6 @@ def notify():
 
 @notes_blue_print.route('/revert', methods=['POST'])
 @permission_required(URL_PREFIX + '/revert')
-@cross_origin()
 def revert():
     try:
         user_id = request.get_json()['user_id']

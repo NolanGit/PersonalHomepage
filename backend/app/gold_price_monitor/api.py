@@ -20,7 +20,6 @@ URL_PREFIX = '/gold'
 
 
 @gold_price_monitor.route('/get', methods=['POST'])
-@cross_origin()
 def get():
     try:
         user_id = request.get_json()['user_id']
@@ -42,7 +41,6 @@ def get():
 
 @gold_price_monitor.route('/edit', methods=['POST'])
 @permission_required(URL_PREFIX + '/edit')
-@cross_origin()
 def edit():
     try:
         user_id = request.get_json()['user_id']
