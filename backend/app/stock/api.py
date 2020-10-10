@@ -43,3 +43,18 @@ def get():
     except Exception as e:
         traceback.print_exc()
         return rsp.failed(e), 500
+
+
+@stock.route('/edit', methods=['GET'])
+def edit():
+    try:
+        user_id = request.get_json()['user_id']
+        stocks = request.get_json()['stocks']
+
+        stock_belong.update(is_valid=0, update_time=datetime.datetime.now()).where(stock_belong.user_id == user_id).execute()
+        for _ in stocks:
+            Stock(code=_['code'], name=_['name']).create()
+        return rsp.success()
+    except Exception as e:
+        traceback.print_exc()
+        return rsp.failed(e), 500

@@ -40,6 +40,7 @@
         <el-input
           style="min-height: 232px; max-height: 232px;"
           type="textarea"
+          resize='none'
           :autosize="{ minRows: 10, maxRows: 10}"
           placeholder="请输入内容"
           v-model="rawText"
@@ -57,6 +58,7 @@
         <el-input
           style="min-height: 232px; max-height: 232px;"
           type="textarea"
+          resize='none'
           :autosize="{ minRows: 10, maxRows: 10}"
           placeholder
           v-model="translatedText"
