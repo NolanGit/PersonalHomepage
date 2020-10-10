@@ -31,4 +31,5 @@ def defaultStock():
         stock_belong_query = stock_belong.select().where(stock_belong.user_id == 0).dicts()
         return rsp.success([cf.attr_to_dict(Stock(id=_['stock_id']).complete().get_price(50)) for _ in stock_belong_query])
     except Exception as e:
+        traceback.print_exc()
         return rsp.failed(e), 500

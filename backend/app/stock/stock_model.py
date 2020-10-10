@@ -27,7 +27,7 @@ class Stock(Base):
         return self
 
     def complete(self):
-        self.base_complete(stock_table)
+        self.base_complete(stock_table, 'price_list')
         return self
 
     def save(self):

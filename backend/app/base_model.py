@@ -12,10 +12,12 @@ cf = CommonFunc()
 
 class Base(object):
 
-    def base_complete(self, table):
+    def base_complete(self, table, pop_attr=[]):
         self_dict = cf.attr_to_dict(self)
         if 'id' in self_dict:
             _ = table.get(table.id == self_dict['id'])
+            for attr in pop_attr:
+                self_dict.pop(attr)
             for key in self_dict:
                 self_dict[key] = _[key]
         else:
