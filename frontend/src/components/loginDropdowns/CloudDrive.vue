@@ -87,7 +87,7 @@
                     plain
                     type="primary"
                     icon="el-icon-share"
-                    @click="share(scope.row.file_id)"
+                    @click="share(scope.row.id)"
                   ></el-button>
                 </el-tooltip>
                 <el-tooltip v-if="scope.row.share==1" content="复制分享链接" placement="top">
@@ -280,11 +280,11 @@ export default {
         });
       }
     },
-    async share(fileId) {
+    async share(id) {
       try {
         const { data: res } = await axios.post(api.share, {
           user_id: this.user_id,
-          id: fileId,
+          id: id,
         });
         this.get();
         this.$message({
