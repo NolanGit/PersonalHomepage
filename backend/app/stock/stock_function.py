@@ -5,12 +5,12 @@ import threading
 
 import sys
 sys.path.append('../')
-sys.path.append('../../')
+sys.path.append('../..')
 
-from ..common_func import CommonFunc
+from common_func import CommonFunc
 
-from ..model.stock_model import stock as stock_table
-from ..model.stock_model import stock_price, stock_belong
+from model.stock_model import stock as stock_table
+from model.stock_model import stock_price, stock_belong
 
 cf = CommonFunc()
 
