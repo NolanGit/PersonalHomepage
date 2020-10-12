@@ -3,6 +3,10 @@ import requests
 import datetime
 import threading
 
+import sys
+sys.path.append('../')
+sys.path.append('../../')
+
 from ..common_func import CommonFunc
 
 from ..model.stock_model import stock as stock_table
