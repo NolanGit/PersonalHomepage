@@ -139,6 +139,22 @@ export default {
       settingForm: {
         visible: false,
       },
+      edit: {
+        searchFormTitle: "",
+        searchFormVisible: false,
+        searchLoading: false,
+        searchContent: "",
+        searchArea: "cn",
+        searchResultList: [],
+        chooseFormVisible: false,
+        chooseFormTitle: "",
+        form: {
+          index: "",
+          name: "",
+          url: "",
+          expect_price: 0,
+        },
+      },
     };
   },
   methods: {
@@ -163,7 +179,7 @@ export default {
         //     价格: res.data.price_list[x]["price"],
         //   });
         // }
-        
+
         this.$nextTick((_) => {
           this.$refs[`chart`].echarts.resize();
         });
@@ -178,7 +194,7 @@ export default {
     },
   },
   mounted() {
-    this.goldPriceGet();
+    this.get();
     this.timer = window.setInterval(this.goldPriceGet, this.flush);
   },
   beforeDestroy() {
