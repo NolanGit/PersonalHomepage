@@ -475,18 +475,20 @@ def getLogs():
         script_id = request.get_json()['script_id']
         limit = int(request.get_json()['limit'])
 
+        important_fields = []
+
         if user_id == 0:
             # 查询所有人的运行记录
             user_name = User(user_id=user_id).user_name
             script_log_query = script_log.select().where(script_log.script_id == script_id).limit(limit).order_by(-script_log.id).dicts()
             if len(script_log_query) == 0:
-                return rsp.failed('未查询到脚本运行日志')
+                return rsp.success({'logs': [], 'important_fields': important_fields})
         else:
             # 查询特定人的运行记录
             user_name = User(user_id=user_id).user_name
             script_log_query = script_log.select().where((script_log.script_id == script_id) & (script_log.user_id == user_id)).limit(limit).order_by(-script_log.id).dicts()
             if len(script_log_query) == 0:
-                return rsp.failed('未查询到' + user_name + '的上次脚本运行日志，如想查看其他人的日志，请使用“查看全部运行记录”按钮')
+                return rsp.failed('未查询到' + user_name + '的上次脚本运行日志，如想查看其他人的日志，请使用“查看全部运行记录”按钮'), 500
 
         result = [{
             'log_id': row['id'],
@@ -500,7 +502,6 @@ def getLogs():
             'duration': str((row['end_time'] - row['start_time']).seconds) + '秒' if row['end_time'] != None else '无数据'
         } for row in script_log_query]
 
-        important_fields = []
         script_detail_query = script_detail.select().where((script_detail.script_id == script_id) & (script_detail.is_valid == 1)).dicts()
         for row in script_detail_query:
             if row['is_important'] == 1:

@@ -508,6 +508,13 @@ export default {
           limit: 50,
         });
         this.output.logs = res.data.logs;
+        if (this.output.logs == 0) {
+          this.$message({
+            message: "未查到脚本运行日志",
+            type: "error",
+          });
+          return;
+        }
         this.output.important_fields = res.data.important_fields;
         for (let o = 0; o < this.output.logs.length; o++) {
           for (let i = 0; i < this.output.important_fields.length; i++) {
