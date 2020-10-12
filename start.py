@@ -184,8 +184,8 @@ flag = True
 try:
     print('%s开始配置' % CONFIG_PATH)
     backup(CONFIG_PATH)
-    homepage_text = '[config]\nADMIN_EMAIL = %s\nSENDER = %s\nPASSWORD = %s\nDB_PASS=%s\nKEY = %s\nLOCATION = %s\nUPLOAD_FILE_PATH = %s\nBING_WALLPAPERS_PATH = %s\nDOMAIN_NAME = %s\' % (
-        admin_email, mail_sender_address, mail_sender_password, mysql_password, weather_api_key, weather_default_location, UPLOAD_FILE_PATH, BING_WALLPAPERS_PATH,domain)
+    homepage_text = '[config]\nADMIN_EMAIL = %s\nSENDER = %s\nPASSWORD = %s\nDB_PASS=%s\nKEY = %s\nLOCATION = %s\nUPLOAD_FILE_PATH = %s\nBING_WALLPAPERS_PATH = %s\nDOMAIN_NAME = %s\'' % (
+        admin_email, mail_sender_address, mail_sender_password, mysql_password, weather_api_key, weather_default_location, UPLOAD_FILE_PATH, BING_WALLPAPERS_PATH, domain)
     with open(CONFIG_PATH, 'w') as w:
         w.write(homepage_text)
         print('%s配置成功' % CONFIG_PATH)
@@ -216,6 +216,8 @@ try:
         '2020-06-20 00:00:00': str(TOMORROW),
         '2020-06-20 00:15:00': str(TOMORROW + datetime.timedelta(minutes=15)),
         '2020-06-20 00:30:00': str(TOMORROW + datetime.timedelta(minutes=30)),
+        '2020-06-20 03:00:00': str(TOMORROW + datetime.timedelta(hours=3)),
+        '2020-06-20 17:00:00': str(TOMORROW + datetime.timedelta(hours=17)),
     }
     alter(INIT_SQL_PATH, alter_dict)
     print('%s配置成功' % INIT_SQL_PATH)

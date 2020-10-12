@@ -513,6 +513,7 @@ export default {
             message: "未查到脚本运行日志",
             type: "error",
           });
+          this.output.loading = false;
           return;
         }
         this.output.important_fields = res.data.important_fields;
