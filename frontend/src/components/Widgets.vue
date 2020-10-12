@@ -4,11 +4,16 @@
       v-model="widgetSuiteLabelActiveName"
       @tab-click="handleClick"
       stretch="true"
-      style="padding-bottom: 30px; width: 70%; text-align: center; margin: 0 auto;"
-      v-if="widgetSuiteLabels.length>1"
+      style="
+        padding-bottom: 30px;
+        width: 70%;
+        text-align: center;
+        margin: 0 auto;
+      "
+      v-if="widgetSuiteLabels.length > 1"
     >
       <el-tab-pane
-        v-for="(singleWidgetSuite) in widgetSuiteLabels"
+        v-for="singleWidgetSuite in widgetSuiteLabels"
         :label="singleWidgetSuite.name"
         :name="singleWidgetSuite.id"
         :key="singleWidgetSuite"
@@ -16,62 +21,76 @@
     </el-tabs>
     <el-row
       class="margin_bottom-large"
-      v-for="(singleWidgetSuite,suiteIndex) in widgetSuite"
+      v-for="(singleWidgetSuite, suiteIndex) in widgetSuite"
       :key="singleWidgetSuite"
     >
       <el-col
         :span="singleWidget.span"
-        v-for="(singleWidget,index) in singleWidgetSuite"
+        v-for="(singleWidget, index) in singleWidgetSuite"
         :key="singleWidget"
       >
         <transition name="el-zoom-in-top">
           <el-card
             shadow="hover"
             v-show="singleWidget.show"
-            style="height: 370px;"
+            style="height: 370px"
             class="margin_left-medium margin_right-medium"
           >
             <weather
-              v-if="singleWidget.name=='weather'"
+              v-if="singleWidget.name == 'weather'"
               :user_id="user_id"
               :widget_id="singleWidget.id"
               :buttons="singleWidget.buttons"
               :flush="singleWidget.auto_update"
-              @done="done(suiteIndex,index)"
+              @done="done(suiteIndex, index)"
             />
             <bookmarks
-              v-if="singleWidget.name=='bookmarks'"
+              v-if="singleWidget.name == 'bookmarks'"
               :user_id="user_id"
               :widget_id="singleWidget.id"
               :buttons="singleWidget.buttons"
-              @done="done(suiteIndex,index)"
+              @done="done(suiteIndex, index)"
             />
             <appMonitor
-              v-if="singleWidget.name=='app'"
+              v-if="singleWidget.name == 'app'"
               :user_id="user_id"
               :widget_id="singleWidget.id"
               :buttons="singleWidget.buttons"
               :flush="singleWidget.auto_update"
-              @done="done(suiteIndex,index)"
+              @done="done(suiteIndex, index)"
             />
             <gold
-              v-if="singleWidget.name=='gold'"
+              v-if="singleWidget.name == 'gold'"
               :user_id="user_id"
               :widget_id="singleWidget.id"
               :buttons="singleWidget.buttons"
               :flush="singleWidget.auto_update"
-              @done="done(suiteIndex,index)"
+              @done="done(suiteIndex, index)"
             />
             <notes
-              v-if="singleWidget.name=='notes'"
+              v-if="singleWidget.name == 'notes'"
               :user_id="user_id"
               :widget_id="singleWidget.id"
               :buttons="singleWidget.buttons"
               :flush="singleWidget.auto_update"
-              @done="done(suiteIndex,index)"
+              @done="done(suiteIndex, index)"
             />
-            <translator v-if="singleWidget.name=='translator'" @done="done(suiteIndex,index)" />
-            <wallpapers v-if="singleWidget.name=='wallpapers'" @done="done(suiteIndex,index)" />
+            <translator
+              v-if="singleWidget.name == 'translator'"
+              @done="done(suiteIndex, index)"
+            />
+            <wallpapers
+              v-if="singleWidget.name == 'wallpapers'"
+              @done="done(suiteIndex, index)"
+            />
+            <stock
+              v-if="singleWidget.name == 'stock'"
+              :user_id="user_id"
+              :widget_id="singleWidget.id"
+              :buttons="singleWidget.buttons"
+              :flush="singleWidget.auto_update"
+              @done="done(suiteIndex, index)"
+            />
           </el-card>
         </transition>
       </el-col>
@@ -87,6 +106,7 @@ import gold from "./widgets/GoldPrice.vue";
 import notes from "./widgets/Notes.vue";
 import translator from "./widgets/Translator.vue";
 import wallpapers from "./widgets/Wallpapers.vue";
+import stock from "./widgets/Stock.vue";
 
 const api = {
   get: "/widget/get",
@@ -105,7 +125,8 @@ export default {
     gold,
     notes,
     translator,
-    wallpapers
+    wallpapers,
+    stock,
   },
   watch: {
     user_id(newVal, oldVal) {

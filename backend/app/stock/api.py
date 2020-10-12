@@ -45,7 +45,7 @@ def get():
         return rsp.failed(e), 500
 
 
-@stock.route('/edit', methods=['GET'])
+@stock.route('/edit', methods=['POST'])
 def edit():
     try:
         user_id = request.get_json()['user_id']
