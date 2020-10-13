@@ -200,7 +200,32 @@ export default {
       this.edit.index = index;
       this.edit.visible = true;
     },
-    async stockSortEditSubmit() {},
+    async stockSortEditSubmit(list) {
+      console.log(list);
+      try {
+        // const { data: res } = await axios.post(api.add, {
+        //   user_id: this.user_id,
+        //   code: this.edit.code,
+        //   name: this.edit.name,
+        //   market: this.edit.market,
+        //   push: this.edit.push ? 1 : 0,
+        //   threshold_max: this.edit.max,
+        //   threshold_min: this.edit.min,
+        // });
+        this.$message({
+          message: res["msg"],
+          type: "success",
+        });
+        this.get();
+        this.edit.visible = false;
+      } catch (e) {
+        console.log(e);
+        this.$message({
+          message: e.response.data.msg,
+          type: "error",
+        });
+      }
+    },
     async editSubmit() {
       if (this.edit.title == "增加股票") {
         try {

@@ -63,7 +63,6 @@ def add():
 
 
 @stock.route('/get', methods=['POST'])
-@permission_required(URL_PREFIX + '/get')
 def get():
     try:
         user_id = request.get_json()['user_id']
