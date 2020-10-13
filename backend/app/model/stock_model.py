@@ -7,7 +7,7 @@ from .model_function import BaseModel
 class stock(BaseModel):
     code = CharField()
     name = CharField()
-    market=IntegerField() # 1:SH; 2:SZ; 3:HK; 4:US;
+    market = IntegerField()  # 1:SH; 2:SZ; 3:HK; 4:US;
 
     class Meta:
         table_name = 'stock'
@@ -25,6 +25,7 @@ class stock_price(BaseModel):
 class stock_belong(BaseModel):
     stock_id = IntegerField()
     user_id = IntegerField()
+    push_threshold = CharField()
     is_valid = IntegerField()
     update_time = DateTimeField()
 

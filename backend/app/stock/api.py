@@ -39,7 +39,12 @@ def get():
                 return rsp.failed('无权访问'), 403
 
         stock_belong_query = stock_belong.select().where(stock_belong.user_id == user_id).dicts()
-        return rsp.success([cf.attr_to_dict(Stock(id=_['stock_id']).complete().get_price(50)) for _ in stock_belong_query])
+        result = [cf.attr_to_dict(Stock(id=_['stock_id']).complete().get_price(50)) for _ in stock_belong_query]
+
+        for x in range(len(result)):
+            result[x]['push_threshold'] = stock_belong_query[x]['push_threshold']
+            
+        return rsp.success(result)
     except Exception as e:
         traceback.print_exc()
         return rsp.failed(e), 500
