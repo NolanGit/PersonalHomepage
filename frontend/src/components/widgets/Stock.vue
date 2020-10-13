@@ -1,19 +1,21 @@
 <template>
   <div class="stock-main">
     <el-main
-      v-for="data in chartData"
+      v-for="(data, index) in chartData"
       :key="data"
       class="noPadding"
       style="height: 300px"
     >
       <el-row type="flex" justify="center">
-        <!-- <div class="widget-label">{{ data.name }}</div> -->
+        <div class="widget-label">{{ stockData[index].name }}</div>
       </el-row>
       <ve-line
         height="228px"
         :settings="chartSettings"
         :data="data"
         ref="chart"
+        +
+        index
         :legend-visible="false"
       ></ve-line>
     </el-main>
@@ -85,7 +87,11 @@
     </el-dialog>
 
     <!--编辑顺序界面-->
-    <el-dialog title="编辑App" :visible.sync="stockSortEdit.visible" width="40%">
+    <el-dialog
+      title="编辑App"
+      :visible.sync="stockSortEdit.visible"
+      width="40%"
+    >
       <SlickSort
         v-if="stockSortEdit.visible"
         :list="stockSortEdit.list"
@@ -179,13 +185,14 @@ export default {
             });
           }
           this.chartData.push({
-            // name: res.data[x].name,
             columns: ["时间", "价格"],
             rows: temp,
           });
         }
         this.$nextTick((_) => {
-          this.$refs[`chart`].echarts.resize();
+          for ((stock, index) in this.stockData) {
+            this.$refs[`chart` + index].echarts.resize();
+          }
         });
         this.$emit("done");
       } catch (e) {

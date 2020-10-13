@@ -86,7 +86,7 @@ def check_time(market):
     current_time = current_hour + current_minute / 100
     current_week = int(time.strftime('%w', time.localtime(time.time())))
 
-    if market == 0 or market == 1:
+    if market == 1 or market == 2:
         if current_week != 5 and current_week != 6:  # 非周六周日
             if 9.30 < current_time < 11.30 or 13 < current_time < 15:  # 国内开盘时间
                 return True
