@@ -49,11 +49,12 @@ def add():
         if stock_id == 0:
             stock_id = s.create().id
 
-        if threshold_min >= threshold_max:
-            return rsp.failed('阈值最小值不能大于或等于阈值最大值'), 500
-        if user_id == 0:
-            return rsp.failed('无法为未登录用户设定阈值'), 500
-        threshold = [threshold_min, threshold_max]
+        if push == 1:
+            if threshold_min >= threshold_max:
+                return rsp.failed('阈值最小值不能大于或等于阈值最大值'), 500
+            if user_id == 0:
+                return rsp.failed('无法为未登录用户设定阈值'), 500
+            threshold = [threshold_min, threshold_max]
 
         StockBelong(stock_id=stock_id, user_id=user_id, push=push, push_threshold=threshold, is_valid=1, update_time=datetime.datetime.now()).create()
         return rsp.success()
@@ -103,15 +104,17 @@ def edit():
             if stock_id == 0:
                 stock_id = s.create().id
 
+            push = int(_['push'])
             threshold_min = float(_['threshold_min'])
             threshold_max = float(_['threshold_max'])
-            if threshold_min >= threshold_max:
-                return rsp.failed('阈值最小值不能大于或等于阈值最大值'), 500
-            if user_id == 0:
-                return rsp.failed('无法为未登录用户设定阈值'), 500
-            threshold = [threshold_min, threshold_max]
+            if push == 1:
+                if threshold_min >= threshold_max:
+                    return rsp.failed('阈值最小值不能大于或等于阈值最大值'), 500
+                if user_id == 0:
+                    return rsp.failed('无法为未登录用户设定阈值'), 500
+                threshold = [threshold_min, threshold_max]
 
-            StockBelong(stock_id=stock_id, user_id=user_id, push=_['push'], push_threshold=threshold, is_valid=1, update_time=datetime.datetime.now()).create()
+            StockBelong(stock_id=stock_id, user_id=user_id, push=push, push_threshold=threshold, is_valid=1, update_time=datetime.datetime.now()).create()
         return rsp.success()
     except Exception as e:
         traceback.print_exc()
