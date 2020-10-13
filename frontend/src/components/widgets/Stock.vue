@@ -13,9 +13,7 @@
         height="250px"
         :settings="chartSettings"
         :data="data"
-        ref="chart"
-        +
-        index
+        ref="chart0"
         :legend-visible="false"
       ></ve-line>
     </el-main>
@@ -166,10 +164,10 @@ export default {
   },
   methods: {
     notify() {
-      this.notifyVisible = !this.notifyVisible;
+      this.notifyVisible = true;
     },
     setting() {
-      this.settingForm.visible = true;
+      this.stockSortEdit.visible = true;
     },
     async get() {
       try {
