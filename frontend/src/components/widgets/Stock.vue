@@ -228,10 +228,21 @@ export default {
         });
       }
     },
+    autoSwitch() {
+      for (let x = 0; x < this.stockData.length; x++) {
+        if (this.stockData[x].name == this.activeName) {
+          if (x == this.stockData.length) {
+            x = -1;
+          }
+          this.activeName = this.stockData[x + 1].name;
+        }
+      }
+      this.switchTimer = window.setInterval(this.autoSwitch, 5000);
+    },
   },
   mounted() {
     this.get();
-    this.timer = window.setInterval(this.goldPriceGet, this.flush);
+    this.timer = window.setInterval(this.get, this.flush);
   },
   beforeDestroy() {
     window.clearInterval(this.timer);
