@@ -6,7 +6,7 @@
           v-for="data in stockData"
           :key="data"
           :label="data.name"
-          :name="data.id"
+          :name="data.name"
         ></el-tab-pane>
       </el-tabs>
       <ve-line
@@ -177,21 +177,21 @@ export default {
     activeTabChanged(newVal) {
       console.log(newVal);
       for (let x = 0; x < this.stockData.length; x++) {
-        if (this.stockData[x].id == newVal) {
-          break;
+        if (this.stockData[x].name == newVal) {
+          var temp = [];
+          for (let y = 0; y < this.stockData[x].price_list.length; y++) {
+            temp.push({
+              时间: this.stockData[x].price_list[y]["update_time"],
+              价格: this.stockData[x].price_list[y]["price"],
+            });
+          }
+          this.chartData = {
+            columns: ["时间", "价格"],
+            rows: temp,
+          };
+          return;
         }
       }
-      var temp = [];
-      for (let y = 0; y < this.stockData[x].price_list.length; y++) {
-        temp.push({
-          时间: this.stockData[x].price_list[y]["update_time"],
-          价格: this.stockData[x].price_list[y]["price"],
-        });
-      }
-      this.chartData = {
-        columns: ["时间", "价格"],
-        rows: temp,
-      };
     },
     async get() {
       try {
