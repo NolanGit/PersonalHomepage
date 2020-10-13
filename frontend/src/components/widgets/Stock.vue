@@ -128,13 +128,7 @@ export default {
     };
     return {
       stockData: [],
-      chartData: [
-        {
-          name: "",
-          columns: [],
-          rows: [],
-        },
-      ],
+      chartData: [],
       notifyVisible: false,
       settingForm: {
         visible: false,
@@ -171,14 +165,21 @@ export default {
         });
         this.stockData = res.data;
 
-        // this.chartData.rows = [];
-        // this.chartData.columns = ["时间", "价格"];
-        // for (let x = 0; x < res.data.price_list.length; x++) {
-        //   this.chartData.rows.push({
-        //     时间: res.data.price_list[x]["update_time"],
-        //     价格: res.data.price_list[x]["price"],
-        //   });
-        // }
+        this.chartData = [];
+        for (let x = 0; x < res.data.length; x++) {
+          var temp = [];
+          for (let y = 0; y < res.data[x].price_list.length; y++) {
+            temp.push({
+              时间: res.data[x].price_list[y]["update_time"],
+              价格: res.data[x].price_list[y]["price"],
+            });
+          }
+          this.chartData.push({
+            name: res.data[x].name,
+            columns: ["时间", "价格"],
+            rows: temp,
+          });
+        }
 
         this.$nextTick((_) => {
           this.$refs[`chart`].echarts.resize();

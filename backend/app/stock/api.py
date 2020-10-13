@@ -24,7 +24,7 @@ rsp = MyResponse()
 URL_PREFIX = '/stock'
 
 
-@stock.route('/get', methods=['GET'])
+@stock.route('/get', methods=['POST'])
 def get():
     try:
         user_id = request.get_json()['user_id']
