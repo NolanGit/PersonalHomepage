@@ -1,21 +1,26 @@
 <template>
   <div class="stock-main">
-    <el-main
-      v-for="(data, index) in chartData"
-      :key="data"
-      class="noPadding"
-      style="height: 300px"
-    >
-      <el-row type="flex" justify="center">
-        <div class="widget-label">{{ stockData[index].name }}</div>
-      </el-row>
-      <ve-line
-        height="250px"
-        :settings="chartSettings"
-        :data="data"
-        ref="chart0"
-        :legend-visible="false"
-      ></ve-line>
+    <el-main class="noPadding" style="height: 300px">
+      <el-carousel
+        style="height: 100%"
+        trigger="click"
+        :autoplay="true"
+        :interval="5000"
+        indicator-position="outside"
+      >
+        <el-carousel-item v-for="(data, index) in chartData" :key="data">
+          <el-row type="flex" justify="center">
+            <div class="widget-label">{{ stockData[index].name }}</div>
+          </el-row>
+          <ve-line
+            height="250px"
+            :settings="chartSettings"
+            :data="data"
+            ref="chart0"
+            :legend-visible="false"
+          ></ve-line>
+        </el-carousel-item>
+      </el-carousel>
     </el-main>
     <el-footer
       height="31px"
