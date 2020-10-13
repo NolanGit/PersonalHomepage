@@ -66,6 +66,9 @@
               v-model="edit.code"
               placeholder="代码"
             ></el-input>
+            <el-button size="small" type="primary" plain @click="check()"
+              >检查</el-button
+            >
           </div>
         </el-form-item>
         <el-form-item label="当价格不在此范围内时提醒我">
@@ -109,6 +112,7 @@
 </template>
 <script>
 import axios from "axios";
+import { deepClone } from "../../js/common";
 import PushEdit from "../common/PushEdit.vue";
 import SlickSort from "../common/SlickSort.vue";
 import WidgetButton from "../common/WidgetButton.vue";
@@ -149,12 +153,6 @@ export default {
         code: "000001",
         min: 0,
         max: 1,
-        form: {
-          index: "",
-          name: "",
-          url: "",
-          expect_price: 0,
-        },
       },
       stockSortEdit: {
         visible: false,
@@ -166,9 +164,11 @@ export default {
     notify() {
       this.notifyVisible = true;
     },
-    setting() {
+    sort() {
       this.stockSortEdit.visible = true;
+      this.stockSortEdit.list = deepClone(this.stockData);
     },
+    check() {},
     async get() {
       try {
         const { data: res } = await axios.post(api.get, {
@@ -190,11 +190,11 @@ export default {
             rows: temp,
           });
         }
-        this.$nextTick((_) => {
-          for (let x = 0; x < this.stockData.length; x++) {
-            this.$refs[`chart${x}`].echarts.resize();
-          }
-        });
+        // this.$nextTick((_) => {
+        //   for (let x = 0; x < this.stockData.length; x++) {
+        //     this.$refs[`chart${x}`].echarts.resize();
+        //   }
+        // });
         this.$emit("done");
       } catch (e) {
         console.log(e);
