@@ -200,6 +200,7 @@ export default {
     },
     check() {},
     activeTabChanged(newVal) {
+      // 当触发的tab变化时，更新图表
       for (let x = 0; x < this.stockData.length; x++) {
         if (this.stockData[x].name == newVal) {
           var temp = [];
@@ -225,6 +226,16 @@ export default {
         this.stockData = res.data;
         this.chartData = [];
 
+        // 初始化股票推送阈值和市场code
+        for (let x = 0; x < this.stockData.length; x++) {
+          this.stockData[x].market = String(this.stockData[x].market);
+          if (this.stockData[x] != null && this.stockData[x].length != 0) {
+            this.stockData[x].min = this.stockData[x].push_threshold[0];
+            this.stockData[x].max = this.stockData[x].push_threshold[1];
+          }
+        }
+
+        // 初始化默认展示的股票
         this.activeName = res.data[0].name;
         var temp = [];
         for (let y = 0; y < res.data[0].price_list.length; y++) {

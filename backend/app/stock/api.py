@@ -42,8 +42,8 @@ def get():
         result = [cf.attr_to_dict(Stock(id=_['stock_id']).complete().get_price(50)) for _ in stock_belong_query]
 
         for x in range(len(result)):
-            result[x]['push_threshold'] = stock_belong_query[x]['push_threshold']
-            
+            result[x]['push_threshold'] = eval(stock_belong_query[x]['push_threshold'])
+
         return rsp.success(result)
     except Exception as e:
         traceback.print_exc()
