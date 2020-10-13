@@ -2,23 +2,23 @@
   <div class="stock-main">
     <el-main class="noPadding" style="height: 300px">
       <el-carousel
-        style="height: 100%"
+        style="height: 50px"
         trigger="click"
         :autoplay="true"
         :interval="5000"
         indicator-position="outside"
         @change="carouselChanged()"
       >
-        <el-carousel-item v-for="(data, index) in chartData" :key="data">
+        <el-carousel-item v-for="data in stockData" :key="data">
           <el-row type="flex" justify="center">
-            <div class="widget-label">{{ stockData[index].name }}</div>
+            <div class="widget-label">{{ data.name }}</div>
           </el-row>
         </el-carousel-item>
       </el-carousel>
       <ve-line
         height="230px"
         :settings="chartSettings"
-        :data="chartData[0]"
+        :data="chartData"
         ref="chart"
         :legend-visible="false"
       ></ve-line>
