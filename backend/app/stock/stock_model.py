@@ -22,7 +22,7 @@ class Stock(Base):
         stock_price_query = stock_price.select().where(stock_price.stock_id == self.id).dicts()
         self.price_list = [{
             'price': _['price'],
-            'update_time': _['update_time'],
+            'update_time': _['update_time'].strftime("%m-%d %H:%M"),
         } for _ in stock_price_query]
         return self
 

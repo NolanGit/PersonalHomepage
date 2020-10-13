@@ -13,7 +13,9 @@
         height="250px"
         :settings="chartSettings"
         :data="data"
-        ref="aaa"
+        ref="chart"
+        +
+        index
         :legend-visible="false"
       ></ve-line>
     </el-main>
@@ -192,7 +194,7 @@ export default {
         }
         this.$nextTick((_) => {
           for (let x = 0; x < this.stockData.length; x++) {
-            this.$refs[`aaa`].echarts.resize();
+            this.$refs[`chart${x}`].echarts.resize();
           }
         });
         this.$emit("done");
