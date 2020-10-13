@@ -12,14 +12,14 @@
           <el-row type="flex" justify="center">
             <div class="widget-label">{{ stockData[index].name }}</div>
           </el-row>
-          <ve-line
-            height="240px"
-            :settings="chartSettings"
-            :data="data"
-            ref="chart"
-            :legend-visible="false"
-          ></ve-line>
         </el-carousel-item>
+        <ve-line
+          height="240px"
+          :settings="chartSettings"
+          :data="chartData[0]"
+          ref="chart"
+          :legend-visible="false"
+        ></ve-line>
       </el-carousel>
     </el-main>
     <el-footer
