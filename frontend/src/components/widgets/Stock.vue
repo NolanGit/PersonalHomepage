@@ -43,7 +43,12 @@
     </el-dialog>
 
     <!--编辑界面-->
-    <el-dialog :title="edit.title" :visible.sync="edit.visible" width="40%">
+    <el-dialog
+      :title="edit.title"
+      :visible.sync="edit.visible"
+      width="40%"
+      @close="editFormClose()"
+    >
       <el-form ref="form" :model="edit.form" size="mini">
         <el-form-item label="市场">
           <div class="div-flex">
@@ -204,6 +209,18 @@ export default {
       this.edit.max = item.max;
       this.edit.index = index;
       this.edit.visible = true;
+    },
+    editFormClose() {
+      this.edit = {
+        title: "",
+        name: "",
+        visible: false,
+        index: Number,
+        market: "1",
+        code: "",
+        min: 0,
+        max: 0,
+      };
     },
     async stockSortEditSubmit(list) {
       for (let x = 0; x < list.length; x++) {
