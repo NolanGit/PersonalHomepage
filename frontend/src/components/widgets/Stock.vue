@@ -232,10 +232,11 @@ export default {
       window.clearInterval(this.switchTimer);
       for (let x = 0; x < this.stockData.length; x++) {
         if (this.stockData[x].name == this.activeName) {
-          if (x == this.stockData.length) {
+          if (x + 1 == this.stockData.length) {
             x = -1;
           }
           this.activeName = this.stockData[x + 1].name;
+          break;
         }
       }
       this.switchTimer = window.setTimeout(this.autoSwitch, 5000);
