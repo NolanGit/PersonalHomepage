@@ -6,23 +6,9 @@
           v-for="data in stockData"
           :key="data"
           :label="data.name"
-          :name="data.name"
+          :name="data.id"
         ></el-tab-pane>
       </el-tabs>
-      <!-- <el-carousel
-        style="height: 50px"
-        trigger="click"
-        :autoplay="true"
-        :interval="5000"
-        indicator-position="outside"
-        @change="carouselChanged()"
-      >
-        <el-carousel-item v-for="data in stockData" :key="data">
-          <el-row type="flex" justify="center">
-            <div class="widget-label">{{ data.name }}</div>
-          </el-row>
-        </el-carousel-item>
-      </el-carousel> -->
       <ve-line
         height="230px"
         :settings="chartSettings"
@@ -149,7 +135,11 @@ export default {
     SlickSort,
     WidgetButton,
   },
-  watch: {},
+  watch: {
+    activeName(newVal, oldVal) {
+      this.activeTabChanged(newVal);
+    },
+  },
   data() {
     this.chartSettings = {
       min: ["dataMin"],
@@ -158,6 +148,7 @@ export default {
     return {
       stockData: [],
       chartData: {},
+      activeName: "",
       notifyVisible: false,
       settingForm: {
         visible: false,
@@ -183,12 +174,18 @@ export default {
       this.stockSortEdit.list = deepClone(this.stockData);
     },
     check() {},
-    carouselChanged(newVal, oldVal) {
+    activeTabChanged(newVal) {
+      console.log(newVal);
+      for (let x = 0; x < this.stockData.length; x++) {
+        if (this.stockData[x].id == newVal) {
+          break;
+        }
+      }
       var temp = [];
-      for (let y = 0; y < res.data[newVal].price_list.length; y++) {
+      for (let y = 0; y < this.stockData[x].price_list.length; y++) {
         temp.push({
-          时间: res.data[newVal].price_list[y]["update_time"],
-          价格: res.data[newVal].price_list[y]["price"],
+          时间: this.stockData[x].price_list[y]["update_time"],
+          价格: this.stockData[x].price_list[y]["price"],
         });
       }
       this.chartData = {
@@ -204,6 +201,7 @@ export default {
         this.stockData = res.data;
         this.chartData = [];
 
+        this.activeName = res.data[0].name;
         var temp = [];
         for (let y = 0; y < res.data[0].price_list.length; y++) {
           temp.push({
