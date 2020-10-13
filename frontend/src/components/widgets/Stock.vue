@@ -7,7 +7,7 @@
       style="height: 300px"
     >
       <el-row type="flex" justify="center">
-        <div class="widget-label">{{ data.name }}</div>
+        <!-- <div class="widget-label">{{ data.name }}</div> -->
       </el-row>
       <ve-line
         height="228px"
@@ -85,13 +85,13 @@
     </el-dialog>
 
     <!--编辑顺序界面-->
-    <el-dialog title="编辑App" :visible.sync="appSortEdit.visible" width="40%">
+    <el-dialog title="编辑App" :visible.sync="stockSortEdit.visible" width="40%">
       <SlickSort
-        v-if="appSortEdit.visible"
-        :list="appSortEdit.list"
+        v-if="stockSortEdit.visible"
+        :list="stockSortEdit.list"
         :can_be_edit="true"
-        @submit="appSortEditSubmit"
-        @edit="appSortEditSetting"
+        @submit="stockSortEditSubmit"
+        @edit="stockSortEditSetting"
       ></SlickSort>
     </el-dialog>
   </div>
@@ -149,6 +149,10 @@ export default {
           expect_price: 0,
         },
       },
+      stockSortEdit: {
+        visible: false,
+        list: [],
+      },
     };
   },
   methods: {
@@ -175,12 +179,11 @@ export default {
             });
           }
           this.chartData.push({
-            name: res.data[x].name,
+            // name: res.data[x].name,
             columns: ["时间", "价格"],
             rows: temp,
           });
         }
-
         this.$nextTick((_) => {
           this.$refs[`chart`].echarts.resize();
         });
