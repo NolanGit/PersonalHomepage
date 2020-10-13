@@ -81,7 +81,7 @@
             ></el-input>
           </div>
         </el-form-item>
-        <el-form-item label="名称">
+        <el-form-item label="推送">
           <div class="div-flex">
             <el-switch
               style="margin-top: 3px"
@@ -315,8 +315,9 @@ export default {
         // 初始化股票推送阈值和市场code
         for (let x = 0; x < this.stockData.length; x++) {
           this.stockData[x].market = String(this.stockData[x].market);
-          this.stockData[x].push =
-            String(this.stockData[x].push) == "1" ? true : false;
+          console.log(this.stockData[x].push);
+          this.stockData[x].push = this.stockData[x].push == 1 ? true : false;
+          console.log(this.stockData[x].push);
           if (this.stockData[x] != null && this.stockData[x].length != 0) {
             this.stockData[x].min = this.stockData[x].push_threshold[0];
             this.stockData[x].max = this.stockData[x].push_threshold[1];
