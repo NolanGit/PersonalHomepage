@@ -10,10 +10,10 @@
         <div class="widget-label">{{ stockData[index].name }}</div>
       </el-row>
       <ve-line
-        height="228px"
+        height="250px"
         :settings="chartSettings"
         :data="data"
-        :ref="stockData[index].name"
+        ref="aaa"
         :legend-visible="false"
       ></ve-line>
     </el-main>
@@ -49,30 +49,37 @@
       width="40%"
     >
       <el-form ref="form" :model="edit.form" size="mini">
-        <el-form-item label="App名称">
+        <el-form-item label="市场">
           <div class="div-flex">
+            <el-select
+              v-model="edit.market"
+              size="small"
+              placeholder="请选择市场"
+            >
+              <el-option label="SH" value="1"> </el-option>
+              <el-option label="SZ" value="2"> </el-option>
+              <el-option label="HK" value="3"> </el-option>
+              <el-option label="US" value="4"> </el-option>
+            </el-select>
             <el-input
               size="small"
-              v-model="edit.form.name"
-              placeholder="名称"
+              v-model="edit.code"
+              placeholder="代码"
             ></el-input>
           </div>
         </el-form-item>
-        <el-form-item label="AppURL">
+        <el-form-item label="当价格不在此范围内时提醒我">
           <div class="div-flex">
             <el-input
-              size="small"
-              v-model="edit.form.url"
-              placeholder="App Store链接(如：'https://apps.apple.com/cn/app/id958955657')"
-            ></el-input>
-          </div>
-        </el-form-item>
-        <el-form-item label="期望价格">
-          <div class="div-flex">
+              size="mini"
+              v-model="edit.min"
+              placeholder="最小值"
+            ></el-input
+            >~
             <el-input
-              size="small"
-              v-model="edit.form.expect_price"
-              placeholder="当小于期望价格时，如果设置了通知，会发送提醒"
+              size="mini"
+              v-model="edit.max"
+              placeholder="最大值"
             ></el-input>
           </div>
         </el-form-item>
@@ -138,14 +145,10 @@ export default {
         visible: false,
       },
       edit: {
-        searchFormTitle: "",
-        searchFormVisible: false,
-        searchLoading: false,
-        searchContent: "",
-        searchArea: "cn",
-        searchResultList: [],
-        chooseFormVisible: false,
-        chooseFormTitle: "",
+        market: "1",
+        code: "000001",
+        min: 0,
+        max: 1,
         form: {
           index: "",
           name: "",
@@ -189,7 +192,7 @@ export default {
         }
         this.$nextTick((_) => {
           for (let x = 0; x < this.stockData.length; x++) {
-            this.$refs[this.stockData[x].name].echarts.resize();
+            this.$refs[`aaa`].echarts.resize();
           }
         });
         this.$emit("done");
