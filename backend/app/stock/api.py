@@ -25,7 +25,7 @@ URL_PREFIX = '/stock'
 
 
 def check_stock(Stock):
-    _ = stock_table.select().where((stock_table.market == Stock.market) & (stock_table.code == Stock.code)).dicts()
+    _ = stock_table.select().where((stock_table.market == Stock.market) & (stock_table.name == Stock.name) & (stock_table.code == Stock.code)).dicts()
     if len(_) == 0:
         return 0
     else:
@@ -80,6 +80,7 @@ def get():
         result = [cf.attr_to_dict(Stock(id=_['stock_id']).complete().get_price(50)) for _ in stock_belong_query]
 
         for x in range(len(result)):
+            result[x]['push'] = stock_belong_query[x]['push']
             result[x]['push_threshold'] = eval(stock_belong_query[x]['push_threshold'])
 
         return rsp.success(result)

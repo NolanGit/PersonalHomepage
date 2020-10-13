@@ -78,7 +78,12 @@
         </el-form-item>
         <el-form-item label="名称">
           <div class="div-flex">
-            <el-switch v-model="edit.push" active-color="#13ce66"> </el-switch>
+            <el-switch
+              style="margin-top: 3px"
+              v-model="edit.push"
+              active-color="#13ce66"
+            >
+            </el-switch>
           </div>
         </el-form-item>
         <el-form-item label="当价格不在此范围内时提醒我" v-if="edit.push">
@@ -201,17 +206,14 @@ export default {
       this.edit.visible = true;
     },
     async stockSortEditSubmit(list) {
-      console.log(list);
+      for (let x = 0; x < list.length; x++) {
+        list[x].push = list[x].push ? 1 : 0;
+      }
       try {
-        // const { data: res } = await axios.post(api.add, {
-        //   user_id: this.user_id,
-        //   code: this.edit.code,
-        //   name: this.edit.name,
-        //   market: this.edit.market,
-        //   push: this.edit.push ? 1 : 0,
-        //   threshold_max: this.edit.max,
-        //   threshold_min: this.edit.min,
-        // });
+        const { data: res } = await axios.post(api.edit, {
+          user_id: this.user_id,
+          stocks: list,
+        });
         this.$message({
           message: res["msg"],
           type: "success",
