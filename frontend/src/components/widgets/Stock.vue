@@ -67,14 +67,21 @@
             >
           </div>
         </el-form-item>
-        <el-form-item label="市场">
-          <el-input
-            size="small"
-            v-model="edit.name"
-            placeholder="名称"
-          ></el-input>
+        <el-form-item label="名称">
+          <div class="div-flex">
+            <el-input
+              size="small"
+              v-model="edit.name"
+              placeholder="名称"
+            ></el-input>
+          </div>
         </el-form-item>
-        <el-form-item label="当价格不在此范围内时提醒我">
+        <el-form-item label="名称">
+          <div class="div-flex">
+            <el-switch v-model="edit.push" active-color="#13ce66"> </el-switch>
+          </div>
+        </el-form-item>
+        <el-form-item label="当价格不在此范围内时提醒我" v-if="edit.push">
           <div class="div-flex">
             <el-input
               size="mini"
@@ -99,7 +106,7 @@
 
     <!--编辑顺序界面-->
     <el-dialog
-      title="编辑App"
+      title="编辑股票"
       :visible.sync="stockSortEdit.visible"
       width="40%"
     >
@@ -122,6 +129,7 @@ import WidgetButton from "../common/WidgetButton.vue";
 
 const api = {
   get: "/stock/get",
+  add: "/stock/add",
   edit: "/stock/edit",
 };
 
@@ -159,9 +167,9 @@ export default {
         visible: false,
         index: Number,
         market: "1",
-        code: "000001",
+        code: "",
         min: 0,
-        max: 1,
+        max: 0,
       },
       stockSortEdit: {
         visible: false,
@@ -192,8 +200,32 @@ export default {
       this.edit.index = index;
       this.edit.visible = true;
     },
-    editSubmit() {
+    async stockSortEditSubmit() {},
+    async editSubmit() {
       if (this.edit.title == "增加股票") {
+        try {
+          const { data: res } = await axios.post(api.add, {
+            user_id: this.user_id,
+            code: this.edit.code,
+            name: this.edit.name,
+            market: this.edit.market,
+            push: this.edit.push ? 1 : 0,
+            threshold_max: this.edit.max,
+            threshold_min: this.edit.min,
+          });
+          this.$message({
+            message: res["msg"],
+            type: "success",
+          });
+          this.get();
+          this.edit.visible = false;
+        } catch (e) {
+          console.log(e);
+          this.$message({
+            message: e.response.data.msg,
+            type: "error",
+          });
+        }
       } else if (this.edit.title == "编辑股票") {
         let index = this.edit.index;
         this.stockSortEdit.list[index].market = this.edit.market;
@@ -202,7 +234,7 @@ export default {
         this.stockSortEdit.list[index].min = this.edit.min;
         this.stockSortEdit.list[index].max = this.edit.max;
         this.$message({
-          message: res["msg"],
+          message: "成功！",
           type: "success",
         });
         this.edit.visible = false;
@@ -239,6 +271,8 @@ export default {
         // 初始化股票推送阈值和市场code
         for (let x = 0; x < this.stockData.length; x++) {
           this.stockData[x].market = String(this.stockData[x].market);
+          this.stockData[x].push =
+            String(this.stockData[x].push) == "1" ? true : false;
           if (this.stockData[x] != null && this.stockData[x].length != 0) {
             this.stockData[x].min = this.stockData[x].push_threshold[0];
             this.stockData[x].max = this.stockData[x].push_threshold[1];

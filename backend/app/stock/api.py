@@ -32,7 +32,38 @@ def check_stock(Stock):
         return _[0]['id']
 
 
+@stock.route('/add', methods=['POST'])
+@permission_required(URL_PREFIX + '/add')
+def add():
+    try:
+        user_id = request.get_json()['user_id']
+        code = request.get_json()['code']
+        name = request.get_json()['name']
+        market = int(request.get_json()['market'])
+        push = int(request.get_json()['push'])
+        threshold_max = float(request.get_json()['threshold_max'])
+        threshold_min = float(request.get_json()['threshold_min'])
+
+        s = Stock(code=code, name=name, market=int(market))
+        stock_id = check_stock(s)
+        if stock_id == 0:
+            stock_id = s.create().id
+
+        if threshold_min >= threshold_max:
+            return rsp.failed('阈值最小值不能大于或等于阈值最大值'), 500
+        if user_id == 0:
+            return rsp.failed('无法为未登录用户设定阈值'), 500
+        threshold = [threshold_min, threshold_max]
+
+        StockBelong(stock_id=stock_id, user_id=user_id, push=push, push_threshold=threshold, is_valid=1, update_time=datetime.datetime.now()).create()
+        return rsp.success()
+    except Exception as e:
+        traceback.print_exc()
+        return rsp.failed(e), 500
+
+
 @stock.route('/get', methods=['POST'])
+@permission_required(URL_PREFIX + '/get')
 def get():
     try:
         user_id = request.get_json()['user_id']
@@ -59,6 +90,7 @@ def get():
 
 
 @stock.route('/edit', methods=['POST'])
+@permission_required(URL_PREFIX + '/edit')
 def edit():
     try:
         user_id = request.get_json()['user_id']
@@ -73,15 +105,13 @@ def edit():
 
             threshold_min = float(_['threshold_min'])
             threshold_max = float(_['threshold_max'])
-
             if threshold_min >= threshold_max:
                 return rsp.failed('阈值最小值不能大于或等于阈值最大值'), 500
             if user_id == 0:
                 return rsp.failed('无法为未登录用户设定阈值'), 500
-
             threshold = [threshold_min, threshold_max]
 
-            StockBelong(stock_id=stock_id, user_id=user_id, push_threshold=threshold, is_valid=1, update_time=datetime.datetime.now()).create()
+            StockBelong(stock_id=stock_id, user_id=user_id, push=_['push'], push_threshold=threshold, is_valid=1, update_time=datetime.datetime.now()).create()
         return rsp.success()
     except Exception as e:
         traceback.print_exc()

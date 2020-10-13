@@ -1,6 +1,6 @@
 <template>
   <div class="gold-main">
-    <el-main class="noPadding" style="height: 300px;">
+    <el-main class="noPadding" style="height: 300px">
       <el-row type="flex" justify="center">
         <div class="widget-label">黄金价格</div>
       </el-row>
@@ -12,7 +12,11 @@
         :legend-visible="false"
       ></ve-line>
     </el-main>
-    <el-footer height="31px" style="justify-content: center; display: flex;" v-if="user_id != 0">
+    <el-footer
+      height="31px"
+      style="justify-content: center; display: flex"
+      v-if="user_id != 0"
+    >
       <WidgetButton
         :user_id="user_id"
         :widget_id="widget_id"
@@ -25,21 +29,41 @@
     </el-footer>
 
     <el-dialog title="提醒" :visible.sync="notifyVisible" width="40%">
-      <PushEdit :user_id="user_id" :widget_id="widget_id" v-if="notifyVisible" @done="notify()"></PushEdit>
+      <PushEdit
+        :user_id="user_id"
+        :widget_id="widget_id"
+        v-if="notifyVisible"
+        @done="notify()"
+      ></PushEdit>
     </el-dialog>
 
     <!--编辑界面-->
-    <el-dialog title="修改提醒阈值" :visible.sync="settingForm.visible" width="40%">
+    <el-dialog
+      title="修改提醒阈值"
+      :visible.sync="settingForm.visible"
+      width="40%"
+    >
       <el-form ref="form" :model="settingForm" size="mini">
         <el-form-item label="当价格不在此范围内时提醒我">
           <div class="div-flex">
-            <el-input size="mini" v-model="settingForm.pushThresholdMin" placeholder="最小值"></el-input>~
-            <el-input size="mini" v-model="settingForm.pushThresholdMax" placeholder="最大值"></el-input>
+            <el-input
+              size="mini"
+              v-model="settingForm.pushThresholdMin"
+              placeholder="最小值"
+            ></el-input
+            >~
+            <el-input
+              size="mini"
+              v-model="settingForm.pushThresholdMax"
+              placeholder="最大值"
+            ></el-input>
           </div>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" size="small" @click="settingConfirm()">确定</el-button>
+        <el-button type="primary" size="small" @click="settingConfirm()"
+          >确定</el-button
+        >
       </span>
     </el-dialog>
   </div>
@@ -104,6 +128,7 @@ export default {
           message: res.msg,
           type: "success",
         });
+        this.goldPriceGet();
         this.settingForm.visible = false;
       } catch (e) {
         console.log(e);

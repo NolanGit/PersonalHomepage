@@ -363,7 +363,7 @@ export default {
         this.appSortEdit.list[index].url = this.edit.form.url;
         this.appSortEdit.list[index].expect_price = this.edit.form.expect_price;
         this.$message({
-          message: res["msg"],
+          message: "成功！",
           type: "success",
         });
         this.edit.chooseFormVisible = false;

@@ -45,15 +45,17 @@ class StockBelong(Base):
     id = 0
     stock_id = 0
     user_id = 0
+    push = 0
     push_threshold = None
     is_valid = 0
     update_time = None
 
-    def __init__(self, stock_id=0, user_id=0, push_threshold=None, is_valid=0, update_time=None, id=0):
+    def __init__(self, stock_id=0, user_id=0, push=0, push_threshold=None, is_valid=0, update_time=None, id=0):
         self.id = id
         if self.id == 0:
             self.stock_id = stock_id
             self.user_id = user_id
+            self.push = push
             self.push_threshold = push_threshold
             self.is_valid = is_valid
             self.update_time = update_time

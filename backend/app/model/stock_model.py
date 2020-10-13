@@ -25,6 +25,7 @@ class stock_price(BaseModel):
 class stock_belong(BaseModel):
     stock_id = IntegerField()
     user_id = IntegerField()
+    push = IntegerField()
     push_threshold = CharField()
     is_valid = IntegerField()
     update_time = DateTimeField()
