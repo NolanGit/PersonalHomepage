@@ -1,7 +1,15 @@
 <template>
   <div class="stock-main">
     <el-main class="noPadding" style="height: 300px">
-      <el-carousel
+      <el-tabs v-model="activeName" @tab-click="handleClick">
+        <el-tab-pane
+          v-for="data in stockData"
+          :key="data"
+          :label="data.name"
+          :name="data.name"
+        ></el-tab-pane>
+      </el-tabs>
+      <!-- <el-carousel
         style="height: 50px"
         trigger="click"
         :autoplay="true"
@@ -14,7 +22,7 @@
             <div class="widget-label">{{ data.name }}</div>
           </el-row>
         </el-carousel-item>
-      </el-carousel>
+      </el-carousel> -->
       <ve-line
         height="230px"
         :settings="chartSettings"
