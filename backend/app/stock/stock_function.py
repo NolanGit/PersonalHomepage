@@ -88,7 +88,7 @@ def check_time(market):
 
     if market == 1 or market == 2:
         if current_week != 5 and current_week != 6:  # 非周六周日
-            if 9.30 < current_time < 11.30 or 13 < current_time < 15:  # 国内开盘时间
+            if 9.25 < current_time < 11.35 or 12.55 < current_time < 15.05:  # 囊括国内开盘时间
                 return True
     return False
 

@@ -43,11 +43,7 @@
     </el-dialog>
 
     <!--编辑界面-->
-    <el-dialog
-      :title="edit.chooseFormTitle"
-      :visible.sync="edit.chooseFormVisible"
-      width="40%"
-    >
+    <el-dialog :title="edit.title" :visible.sync="edit.visible" width="40%">
       <el-form ref="form" :model="edit.form" size="mini">
         <el-form-item label="市场">
           <div class="div-flex">
@@ -150,10 +146,10 @@ export default {
       chartData: {},
       activeName: "",
       notifyVisible: false,
-      settingForm: {
-        visible: false,
-      },
       edit: {
+        title: "",
+        visible: false,
+        index: Number,
         market: "1",
         code: "000001",
         min: 0,
@@ -166,6 +162,10 @@ export default {
     };
   },
   methods: {
+    add() {
+      this.edit.title = "增加股票";
+      this.edit.visible = true;
+    },
     notify() {
       this.notifyVisible = true;
     },
@@ -173,9 +173,33 @@ export default {
       this.stockSortEdit.visible = true;
       this.stockSortEdit.list = deepClone(this.stockData);
     },
+    stockSortEditSetting(item, index) {
+      console.log(item);
+      this.edit.title = "编辑股票";
+      this.edit.market = item.market;
+      this.edit.code = item.code;
+      this.edit.min = item.min;
+      this.edit.max = item.max;
+      this.edit.index = index;
+      this.edit.visible = true;
+    },
+    editSubmit() {
+      if (this.edit.title == "增加股票") {
+      } else if (this.edit.title == "编辑股票") {
+        let index = this.edit.index;
+        this.stockSortEdit.list[index].market = this.edit.market;
+        this.stockSortEdit.list[index].code = this.edit.code;
+        this.stockSortEdit.list[index].min = this.edit.min;
+        this.stockSortEdit.list[index].max = this.edit.max;
+        this.$message({
+          message: res["msg"],
+          type: "success",
+        });
+        this.edit.visible = false;
+      }
+    },
     check() {},
     activeTabChanged(newVal) {
-      console.log(newVal);
       for (let x = 0; x < this.stockData.length; x++) {
         if (this.stockData[x].name == newVal) {
           var temp = [];
@@ -239,12 +263,12 @@ export default {
           break;
         }
       }
-      this.switchTimer = window.setTimeout(this.autoSwitch, 5000);
+      this.switchTimer = window.setTimeout(this.autoSwitch, 10000);
     },
   },
   mounted() {
     this.get();
-    this.switchTimer = window.setTimeout(this.autoSwitch, 5000);
+    this.switchTimer = window.setTimeout(this.autoSwitch, 10000);
     this.timer = window.setInterval(this.get, this.flush);
   },
   beforeDestroy() {
