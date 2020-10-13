@@ -13,10 +13,10 @@
             <div class="widget-label">{{ stockData[index].name }}</div>
           </el-row>
           <ve-line
-            height="250px"
+            height="240px"
             :settings="chartSettings"
             :data="data"
-            ref="chart0"
+            ref="chart"
             :legend-visible="false"
           ></ve-line>
         </el-carousel-item>
@@ -195,11 +195,11 @@ export default {
             rows: temp,
           });
         }
-        // this.$nextTick((_) => {
-        //   for (let x = 0; x < this.stockData.length; x++) {
-        //     this.$refs[`chart${x}`].echarts.resize();
-        //   }
-        // });
+        this.$nextTick((_) => {
+          for (let x = 0; x < this.stockData.length; x++) {
+            this.$refs[`chart`].echarts.resize();
+          }
+        });
         this.$emit("done");
       } catch (e) {
         console.log(e);
