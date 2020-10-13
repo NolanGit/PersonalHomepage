@@ -7,20 +7,21 @@
         :autoplay="true"
         :interval="5000"
         indicator-position="outside"
+        @change="carouselChanged()"
       >
         <el-carousel-item v-for="(data, index) in chartData" :key="data">
           <el-row type="flex" justify="center">
             <div class="widget-label">{{ stockData[index].name }}</div>
           </el-row>
         </el-carousel-item>
-        <ve-line
-          height="240px"
-          :settings="chartSettings"
-          :data="chartData[0]"
-          ref="chart"
-          :legend-visible="false"
-        ></ve-line>
       </el-carousel>
+      <ve-line
+        height="230px"
+        :settings="chartSettings"
+        :data="chartData[0]"
+        ref="chart"
+        :legend-visible="false"
+      ></ve-line>
     </el-main>
     <el-footer
       height="31px"
@@ -148,7 +149,7 @@ export default {
     };
     return {
       stockData: [],
-      chartData: [],
+      chartData: {},
       notifyVisible: false,
       settingForm: {
         visible: false,
@@ -174,27 +175,39 @@ export default {
       this.stockSortEdit.list = deepClone(this.stockData);
     },
     check() {},
+    carouselChanged(newVal, oldVal) {
+      var temp = [];
+      for (let y = 0; y < res.data[newVal].price_list.length; y++) {
+        temp.push({
+          时间: res.data[newVal].price_list[y]["update_time"],
+          价格: res.data[newVal].price_list[y]["price"],
+        });
+      }
+      this.chartData = {
+        columns: ["时间", "价格"],
+        rows: temp,
+      };
+    },
     async get() {
       try {
         const { data: res } = await axios.post(api.get, {
           user_id: this.user_id,
         });
         this.stockData = res.data;
-
         this.chartData = [];
-        for (let x = 0; x < res.data.length; x++) {
-          var temp = [];
-          for (let y = 0; y < res.data[x].price_list.length; y++) {
-            temp.push({
-              时间: res.data[x].price_list[y]["update_time"],
-              价格: res.data[x].price_list[y]["price"],
-            });
-          }
-          this.chartData.push({
-            columns: ["时间", "价格"],
-            rows: temp,
+
+        var temp = [];
+        for (let y = 0; y < res.data[0].price_list.length; y++) {
+          temp.push({
+            时间: res.data[0].price_list[y]["update_time"],
+            价格: res.data[0].price_list[y]["price"],
           });
         }
+        this.chartData = {
+          columns: ["时间", "价格"],
+          rows: temp,
+        };
+
         this.$nextTick((_) => {
           for (let x = 0; x < this.stockData.length; x++) {
             this.$refs[`chart`].echarts.resize();
