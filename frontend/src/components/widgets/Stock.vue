@@ -67,6 +67,13 @@
             >
           </div>
         </el-form-item>
+        <el-form-item label="市场">
+          <el-input
+            size="small"
+            v-model="edit.name"
+            placeholder="名称"
+          ></el-input>
+        </el-form-item>
         <el-form-item label="当价格不在此范围内时提醒我">
           <div class="div-flex">
             <el-input
@@ -148,6 +155,7 @@ export default {
       notifyVisible: false,
       edit: {
         title: "",
+        name: "",
         visible: false,
         index: Number,
         market: "1",
@@ -178,6 +186,7 @@ export default {
       this.edit.title = "编辑股票";
       this.edit.market = item.market;
       this.edit.code = item.code;
+      this.edit.name = item.name;
       this.edit.min = item.min;
       this.edit.max = item.max;
       this.edit.index = index;
@@ -189,6 +198,7 @@ export default {
         let index = this.edit.index;
         this.stockSortEdit.list[index].market = this.edit.market;
         this.stockSortEdit.list[index].code = this.edit.code;
+        this.stockSortEdit.list[index].name = this.edit.name;
         this.stockSortEdit.list[index].min = this.edit.min;
         this.stockSortEdit.list[index].max = this.edit.max;
         this.$message({

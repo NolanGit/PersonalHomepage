@@ -24,6 +24,14 @@ rsp = MyResponse()
 URL_PREFIX = '/stock'
 
 
+def check_stock(Stock):
+    _ = stock_table.select().where((stock_table.market == Stock.market) & (stock_table.code == Stock.code)).dicts()
+    if len(_) == 0:
+        return 0
+    else:
+        return _[0]['id']
+
+
 @stock.route('/get', methods=['POST'])
 def get():
     try:
@@ -58,7 +66,22 @@ def edit():
 
         stock_belong.update(is_valid=0, update_time=datetime.datetime.now()).where(stock_belong.user_id == user_id).execute()
         for _ in stocks:
-            Stock(code=_['code'], name=_['name']).create()
+            s = Stock(code=_['code'], name=_['name'], market=int(_['market']))
+            stock_id = check_stock(s)
+            if stock_id == 0:
+                stock_id = s.create().id
+
+            threshold_min = float(_['threshold_min'])
+            threshold_max = float(_['threshold_max'])
+
+            if threshold_min >= threshold_max:
+                return rsp.failed('阈值最小值不能大于或等于阈值最大值'), 500
+            if user_id == 0:
+                return rsp.failed('无法为未登录用户设定阈值'), 500
+
+            threshold = [threshold_min, threshold_max]
+
+            StockBelong(stock_id=stock_id, user_id=user_id, push_threshold=threshold, is_valid=1, update_time=datetime.datetime.now()).create()
         return rsp.success()
     except Exception as e:
         traceback.print_exc()
