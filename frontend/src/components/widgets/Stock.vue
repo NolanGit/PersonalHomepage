@@ -190,8 +190,8 @@ export default {
           });
         }
         this.$nextTick((_) => {
-          for ((stock, index) in this.stockData) {
-            this.$refs[`chart` + index].echarts.resize();
+          for (let x = 0; x < this.stockData.length; x++) {
+            this.$refs[`chart` + x].echarts.resize();
           }
         });
         this.$emit("done");
