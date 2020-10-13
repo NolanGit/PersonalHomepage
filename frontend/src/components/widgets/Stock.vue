@@ -229,6 +229,7 @@ export default {
       }
     },
     autoSwitch() {
+      window.clearInterval(this.switchTimer);
       for (let x = 0; x < this.stockData.length; x++) {
         if (this.stockData[x].name == this.activeName) {
           if (x == this.stockData.length) {
@@ -237,11 +238,12 @@ export default {
           this.activeName = this.stockData[x + 1].name;
         }
       }
-      this.switchTimer = window.setInterval(this.autoSwitch, 5000);
+      this.switchTimer = window.setTimeout(this.autoSwitch, 5000);
     },
   },
   mounted() {
     this.get();
+    this.switchTimer = window.setTimeout(this.autoSwitch, 5000);
     this.timer = window.setInterval(this.get, this.flush);
   },
   beforeDestroy() {
