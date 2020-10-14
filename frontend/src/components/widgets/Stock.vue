@@ -50,7 +50,7 @@
       @close="editFormClose()"
     >
       <el-form ref="form" :model="edit.form" size="mini">
-        <el-form-item label="市场">
+        <el-form-item label="代码">
           <div class="div-flex">
             <el-select
               v-model="edit.market"
@@ -83,12 +83,7 @@
         </el-form-item>
         <el-form-item label="推送">
           <div class="div-flex">
-            <el-switch
-              style="margin-top: 3px"
-              v-model="edit.push"
-              active-color="#13ce66"
-            >
-            </el-switch>
+            <el-switch style="margin-top: 3px" v-model="edit.push"> </el-switch>
           </div>
         </el-form-item>
         <el-form-item label="当价格不在此范围内时提醒我" v-if="edit.push">
@@ -179,6 +174,7 @@ export default {
         index: Number,
         market: "1",
         code: "",
+        push: false,
         min: 0,
         max: 0,
       },
