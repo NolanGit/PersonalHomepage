@@ -119,9 +119,9 @@ def edit():
                 stock_id = s.create().id
 
             push = int(_['push'])
-            threshold_min = float(_['threshold_min'])
-            threshold_max = float(_['threshold_max'])
             if push == 1:
+                threshold_min = float(_['threshold_min'])
+                threshold_max = float(_['threshold_max'])
                 if threshold_min >= threshold_max:
                     return rsp.failed('阈值最小值不能大于或等于阈值最大值'), 500
                 if user_id == 0:

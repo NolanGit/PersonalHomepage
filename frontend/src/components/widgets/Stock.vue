@@ -285,7 +285,21 @@ export default {
         this.edit.visible = false;
       }
     },
+    // 检查是否合法
     async check() {
+
+      // 美股code应为小写
+      if (this.edit.market == 4) {
+        let temp = this.edit.code.search(/(([A-Z]([^A-Z]*)?))/g);
+        if (temp != -1) {
+          this.$message({
+            message: "美股代码需为小写字母，已自动修改",
+            type: "info",
+          });
+          this.edit.code = this.edit.code.toLowerCase();
+        }
+      }
+
       try {
         const { data: res } = await axios.post(api.check, {
           code: this.edit.code,
