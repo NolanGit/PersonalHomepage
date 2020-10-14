@@ -128,7 +128,7 @@ def stock_push_generator():
         stock_list = stock_belong.select().where((stock_belong.user_id == stock_push_data.user_id) & (stock_belong.is_valid == 1) & (stock_belong.push == 1)).dicts()
         for stock in stock_list:
             query = stock_price.select().where(stock_price.stock_id == stock['stock_id']).order_by(-stock_price.id).limit(1).dicts()
-            current_price, update_time = query[0]['price'], query[0]['update_time']
+            current_price, update_time = query[0]['price'], query[0]['update_time'].strftime("%m-%d %H:%M")
             threshold_min = float(eval(stock['push_threshold'])[0])
             threshold_max = float(eval(stock['push_threshold'])[1])
             if (float(current_price) < threshold_min) or (float(current_price) > threshold_max):
