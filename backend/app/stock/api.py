@@ -91,7 +91,7 @@ def get():
             if user_id != user_id_in_redis:
                 return rsp.failed('无权访问'), 403
 
-        stock_belong_query = stock_belong.select().where(stock_belong.user_id == user_id).dicts()
+        stock_belong_query = stock_belong.select().where((stock_belong.user_id == user_id) & (stock_belong.is_valid == 1)).dicts()
         result = [cf.attr_to_dict(Stock(id=_['stock_id']).complete().get_price(50)) for _ in stock_belong_query]
 
         for x in range(len(result)):

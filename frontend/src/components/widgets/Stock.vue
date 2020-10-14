@@ -237,7 +237,7 @@ export default {
           type: "success",
         });
         this.get();
-        this.edit.visible = false;
+        this.stockSortEdit.visible = false;
       } catch (e) {
         console.log(e);
         this.$message({
@@ -287,7 +287,6 @@ export default {
     },
     // 检查是否合法
     async check() {
-
       // 美股code应为小写
       if (this.edit.market == 4) {
         let temp = this.edit.code.search(/(([A-Z]([^A-Z]*)?))/g);
