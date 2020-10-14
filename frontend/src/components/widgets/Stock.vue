@@ -202,6 +202,7 @@ export default {
       this.edit.market = item.market;
       this.edit.code = item.code;
       this.edit.name = item.name;
+      this.edit.push = item.push;
       this.edit.min = item.min;
       this.edit.max = item.max;
       this.edit.index = index;
