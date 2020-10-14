@@ -273,12 +273,9 @@ export default {
         this.stockSortEdit.list[index].market = this.edit.market;
         this.stockSortEdit.list[index].code = this.edit.code;
         this.stockSortEdit.list[index].name = this.edit.name;
+        this.stockSortEdit.list[index].push = this.edit.push;
         this.stockSortEdit.list[index].min = this.edit.min;
         this.stockSortEdit.list[index].max = this.edit.max;
-        this.$message({
-          message: "成功！",
-          type: "success",
-        });
         this.edit.visible = false;
       }
     },
@@ -351,9 +348,7 @@ export default {
         // 初始化股票推送阈值和市场code
         for (let x = 0; x < this.stockData.length; x++) {
           this.stockData[x].market = String(this.stockData[x].market);
-          console.log(this.stockData[x].push);
           this.stockData[x].push = this.stockData[x].push == 1 ? true : false;
-          console.log(this.stockData[x].push);
           if (this.stockData[x] != null && this.stockData[x].length != 0) {
             this.stockData[x].min = this.stockData[x].push_threshold[0];
             this.stockData[x].max = this.stockData[x].push_threshold[1];
