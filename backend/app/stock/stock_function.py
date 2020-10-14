@@ -8,7 +8,6 @@ sys.path.append('../')
 sys.path.append('../..')
 
 from common_func import CommonFunc
-from push.push_function import PushList, PushData
 
 from model.widget_model import widget
 
@@ -145,6 +144,7 @@ def stock_push_generator():
 
 
 if __name__ == '__main__':
+    from push.push_function import PushList, PushData
     valid_stock_list = get_valid_stock()
     threads = []
     for x in range(len(valid_stock_list)):
