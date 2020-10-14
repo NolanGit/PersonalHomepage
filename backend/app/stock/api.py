@@ -17,6 +17,7 @@ from . import stock
 from .stock_model import Stock, StockBelong
 from ..model.stock_model import stock as stock_table
 from ..model.stock_model import stock_price, stock_belong
+from .stock_function import check_stock_valid
 
 cf = CommonFunc()
 rsp = MyResponse()
@@ -24,7 +25,7 @@ rsp = MyResponse()
 URL_PREFIX = '/stock'
 
 
-def check_stock(Stock):
+def check_stock_exist(Stock):
     _ = stock_table.select().where((stock_table.market == Stock.market) & (stock_table.name == Stock.name) & (stock_table.code == Stock.code)).dicts()
     if len(_) == 0:
         return 0
@@ -45,7 +46,7 @@ def add():
         threshold_min = float(request.get_json()['threshold_min'])
 
         s = Stock(code=code, name=name, market=int(market))
-        stock_id = check_stock(s)
+        stock_id = check_stock_exist(s)
         if stock_id == 0:
             stock_id = s.create().id
 
@@ -58,6 +59,19 @@ def add():
 
         StockBelong(stock_id=stock_id, user_id=user_id, push=push, push_threshold=threshold, is_valid=1, update_time=datetime.datetime.now()).create()
         return rsp.success()
+    except Exception as e:
+        traceback.print_exc()
+        return rsp.failed(e), 500
+
+
+@stock.route('/check', methods=['POST'])
+@permission_required(URL_PREFIX + '/check')
+def check():
+    try:
+        code = request.get_json()['code']
+        market = int(request.get_json()['market'])
+        name, msg = check_stock_valid(code, market)
+        return rsp.success({'name': name, 'msg': msg})
     except Exception as e:
         traceback.print_exc()
         return rsp.failed(e), 500
@@ -100,7 +114,7 @@ def edit():
         stock_belong.update(is_valid=0, update_time=datetime.datetime.now()).where(stock_belong.user_id == user_id).execute()
         for _ in stocks:
             s = Stock(code=_['code'], name=_['name'], market=int(_['market']))
-            stock_id = check_stock(s)
+            stock_id = check_stock_exist(s)
             if stock_id == 0:
                 stock_id = s.create().id
 

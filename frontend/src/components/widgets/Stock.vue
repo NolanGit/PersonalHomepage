@@ -140,6 +140,7 @@ import WidgetButton from "../common/WidgetButton.vue";
 const api = {
   get: "/stock/get",
   add: "/stock/add",
+  check: "/stock/check",
   edit: "/stock/edit",
 };
 
@@ -284,7 +285,32 @@ export default {
         this.edit.visible = false;
       }
     },
-    check() {},
+    async check() {
+      try {
+        const { data: res } = await axios.post(api.check, {
+          code: this.edit.code,
+          market: this.edit.market,
+        });
+        if (res.data.name != "") {
+          this.edit.name = res.data.name;
+          this.$message({
+            message: "校验成功!",
+            type: "success",
+          });
+        } else {
+          this.$message({
+            message: "校验失败，请检查参数或联系管理员！",
+            type: "error",
+          });
+        }
+      } catch (e) {
+        console.log(e);
+        this.$message({
+          message: e.response.data.msg,
+          type: "error",
+        });
+      }
+    },
     activeTabChanged(newVal) {
       // 当触发的tab变化时，更新图表
       for (let x = 0; x < this.stockData.length; x++) {

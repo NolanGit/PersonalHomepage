@@ -43,6 +43,26 @@ def get_valid_stock():
     return valid_stock_list
 
 
+def check_stock_valid(stock_code, market):
+    name = ''
+    msg = ''
+    try:
+        code_text = stock_code + '.' + MARKET_TEXT[market - 1]
+        code_url = MARKET_PREFIX[market - 1] + str(stock_code)
+
+        print('正在获取[' + code_text + ']的价格...')
+        r = requests.get('http://hq.sinajs.cn/list=' + code_url)
+        splited_text = r.text.split('\"')[1].split(',')
+        if market == 1 or market == 2 or market == 4:
+            name = str(splited_text[0])
+        if market == 3:
+            name = str(splited_text[1])
+        msg = '[原始数据:%s]' % r.text
+    except Exception as e:
+        msg = e + '[原始数据:%s]' % r.text
+    return name, msg
+
+
 def get_stock_price(stock_id, stock_code, market):
     # http://hq.sinajs.cn/list=sh000001             上证指数
     # http://hq.sinajs.cn/list=sz399001             深证成指
