@@ -120,8 +120,8 @@ def edit():
 
             push = int(_['push'])
             if push == 1:
-                threshold_min = float(_['threshold_min'])
-                threshold_max = float(_['threshold_max'])
+                threshold_min = float(_['min'])
+                threshold_max = float(_['max'])
                 if threshold_min >= threshold_max:
                     return rsp.failed('阈值最小值不能大于或等于阈值最大值'), 500
                 if user_id == 0:
