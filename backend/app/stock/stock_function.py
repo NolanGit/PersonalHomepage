@@ -8,6 +8,9 @@ sys.path.append('../')
 sys.path.append('../..')
 
 from common_func import CommonFunc
+from push.push_function import PushList, PushData
+
+from model.widget_model import widget
 
 from model.stock_model import stock as stock_table
 from model.stock_model import stock_price, stock_belong
@@ -20,6 +23,7 @@ CODE_HK: 3
 CODE_US: 4
 MARKET_PREFIX = ['sh', 'sz', 'hk', 'gb_']  # 顺序与上方code严格对应
 MARKET_TEXT = ['SH', 'SZ', 'HK', 'US']  # 顺序与上方code严格对应
+WIDGET_ID_STOCK = widget.get(widget.name == 'app').id
 
 data_source = []
 
@@ -113,6 +117,33 @@ def check_time(market):
     return False
 
 
+def stock_push_generator():
+    '''
+        首先获取所有需要推送数据，然后去价格表查最新的一条，将要推送的数据写入队列
+    '''
+    stock_push_data_list = PushList(widget_id=WIDGET_ID_STOCK).push_list_get(is_need_2_push=True).push_list
+    print('有%s条数据到达推送时间，需要检测是否满足推送条件' % str(len(stock_push_data_list)))
+    for stock_push_data in stock_push_data_list:
+
+        content = ''
+        stock_list = stock_belong.select().where((stock_belong.user_id == stock_push_data.user_id) & (stock_belong.is_valid == 1) & (stock_belong.push == 1)).dicts
+        for stock in stock_list:
+            query = stock_price.select().where(stock_price.stock_id == stock['stock_id']).order_by(-stock_price.id).limit(1)
+            current_price, update_time = query[0]['price'], query[0]['update_time']
+            threshold_min = float(eval(stock['push_threshold'])[0])
+            threshold_max = float(eval(stock['push_threshold'])[1])
+            if (float(current_price) < threshold_min) or (float(current_price) > threshold_max):
+                content = content + '\n' + '[' + stock_table.get_by_id(stock['stock_id']).name + ']' + ' is ' + str(current_price) + ' now !(' + update_time + ')' + '\n'
+        if content != '':
+            title = '%s 的价格超过阈值!' % stock_table.get_by_id(stock['stock_id']).name
+            if (stock_push_data.add_to_push_queue(title, content)):
+                print('已加入队列.')
+                if (stock_push_data.generate_next()):
+                    stock_push_data.delete()
+        else:
+            print('不满足推送条件')
+
+
 if __name__ == '__main__':
     valid_stock_list = get_valid_stock()
     threads = []
@@ -125,3 +156,4 @@ if __name__ == '__main__':
 
     field = [stock_price.stock_id, stock_price.price, stock_price.update_time]
     stock_price.insert_many(data_source, field).execute()
+    stock_push_generator()

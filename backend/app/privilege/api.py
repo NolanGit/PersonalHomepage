@@ -104,7 +104,6 @@ def userRoleChange():
     except Exception as e:
         traceback.print_exc()
         return rsp.failed(e), 500
-        
 
 
 # 用户删除
@@ -171,7 +170,7 @@ def rolePrivilegeEdit():
             data_source.append((single_checked_privilege_id, role_id, 1))
         field = [privilege_role.privilege_id, privilege_role.role_id, privilege_role.is_valid]
         privilege_role.insert_many(data_source, field).execute()
-        
+
         pf.flush_role_privilege_to_redis(role_id)
         return rsp.success()
     except Exception as e:
@@ -316,6 +315,7 @@ def privilegeDelete():
         privilege_status = privilege_model.get(privilege_model.id == privilege_id).is_valid
         if privilege_status == 0:
             privilege_model.update(is_valid=-1, update_time=datetime.datetime.now()).where(privilege_model.id == privilege_id).execute()
+            privilege_role.update(is_valid=-1, update_time=datetime.datetime.now()).where(privilege_role.privilege_id == privilege_id).execute()
             pf.flush_privilege_which_belongs_to_role_with_target_privilege_to_redis(privilege_id)
             return rsp.success()
         else:

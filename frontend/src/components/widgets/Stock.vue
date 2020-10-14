@@ -216,6 +216,7 @@ export default {
         index: Number,
         market: "1",
         code: "",
+        push: false,
         min: 0,
         max: 0,
       };
