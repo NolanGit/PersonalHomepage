@@ -56,8 +56,9 @@
 - 小组件-便签（支持定时发送便签内容到微信或邮箱）
 - 小组件-翻译
 - 小组件-必应壁纸
+- 小组件-股票（支持设置触发阈值后推送微信或发送邮件）
 ### Working on:
-- 小组件-股票
+- 优化代码
 ### To Do
 - 小组件-基金
 - 小组件-新闻
@@ -272,6 +273,16 @@
 功能：系统使用「脚本运行平台」驱动脚本来每天爬取一张必应壁纸，小组件上则滚动展示7天内的壁纸，点击图片可以下载原图。
 
 ![image](https://user-images.githubusercontent.com/27627484/94260304-8024e180-ff62-11ea-860a-2e27b7827d8c.png)
+
+### 小组件-股票
+
+入口：主页小组件
+
+功能：爬取沪深股市、港股、美股股票数据，并可以设置超过阈值后提醒功能
+
+![image](https://user-images.githubusercontent.com/27627484/96364713-904d6c80-116e-11eb-87de-0da8db8e6142.png)
+
+![image](https://user-images.githubusercontent.com/27627484/96364803-ffc35c00-116e-11eb-97be-d2d2c6ebd2dd.png)
 
 ## License
 
