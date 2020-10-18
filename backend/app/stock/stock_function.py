@@ -22,7 +22,7 @@ CODE_HK: 3
 CODE_US: 4
 MARKET_PREFIX = ['sh', 'sz', 'hk', 'gb_']  # 顺序与上方code严格对应
 MARKET_TEXT = ['SH', 'SZ', 'HK', 'US']  # 顺序与上方code严格对应
-WIDGET_ID_STOCK = widget.get(widget.name == 'app').id
+WIDGET_ID_STOCK = widget.get(widget.name == 'stock').id
 
 data_source = []
 
@@ -110,7 +110,7 @@ def check_time(market):
     current_week = int(time.strftime('%w', time.localtime(time.time())))
 
     if market == 1 or market == 2:
-        if current_week != 5 and current_week != 6:  # 非周六周日
+        if current_week != 6 and current_week != 0:  # 非周六周日
             if 9.25 < current_time < 11.35 or 12.55 < current_time < 15.05:  # 囊括国内开盘时间
                 return True
     return False
