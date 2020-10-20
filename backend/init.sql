@@ -481,10 +481,10 @@ INSERT INTO `widget` (`id`, `name`, `name_zh`, `is_valid`, `span`, `buttons`, `a
 INSERT INTO `widget` (`id`, `name`, `name_zh`, `is_valid`, `span`, `buttons`, `auto_update`, `update_time`) VALUES ('6', 'translator', '翻译', '1', '8', '[]', '0', '2019-10-28 11:35:37');
 INSERT INTO `widget` (`id`, `name`, `name_zh`, `is_valid`, `span`, `buttons`, `auto_update`, `update_time`) VALUES ('7', 'wallpapers', '必应壁纸', '1', '8', '[]', '0', '2019-10-28 11:35:37');
 INSERT INTO `widget` (`id`, `name`, `name_zh`, `is_valid`, `span`, `buttons`, `auto_update`, `update_time`) VALUES ('8', 'stock', '股票', '1', '8', '[\'add\', \'sort\', \'notify\']', '1800000', '2019-10-28 11:35:37');
-INSERT INTO `widget_suite` (`id`, `name`, `user_id`, `order`, `is_valid`, `detail`, `update_time`) VALUES ('1', '基本组件', '0', '1', '1', '[1,2,4]', '2019-10-28 11:35:37');
+INSERT INTO `widget_suite` (`id`, `name`, `user_id`, `order`, `is_valid`, `detail`, `update_time`) VALUES ('1', '基本组件', '0', '1', '1', '[1,2,7,4,8]', '2019-10-28 11:35:37');
 INSERT INTO `widget_suite` (`id`, `name`, `user_id`, `order`, `is_valid`, `detail`, `update_time`) VALUES ('2', '常用', '1', '0', '1', '[1,2,6]', '2019-10-28 11:35:37');
 INSERT INTO `widget_suite` (`id`, `name`, `user_id`, `order`, `is_valid`, `detail`, `update_time`) VALUES ('3', '其他', '1', '1', '1', '[3,4,5,7]', '2019-10-28 11:35:37');
-INSERT INTO `widget_suite` (`id`, `name`, `user_id`, `order`, `is_valid`, `detail`, `update_time`) VALUES ('4', '全部', '1', '2', '1', '[1,2,3,4,5,6,7]', '2019-10-28 11:35:37');
+INSERT INTO `widget_suite` (`id`, `name`, `user_id`, `order`, `is_valid`, `detail`, `update_time`) VALUES ('4', '全部', '1', '2', '1', '[1,2,3,4,5,6,7,8]', '2019-10-28 11:35:37');
 INSERT INTO `script_sub_system` (`id`, `name`, `user_id`, `is_valid`, `update_time`) VALUES ('1', '定时任务', '1', '1', '2020-06-17 11:44:00');
 INSERT INTO `script_sub_system` (`id`, `name`, `user_id`, `is_valid`, `update_time`) VALUES ('2', '小工具', '1', '1', '2020-07-21 23:30:49');
 INSERT INTO `script` (`id`, `name`, `sub_system_id`, `start_folder`, `start_script`, `type`, `runs`, `is_valid`, `version`, `user`, `update_time`) VALUES ('1', '推送', '1', '/home/pi/Documents/Github/PersonalHomepage/backend/app/push', 'python3 push_function.py', '1', '4', '1', '1', '管理员', '2020-06-17 16:27:03');
