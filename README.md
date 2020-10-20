@@ -278,7 +278,7 @@
 
 入口：主页小组件
 
-功能：爬取沪深股市、港股、美股股票数据，并可以设置超过阈值后提醒功能
+功能：爬取沪深股市、港股、美股股票数据，并可以设置超过阈值后提醒功能。
 
 ![image](https://user-images.githubusercontent.com/27627484/96364713-904d6c80-116e-11eb-87de-0da8db8e6142.png)
 
@@ -288,3 +288,6 @@
 
 [MPL-2.0](https://opensource.org/licenses/MPL-2.0)
 
+## 联系方式
+
+📧邮箱：shr1213@live.com

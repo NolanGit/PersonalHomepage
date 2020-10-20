@@ -22,7 +22,6 @@ CODE_HK: 3
 CODE_US: 4
 MARKET_PREFIX = ['sh', 'sz', 'hk', 'gb_']  # 顺序与上方code严格对应
 MARKET_TEXT = ['SH', 'SZ', 'HK', 'US']  # 顺序与上方code严格对应
-WIDGET_ID_STOCK = widget.get(widget.name == 'stock').id
 
 data_source = []
 
@@ -120,6 +119,7 @@ def stock_push_generator():
     '''
         首先获取所有需要推送数据，然后去价格表查最新的一条，将要推送的数据写入队列
     '''
+    WIDGET_ID_STOCK = widget.get(widget.name == 'stock').id
     stock_push_data_list = PushList(widget_id=WIDGET_ID_STOCK).push_list_get(is_need_2_push=True).push_list
     print('有%s条数据到达推送时间，需要检测是否满足推送条件' % str(len(stock_push_data_list)))
     for stock_push_data in stock_push_data_list:

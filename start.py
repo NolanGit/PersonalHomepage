@@ -31,10 +31,9 @@ def executeScriptsFromFile(filename, db):
     sqlFile = fd.read()
     fd.close()
     sqlCommands = sqlFile.split(';')
+    del sqlCommands[-1]
 
     for command in sqlCommands:
-        if len(command) == 0:
-            continue
         try:
             print(command)
             cursor.execute(command)
