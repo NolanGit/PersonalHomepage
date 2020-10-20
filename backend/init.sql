@@ -20,9 +20,9 @@ INSERT INTO `bookmarks` (`id`, `name`, `url`, `icon`, `order`, `user_id`, `is_va
 INSERT INTO `bookmarks` (`id`, `name`, `url`, `icon`, `order`, `user_id`, `is_valid`, `update_time`) VALUES (18, '知乎', 'https://www.zhihu.com', 'iconfont icon-ai-book', 4, 1, 1, '2019-12-30 10:49:32.869960');
 INSERT INTO `bookmarks` (`id`, `name`, `url`, `icon`, `order`, `user_id`, `is_valid`, `update_time`) VALUES (19, '地图', 'https://map.baidu.com/', 'iconfont icon-ditu', 5, 1, 1, '2019-12-30 10:49:32.927004');
 INSERT INTO `bookmarks` (`id`, `name`, `url`, `icon`, `order`, `user_id`, `is_valid`, `update_time`) VALUES (20, '京东', 'https://jd.com', 'iconfont icon-31gouwuchexuanzhong', 6, 1, 1, '2019-12-30 10:49:32.982482');
-INSERT INTO `console` (`id`, `name`, `order`, `icon`, `component_name`, `is_valid`, `update_time`) VALUES ('1', '运行脚本', '1', 'iconfont icon-ai-code', 'Script', '1', '2019-10-28 11:35:37');
+INSERT INTO `console` (`id`, `name`, `order`, `icon`, `component_name`, `is_valid`, `update_time`) VALUES ('1', '修改主页组件', '1', 'iconfont icon-ai-edit', 'widgetEdit', '1', '2019-10-28 11:35:37');
 INSERT INTO `console` (`id`, `name`, `order`, `icon`, `component_name`, `is_valid`, `update_time`) VALUES ('2', '账户和权限', '2', 'iconfont icon-ai-user', 'Privilege', '1', '2019-10-28 11:35:37');
-INSERT INTO `console` (`id`, `name`, `order`, `icon`, `component_name`, `is_valid`, `update_time`) VALUES ('3', '修改主页组件', '0', 'iconfont icon-ai-edit', 'widgetEdit', '1', '2019-10-28 11:35:37');
+INSERT INTO `console` (`id`, `name`, `order`, `icon`, `component_name`, `is_valid`, `update_time`) VALUES ('3', '运行脚本', '3', 'iconfont icon-ai-code', 'Script', '1', '2019-10-28 11:35:37');
 INSERT INTO `icon` (`id`, `name`) VALUES (1, 'iconfont icon-bug-report');
 INSERT INTO `icon` (`id`, `name`) VALUES (2, 'iconfont icon-card-giftcard');
 INSERT INTO `icon` (`id`, `name`) VALUES (3, 'iconfont icon-explore');
