@@ -9,13 +9,20 @@
           :name="data.name"
         ></el-tab-pane>
       </el-tabs>
-      <div v-show="chartData.rows.length == 0">暂无数据</div>
+      <a
+        class="better_font_style"
+        style="width: 98%; font-size: 15px; margin-top: 130px"
+        v-show="chartData.rows.length == 0"
+      >
+        暂无数据
+      </a>
       <ve-line
         height="230px"
         :settings="chartSettings"
         :data="chartData"
         ref="chart"
         :legend-visible="false"
+        v-show="chartData.rows.length != 0"
       ></ve-line>
     </el-main>
     <el-footer
