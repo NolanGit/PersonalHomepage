@@ -9,6 +9,7 @@
           :name="data.name"
         ></el-tab-pane>
       </el-tabs>
+      <div v-show="chartData.rows.length == 0">暂无数据</div>
       <ve-line
         height="230px"
         :settings="chartSettings"
@@ -344,7 +345,7 @@ export default {
           user_id: this.user_id,
         });
         this.stockData = res.data;
-        this.chartData = [];
+        this.chartData = {};
 
         // 初始化股票推送阈值和市场code
         for (let x = 0; x < this.stockData.length; x++) {
