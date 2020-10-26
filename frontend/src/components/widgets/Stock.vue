@@ -11,7 +11,7 @@
       </el-tabs>
       <a
         class="better_font_style"
-        style="width: 98%; font-size: 15px; margin-top: 130px"
+        style="width: 98%; font-size: 15px;"
         v-show="chartData.rows.length == 0"
       >
         暂无数据
