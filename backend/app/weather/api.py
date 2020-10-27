@@ -32,6 +32,7 @@ def get():
         user_id = request.get_json()['user_id']
         user_ip = request.remote_addr
         ip_location = IpLocation(user_ip).get_location().location
+bug        print('ip_location' + ip_location)
         if user_id != 0:
             _ = WeatherLocationList(user_id=user_id).get().list
             weather_location_list = _ if _ != None else []
