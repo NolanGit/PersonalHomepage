@@ -122,12 +122,13 @@ def check_time(market):
             return self.__dst
 
     china_time = time.localtime(time.mktime(datetime.datetime.now().timetuple()))
-    us_time = time.localtime(time.mktime(datetime.datetime.now(FixedOffset(-12)).timetuple()))
+    us_time = time.localtime(time.mktime(datetime.datetime.now(FixedOffset(-4)).timetuple()))  # 之所以为-4，因为FixedOffset()本身就是+0的时间，所以已经与+8差了-8小时，因此只要再-4，即为美国时间（中国比美国快12小时）
 
     c_current_hour = int(time.strftime('%H', china_time))
     c_current_minute = int(time.strftime('%M', china_time))
     c_current_time = c_current_hour + c_current_minute / 100
     c_current_week = int(time.strftime('%w', china_time))
+    u_current_month = int(time.strftime('%m', us_time))
 
     u_current_hour = int(time.strftime('%H', us_time))
     u_current_minute = int(time.strftime('%M', us_time))
@@ -144,13 +145,11 @@ def check_time(market):
             if 9.25 < c_current_time < 12.05 or 12.55 < c_current_time < 14.05:  # 囊括港股开盘时间
                 return True
     if market == 4:
-        print(u_current_time)
-        return True # debug
         if u_current_month >= 3 and u_current_month <= 10:  # 粗略判定为夏令时
             if u_current_week != 6 and u_current_week != 0:  # 非周六周日
                 if 9.25 < u_current_time < 16.05:  # 囊括美股开盘时间 # 美股，即美国股市。开盘时间是每周一至周五，美国东部时间 9:30-16:00
                     return True
-        else: # 冬令时
+        else:  # 冬令时
             if u_current_week != 6 and u_current_week != 0:  # 非周六周日
                 if 8.25 < u_current_time < 15.05:  # 囊括美股开盘时间
                     return True
