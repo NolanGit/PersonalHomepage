@@ -40,6 +40,8 @@ class IpLocation(Base):
         cf.read('app/homepage.config')
         LOCATION = cf.get('config', 'LOCATION')
         r = requests.get('http://freeapi.ipip.net/' + self.ip)
+        print(self.ip)
+        print(r.json())
         self.location = LOCATION if r.json()[0] == '局域网' else r.json()[1]
         self._save()
 
