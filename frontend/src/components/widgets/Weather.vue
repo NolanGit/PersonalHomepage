@@ -6,7 +6,7 @@
           <el-row type="flex" justify="center" ref="weatherForm" :model="weather.weatherForm">
               <div class="location">{{ weather.location }}</div>
               <el-tooltip class="item" effect="dark" :content="weather.update_time_text" placement="right">
-                <i class="el-icon-warning"></i>
+                <div class="el-icon-warning" style="margin-top: 6px; margin-left: 6px;"></div>
               </el-tooltip>
           </el-row>
           <el-row type="flex" justify="center" ref="weatherForm" :model="weather.weatherForm">
