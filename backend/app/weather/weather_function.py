@@ -123,8 +123,9 @@ class WeatherData(Base):
             self.tomorrow_tmp_max = weather_data_query['tomorrow_tmp_max']
             self.tomorrow_tmp_min = weather_data_query['tomorrow_tmp_min']
             self.wind = weather_data_query['wind']
-            self.update_time = weather_data_query['update_time'].strftime("%m-%d %H:%M")
-            if (datetime.datetime.now() - weather_data_query['update_time']).total_seconds() < WEATHER_EXPIRE_HOUR * 3600:
+            self.update_time = weather_data_query['update_time']
+            self.update_time_text = '更新于：' + weather_data_query['update_time'].strftime("%Y-%m-%d %H:%M:%s")
+            if (datetime.datetime.now() - self.update_time).total_seconds() < WEATHER_EXPIRE_HOUR * 3600:
                 #print('上次获取%s的数据的时间为%s，小于阈值%s，使用缓存'%(self.location,str(self.update_time),str(WEATHER_EXPIRE_HOUR)+'小时'))
                 return True
             else:

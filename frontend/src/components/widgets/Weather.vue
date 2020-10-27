@@ -4,9 +4,10 @@
       <el-carousel height="250px" trigger="click" interval="5000" indicator-position="outside">
         <el-carousel-item v-for="weather in weathers" :key="weather">
           <el-row type="flex" justify="center" ref="weatherForm" :model="weather.weatherForm">
-            <div>
               <div class="location">{{ weather.location }}</div>
-            </div>
+              <el-tooltip class="item" effect="dark" :content="weather.update_time_text" placement="right">
+                <i class="el-icon-warning"></i>
+              </el-tooltip>
           </el-row>
           <el-row type="flex" justify="center" ref="weatherForm" :model="weather.weatherForm">
             <td>
@@ -373,6 +374,7 @@ export default {
             tomorrow_tmp_max,
             tomorrow_tmp_min,
             aqi,
+            update_time_text,
           } = res.data[single_result];
           this.weathers.push({ weatherForm: {} });
           this.weathers[single_result].weatherForm.tmp = tmp;
@@ -388,6 +390,7 @@ export default {
             single_result
           ].weatherForm.tomorrow_tmp_max = tomorrow_tmp_max;
           this.weathers[single_result].location = location;
+          this.weathers[single_result].update_time_text = update_time_text;
           this.weathers[single_result].id = id;
           this.loading = false;
           if (cond_code_d == 100) {
