@@ -291,3 +291,7 @@
 ## 联系方式
 
 📧邮箱：shr1213@live.com
+
+## 致谢
+
+💖本项目的开发依赖的大量的优秀开源项目以及网站服务：[和风天气](https://www.heweather.com/documents/api/)、[Server酱](http://sc.ftqq.com)、[translators](https://github.com/UlionTse/translators)、[新浪股票接口](http://hq.sinajs.cn/list=int_nasdaq)、[第一黄金网](http://www.dyhjw.com/hjtd)、[必应](https://cn.bing.com)
