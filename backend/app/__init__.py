@@ -5,7 +5,6 @@ parentUrl = os.path.abspath(os.path.join(currentUrl, os.pardir))
 sys.path.append(parentUrl)
 sys.path.append(currentUrl)
 from flask import Flask
-from config import config
 from flask_cors import CORS
 from .model.model_function import db
 from playhouse.flask_utils import FlaskDB
@@ -15,8 +14,6 @@ def create_app(config_name):
     app = Flask(__name__, static_folder="../../dist/static", template_folder="../../dist")
     FlaskDB(app, db)  # 解决peewee不自动关闭连接池连接，参见https://www.cnblogs.com/xueweihan/p/6698456.html
     CORS(app, supports_credentials=True)
-    app.config.from_object(config[config_name])
-    config[config_name].init_app(app)
 
     from .main import main as main_blueprint
     app.register_blueprint(main_blueprint)

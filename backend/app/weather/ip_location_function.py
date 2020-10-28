@@ -25,6 +25,8 @@ class IpLocation(Base):
             _ = ip_location.select().where(ip_location.ip == self.ip).order_by(-ip_location.id).limit(1).dicts()
             if len(_) == 0:
                 raise DoesNotExist
+            elif len(_[0]['location']) == 0:
+                raise DoesNotExist
             elif (datetime.datetime.now() - _[0]['update_time']).total_seconds() < IP_LOCATION_EXPIRE_TIME * 3600:
                 self.location = _[0]['location']
             else:
