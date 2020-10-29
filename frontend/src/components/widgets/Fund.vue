@@ -11,41 +11,41 @@
       </el-tabs>
       <a
         class="better_font_style"
-        style="width: 98%; font-size: 15px"
+        style="width: 98%; font-size: 12px"
         v-if="chartData.rows.length == 0"
       >
         暂无数据
       </a>
       <span
         class="better_font_style"
-        style="width: 80%; font-size: 12px; text-align: center"
+        style="font-size: 12px; text-align: left"
         v-if="(chartData.rows.length != 0) & (latestRange > 0)"
       >
         涨跌幅:+
       </span>
       <span
         class="better_font_style"
-        style="width: 80%; font-size: 12px; text-align: center"
+        style="font-size: 12px; text-align: left"
         v-if="(chartData.rows.length != 0) & (latestRange <= 0)"
       >
         涨跌幅:
       </span>
       <span
         class="better_font_style"
-        style="width: 80%; font-size: 12px; text-align: center"
+        style="font-size: 12px; text-align: left"
         v-if="chartData.rows.length != 0"
       >
         {{ latestRange }}
       </span>
       <span
         class="better_font_style"
-        style="width: 80%; font-size: 12px; text-align: center"
+        style="font-size: 12px; text-align: left"
         v-if="chartData.rows.length != 0"
       >
         %
       </span>
       <ve-line
-        height="230px"
+        height="215px"
         :settings="chartSettings"
         :data="chartData"
         ref="chart"
