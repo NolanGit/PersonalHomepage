@@ -13,42 +13,41 @@ from ..response import Response as MyResponse
 from ..privilege.privilege_control import privilegeFunction
 from ..privilege.privilege_control import permission_required
 
-from . import stock
-from .stock_model import Stock, StockBelong
-from ..model.stock_model import stock as stock_table
-from ..model.stock_model import stock_price, stock_belong
-from .stock_function import check_stock_valid
+from . import fund
+from .fund_model import Fund, FundBelong
+from ..model.fund_model import fund as fund_table
+from ..model.fund_model import fund_price, fund_belong
+from .fund_function import check_fund_valid
 
 cf = CommonFunc()
 rsp = MyResponse()
 
-URL_PREFIX = '/stock'
+URL_PREFIX = '/fund'
 
 
-def check_stock_exist(Stock):
-    _ = stock_table.select().where((stock_table.market == Stock.market) & (stock_table.name == Stock.name) & (stock_table.code == Stock.code)).dicts()
+def check_fund_exist(fund):
+    _ = fund_table.select().where((fund_table.name == fund.name) & (fund_table.code == fund.code)).dicts()
     if len(_) == 0:
         return 0
     else:
         return _[0]['id']
 
 
-@stock.route('/add', methods=['POST'])
+@fund.route('/add', methods=['POST'])
 @permission_required(URL_PREFIX + '/add')
 def add():
     try:
         user_id = request.get_json()['user_id']
         code = request.get_json()['code']
         name = request.get_json()['name']
-        market = int(request.get_json()['market'])
         push = int(request.get_json()['push'])
         threshold_max = float(request.get_json()['threshold_max'])
         threshold_min = float(request.get_json()['threshold_min'])
 
-        s = Stock(code=code, name=name, market=int(market))
-        stock_id = check_stock_exist(s)
-        if stock_id == 0:
-            stock_id = s.create().id
+        s = Fund(code=code, name=name)
+        fund_id = check_fund_exist(s)
+        if fund_id == 0:
+            fund_id = s.create().id
 
         if push == 1:
             if threshold_min >= threshold_max:
@@ -57,27 +56,26 @@ def add():
                 return rsp.failed('无法为未登录用户设定阈值'), 500
         threshold = [threshold_min, threshold_max]
 
-        StockBelong(stock_id=stock_id, user_id=user_id, push=push, push_threshold=threshold, is_valid=1, update_time=datetime.datetime.now()).create()
+        FundBelong(fund_id=fund_id, user_id=user_id, push=push, push_threshold=threshold, is_valid=1, update_time=datetime.datetime.now()).create()
         return rsp.success()
     except Exception as e:
         traceback.print_exc()
         return rsp.failed(e), 500
 
 
-@stock.route('/check', methods=['POST'])
+@fund.route('/check', methods=['POST'])
 @permission_required(URL_PREFIX + '/check')
 def check():
     try:
         code = request.get_json()['code']
-        market = int(request.get_json()['market'])
-        name, msg = check_stock_valid(code, market)
+        name, msg = check_fund_valid(code)
         return rsp.success({'name': name, 'msg': msg})
     except Exception as e:
         traceback.print_exc()
         return rsp.failed(e), 500
 
 
-@stock.route('/get', methods=['POST'])
+@fund.route('/get', methods=['POST'])
 def get():
     try:
         user_id = request.get_json()['user_id']
@@ -91,12 +89,12 @@ def get():
             if user_id != user_id_in_redis:
                 return rsp.failed('无权访问'), 403
 
-        stock_belong_query = stock_belong.select().where((stock_belong.user_id == user_id) & (stock_belong.is_valid == 1)).dicts()
-        result = [cf.attr_to_dict(Stock(id=_['stock_id']).complete().get_price(50)) for _ in stock_belong_query]
+        fund_belong_query = fund_belong.select().where((fund_belong.user_id == user_id) & (fund_belong.is_valid == 1)).dicts()
+        result = [cf.attr_to_dict(Fund(id=_['fund_id']).complete().get_price(50)) for _ in fund_belong_query]
 
         for x in range(len(result)):
-            result[x]['push'] = stock_belong_query[x]['push']
-            result[x]['push_threshold'] = eval(stock_belong_query[x]['push_threshold'])
+            result[x]['push'] = fund_belong_query[x]['push']
+            result[x]['push_threshold'] = eval(fund_belong_query[x]['push_threshold'])
 
         return rsp.success(result)
     except Exception as e:
@@ -104,19 +102,19 @@ def get():
         return rsp.failed(e), 500
 
 
-@stock.route('/edit', methods=['POST'])
+@fund.route('/edit', methods=['POST'])
 @permission_required(URL_PREFIX + '/edit')
 def edit():
     try:
         user_id = request.get_json()['user_id']
-        stocks = request.get_json()['stocks']
+        funds = request.get_json()['funds']
 
-        stock_belong.update(is_valid=0, update_time=datetime.datetime.now()).where(stock_belong.user_id == user_id).execute()
-        for _ in stocks:
-            s = Stock(code=_['code'], name=_['name'], market=int(_['market']))
-            stock_id = check_stock_exist(s)
-            if stock_id == 0:
-                stock_id = s.create().id
+        fund_belong.update(is_valid=0, update_time=datetime.datetime.now()).where(fund_belong.user_id == user_id).execute()
+        for _ in funds:
+            s = Fund(code=_['code'], name=_['name'])
+            fund_id = check_fund_exist(s)
+            if fund_id == 0:
+                fund_id = s.create().id
 
             threshold = []
             push = int(_['push'])
@@ -129,7 +127,7 @@ def edit():
                     return rsp.failed('无法为未登录用户设定阈值'), 500
                 threshold = [threshold_min, threshold_max]
 
-            StockBelong(stock_id=stock_id, user_id=user_id, push=push, push_threshold=threshold, is_valid=1, update_time=datetime.datetime.now()).create()
+            FundBelong(fund_id=fund_id, user_id=user_id, push=push, push_threshold=threshold, is_valid=1, update_time=datetime.datetime.now()).create()
         return rsp.success()
     except Exception as e:
         traceback.print_exc()

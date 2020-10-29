@@ -1,9 +1,9 @@
 <template>
-  <div class="stock-main">
+  <div class="fund-main">
     <el-main class="noPadding" style="height: 300px">
       <el-tabs v-model="activeName" @tab-click="handleClick">
         <el-tab-pane
-          v-for="data in stockData"
+          v-for="data in fundData"
           :key="data"
           :label="data.name"
           :name="data.name"
@@ -11,18 +11,51 @@
       </el-tabs>
       <a
         class="better_font_style"
-        style="width: 98%; font-size: 15px"
-        v-show="chartData.rows.length == 0"
+        style="width: 98%; font-size: 12px"
+        v-if="chartData.rows.length == 0"
       >
         暂无数据
       </a>
+      <div class="better_font_style" style="text-align: left; font-size: 12px">
+        <span v-if="chartData.rows.length != 0"> 涨跌幅： </span>
+        <span
+          style="color: #f56c6c"
+          v-if="(chartData.rows.length != 0) & (latestRange > 0)"
+        >
+          +
+        </span>
+        <span
+          style="color: #f56c6c"
+          v-if="(chartData.rows.length != 0) & (latestRange > 0)"
+        >
+          {{ latestRange }}
+        </span>
+        <span
+          style="color: #f56c6c"
+          v-if="(chartData.rows.length != 0) & (latestRange > 0)"
+        >
+          %
+        </span>
+        <span
+          style="color: #67c23a"
+          v-if="(chartData.rows.length != 0) & (latestRange <= 0)"
+        >
+          {{ latestRange }}
+        </span>
+        <span
+          style="color: #67c23a"
+          v-if="(chartData.rows.length != 0) & (latestRange <= 0)"
+        >
+          %
+        </span>
+      </div>
       <ve-line
-        height="230px"
+        height="215px"
         :settings="chartSettings"
         :data="chartData"
         ref="chart"
         :legend-visible="false"
-        v-show="chartData.rows.length != 0"
+        v-if="chartData.rows.length != 0"
       ></ve-line>
     </el-main>
     <el-footer
@@ -60,16 +93,6 @@
       <el-form ref="form" :model="edit.form" size="mini">
         <el-form-item label="代码">
           <div class="div-flex">
-            <el-select
-              v-model="edit.market"
-              size="small"
-              placeholder="请选择市场"
-            >
-              <el-option label="SH" value="1"> </el-option>
-              <el-option label="SZ" value="2"> </el-option>
-              <el-option label="HK" value="3"> </el-option>
-              <el-option label="US" value="4"> </el-option>
-            </el-select>
             <el-input
               size="small"
               v-model="edit.code"
@@ -119,16 +142,16 @@
 
     <!--编辑顺序界面-->
     <el-dialog
-      title="编辑股票"
-      :visible.sync="stockSortEdit.visible"
+      title="编辑基金"
+      :visible.sync="fundSortEdit.visible"
       width="40%"
     >
       <SlickSort
-        v-if="stockSortEdit.visible"
-        :list="stockSortEdit.list"
+        v-if="fundSortEdit.visible"
+        :list="fundSortEdit.list"
         :can_be_edit="true"
-        @submit="stockSortEditSubmit"
-        @edit="stockSortEditSetting"
+        @submit="fundSortEditSubmit"
+        @edit="fundSortEditSetting"
       ></SlickSort>
     </el-dialog>
   </div>
@@ -141,14 +164,14 @@ import SlickSort from "../common/SlickSort.vue";
 import WidgetButton from "../common/WidgetButton.vue";
 
 const api = {
-  get: "/stock/get",
-  add: "/stock/add",
-  check: "/stock/check",
-  edit: "/stock/edit",
+  get: "/fund/get",
+  add: "/fund/add",
+  check: "/fund/check",
+  edit: "/fund/edit",
 };
 
 export default {
-  name: "stock",
+  name: "fund",
   props: {
     user_id: Number,
     widget_id: Number,
@@ -171,10 +194,11 @@ export default {
       max: ["dataMax"],
     };
     return {
-      stockData: [],
+      fundData: [],
       chartData: {
         rows: [],
       },
+      latestRange: 0,
       activeName: "",
       notifyVisible: false,
       edit: {
@@ -182,13 +206,12 @@ export default {
         name: "",
         visible: false,
         index: Number,
-        market: "1",
         code: "",
         push: false,
-        min: 0,
-        max: 0,
+        threshold_min: 0,
+        threshold_max: 0,
       },
-      stockSortEdit: {
+      fundSortEdit: {
         visible: false,
         list: [],
       },
@@ -196,20 +219,19 @@ export default {
   },
   methods: {
     add() {
-      this.edit.title = "增加股票";
+      this.edit.title = "增加基金";
       this.edit.visible = true;
     },
     notify() {
       this.notifyVisible = true;
     },
     sort() {
-      this.stockSortEdit.visible = true;
-      this.stockSortEdit.list = deepClone(this.stockData);
+      this.fundSortEdit.visible = true;
+      this.fundSortEdit.list = deepClone(this.fundData);
     },
-    stockSortEditSetting(item, index) {
+    fundSortEditSetting(item, index) {
       console.log(item);
-      this.edit.title = "编辑股票";
-      this.edit.market = item.market;
+      this.edit.title = "编辑基金";
       this.edit.code = item.code;
       this.edit.name = item.name;
       this.edit.push = item.push;
@@ -224,28 +246,27 @@ export default {
         name: "",
         visible: false,
         index: Number,
-        market: "1",
         code: "",
         push: false,
-        threshold_min: 0,
-        threshold_max: 0,
+        min: 0,
+        max: 0,
       };
     },
-    async stockSortEditSubmit(list) {
+    async fundSortEditSubmit(list) {
       for (let x = 0; x < list.length; x++) {
         list[x].push = list[x].push ? 1 : 0;
       }
       try {
         const { data: res } = await axios.post(api.edit, {
           user_id: this.user_id,
-          stocks: list,
+          funds: list,
         });
         this.$message({
           message: res["msg"],
           type: "success",
         });
         this.get();
-        this.stockSortEdit.visible = false;
+        this.fundSortEdit.visible = false;
       } catch (e) {
         console.log(e);
         this.$message({
@@ -255,16 +276,15 @@ export default {
       }
     },
     async editSubmit() {
-      if (this.edit.title == "增加股票") {
+      if (this.edit.title == "增加基金") {
         try {
           const { data: res } = await axios.post(api.add, {
             user_id: this.user_id,
             code: this.edit.code,
             name: this.edit.name,
-            market: this.edit.market,
             push: this.edit.push ? 1 : 0,
-            threshold_max: this.edit.threshold_max,
             threshold_min: this.edit.threshold_min,
+            threshold_max: this.edit.threshold_max,
           });
           this.$message({
             message: res["msg"],
@@ -279,35 +299,21 @@ export default {
             type: "error",
           });
         }
-      } else if (this.edit.title == "编辑股票") {
+      } else if (this.edit.title == "编辑基金") {
         let index = this.edit.index;
-        this.stockSortEdit.list[index].market = this.edit.market;
-        this.stockSortEdit.list[index].code = this.edit.code;
-        this.stockSortEdit.list[index].name = this.edit.name;
-        this.stockSortEdit.list[index].push = this.edit.push;
-        this.stockSortEdit.list[index].threshold_min = this.edit.threshold_min;
-        this.stockSortEdit.list[index].threshold_max = this.edit.threshold_max;
+        this.fundSortEdit.list[index].code = this.edit.code;
+        this.fundSortEdit.list[index].name = this.edit.name;
+        this.fundSortEdit.list[index].push = this.edit.push;
+        this.fundSortEdit.list[index].threshold_min = this.edit.threshold_min;
+        this.fundSortEdit.list[index].threshold_max = this.edit.threshold_max;
         this.edit.visible = false;
       }
     },
     // 检查是否合法
     async check() {
-      // 美股code应为小写
-      if (this.edit.market == 4) {
-        let temp = this.edit.code.search(/(([A-Z]([^A-Z]*)?))/g);
-        if (temp != -1) {
-          this.$message({
-            message: "美股代码需为小写字母，已自动修改",
-            type: "info",
-          });
-          this.edit.code = this.edit.code.toLowerCase();
-        }
-      }
-
       try {
         const { data: res } = await axios.post(api.check, {
           code: this.edit.code,
-          market: this.edit.market,
         });
         if (res.data.name != "") {
           this.edit.name = res.data.name;
@@ -331,19 +337,25 @@ export default {
     },
     activeTabChanged(newVal) {
       // 当触发的tab变化时，更新图表
-      for (let x = 0; x < this.stockData.length; x++) {
-        if (this.stockData[x].name == newVal) {
-          var temp = [];
-          for (let y = 0; y < this.stockData[x].price_list.length; y++) {
+      var temp = [];
+      for (let x = 0; x < this.fundData.length; x++) {
+        if (this.fundData[x].name == newVal) {
+          for (let y = 0; y < this.fundData[x].price_list.length; y++) {
             temp.push({
-              时间: this.stockData[x].price_list[y]["update_time"],
-              价格: this.stockData[x].price_list[y]["price"],
+              时间: this.fundData[x].price_list[y]["update_time"],
+              价格: this.fundData[x].price_list[y]["price"],
             });
           }
           this.chartData = {
             columns: ["时间", "价格"],
             rows: temp,
           };
+
+          if (this.fundData[x].price_list.length != 0) {
+            var listLen = this.fundData[x].price_list.length;
+            this.latestRange = this.fundData[x].price_list[listLen - 1].range;
+          }
+
           return;
         }
       }
@@ -353,20 +365,19 @@ export default {
         const { data: res } = await axios.post(api.get, {
           user_id: this.user_id,
         });
-        this.stockData = res.data;
+        this.fundData = res.data;
         this.chartData = {};
 
-        // 初始化股票推送阈值和市场code
-        for (let x = 0; x < this.stockData.length; x++) {
-          this.stockData[x].market = String(this.stockData[x].market);
-          this.stockData[x].push = this.stockData[x].push == 1 ? true : false;
-          if (this.stockData[x] != null && this.stockData[x].length != 0) {
-            this.stockData[x].threshold_min = this.stockData[x].push_threshold[0];
-            this.stockData[x].threshold_max = this.stockData[x].push_threshold[1];
+        // 初始化基金推送阈值和
+        for (let x = 0; x < this.fundData.length; x++) {
+          this.fundData[x].push = this.fundData[x].push == 1 ? true : false;
+          if (this.fundData[x] != null && this.fundData[x].length != 0) {
+            this.fundData[x].threshold_min = this.fundData[x].push_threshold[0];
+            this.fundData[x].threshold_max = this.fundData[x].push_threshold[1];
           }
         }
 
-        // 初始化默认展示的股票
+        // 初始化默认展示的基金
         this.activeName = res.data[0].name;
         var temp = [];
         for (let y = 0; y < res.data[0].price_list.length; y++) {
@@ -380,8 +391,12 @@ export default {
           rows: temp,
         };
 
+        // 初始化默认展示的基金
+        var listLen = res.data[0].price_list.length;
+        this.latestRange = res.data[0].price_list[listLen - 1].range;
+
         this.$nextTick((_) => {
-          for (let x = 0; x < this.stockData.length; x++) {
+          for (let x = 0; x < this.fundData.length; x++) {
             this.$refs[`chart`].echarts.resize();
           }
         });
@@ -396,12 +411,12 @@ export default {
     },
     autoSwitch() {
       window.clearInterval(this.switchTimer);
-      for (let x = 0; x < this.stockData.length; x++) {
-        if (this.stockData[x].name == this.activeName) {
-          if (x + 1 == this.stockData.length) {
+      for (let x = 0; x < this.fundData.length; x++) {
+        if (this.fundData[x].name == this.activeName) {
+          if (x + 1 == this.fundData.length) {
             x = -1;
           }
-          this.activeName = this.stockData[x + 1].name;
+          this.activeName = this.fundData[x + 1].name;
           break;
         }
       }

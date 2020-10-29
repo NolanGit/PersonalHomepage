@@ -22,6 +22,7 @@ CODE_HK: 3
 CODE_US: 4
 MARKET_PREFIX = ['sh', 'sz', 'hk', 'gb_']  # 顺序与上方code严格对应
 MARKET_TEXT = ['SH', 'SZ', 'HK', 'US']  # 顺序与上方code严格对应
+STOCK_BASE_URL = 'http://hq.sinajs.cn/list='
 
 data_source = []
 
@@ -53,7 +54,7 @@ def check_stock_valid(stock_code, market):
         code_url = MARKET_PREFIX[market - 1] + str(stock_code)
 
         print('正在获取[' + code_text + ']的价格...')
-        r = requests.get('http://hq.sinajs.cn/list=' + code_url)
+        r = requests.get(STOCK_BASE_URL + code_url)
         splited_text = r.text.split('\"')[1].split(',')
         if market == 1 or market == 2 or market == 4:
             name = str(splited_text[0])
@@ -128,7 +129,6 @@ def check_time(market):
     c_current_minute = int(time.strftime('%M', china_time))
     c_current_time = c_current_hour + c_current_minute / 100
     c_current_week = int(time.strftime('%w', china_time))
-    u_current_month = int(time.strftime('%m', us_time))
 
     u_current_hour = int(time.strftime('%H', us_time))
     u_current_minute = int(time.strftime('%M', us_time))

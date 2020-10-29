@@ -1,10 +1,18 @@
 <template>
-  <section>
+  <section class="scrollbar-div" style="max-height: 50vh">
     <el-row class="margin_left-large">
       <p
         class="notesText"
-        style="font-size: 12px; color: #F56C6C; padding-top: 0px; margin-top: 0px; margin-bottom: 10px"
-      >*拖动以排序</p>
+        style="
+          font-size: 12px;
+          color: #f56c6c;
+          padding-top: 0px;
+          margin-top: 0px;
+          margin-bottom: 10px;
+        "
+      >
+        *拖动以排序
+      </p>
       <SlickList
         :lockToContainerEdges="true"
         axis="x"
@@ -12,26 +20,42 @@
         v-model="items"
         class="SortableList"
         @input="getChangeLists"
-        style="float: left;"
+        style="float: left"
       >
-        <SlickItem v-for="(item, index) in items" class="SortableItem" :index="index" :key="index">
+        <SlickItem
+          v-for="(item, index) in items"
+          class="SortableItem"
+          :index="index"
+          :key="index"
+        >
           <el-row>
-            <el-row class="div-flex margin_top-medium" style="margin-bottom: 30px;">
+            <el-row
+              class="div-flex margin_top-medium"
+              style="margin-bottom: 30px"
+            >
               <i
                 class="el-icon-s-operation margin_right-medium margin_left-small"
-                style="color: #6a6c70; margin-top: 3px;"
+                style="color: #6a6c70; margin-top: 3px"
               ></i>
               <p class="noMargin">{{ item.name }}</p>
               <div class="margin_left-large">
                 <el-tooltip content="编辑组件集名称" placement="top">
-                  <el-button @click="widgetSuiteEdit(index)" size="mini" class="el-icon-edit"></el-button>
+                  <el-button
+                    @click="widgetSuiteEdit(index)"
+                    size="mini"
+                    class="el-icon-edit"
+                  ></el-button>
                 </el-tooltip>
                 <el-tooltip content="为组件集增加组件" placement="top">
-                  <el-button @click="widgetAdd(index)" size="mini" class="el-icon-plus"></el-button>
+                  <el-button
+                    @click="widgetAdd(index)"
+                    size="mini"
+                    class="el-icon-plus"
+                  ></el-button>
                 </el-tooltip>
                 <el-tooltip content="删除组件集" placement="top">
                   <el-button
-                    @click="widgetSuiteDelete(item,index)"
+                    @click="widgetSuiteDelete(item, index)"
                     type="danger"
                     size="mini"
                     class="el-icon-delete"
@@ -52,12 +76,14 @@
                   :index="widgetIndex"
                   :key="widgetIndex"
                 >
-                  <i class="el-icon-s-operation" style="color: #6a6c70;"></i>
-                  <span class="slick_list_item_span">{{ widgetItem.name_zh }}</span>
+                  <i class="el-icon-s-operation" style="color: #6a6c70"></i>
+                  <span class="slick_list_item_span">{{
+                    widgetItem.name_zh
+                  }}</span>
                   <div class="slick_list_item_button">
                     <el-tooltip content="删除组件" placement="right">
                       <el-button
-                        @click="widgetDelete(index,widgetItem,widgetIndex)"
+                        @click="widgetDelete(index, widgetItem, widgetIndex)"
                         type="danger"
                         size="mini"
                         class="el-icon-delete"
@@ -75,12 +101,18 @@
           @click="widgetSuiteAdd()"
           circle
           class="el-icon-plus margin_left-large"
-          style="margin-top: 125px;"
+          style="margin-top: 125px"
         ></el-button>
       </el-tooltip>
     </el-row>
     <el-row class="margin_left-large">
-      <el-button @click="submit()" type="primary" size="small" class="margin_top-medium">提交</el-button>
+      <el-button
+        @click="submit()"
+        type="primary"
+        size="small"
+        class="margin_top-medium"
+        >提交</el-button
+      >
     </el-row>
 
     <el-drawer
@@ -91,8 +123,9 @@
       @closed="editFormClosed"
     >
       <div
-        class="div-flex margin_bottom-medium margin_left-large"
-        v-if="edit.action=='editWidgetSuite'"
+        class="div-flex margin_bottom-medium margin_left-large scrollbar-div"
+        style="max-height: 50vh"
+        v-if="edit.action == 'editWidgetSuite'"
       >
         <div class="td__p--label td--label">请输入组件集名称：</div>
         <el-input
@@ -101,11 +134,13 @@
           size="small"
           placeholder="请输入"
         ></el-input>
-        <el-button type="primary" size="mini" plain @click="widgetSuiteEdited()">确定</el-button>
+        <el-button type="primary" size="mini" plain @click="widgetSuiteEdited()"
+          >确定</el-button
+        >
       </div>
-      <div class="scrollbar-div margin_left-medium" style="width: 400px;">
+      <div class="scrollbar-div margin_left-medium margin_bottom-medium" style="width: 500px; max-height: 50vh">
         <el-table
-          v-if="edit.action=='addWidget'"
+          v-if="edit.action == 'addWidget'"
           :key="Math.random()"
           size="mini"
           height="400"
@@ -113,8 +148,17 @@
           stripe
           style="width: 100%"
         >
-          <el-table-column :key="Math.random()" prop="id" label="ID" :v-show="false"></el-table-column>
-          <el-table-column :key="Math.random()" prop="name_zh" label="名称"></el-table-column>
+          <el-table-column
+            :key="Math.random()"
+            prop="id"
+            label="ID"
+            :v-show="false"
+          ></el-table-column>
+          <el-table-column
+            :key="Math.random()"
+            prop="name_zh"
+            label="名称"
+          ></el-table-column>
           <el-table-column :key="Math.random()" label="操作" width="120">
             <template slot-scope="scope">
               <el-button
@@ -123,7 +167,8 @@
                 size="mini"
                 plain
                 @click="widgetAdded(scope.row)"
-              >选择</el-button>
+                >选择</el-button
+              >
             </template>
           </el-table-column>
         </el-table>
