@@ -57,8 +57,9 @@
 - 小组件-翻译
 - 小组件-必应壁纸
 - 小组件-股票（支持设置触发阈值后推送微信或发送邮件）
+- 小组件-基金（支持设置触发阈值后推送微信或发送邮件）
 ### Working on:
-- 小组件-基金
+- 优化代码
 ### To Do
 - 小组件-新闻
   
@@ -283,6 +284,12 @@
 
 ![image](https://user-images.githubusercontent.com/27627484/96364803-ffc35c00-116e-11eb-97be-d2d2c6ebd2dd.png)
 
+### 小组件-基金
+
+入口：主页小组件
+
+功能：爬取基金数据，并可以设置超过阈值后提醒功能。
+
 ## License
 
 [MPL-2.0](https://opensource.org/licenses/MPL-2.0)
@@ -293,4 +300,4 @@
 
 ## 致谢
 
-💖本项目的开发依赖的大量的优秀开源项目以及网站服务：[和风天气](https://www.heweather.com/documents/api/)、[Server酱](http://sc.ftqq.com)、[translators](https://github.com/UlionTse/translators)、[新浪股票接口](http://hq.sinajs.cn/list=int_nasdaq)、[第一黄金网](http://www.dyhjw.com/hjtd)、[必应](https://cn.bing.com)
+💖本项目的开发依赖的大量的优秀开源项目以及网站服务：[和风天气](https://www.heweather.com/documents/api/)、[Server酱](http://sc.ftqq.com)、[translators](https://github.com/UlionTse/translators)、[新浪股票接口](http://hq.sinajs.cn/list=int_nasdaq)、[第一黄金网](http://www.dyhjw.com/hjtd)、[天天基金网](http://1234567.com.cn/)、[必应](https://cn.bing.com)、
