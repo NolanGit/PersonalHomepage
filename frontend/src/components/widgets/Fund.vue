@@ -60,16 +60,6 @@
       <el-form ref="form" :model="edit.form" size="mini">
         <el-form-item label="代码">
           <div class="div-flex">
-            <el-select
-              v-model="edit.market"
-              size="small"
-              placeholder="请选择市场"
-            >
-              <el-option label="SH" value="1"> </el-option>
-              <el-option label="SZ" value="2"> </el-option>
-              <el-option label="HK" value="3"> </el-option>
-              <el-option label="US" value="4"> </el-option>
-            </el-select>
             <el-input
               size="small"
               v-model="edit.code"
@@ -119,7 +109,7 @@
 
     <!--编辑顺序界面-->
     <el-dialog
-      title="编辑股票"
+      title="编辑基金"
       :visible.sync="fundSortEdit.visible"
       width="40%"
     >
@@ -182,7 +172,6 @@ export default {
         name: "",
         visible: false,
         index: Number,
-        market: "1",
         code: "",
         push: false,
         min: 0,
@@ -196,7 +185,7 @@ export default {
   },
   methods: {
     add() {
-      this.edit.title = "增加股票";
+      this.edit.title = "增加基金";
       this.edit.visible = true;
     },
     notify() {
@@ -208,8 +197,7 @@ export default {
     },
     fundSortEditSetting(item, index) {
       console.log(item);
-      this.edit.title = "编辑股票";
-      this.edit.market = item.market;
+      this.edit.title = "编辑基金";
       this.edit.code = item.code;
       this.edit.name = item.name;
       this.edit.push = item.push;
@@ -224,7 +212,6 @@ export default {
         name: "",
         visible: false,
         index: Number,
-        market: "1",
         code: "",
         push: false,
         min: 0,
@@ -255,13 +242,12 @@ export default {
       }
     },
     async editSubmit() {
-      if (this.edit.title == "增加股票") {
+      if (this.edit.title == "增加基金") {
         try {
           const { data: res } = await axios.post(api.add, {
             user_id: this.user_id,
             code: this.edit.code,
             name: this.edit.name,
-            market: this.edit.market,
             push: this.edit.push ? 1 : 0,
             threshold_max: this.edit.max,
             threshold_min: this.edit.min,
@@ -279,9 +265,8 @@ export default {
             type: "error",
           });
         }
-      } else if (this.edit.title == "编辑股票") {
+      } else if (this.edit.title == "编辑基金") {
         let index = this.edit.index;
-        this.fundSortEdit.list[index].market = this.edit.market;
         this.fundSortEdit.list[index].code = this.edit.code;
         this.fundSortEdit.list[index].name = this.edit.name;
         this.fundSortEdit.list[index].push = this.edit.push;
@@ -292,22 +277,9 @@ export default {
     },
     // 检查是否合法
     async check() {
-      // 美股code应为小写
-      if (this.edit.market == 4) {
-        let temp = this.edit.code.search(/(([A-Z]([^A-Z]*)?))/g);
-        if (temp != -1) {
-          this.$message({
-            message: "美股代码需为小写字母，已自动修改",
-            type: "info",
-          });
-          this.edit.code = this.edit.code.toLowerCase();
-        }
-      }
-
       try {
         const { data: res } = await axios.post(api.check, {
           code: this.edit.code,
-          market: this.edit.market,
         });
         if (res.data.name != "") {
           this.edit.name = res.data.name;
@@ -356,9 +328,8 @@ export default {
         this.fundData = res.data;
         this.chartData = {};
 
-        // 初始化股票推送阈值和市场code
+        // 初始化基金推送阈值和
         for (let x = 0; x < this.fundData.length; x++) {
-          this.fundData[x].market = String(this.fundData[x].market);
           this.fundData[x].push = this.fundData[x].push == 1 ? true : false;
           if (this.fundData[x] != null && this.fundData[x].length != 0) {
             this.fundData[x].min = this.fundData[x].push_threshold[0];
@@ -366,7 +337,7 @@ export default {
           }
         }
 
-        // 初始化默认展示的股票
+        // 初始化默认展示的基金
         this.activeName = res.data[0].name;
         var temp = [];
         for (let y = 0; y < res.data[0].price_list.length; y++) {
