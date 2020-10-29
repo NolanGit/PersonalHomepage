@@ -116,6 +116,7 @@ def edit():
             if fund_id == 0:
                 fund_id = s.create().id
 
+            threshold = []
             push = int(_['push'])
             if push == 1:
                 threshold_min = float(_['threshold_min'])

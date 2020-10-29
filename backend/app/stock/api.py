@@ -118,6 +118,7 @@ def edit():
             if stock_id == 0:
                 stock_id = s.create().id
 
+            threshold = []
             push = int(_['push'])
             if push == 1:
                 threshold_min = float(_['threshold_min'])
