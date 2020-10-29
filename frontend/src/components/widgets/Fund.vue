@@ -16,6 +16,12 @@
       >
         暂无数据
       </a>
+      <span class="better_font_style" style="width: 98%; font-size: 15px">
+        涨跌幅:
+      </span>
+      <span class="better_font_style" style="width: 98%; font-size: 15px">
+        {{ latestRange }}
+      </span>
       <ve-line
         height="230px"
         :settings="chartSettings"
@@ -165,6 +171,7 @@ export default {
       chartData: {
         rows: [],
       },
+      latestRange: 0,
       activeName: "",
       notifyVisible: false,
       edit: {
@@ -310,13 +317,15 @@ export default {
             temp.push({
               时间: this.fundData[x].price_list[y]["update_time"],
               价格: this.fundData[x].price_list[y]["price"],
-              涨跌幅: this.fundData[x].price_list[y]["range"],
             });
           }
           this.chartData = {
-            columns: ["时间", "价格", "涨跌幅"],
+            columns: ["时间", "价格"],
             rows: temp,
           };
+
+          var listLength = this.fundData[x].price_list.length;
+          this.latestRange = this.fundData[x].price_list[listLength - 1].range;
           return;
         }
       }
@@ -345,13 +354,16 @@ export default {
           temp.push({
             时间: res.data[0].price_list[y]["update_time"],
             价格: res.data[0].price_list[y]["price"],
-            涨跌幅: res.data[0].price_list[y]["range"],
           });
         }
         this.chartData = {
-          columns: ["时间", "价格", "涨跌幅"],
+          columns: ["时间", "价格"],
           rows: temp,
         };
+
+        // 初始化默认展示的基金
+        var listLength = res.data[0].price_list.length;
+        this.latestRange = res.data[0].price_list[listLength - 1].range;
 
         this.$nextTick((_) => {
           for (let x = 0; x < this.fundData.length; x++) {
