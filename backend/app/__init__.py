@@ -71,4 +71,7 @@ def create_app(config_name):
 
     from .stock import stock as  stock_blueprint
     app.register_blueprint(stock_blueprint, url_prefix='/stock')
+
+    from .fund import fund as  fund_blueprint
+    app.register_blueprint(fund_blueprint, url_prefix='/fund')
     return app
