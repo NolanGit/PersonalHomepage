@@ -9,8 +9,6 @@ CURRENT_RUNNING_PATH = os.path.abspath('.')
 TOMORROW = datetime.datetime.today().replace(hour=0, minute=0, second=0, microsecond=0) + datetime.timedelta(days=1)
 PYTHON_PATH = sys.executable
 INIT_SQL_PATH = CURRENT_RUNNING_PATH + '/backend/init.sql'
-FLASK_CONFIG_DEMO_PATH = CURRENT_RUNNING_PATH + '/backend/app/config_demo.py'
-FLASK_CONFIG_PATH = CURRENT_RUNNING_PATH + '/backend/app/config.py'
 CONFIG_PATH = CURRENT_RUNNING_PATH + '/backend/app/homepage.config'
 REQUIREMENTS_PATH = CURRENT_RUNNING_PATH + '/requirements.txt'
 SCHEDULE_SCRIPT_PATH = CURRENT_RUNNING_PATH + '/backend/app/script/schedule_monitor.sh'
@@ -191,17 +189,6 @@ try:
 except Exception as e:
     traceback.print_exc()
     print('修改%s失败！请手动确认。' % CONFIG_PATH)
-    flag = False
-
-try:
-    print('%s开始配置' % FLASK_CONFIG_PATH)
-    backup(FLASK_CONFIG_PATH)
-    print('%s使用默认配置' % FLASK_CONFIG_PATH)
-    os.system('cp %s %s' % (FLASK_CONFIG_DEMO_PATH, FLASK_CONFIG_PATH))
-    print('%s配置成功' % FLASK_CONFIG_PATH)
-except Exception as e:
-    traceback.print_exc()
-    print('修改%s失败！请手动确认。' % FLASK_CONFIG_PATH)
     flag = False
 
 try:
