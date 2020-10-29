@@ -12,7 +12,7 @@
       <a
         class="better_font_style"
         style="width: 98%; font-size: 15px"
-        v-show="chartData.rows.length == 0"
+        v-if="chartData.rows.length == 0"
       >
         暂无数据
       </a>
@@ -22,7 +22,7 @@
         :data="chartData"
         ref="chart"
         :legend-visible="false"
-        v-show="chartData.rows.length != 0"
+        v-if="chartData.rows.length != 0"
       ></ve-line>
     </el-main>
     <el-footer
@@ -303,9 +303,9 @@ export default {
     },
     activeTabChanged(newVal) {
       // 当触发的tab变化时，更新图表
+      var temp = [];
       for (let x = 0; x < this.fundData.length; x++) {
         if (this.fundData[x].name == newVal) {
-          var temp = [];
           for (let y = 0; y < this.fundData[x].price_list.length; y++) {
             temp.push({
               时间: this.fundData[x].price_list[y]["update_time"],

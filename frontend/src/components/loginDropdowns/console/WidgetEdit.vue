@@ -138,7 +138,7 @@
           >确定</el-button
         >
       </div>
-      <div class="scrollbar-div margin_left-medium" style="width: 400px">
+      <div class="scrollbar-div margin_left-medium margin_bottom-medium" style="max-height: 50vh">
         <el-table
           v-if="edit.action == 'addWidget'"
           :key="Math.random()"
