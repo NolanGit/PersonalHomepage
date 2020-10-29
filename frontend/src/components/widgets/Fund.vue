@@ -163,7 +163,6 @@ export default {
     return {
       fundData: [],
       chartData: {
-        columns: ["时间", "价格", "涨跌幅"],
         rows: [],
       },
       activeName: "",
@@ -314,7 +313,10 @@ export default {
               涨跌幅: this.fundData[x].price_list[y]["range"],
             });
           }
-          this.chartData.rows = temp;
+          this.chartData = {
+            columns: ["时间", "价格", "涨跌幅"],
+            rows: temp,
+          };
           return;
         }
       }
@@ -346,7 +348,10 @@ export default {
             涨跌幅: res.data[0].price_list[y]["range"],
           });
         }
-        this.chartData.rows = temp;
+        this.chartData = {
+          columns: ["时间", "价格", "涨跌幅"],
+          rows: temp,
+        };
 
         this.$nextTick((_) => {
           for (let x = 0; x < this.fundData.length; x++) {
