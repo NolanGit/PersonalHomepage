@@ -203,8 +203,8 @@ export default {
         index: Number,
         code: "",
         push: false,
-        min: 0,
-        max: 0,
+        threshold_min: 0,
+        threshold_max: 0,
       },
       fundSortEdit: {
         visible: false,
@@ -230,8 +230,8 @@ export default {
       this.edit.code = item.code;
       this.edit.name = item.name;
       this.edit.push = item.push;
-      this.edit.min = item.min;
-      this.edit.max = item.max;
+      this.edit.threshold_min = item.threshold_min;
+      this.edit.threshold_max = item.threshold_max;
       this.edit.index = index;
       this.edit.visible = true;
     },
@@ -278,8 +278,8 @@ export default {
             code: this.edit.code,
             name: this.edit.name,
             push: this.edit.push ? 1 : 0,
-            threshold_max: this.edit.max,
-            threshold_min: this.edit.min,
+            threshold_min: this.edit.threshold_min,
+            threshold_max: this.edit.threshold_max,
           });
           this.$message({
             message: res["msg"],
@@ -299,8 +299,8 @@ export default {
         this.fundSortEdit.list[index].code = this.edit.code;
         this.fundSortEdit.list[index].name = this.edit.name;
         this.fundSortEdit.list[index].push = this.edit.push;
-        this.fundSortEdit.list[index].threshold_min = this.edit.min;
-        this.fundSortEdit.list[index].threshold_max = this.edit.max;
+        this.fundSortEdit.list[index].threshold_min = this.edit.threshold_min;
+        this.fundSortEdit.list[index].threshold_max = this.edit.threshold_max;
         this.edit.visible = false;
       }
     },
@@ -367,8 +367,8 @@ export default {
         for (let x = 0; x < this.fundData.length; x++) {
           this.fundData[x].push = this.fundData[x].push == 1 ? true : false;
           if (this.fundData[x] != null && this.fundData[x].length != 0) {
-            this.fundData[x].min = this.fundData[x].push_threshold[0];
-            this.fundData[x].max = this.fundData[x].push_threshold[1];
+            this.fundData[x].threshold_min = this.fundData[x].push_threshold[0];
+            this.fundData[x].threshold_max = this.fundData[x].push_threshold[1];
           }
         }
 

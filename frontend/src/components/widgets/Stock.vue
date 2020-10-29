@@ -213,8 +213,8 @@ export default {
       this.edit.code = item.code;
       this.edit.name = item.name;
       this.edit.push = item.push;
-      this.edit.min = item.min;
-      this.edit.max = item.max;
+      this.edit.threshold_min = item.threshold_min;
+      this.edit.threshold_max = item.threshold_max;
       this.edit.index = index;
       this.edit.visible = true;
     },
@@ -227,8 +227,8 @@ export default {
         market: "1",
         code: "",
         push: false,
-        min: 0,
-        max: 0,
+        threshold_min: 0,
+        threshold_max: 0,
       };
     },
     async stockSortEditSubmit(list) {
@@ -263,8 +263,8 @@ export default {
             name: this.edit.name,
             market: this.edit.market,
             push: this.edit.push ? 1 : 0,
-            threshold_max: this.edit.max,
-            threshold_min: this.edit.min,
+            threshold_max: this.edit.threshold_max,
+            threshold_min: this.edit.threshold_min,
           });
           this.$message({
             message: res["msg"],
@@ -285,8 +285,8 @@ export default {
         this.stockSortEdit.list[index].code = this.edit.code;
         this.stockSortEdit.list[index].name = this.edit.name;
         this.stockSortEdit.list[index].push = this.edit.push;
-        this.stockSortEdit.list[index].threshold_min = this.edit.min;
-        this.stockSortEdit.list[index].threshold_max = this.edit.max;
+        this.stockSortEdit.list[index].threshold_min = this.edit.threshold_min;
+        this.stockSortEdit.list[index].threshold_max = this.edit.threshold_max;
         this.edit.visible = false;
       }
     },
@@ -361,8 +361,8 @@ export default {
           this.stockData[x].market = String(this.stockData[x].market);
           this.stockData[x].push = this.stockData[x].push == 1 ? true : false;
           if (this.stockData[x] != null && this.stockData[x].length != 0) {
-            this.stockData[x].min = this.stockData[x].push_threshold[0];
-            this.stockData[x].max = this.stockData[x].push_threshold[1];
+            this.stockData[x].threshold_min = this.stockData[x].push_threshold[0];
+            this.stockData[x].threshold_max = this.stockData[x].push_threshold[1];
           }
         }
 
