@@ -98,13 +98,13 @@
           <div class="div-flex">
             <el-input
               size="mini"
-              v-model="edit.min"
+              v-model="edit.threshold_min"
               placeholder="最小值"
             ></el-input
             >~
             <el-input
               size="mini"
-              v-model="edit.max"
+              v-model="edit.threshold_max"
               placeholder="最大值"
             ></el-input>
           </div>
@@ -285,8 +285,8 @@ export default {
         this.stockSortEdit.list[index].code = this.edit.code;
         this.stockSortEdit.list[index].name = this.edit.name;
         this.stockSortEdit.list[index].push = this.edit.push;
-        this.stockSortEdit.list[index].min = this.edit.min;
-        this.stockSortEdit.list[index].max = this.edit.max;
+        this.stockSortEdit.list[index].threshold_min = this.edit.min;
+        this.stockSortEdit.list[index].threshold_max = this.edit.max;
         this.edit.visible = false;
       }
     },

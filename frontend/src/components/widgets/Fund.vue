@@ -116,13 +116,13 @@
           <div class="div-flex">
             <el-input
               size="mini"
-              v-model="edit.min"
+              v-model="edit.threshold_min"
               placeholder="最小值"
             ></el-input
             >~
             <el-input
               size="mini"
-              v-model="edit.max"
+              v-model="edit.threshold_max"
               placeholder="最大值"
             ></el-input>
           </div>
@@ -299,8 +299,8 @@ export default {
         this.fundSortEdit.list[index].code = this.edit.code;
         this.fundSortEdit.list[index].name = this.edit.name;
         this.fundSortEdit.list[index].push = this.edit.push;
-        this.fundSortEdit.list[index].min = this.edit.min;
-        this.fundSortEdit.list[index].max = this.edit.max;
+        this.fundSortEdit.list[index].threshold_min = this.edit.min;
+        this.fundSortEdit.list[index].threshold_max = this.edit.max;
         this.edit.visible = false;
       }
     },
@@ -346,8 +346,11 @@ export default {
             rows: temp,
           };
 
-          var listLength = this.fundData[x].price_list.length;
-          this.latestRange = this.fundData[x].price_list[listLength - 1].range;
+          if (this.fundData[x].price_list.length != 0) {
+            var listLen = this.fundData[x].price_list.length;
+            this.latestRange = this.fundData[x].price_list[listLen - 1].range;
+          }
+
           return;
         }
       }
@@ -384,8 +387,8 @@ export default {
         };
 
         // 初始化默认展示的基金
-        var listLength = res.data[0].price_list.length;
-        this.latestRange = res.data[0].price_list[listLength - 1].range;
+        var listLen = res.data[0].price_list.length;
+        this.latestRange = res.data[0].price_list[listLen - 1].range;
 
         this.$nextTick((_) => {
           for (let x = 0; x < this.fundData.length; x++) {
