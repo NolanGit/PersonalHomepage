@@ -38,13 +38,13 @@
         </span>
         <span
           style="color: #67c23a"
-          v-if="(chartData.rows.length != 0) & (latestRange > 0)"
+          v-if="(chartData.rows.length != 0) & (latestRange <= 0)"
         >
           {{ latestRange }}
         </span>
         <span
           style="color: #67c23a"
-          v-if="(chartData.rows.length != 0) & (latestRange > 0)"
+          v-if="(chartData.rows.length != 0) & (latestRange <= 0)"
         >
           %
         </span>
