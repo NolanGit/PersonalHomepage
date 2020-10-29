@@ -16,34 +16,18 @@
       >
         暂无数据
       </a>
-      <span
-        class="better_font_style"
-        style="font-size: 12px; text-align: left"
-        v-if="(chartData.rows.length != 0) & (latestRange > 0)"
-      >
-        涨跌幅:+
-      </span>
-      <span
-        class="better_font_style"
-        style="font-size: 12px; text-align: left"
-        v-if="(chartData.rows.length != 0) & (latestRange <= 0)"
-      >
-        涨跌幅:
-      </span>
-      <span
-        class="better_font_style"
-        style="font-size: 12px; text-align: left"
-        v-if="chartData.rows.length != 0"
-      >
-        {{ latestRange }}
-      </span>
-      <span
-        class="better_font_style"
-        style="font-size: 12px; text-align: left"
-        v-if="chartData.rows.length != 0"
-      >
-        %
-      </span>
+      <div class="better_font_style" style="text-align: left; font-size: 12px">
+        <span v-if="(chartData.rows.length != 0) & (latestRange > 0)">
+          涨跌幅：+
+        </span>
+        <span v-if="(chartData.rows.length != 0) & (latestRange <= 0)">
+          涨跌幅:
+        </span>
+        <span v-if="chartData.rows.length != 0">
+          {{ latestRange }}
+        </span>
+        <span v-if="chartData.rows.length != 0"> % </span>
+      </div>
       <ve-line
         height="215px"
         :settings="chartSettings"
