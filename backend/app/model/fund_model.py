@@ -15,6 +15,7 @@ class fund(BaseModel):
 class fund_price(BaseModel):
     fund_id = IntegerField()
     price = FloatField()
+    range = FloatField()
     update_time = DateTimeField()
 
     class Meta:

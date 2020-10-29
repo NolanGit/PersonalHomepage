@@ -62,9 +62,10 @@ def get_fund_price(fund_id, fund_code):
     r = requests.get(FUND_BASE_URL + str(fund_code) + '.js')
     splited_text = r.text.split('\"')
     price = splited_text[19]
+    fund_range = splited_text[23]
     print('[' + str(fund_code) + ']的价格为:' + str(price) + '元')
 
-    data_source.append((fund_id, price, datetime.datetime.now()))
+    data_source.append((fund_id, price, fund_range, datetime.datetime.now()))
 
 
 def check_time():
@@ -119,6 +120,6 @@ if __name__ == '__main__':
     for t in threads:
         t.join()
 
-    field = [fund_price.fund_id, fund_price.price, fund_price.update_time]
+    field = [fund_price.fund_id, fund_price.price, fund_price.range, fund_price.update_time]
     fund_price.insert_many(data_source, field).execute()
     fund_push_generator()

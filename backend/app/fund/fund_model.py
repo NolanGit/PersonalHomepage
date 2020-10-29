@@ -20,7 +20,7 @@ class Fund(Base):
 
     def get_price(self, limit):
         fund_price_query = fund_price.select().where(fund_price.fund_id == self.id).dicts()
-        self.price_list = [{'price': _['price'], 'update_time': _['update_time'].strftime("%m-%d %H:%M")} for _ in fund_price_query]
+        self.price_list = [{'price': _['price'], 'range': _['range'], 'update_time': _['update_time'].strftime("%m-%d %H:%M")} for _ in fund_price_query]
         return self
 
     def complete(self):

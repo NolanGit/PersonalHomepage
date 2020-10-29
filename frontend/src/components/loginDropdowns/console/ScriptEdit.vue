@@ -642,6 +642,13 @@ export default {
   },
   data() {
     return {
+      edit: {
+        title: "",
+        start_folder: "",
+        start_script: "",
+        type: 1,
+        formData: [],
+      },
       singleDataOptionDialog: {
         visible: false,
         index: 0,
