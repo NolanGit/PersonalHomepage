@@ -290,14 +290,26 @@
 
 功能：爬取基金数据，并可以设置超过阈值后提醒功能。
 
-## License
+## 致谢
 
-[MPL-2.0](https://opensource.org/licenses/MPL-2.0)
+💖本项目的开发依赖的大量的优秀开源项目以及网站服务：
+
+- [必应](https://cn.bing.com)
+- [Server酱](http://sc.ftqq.com)
+- [和风天气](https://www.heweather.com/documents/api/)
+- [translators](https://github.com/UlionTse/translators)
+- [天天基金网](http://1234567.com.cn/)
+- [第一黄金网](http://www.dyhjw.com/hjtd)
+- [新浪股票接口](http://hq.sinajs.cn/list=int_nasdaq)
+
+使用缓存数据和限制频次等方法对代码进行了优化，以避免爬取数据对网站造成较大的压力。
+
+所获得数据仅供学习使用，如有侵权，请联系删除。
 
 ## 联系方式
 
 📧邮箱：shr1213@live.com
 
-## 致谢
+## License
 
-💖本项目的开发依赖的大量的优秀开源项目以及网站服务：[和风天气](https://www.heweather.com/documents/api/)、[Server酱](http://sc.ftqq.com)、[translators](https://github.com/UlionTse/translators)、[新浪股票接口](http://hq.sinajs.cn/list=int_nasdaq)、[第一黄金网](http://www.dyhjw.com/hjtd)、[天天基金网](http://1234567.com.cn/)、[必应](https://cn.bing.com)、
+[MPL-2.0](https://opensource.org/licenses/MPL-2.0)
