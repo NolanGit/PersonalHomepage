@@ -192,6 +192,7 @@ export default {
     this.chartSettings = {
       min: ["dataMin"],
       max: ["dataMax"],
+      digit: 4,
     };
     return {
       fundData: [],
