@@ -200,7 +200,7 @@ export default {
       this.edit.visible = true;
     },
     notify() {
-      this.notifyVisible = true;
+      this.notifyVisible = !this.notifyVisible;
     },
     sort() {
       this.stockSortEdit.visible = true;
@@ -361,8 +361,12 @@ export default {
           this.stockData[x].market = String(this.stockData[x].market);
           this.stockData[x].push = this.stockData[x].push == 1 ? true : false;
           if (this.stockData[x] != null && this.stockData[x].length != 0) {
-            this.stockData[x].threshold_min = this.stockData[x].push_threshold[0];
-            this.stockData[x].threshold_max = this.stockData[x].push_threshold[1];
+            this.stockData[x].threshold_min = this.stockData[
+              x
+            ].push_threshold[0];
+            this.stockData[x].threshold_max = this.stockData[
+              x
+            ].push_threshold[1];
           }
         }
 

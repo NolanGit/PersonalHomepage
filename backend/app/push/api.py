@@ -61,6 +61,7 @@ def add():
                 'msg': '定时运行时间不可以小于当前时间',
             }
             return jsonify(response), 500
+            
         user_id = request.get_json()['user_id']
         widget_id = request.get_json()['widget_id']
         push_list = PushList(user_id=user_id, widget_id=widget_id).push_list_get().push_list
@@ -102,10 +103,14 @@ def edit():
         if notify_trigger_time < datetime.datetime.now():
             return rsp.failed('定时运行时间不可以小于当前时间'), 500
 
-        PushData(id=request.get_json()['id']).delete()
+        user_id = request.get_json()['user_id']
+        widget_id = request.get_json()['widget_id']
+        push_list = PushList(user_id=user_id, widget_id=widget_id).push_list_get().push_list
+        for push_data in push_list:
+            push_data.delete()
         PushData(
-            user_id=request.get_json()['user_id'],
-            widget_id=request.get_json()['widget_id'],
+            user_id=user_id,
+            widget_id=widget_id,
             notify=request.get_json()['notify'],
             notify_method=request.get_json()['notify_method'],
             notify_interval_raw=notify_interval_raw,

@@ -223,7 +223,7 @@ export default {
       this.edit.visible = true;
     },
     notify() {
-      this.notifyVisible = true;
+      this.notifyVisible = !this.notifyVisible;
     },
     sort() {
       this.fundSortEdit.visible = true;
