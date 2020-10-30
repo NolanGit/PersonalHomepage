@@ -19,8 +19,8 @@ class Fund(Base):
             self.name = name
 
     def get_price(self, limit):
-        fund_price_query = fund_price.select().where(fund_price.fund_id == self.id).dicts()
-        self.price_list = [{'price': _['price'], 'range': _['range'], 'update_time': _['update_time'].strftime("%m-%d %H:%M")} for _ in fund_price_query]
+        fund_price_query = fund_price.select().where(fund_price.fund_id == self.id).order_by(-fund_price.id).limit(150).dicts()
+        self.price_list = [{'price': _['price'], 'range': _['range'], 'update_time': _['update_time'].strftime("%m-%d %H:%M")} for _ in fund_price_query[::-1]]
         return self
 
     def complete(self):
