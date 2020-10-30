@@ -106,3 +106,5 @@ backend/data.sqlite
 backend/app/homepage.config
 /upload
 /wallpapers
+*.crt
+*.key
