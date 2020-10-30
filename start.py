@@ -84,7 +84,6 @@ def msg():
 
 
 def msg2():
-    print('\n')
     print('-' * 30)
     print('本项目默认启动使用http协议，如果需要使用https协议，请在打开https开关（backend/app/homepage.config中配置HTTPS=True）后，将你的crt和key文件更名为\'homepage.crt\'和\'homepage.key\'后，放在/backend下')
     print('-' * 30)
@@ -100,17 +99,18 @@ if first_excution == 'n' or first_excution == 'N':
 
     while True:
         print('请选择需要执行的操作：\n    1.我现在需要做什么\n    2.执行初始化sql\n    3.https相关\n    0.退出')
-        option = input('输入需要执行的操作数字(1/2/3):')
+        option = input('输入需要执行的操作数字(1/2/3/0):')
         print('')
         if str(option) == '1':
             msg()
         elif str(option) == '2':
             break
         elif str(option) == '3':
-            is_https=input('是否打开https（需要有证书）')
-            if str(is_htpps)=='1':
+            is_https=input('是否打开https（需要有证书）(y/n)')
+            if str(is_https)=='y':
                 with open(CONFIG_PATH,'a')as w:
                     w.write('\nHTTPS = True')
+                print('\n打开成功！')
                 msg2()
             else:
                 continue
