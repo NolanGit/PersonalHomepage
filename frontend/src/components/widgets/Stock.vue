@@ -399,7 +399,7 @@ export default {
       }
     },
     autoSwitch() {
-      window.clearInterval(this.switchTimer);
+      window.clearInterval(this.switchTimerStock);
       for (let x = 0; x < this.stockData.length; x++) {
         if (this.stockData[x].name == this.activeName) {
           if (x + 1 == this.stockData.length) {
@@ -409,12 +409,12 @@ export default {
           break;
         }
       }
-      this.switchTimer = window.setTimeout(this.autoSwitch, 10000);
+      this.switchTimerStock = window.setTimeout(this.autoSwitch, 10000);
     },
   },
   mounted() {
     this.get();
-    this.switchTimer = window.setTimeout(this.autoSwitch, 10000);
+    this.switchTimerStock = window.setTimeout(this.autoSwitch, 10000);
     this.timer = window.setInterval(this.get, this.flush);
   },
   beforeDestroy() {
