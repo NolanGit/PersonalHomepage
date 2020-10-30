@@ -86,7 +86,7 @@ def msg():
 def msg2():
     print('\n')
     print('-' * 30)
-    print('本项目默认启动使用http协议，如果需要使用https协议，请将你的crt和key文件更名为\'homepage.crt\'和\'homepage.key\'后，放在/backend目录下即可')
+    print('本项目默认启动使用http协议，如果需要使用https协议，请在打开https开关（backend/app/homepage.config中配置HTTPS=True）后，将你的crt和key文件更名为\'homepage.crt\'和\'homepage.key\'后，放在/backend下')
     print('-' * 30)
 
 
@@ -107,7 +107,13 @@ if first_excution == 'n' or first_excution == 'N':
         elif str(option) == '2':
             break
         elif str(option) == '3':
-            msg2()
+            is_https=input('是否打开https（需要有证书）')
+            if str(is_htpps)=='1':
+                with open(CONFIG_PATH,'a')as w:
+                    w.write('\nHTTPS = True')
+                msg2()
+            else:
+                continue
         elif str(option) == '0':
             bye()
         else:

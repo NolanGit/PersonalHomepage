@@ -19,9 +19,7 @@ if __name__ == '__main__':
     except:
         print('未指定端口，使用默认端口50000')
         port = 50000
-    config = {'host': '0.0.0.0', 'port': port, 'debug': True, 'ssl_context': ('homepage.crt', 'homepage.key')}
     if HTTPS:
-        app.run(**config)
+        app.run(host = '0.0.0.0', port = port, debug = True, ssl_context = ('homepage.crt', 'homepage.key'))
     else:
-        config.pop('ssl_context')
-        app.run(**config)
+        app.run(host = '0.0.0.0', port = port, debug = True)
