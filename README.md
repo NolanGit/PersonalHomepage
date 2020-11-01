@@ -253,7 +253,7 @@
 
 按钮：鼠标hover省略号，可以弹出三个按钮：编辑和删除-对选中的便签进行编辑或删除，提交后将所有便签保存为一个新版本；提醒-点击后弹出编辑提醒对话框，可以通过微信/邮件的方式提醒便签内容，最小颗粒度为五分钟。下方的圆形按钮分别为新增按钮和时间机器按钮，功能不再赘述
 
-![image](https://user-images.githubusercontent.com/27627484/90039924-e549ae00-dcf9-11ea-97c5-6c7b69b197ea.png)
+![image](https://user-images.githubusercontent.com/27627484/97806132-097fb000-1c95-11eb-8bb7-aa3959567185.png)
 
 ![image](https://user-images.githubusercontent.com/27627484/89022948-69448300-d355-11ea-893d-2deb553072bc.png)
 
