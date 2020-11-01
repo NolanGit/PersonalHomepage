@@ -143,7 +143,6 @@
           v-if="edit.action == 'addWidget'"
           :key="Math.random()"
           size="mini"
-          height="400"
           :data="widgets"
           stripe
           style="width: 100%"

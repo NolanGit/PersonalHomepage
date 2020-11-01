@@ -75,11 +75,18 @@ def alter(file, alter_dict):
 
 
 def msg():
+    print('\n')
     print('- 首先，在"frontend"目录下使用"npm i"安装必需前端组件，使用"npm run build"打包前端代码')
     print('- 接着，使用crontab将%s加入定时任务，频率为每15分钟运行一次，可直接复制参数:"*/5 * * * * %s"，配置完成后，应用内配置的脚本（获取App价格脚本、推送脚本）将在明天后被驱动运行，具体可在"控制台-运行脚本-定时任务"查看' % (SCHEDULE_SCRIPT_PATH, SCHEDULE_SCRIPT_PATH))
     print('- 然后，在backend/目录下运行"python3 run.py"（如不在此目录下运行会产生问题），此操作会启用服务并自动建表')
     print('- 接着，运行了run.py后，使用"ctrl+c"停止服务，切回到根目录，运行此初始化脚本(python3 start.py)以执行初始化SQL')
     print('- 最后，在backend/目录下运行"python3 run.py"，登录50000端口试试看吧！初始用户名为admin，密码为123456')
+
+
+def msg2():
+    print('-' * 30)
+    print('本项目默认启动使用http协议，如果需要使用https协议，请在打开https开关（backend/app/homepage.config中配置HTTPS=True）后，将你的crt和key文件更名为\'homepage.crt\'和\'homepage.key\'后，放在/backend下')
+    print('-' * 30)
 
 
 print('当前运行路径:%s' % CURRENT_RUNNING_PATH)
@@ -89,17 +96,29 @@ print('')
 if first_excution == 'n' or first_excution == 'N':
     import pymysql
     import configparser
-    print('请选择需要执行的操作：\n    1.我现在需要做什么\n    2.执行初始化sql')
-    option = input('输入需要执行的操作数字(1或2):')
-    print('')
-    if str(option) == '1':
-        msg()
-        bye()
-    elif str(option) == '2':
-        pass
-    else:
-        print('错误的选项，请输入1或2')
-        bye()
+
+    while True:
+        print('请选择需要执行的操作：\n    1.我现在需要做什么\n    2.执行初始化sql\n    3.https相关\n    0.退出')
+        option = input('输入需要执行的操作数字(1/2/3/0):')
+        print('')
+        if str(option) == '1':
+            msg()
+        elif str(option) == '2':
+            break
+        elif str(option) == '3':
+            is_https=input('是否打开https（需要有证书）(y/n)')
+            if str(is_https)=='y':
+                with open(CONFIG_PATH,'a')as w:
+                    w.write('\nHTTPS = True')
+                print('\n打开成功！')
+                msg2()
+            else:
+                continue
+        elif str(option) == '0':
+            bye()
+        else:
+            print('错误的选项，请输入操作数字')
+
     first_excution = input('那么，需要执行初始化SQL吗? (y/n):')
     print('')
     if first_excution != 'y':
@@ -235,6 +254,7 @@ if flag:
     print('基本操作已经全部完成了，还有几个步骤需要手动完成:')
     print('')
     msg()
+    msg2()
 else:
     print('存在失败的操作，终止执行，请手动排查。')
     exit()

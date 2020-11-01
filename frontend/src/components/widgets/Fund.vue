@@ -192,6 +192,7 @@ export default {
     this.chartSettings = {
       min: ["dataMin"],
       max: ["dataMax"],
+      digit: 4,
     };
     return {
       fundData: [],
@@ -223,7 +224,7 @@ export default {
       this.edit.visible = true;
     },
     notify() {
-      this.notifyVisible = true;
+      this.notifyVisible = !this.notifyVisible;
     },
     sort() {
       this.fundSortEdit.visible = true;
@@ -410,7 +411,7 @@ export default {
       }
     },
     autoSwitch() {
-      window.clearInterval(this.switchTimer);
+      window.clearInterval(this.switchTimerFund);
       for (let x = 0; x < this.fundData.length; x++) {
         if (this.fundData[x].name == this.activeName) {
           if (x + 1 == this.fundData.length) {
@@ -420,12 +421,12 @@ export default {
           break;
         }
       }
-      this.switchTimer = window.setTimeout(this.autoSwitch, 10000);
+      this.switchTimerFund = window.setTimeout(this.autoSwitch, 10000);
     },
   },
   mounted() {
     this.get();
-    this.switchTimer = window.setTimeout(this.autoSwitch, 10000);
+    this.switchTimerFund = window.setTimeout(this.autoSwitch, 10000);
     this.timer = window.setInterval(this.get, this.flush);
   },
   beforeDestroy() {

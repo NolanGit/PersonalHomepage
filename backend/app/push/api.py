@@ -62,15 +62,21 @@ def add():
             }
             return jsonify(response), 500
 
-        PushData(user_id=request.get_json()['user_id'],
-                 widget_id=request.get_json()['widget_id'],
-                 notify=request.get_json()['notify'],
-                 notify_method=request.get_json()['notify_method'],
-                 notify_interval_raw=notify_interval_raw,
-                 notify_interval_unit=notify_interval_unit,
-                 notify_interval=notify_interval,
-                 notify_trigger_time=notify_trigger_time - datetime.timedelta(minutes=1), # 因为推送也是异步的，颗粒度为五分钟，所以为了避免时间差稍差一点，所以减去一分钟
-                 update_time=datetime.datetime.now()).save()
+        user_id = request.get_json()['user_id']
+        widget_id = request.get_json()['widget_id']
+        push_list = PushList(user_id=user_id, widget_id=widget_id).push_list_get().push_list
+        for push_data in push_list:
+            push_data.delete()
+        PushData(
+            user_id=user_id,
+            widget_id=widget_id,
+            notify=request.get_json()['notify'],
+            notify_method=request.get_json()['notify_method'],
+            notify_interval_raw=notify_interval_raw,
+            notify_interval_unit=notify_interval_unit,
+            notify_interval=notify_interval,
+            notify_trigger_time=notify_trigger_time,
+            update_time=datetime.datetime.now()).save()
         return rsp.success()
 
     except Exception as e:
@@ -97,16 +103,21 @@ def edit():
         if notify_trigger_time < datetime.datetime.now():
             return rsp.failed('定时运行时间不可以小于当前时间'), 500
 
-        PushData(id=request.get_json()['id']).delete()
-        PushData(user_id=request.get_json()['user_id'],
-                 widget_id=request.get_json()['widget_id'],
-                 notify=request.get_json()['notify'],
-                 notify_method=request.get_json()['notify_method'],
-                 notify_interval_raw=notify_interval_raw,
-                 notify_interval_unit=notify_interval_unit,
-                 notify_interval=notify_interval,
-                 notify_trigger_time=notify_trigger_time - datetime.timedelta(minutes=1), # 因为推送也是异步的，颗粒度为五分钟，所以为了避免时间差稍差一点，所以减去一分钟
-                 update_time=datetime.datetime.now()).save()
+        user_id = request.get_json()['user_id']
+        widget_id = request.get_json()['widget_id']
+        push_list = PushList(user_id=user_id, widget_id=widget_id).push_list_get().push_list
+        for push_data in push_list:
+            push_data.delete()
+        PushData(
+            user_id=user_id,
+            widget_id=widget_id,
+            notify=request.get_json()['notify'],
+            notify_method=request.get_json()['notify_method'],
+            notify_interval_raw=notify_interval_raw,
+            notify_interval_unit=notify_interval_unit,
+            notify_interval=notify_interval,
+            notify_trigger_time=notify_trigger_time,
+            update_time=datetime.datetime.now()).save()
         return rsp.success()
 
     except Exception as e:

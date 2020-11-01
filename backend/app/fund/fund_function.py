@@ -76,7 +76,7 @@ def check_time():
     c_current_week = int(time.strftime('%w', china_time))
 
     if c_current_week != 6 and c_current_week != 0:  # 非周六周日
-        if 9.25 < c_current_time < 11.35 or 12.55 < c_current_time < 15.05:  # 囊括国内开盘时间
+        if 9.25 < c_current_time < 11.35 or 12.55 < c_current_time < 15.20:  # 囊括国内开盘时间
             return True
     return False
 

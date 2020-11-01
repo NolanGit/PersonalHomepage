@@ -21,8 +21,8 @@ class Stock(Base):
             self.market = market
 
     def get_price(self, limit):
-        stock_price_query = stock_price.select().where(stock_price.stock_id == self.id).dicts()
-        self.price_list = [{'price': _['price'], 'update_time': _['update_time'].strftime("%m-%d %H:%M")} for _ in stock_price_query]
+        stock_price_query = stock_price.select().where(stock_price.stock_id == self.id).order_by(-stock_price.id).limit(150).dicts()
+        self.price_list = [{'price': _['price'], 'update_time': _['update_time'].strftime("%m-%d %H:%M")} for _ in stock_price_query[::-1]]
         return self
 
     def complete(self):
