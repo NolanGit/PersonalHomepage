@@ -5,14 +5,20 @@
         <el-card>
           <!-- title area -->
           <el-row>
-            <div>key</div>
-            <el-radio-group v-model="radio1">
-              <el-radio-button label="上海"></el-radio-button>
-              <el-radio-button label="北京"></el-radio-button>
+            <div>{{ key }}</div>
+            <el-radio-group v-model="radio1" v-if="value.length > 1">
+              <el-radio-button
+                :label="singleValue.title"
+                v-for="singleValue in value"
+                :key="singleValue"
+              ></el-radio-button>
             </el-radio-group>
           </el-row>
           <!-- content area -->
-          <el-row> </el-row>
+          <el-row>
+            <div v-for="link in value[0].url" :key="link"></div>
+            {{ link }}</el-row
+          >
         </el-card>
       </el-col>
     </el-row>
