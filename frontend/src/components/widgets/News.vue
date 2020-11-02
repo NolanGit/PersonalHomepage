@@ -6,7 +6,7 @@
           <!-- title area -->
           <el-row>
             <div>{{ data.title }}</div>
-            <el-radio-group v-model="value.choose" v-if="data.data.length > 1">
+            <el-radio-group v-model="data.choose" v-if="data.data.length > 1">
               <el-radio-button
                 :label="singleValue.title"
                 v-for="singleValue in data.data"
@@ -52,6 +52,7 @@ export default {
         temp[temp.length - 1] = [];
         for (let x = 0; x < this.rawData.length; x++) {
           this.rawData[x].choose = this.rawData[x].data[0].title;
+          this.rawData[x].show = this.rawData[x].data[0].data;
           if (count < STEP) {
             count += 1;
           } else {
@@ -63,7 +64,7 @@ export default {
           temp[temp.length - 1].push(this.rawData[x]);
         }
         this.cookedData = temp;
-        console.log(temp);
+        console.log(this.cookedData);
       } catch (e) {
         console.log(e);
         this.$message({
