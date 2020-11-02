@@ -31,7 +31,7 @@ export default {
   data() {
     return {
       rawData: [],
-      cookedData: [],
+      cookedData: {},
     };
   },
   methods: {
@@ -42,16 +42,18 @@ export default {
         const STEP1 = 4; // 每行有几个
         let temp1 = [];
         let count = 0;
+        temp1.push({});
         for (let k in this.rawData) {
           if (!count < 4) {
             temp1[temp1.length - 1][k] = this.rawData[k];
             count += 1;
           } else {
             count = 0;
-            temp1.push([]);
+            temp1.push({});
             temp1[temp1.length - 1][k] = this.rawData[k];
           }
         }
+        this.cookedData = temp1;
         console.log(temp1);
       } catch (e) {
         console.log(e);
