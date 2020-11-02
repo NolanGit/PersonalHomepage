@@ -4,23 +4,26 @@
       <el-col :span="6" v-for="data in singleDataSuite" :key="data">
         <el-card>
           <el-row>
-            <div>{{ data.title }}</div>
-            <el-radio-group
-              size="mini"
-              v-model="data.choose"
-              v-if="data.data.length > 1"
-            >
-              <el-radio-button
-                :label="singleValue.title"
-                v-for="singleValue in data.data"
-                :key="singleValue"
-              ></el-radio-button>
-            </el-radio-group>
+            <div class="div-flex">
+              <div>{{ data.title }}</div>
+              <el-radio-group
+                size="mini"
+                v-model="data.choose"
+                v-if="data.data.length > 1"
+                @change="aaa()"
+              >
+                <el-radio-button
+                  :label="singleValue.title"
+                  v-for="singleValue in data.data"
+                  :key="singleValue.title"
+                  >singleValue.title</el-radio-button
+                >
+              </el-radio-group>
+            </div>
           </el-row>
           <el-row>
-            <div v-for="link in data.show" :key="link"></div>
-            {{ link }}</el-row
-          >
+            <div v-for="link in data.show" :key="link">{{ link }}</div>
+          </el-row>
         </el-card>
       </el-col>
     </el-row>
@@ -43,6 +46,9 @@ export default {
     };
   },
   methods: {
+    aaa(bb) {
+      console.log(bb);
+    },
     async get() {
       try {
         const { data: res } = await axios.post(api.get);
