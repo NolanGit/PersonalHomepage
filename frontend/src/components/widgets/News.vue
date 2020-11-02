@@ -3,7 +3,6 @@
     <el-row v-for="singleDataSuite in cookedData" :key="singleDataSuite">
       <el-col :span="6" v-for="data in singleDataSuite" :key="data">
         <el-card>
-          <!-- title area -->
           <el-row>
             <div>{{ data.title }}</div>
             <el-radio-group v-model="data.choose" v-if="data.data.length > 1">
@@ -14,10 +13,9 @@
               ></el-radio-button>
             </el-radio-group>
           </el-row>
-          <!-- content area -->
           <el-row>
             <div v-for="link in data.show" :key="link"></div>
-            {{ link.name }}</el-row
+            {{ link }}</el-row
           >
         </el-card>
       </el-col>
@@ -53,6 +51,10 @@ export default {
         for (let x = 0; x < this.rawData.length; x++) {
           this.rawData[x].choose = this.rawData[x].data[0].title;
           this.rawData[x].show = this.rawData[x].data[0].data;
+          this.rawData[x].chooseItems = [];
+          for (let y = 0; y < this.rawData[x].data.length; y++) {
+            this.rawData[x].chooseItems.push(this.rawData[x].data[y].title);
+          }
           if (count < STEP) {
             count += 1;
           } else {
