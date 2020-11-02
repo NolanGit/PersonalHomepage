@@ -99,6 +99,13 @@
               :flush="singleWidget.auto_update"
               @done="done(suiteIndex, index)"
             />
+            <news
+              v-if="singleWidget.name == 'news'"
+              :user_id="user_id"
+              :widget_id="singleWidget.id"
+              :flush="singleWidget.auto_update"
+              @done="done(suiteIndex, index)"
+            />
           </el-card>
         </transition>
       </el-col>
@@ -116,6 +123,7 @@ import translator from "./widgets/Translator.vue";
 import wallpapers from "./widgets/Wallpapers.vue";
 import stock from "./widgets/Stock.vue";
 import fund from "./widgets/Fund.vue";
+import news from "./widgets/News.vue";
 
 const api = {
   get: "/widget/get",
@@ -137,6 +145,7 @@ export default {
     wallpapers,
     stock,
     fund,
+    news,
   },
   watch: {
     user_id(newVal, oldVal) {
