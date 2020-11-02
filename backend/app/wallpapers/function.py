@@ -14,7 +14,7 @@ except:
 
 cf = configparser.ConfigParser()
 cf.read('../homepage.config')
-WALLPAPERS_PATH = cf.get('config', 'WALLPAPERS_PATH')
+WALLPAPERS_PATH = cf.get('config', 'BASE_PATH') + 'wallpapers/'
 
 base_url = "https://cn.bing.com/HPImageArchive.aspx?format=js&idx=0&n=2"
 r = requests.get(base_url)
