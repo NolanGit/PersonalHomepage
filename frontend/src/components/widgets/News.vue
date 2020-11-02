@@ -48,13 +48,16 @@ export default {
         const STEP = 4; // 每行有几个
         let temp = [];
         let count = 0;
-        temp.push({});
+        temp.push([]);
+        temp[temp.length - 1] = [];
         for (let x = 0; x < this.rawData.length; x++) {
+          this.rawData[x].choose = this.rawData[x].data[0].title;
           if (count < STEP) {
             count += 1;
           } else {
             count = 0;
             temp.push([]);
+            temp[temp.length - 1] = [];
             count += 1;
           }
           temp[temp.length - 1].push(this.rawData[x]);
