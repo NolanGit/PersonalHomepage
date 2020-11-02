@@ -27,19 +27,19 @@ NEWS_JSON_PATH = cf.get('config', 'BASE_PATH') + 'backend/app/news/json'
 def get():
     try:
         temp = {}
-        r = []
+        r = {}
         files = os.listdir(NEWS_JSON_PATH)
         for file in files:
             file_path = os.path.join(NEWS_JSON_PATH, file)
             temp[file] = json.load(open(file_path))
-        r.append({'百度': [temp.pop('baidu_now.json'), temp.pop('baidu_today.json'), temp.pop('baidu_week.json')]})
-        r.append({'什么值得买': [temp.pop('smzdm_article_today.json'), temp.pop('smzdm_article_week.json'), temp.pop('smzdm_article_month.json')]})
-        r.append({'知乎': [temp.pop('zhihu_daily.json'), temp.pop('zhihu_good.json'), temp.pop('zhihu_hot.json')]})
-        r.append({'微信': [temp.pop('weixin.json'), temp.pop('weixin_hot.json')]})
-        r.append({'黑客派': [temp.pop('hacpai_hot.json'), temp.pop('hacpai_play.json')]})
-
+        r['百度']= [temp.pop('baidu_now.json'), temp.pop('baidu_today.json'), temp.pop('baidu_week.json')]
+        r['什么值得买']= [temp.pop('smzdm_article_today.json'), temp.pop('smzdm_article_week.json'), temp.pop('smzdm_article_month.json')]
+        r['知乎']= [temp.pop('zhihu_daily.json'), temp.pop('zhihu_good.json'), temp.pop('zhihu_hot.json')]
+        r['微信']= [temp.pop('weixin.json'), temp.pop('weixin_hot.json')]
+        r['黑客派']= [temp.pop('hacpai_hot.json'), temp.pop('hacpai_play.json')]
+        
         for key in temp:
-            r.append({[temp[key]['title']]: [temp[key]]})
+            r[temp[key]['title']]= [temp[key]]
 
         return rsp.success(r)
     except Exception as e:

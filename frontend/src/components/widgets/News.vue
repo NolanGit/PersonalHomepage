@@ -39,12 +39,15 @@ export default {
         this.raw_data = res.data;
         const STEP1 = 4; // 每行有几个
         let temp1 = [];
-        for (let x = 0; x < this.raw_data.length; x += STEP1) {
-          temp1.push([]);
-          for (let y = 0; y < STEP1; y++) {
-            if (this.raw_data[x + y] != undefined) {
-              temp1[temp1.length - 1].push(this.raw_data[x + y]);
-            }
+        let count = 0;
+        for (k in this.raw_data) {
+          if (!count < 4) {
+            temp1[temp1.length - 1][k] = this.raw_data[k];
+            count += 1;
+          } else {
+            count = 0;
+            temp1.push([]);
+            temp1[temp1.length - 1][k] = this.raw_data[k];
           }
         }
         console.log(temp1);
