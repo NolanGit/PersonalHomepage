@@ -16,8 +16,8 @@
           </el-row>
           <!-- content area -->
           <el-row>
-            <div v-for="link in value[0].url" :key="link"></div>
-            {{ link }}</el-row
+            <div v-for="link in data.show" :key="link"></div>
+            {{ link.name }}</el-row
           >
         </el-card>
       </el-col>
