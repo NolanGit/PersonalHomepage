@@ -1,10 +1,11 @@
 <template>
   <section>
-    <el-row>
-      <el-col :span="6">
+    <el-row v-for="singleDataSuite in cookedData" :key="singleDataSuite">
+      <el-col :span="6" v-for="data in singleDataSuite" :key="data">
         <el-card>
           <!-- title area -->
           <el-row>
+            <div>data</div>
             <el-radio-group v-model="radio1">
               <el-radio-button label="上海"></el-radio-button>
               <el-radio-button label="北京"></el-radio-button>
@@ -29,25 +30,26 @@ export default {
   watch: {},
   data() {
     return {
-      raw_data: [],
+      rawData: [],
+      cookedData: [],
     };
   },
   methods: {
     async get() {
       try {
         const { data: res } = await axios.post(api.get);
-        this.raw_data = res.data;
+        this.rawData = res.data;
         const STEP1 = 4; // 每行有几个
         let temp1 = [];
         let count = 0;
-        for (k in this.raw_data) {
+        for (let k in this.rawData) {
           if (!count < 4) {
-            temp1[temp1.length - 1][k] = this.raw_data[k];
+            temp1[temp1.length - 1][k] = this.rawData[k];
             count += 1;
           } else {
             count = 0;
             temp1.push([]);
-            temp1[temp1.length - 1][k] = this.raw_data[k];
+            temp1[temp1.length - 1][k] = this.rawData[k];
           }
         }
         console.log(temp1);
