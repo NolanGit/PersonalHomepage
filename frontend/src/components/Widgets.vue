@@ -33,10 +33,10 @@
           <el-card
             shadow="hover"
             v-show="singleWidget.show"
-            style="height: 370px"
             class="margin_left-medium margin_right-medium"
           >
             <weather
+              style="height: 370px"
               v-if="singleWidget.name == 'weather'"
               :user_id="user_id"
               :widget_id="singleWidget.id"
@@ -45,6 +45,7 @@
               @done="done(suiteIndex, index)"
             />
             <bookmarks
+              style="height: 370px"
               v-if="singleWidget.name == 'bookmarks'"
               :user_id="user_id"
               :widget_id="singleWidget.id"
@@ -52,6 +53,7 @@
               @done="done(suiteIndex, index)"
             />
             <appMonitor
+              style="height: 370px"
               v-if="singleWidget.name == 'app'"
               :user_id="user_id"
               :widget_id="singleWidget.id"
@@ -60,6 +62,7 @@
               @done="done(suiteIndex, index)"
             />
             <gold
+              style="height: 370px"
               v-if="singleWidget.name == 'gold'"
               :user_id="user_id"
               :widget_id="singleWidget.id"
@@ -68,6 +71,7 @@
               @done="done(suiteIndex, index)"
             />
             <notes
+              style="height: 370px"
               v-if="singleWidget.name == 'notes'"
               :user_id="user_id"
               :widget_id="singleWidget.id"
@@ -76,14 +80,17 @@
               @done="done(suiteIndex, index)"
             />
             <translator
+              style="height: 370px"
               v-if="singleWidget.name == 'translator'"
               @done="done(suiteIndex, index)"
             />
             <wallpapers
+              style="height: 370px"
               v-if="singleWidget.name == 'wallpapers'"
               @done="done(suiteIndex, index)"
             />
             <stock
+              style="height: 370px"
               v-if="singleWidget.name == 'stock'"
               :user_id="user_id"
               :widget_id="singleWidget.id"
@@ -92,6 +99,7 @@
               @done="done(suiteIndex, index)"
             />
             <fund
+              style="height: 370px"
               v-if="singleWidget.name == 'fund'"
               :user_id="user_id"
               :widget_id="singleWidget.id"
@@ -99,12 +107,6 @@
               :flush="singleWidget.auto_update"
               @done="done(suiteIndex, index)"
             />
-          </el-card>
-          <el-card
-            shadow="hover"
-            v-show="singleWidget.show"
-            class="margin_left-medium margin_right-medium"
-          >
             <news
               v-if="singleWidget.name == 'news'"
               :user_id="user_id"
