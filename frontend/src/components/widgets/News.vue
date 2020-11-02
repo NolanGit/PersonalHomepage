@@ -1,15 +1,15 @@
 <template>
   <section>
     <el-row v-for="singleDataSuite in cookedData" :key="singleDataSuite">
-      <el-col :span="6" v-for="(value, key) in singleDataSuite" :key="key">
+      <el-col :span="6" v-for="data in singleDataSuite" :key="data">
         <el-card>
           <!-- title area -->
           <el-row>
-            <div>{{ key }}</div>
-            <el-radio-group v-model="radio1" v-if="value.length > 1">
+            <div>{{ data.title }}</div>
+            <el-radio-group v-model="value.choose" v-if="data.data.length > 1">
               <el-radio-button
                 :label="singleValue.title"
-                v-for="singleValue in value"
+                v-for="singleValue in data.data"
                 :key="singleValue"
               ></el-radio-button>
             </el-radio-group>
@@ -46,21 +46,21 @@ export default {
         const { data: res } = await axios.post(api.get);
         this.rawData = res.data;
         const STEP = 4; // 每行有几个
-        let temp1 = [];
+        let temp = [];
         let count = 0;
-        temp1.push({});
-        for (let k in this.rawData) {
+        temp.push({});
+        for (let x = 0; x < this.rawData.length; x++) {
           if (count < STEP) {
             count += 1;
           } else {
             count = 0;
-            temp1.push({});
+            temp.push([]);
             count += 1;
           }
-          temp1[temp1.length - 1][k] = this.rawData[k];
+          temp[temp.length - 1].push(this.rawData[x]);
         }
-        this.cookedData = temp1;
-        console.log(temp1);
+        this.cookedData = temp;
+        console.log(temp);
       } catch (e) {
         console.log(e);
         this.$message({
