@@ -99,6 +99,12 @@
               :flush="singleWidget.auto_update"
               @done="done(suiteIndex, index)"
             />
+          </el-card>
+          <el-card
+            shadow="hover"
+            v-show="singleWidget.show"
+            class="margin_left-medium margin_right-medium"
+          >
             <news
               v-if="singleWidget.name == 'news'"
               :user_id="user_id"

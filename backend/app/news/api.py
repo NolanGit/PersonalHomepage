@@ -39,7 +39,7 @@ def get():
         r.append({'title': '黑客派', 'data': [temp.pop('hacpai_hot.json'), temp.pop('hacpai_play.json')]})
 
         for key in temp:
-            r.append({'title': [temp[key]['title']], 'data': [temp[key]]})
+            r.append({'title': temp[key]['title'], 'data': [temp[key]]})
 
         return rsp.success(r)
     except Exception as e:

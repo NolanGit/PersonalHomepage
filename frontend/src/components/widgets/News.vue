@@ -5,9 +5,13 @@
         <el-card>
           <el-row>
             <div>{{ data.title }}</div>
-            <el-radio-group v-model="data.choose" v-if="data.data.length > 1">
+            <el-radio-group
+              size="mini"
+              v-model=ta.data.length > 1"
+            >
               <el-radio-button
-                :label="singleValue.title"
+                :label=""data.choose"
+              v-if="dasingleValue.title"
                 v-for="singleValue in data.data"
                 :key="singleValue"
               ></el-radio-button>
