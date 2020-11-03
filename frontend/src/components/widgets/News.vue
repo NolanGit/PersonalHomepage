@@ -21,8 +21,10 @@
               </el-radio-group>
             </div>
           </el-row>
-          <el-row>
-            <div v-for="link in data.show" :key="link">{{ link }}</div>
+          <el-row style="height: 300px">
+            <el-link type="primary" v-for="link in data.show" :key="link">{{
+              link.name
+            }}</el-link>
           </el-row>
         </el-card>
       </el-col>
