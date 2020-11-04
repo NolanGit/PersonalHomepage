@@ -231,7 +231,7 @@ def parse_v2ex():
             hot_name = soup_a.text.replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").strip()
             hot_url_raw = "https://www.v2ex.com" + soup_a.get('href')
             group = "v2ex"
-            # hot_url = "get/?url=" + multiple_replace(base64.urlsafe_b64encode(base64.urlsafe_b64encode(hot_url_raw.encode("utf-8")).decode("utf-8").encode("utf-8")).decode("utf-8").replace("=", "")[::-1]) + "&group=" + group + "&title=" + multiple_replace(base64.urlsafe_b64encode(base64.urlsafe_b64encode(hot_name.encode("utf-8")).decode("utf-8").encode("utf-8")).decode("utf-8").replace("=", "")[::-1])
+            hot_url = "get/?url=" + multiple_replace(base64.urlsafe_b64encode(base64.urlsafe_b64encode(hot_url_raw.encode("utf-8")).decode("utf-8").encode("utf-8")).decode("utf-8").replace("=", "")[::-1]) + "&group=" + group + "&title=" + multiple_replace(base64.urlsafe_b64encode(base64.urlsafe_b64encode(hot_name.encode("utf-8")).decode("utf-8").encode("utf-8")).decode("utf-8").replace("=", "")[::-1])
             blist["name"] = hot_name
             blist["url"] = hot_url
             blist["raw"] = hot_url_raw
@@ -1015,7 +1015,6 @@ def multi_run():
     threads.append(ts3)
     threads.append(ts27)
     threads.append(ts4)
-    threads.append(ts5)
     threads.append(ts6)
     threads.append(ts7)
     threads.append(ts8)
