@@ -7,7 +7,7 @@
     >
       <el-col :span="6" v-for="data in singleDataSuite" :key="data">
         <el-card shadow="hover" class="margin_bottom-medium">
-          <newsModule :newsData="data" />
+          <newsModule :newsData="data" @done="done()" />
         </el-card>
       </el-col>
     </el-row>
@@ -38,6 +38,9 @@ export default {
     };
   },
   methods: {
+    done() {
+      this.$emit("done");
+    },
     async get() {
       try {
         const { data: res } = await axios.post(api.get);
