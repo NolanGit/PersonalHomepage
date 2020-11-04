@@ -2,12 +2,12 @@
   <section>
     <el-row class="margin_bottom-medium">
       <div class="div-flex">
-        <div>{{ newsData.title }}</div>
+        <div style="text-align: left; flex-grow: 1">{{ newsData.title }}</div>
         <el-radio-group
           size="mini"
-          v-model="newsDataChoose"
+          v-model="newsDataCategory"
           v-if="newsData.chooseItems.length > 1"
-          @change="aaa(newsDataChoose)"
+          @change="categoryChoosed(newsDataCategory)"
         >
           <el-radio-button
             :id="singleValue"
@@ -18,15 +18,18 @@
         </el-radio-group>
       </div>
     </el-row>
-    <div>
+    <div style="text-align: left">
       <div class="scrollbar-div" style="max-height: 300px">
-        <el-link
-          type="primary"
-          v-for="link in newsDataShow"
+        <div
+          class="margin_bottom-mini"
+          v-for="(link, i) in newsDataShow"
           :key="link"
-          :href="link.url"
-          >{{ link.name }}</el-link
         >
+          <p>{{ i }}</p>
+          <p>.</p>
+          <el-link type="primary" :href="link.url">{{ link.name }} </el-link>
+          <br />
+        </div>
       </div>
     </div>
   </section>
@@ -40,17 +43,16 @@ export default {
   watch: {},
   data() {
     return {
-      newsDataChoose: undefined,
+      newsDataCategory: undefined,
       newsDataShow: undefined,
     };
   },
   methods: {
-    aaa(newsDataChoose) {
-      console.log(newsDataChoose);
+    categoryChoosed(newsDataCategory) {
       for (let x = 0; x < this.newsData.data.length; x++) {
         console.log(this.newsData.data[x]);
         console.log(this.newsData.data[x].title);
-        if (this.newsData.data[x].title == newsDataChoose) {
+        if (this.newsData.data[x].title == newsDataCategory) {
           console.log(this.newsData.data[x].data);
           this.newsDataShow = this.newsData.data[x].data;
           return;
@@ -59,7 +61,7 @@ export default {
     },
   },
   mounted() {
-    this.newsDataChoose = this.newsData.choose;
+    this.newsDataCategory = this.newsData.choose;
     this.newsDataShow = this.newsData.show;
     console.log(this.newsData);
   },

@@ -31,9 +31,6 @@ export default {
     };
   },
   methods: {
-    aaa(bb) {
-      console.log(bb);
-    },
     async get() {
       try {
         const { data: res } = await axios.post(api.get);
@@ -61,7 +58,6 @@ export default {
           temp[temp.length - 1].push(this.rawData[x]);
         }
         this.cookedData = temp;
-        console.log(this.cookedData);
       } catch (e) {
         console.log(e);
         this.$message({

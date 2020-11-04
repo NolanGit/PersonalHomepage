@@ -256,6 +256,10 @@
     margin-bottom: 40px;
 }
 
+.margin_bottom-mini {
+    margin-bottom: 5;
+}
+
 .margin_left-medium {
     margin-left: 20px;
 }
