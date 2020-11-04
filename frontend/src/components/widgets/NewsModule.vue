@@ -39,8 +39,17 @@
         源站访问失败（宕机或限制），请稍后再试
       </div>
     </div>
-    <div class="better_font_style" style="text-align: right">
-      {{ newsDataShow.time }}
+    <el-divider></el-divider>
+    <div
+      class="better_font_style"
+      style="
+        margin-top: 15px;
+        text-align: right;
+        font-size: 12px;
+        color: #909399;
+      "
+    >
+      {{ "更新时间：" + newsDataShow.time }}
     </div>
   </section>
 </template>
