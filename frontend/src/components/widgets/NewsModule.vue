@@ -5,7 +5,7 @@
         <div>{{ newsData.title }}</div>
         <el-radio-group
           size="mini"
-          v-model="newsDatachoose"
+          v-model="newsDataChoose"
           v-if="newsData.chooseItems.length > 1"
           @change="aaa(newsData.choose)"
         >
@@ -45,9 +45,9 @@ export default {
     };
   },
   methods: {
-    aaa(newsDatachoose) {
+    aaa(newsDataChoose) {
       for (let x = 0; x < this.newsData.data.length; x++) {
-        if (this.newsData.data[x].title == newsDatachoose) {
+        if (this.newsData.data[x].title == newsDataChoose) {
           this.newsDataShow = this.newsData.data[x].data;
           return;
         }
@@ -55,7 +55,7 @@ export default {
     },
   },
   mounted() {
-    this.newsDatachoose = this.newsData.choose;
+    this.newsDataChoose = this.newsData.choose;
     this.newsDataShow = this.newsData.show;
     console.log(this.newsData);
   },
