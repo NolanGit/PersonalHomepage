@@ -52,7 +52,7 @@ export default {
     },
   },
   mounted() {
-    console.log(newsData);
+    console.log(this.newsData);
   },
 };
 </script>
