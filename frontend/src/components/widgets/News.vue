@@ -1,10 +1,13 @@
 <template>
   <section>
-    <el-row v-for="singleDataSuite in cookedData" :key="singleDataSuite">
+    <el-row
+      :gutter="20"
+      v-for="singleDataSuite in cookedData"
+      :key="singleDataSuite"
+    >
       <el-col :span="6" v-for="data in singleDataSuite" :key="data">
         <el-card>
-          <el-row>
-            <newsModule :newsData="data"/>
+          <newsModule :newsData="data" />
         </el-card>
       </el-col>
     </el-row>
