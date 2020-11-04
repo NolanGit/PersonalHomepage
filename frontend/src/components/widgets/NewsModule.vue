@@ -22,7 +22,7 @@
       <div class="scrollbar-div" style="max-height: 300px">
         <el-link
           type="primary"
-          v-for="link in newsData.show"
+          v-for="link in newsDataShow"
           :key="link"
           :href="link.url"
           >{{ link.name }}</el-link
@@ -40,14 +40,15 @@ export default {
   watch: {},
   data() {
     return {
-      newsDatachoose: undefined,
+      newsDataChoose: undefined,
+      newsDataShow: undefined,
     };
   },
   methods: {
     aaa(newsDatachoose) {
       for (let x = 0; x < this.newsData.data.length; x++) {
         if (this.newsData.data[x].title == newsDatachoose) {
-          this.newsData.show = this.newsData.data[x].data;
+          this.newsDataShow = this.newsData.data[x].data;
           return;
         }
       }
@@ -55,6 +56,7 @@ export default {
   },
   mounted() {
     this.newsDatachoose = this.newsData.choose;
+    this.newsDataShow = this.newsData.show;
     console.log(this.newsData);
   },
 };
