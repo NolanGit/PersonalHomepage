@@ -24,6 +24,9 @@ const api = {
 
 export default {
   name: "news",
+  props: {
+    flush: Number,
+  },
   components: {
     newsModule,
   },
