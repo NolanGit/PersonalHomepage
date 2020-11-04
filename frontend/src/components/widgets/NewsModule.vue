@@ -10,22 +10,27 @@
           @change="aaa()"
         >
           <el-radio-button
-            :label="singleValue.title"
+            :label="singleValue"
             v-for="singleValue in newsData.chooseItems"
-            :key="singleValue.title"
+            :key="singleValue"
           ></el-radio-button>
         </el-radio-group>
       </div>
     </el-row>
-    <el-row style="height: 300px">
-      <el-link type="primary" v-for="link in newsData.show" :key="link">{{
-        link.name
-      }}</el-link>
+    <el-row>
+      <div class="scrollbar-div" style="max-height: 300px">
+        <el-link
+          type="primary"
+          v-for="link in newsData.show"
+          :key="link"
+          :href="link.url"
+          >{{ link.name }}</el-link
+        >
+      </div>
     </el-row>
   </section>
 </template>
 <script>
-
 export default {
   name: "newsModule",
   props: {
@@ -35,7 +40,11 @@ export default {
   data() {
     return {};
   },
-  methods: {},
+  methods: {
+    aaa(x) {
+      console.log(x);
+    },
+  },
   mounted() {},
 };
 </script>
