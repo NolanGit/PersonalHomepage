@@ -29,17 +29,21 @@
           v-for="(link, i) in newsDataShow.data"
           :key="link"
         >
-          <el-link type="primary" :href="link.url" style="color: #606266"
+          <el-link
+            type="primary"
+            :href="link.url"
+            style="color: #606266"
+            target="_blank"
+            underline="false"
             >{{ i + 1 + "." + link.name }}
           </el-link>
           <br />
         </div>
       </div>
-      <div class="better_font_style" v-if="(newsDataShow.data.length = 0)">
+      <div class="better_font_style" v-if="newsDataShow.data.length == 0">
         源站访问失败（宕机或限制），请稍后再试
       </div>
     </div>
-    <el-divider class="noMargin"></el-divider>
     <div
       class="better_font_style"
       style="
@@ -65,7 +69,9 @@ export default {
   data() {
     return {
       newsDataCategory: [],
-      newsDataShow: [],
+      newsDataShow: {
+        data: [],
+      },
     };
   },
   methods: {
