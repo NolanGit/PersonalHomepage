@@ -9,12 +9,12 @@
           v-if="newsData.chooseItems.length > 1"
           @change="aaa(newsData.choose)"
         >
-          <el-radio
+          <el-radio-button
             :id="singleValue"
             :label="singleValue"
             v-for="singleValue in newsData.chooseItems"
             :key="singleValue"
-          ></el-radio>
+          ></el-radio-button>
         </el-radio-group>
       </div>
     </el-row>
@@ -41,16 +41,16 @@ export default {
   data() {
     return {
       newsDatachoose: undefined,
-      //   newsData: {
-      //     title: "百度",
-      //     choose: "百度实时热点",
-      //     chooseItems: ["百度实时热点", "百度今日热点", "百度七日热点"],
-      //   },
     };
   },
   methods: {
-    aaa(x) {
-      console.log(x);
+    aaa(newsDatachoose) {
+      for (let x = 0; x < this.newsData.data.length; x++) {
+        if (this.newsData.data[x].title == newsDatachoose) {
+          this.newsData.show = this.newsData.data[x].data;
+          return;
+        }
+      }
     },
   },
   mounted() {
