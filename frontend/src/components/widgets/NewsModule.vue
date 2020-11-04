@@ -2,7 +2,7 @@
   <section>
     <el-row class="margin_bottom-medium">
       <div class="div-flex">
-        <div style="text-align: left; flex-grow: 1">{{ newsData.title }}</div>
+        <div style="text-align: left; flex-grow: 1; font-weight: bold;">{{ newsData.title }}</div>
         <el-radio-group
           size="mini"
           v-model="newsDataCategory"

@@ -8,6 +8,7 @@ import configparser
 from flask_cors import cross_origin
 from flask import render_template, session, redirect, url_for, current_app, flash, request, jsonify
 
+from ..limiter import limiter
 from ..common_func import CommonFunc
 from ..login.login_funtion import User
 from ..response import Response as MyResponse
@@ -21,11 +22,16 @@ rsp = MyResponse()
 cf = configparser.ConfigParser()
 cf.read('app/homepage.config')
 NEWS_JSON_PATH = cf.get('config', 'BASE_PATH') + 'backend/app/news/json'
+DOMAIN_NAME = cf.get('config', 'DOMAIN_NAME')
+LIMITER_FREQUENCY = '10/minutes'  # 接口限制的访问频次
 
 
 @news.route('/get', methods=['POST'])
+@limiter.limit(LIMITER_FREQUENCY)
 def get():
     try:
+        if not request.referrer.startswith(DOMAIN_NAME):
+            return rsp.refuse(), 403
         temp = {}
         r = []
         files = os.listdir(NEWS_JSON_PATH)

@@ -184,7 +184,7 @@ print('')
 mysql_password = input('[第7步/共8步]请输入本地MySQL的root账号的密码:')
 print(mysql_password)
 print('')
-domain = input('[第8步/共8步]请输入服务域名及端口(用于生成网盘的分享链接，不填写则为默认值"http://localhost:50000"；如果你有域名或公网IP，则填写"http://+公网IP或域名+端口"，如"http://baidu.com:666"):')
+domain = input('[第8步/共8步]请输入服务域名及端口(用于生成网盘的分享链接和防止csrf攻击，不填写则为默认值"http://localhost:50000"；如果你有域名或公网IP，则填写"http://+公网IP或域名+端口"，如"http://baidu.com:666"):')
 if domain == None:
     domain = "http://localhost:50000"
 print(domain)

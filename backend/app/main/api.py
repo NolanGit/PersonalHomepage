@@ -1,6 +1,7 @@
 import re
 import os
 import time
+import random
 import requests
 import datetime
 import traceback
@@ -32,6 +33,78 @@ FRONTEND_FOLDER = 'frontend/'
 UPLOAD_FILE_PATH = cf.get('config', 'BASE_PATH') + 'upload/'
 URL_PREFIX = ''
 
+DICT_DISORDER = {
+    0: 'B',
+    1: 'H',
+    2: 'q',
+    3: 'D',
+    4: 'b',
+    5: 'j',
+    6: 'Q',
+    7: 'z',
+    8: '6',
+    9: 'x',
+    10: 'L',
+    11: 'R',
+    12: 'P',
+    13: 'Z',
+    14: 'n',
+    15: 'v',
+    16: 'e',
+    17: '9',
+    18: 'M',
+    19: '3',
+    20: 'W',
+    21: '5',
+    22: 'G',
+    23: 'V',
+    24: 'r',
+    25: 'h',
+    26: 'k',
+    27: 'c',
+    28: 'E',
+    29: 'g',
+    30: 'C',
+    31: 'd',
+    32: 'T',
+    33: '7',
+    34: 'K',
+    35: 'm',
+    36: 'i',
+    37: 'S',
+    38: 'f',
+    39: 'J',
+    40: 'U',
+    41: 'Y',
+    42: 'F',
+    43: 'u',
+    44: '1',
+    45: '4',
+    46: 'y',
+    47: 'o',
+    48: 'w',
+    49: '2',
+    50: 'a',
+    51: '8',
+    52: 'A',
+    53: 'p',
+    54: 'N',
+    55: 's',
+    56: 't',
+    57: 'X'
+}
+
+
+def base_58(target: int):
+    # 接受一个整数，返回不会重复的较短的字符串
+    r = ''
+    target = int(str(target) + str(time.time()).split('.')[0][-6:])
+    while target > 58:
+        r += str(DICT_DISORDER[target % 58])
+        target = target // 58
+    r += str(DICT_DISORDER[target])
+    return r[::-1]
+
 
 @main.route('/')
 def root():
@@ -49,7 +122,8 @@ def userInfo():
         except:
             user_id = 0
             user_name = ''
-        return rsp.success({'user_id': user_id, 'user_name': user_name})
+        csrf_token = base_58(random.randint(100000000000, 1000000000000))
+        return rsp.success({'user_id': user_id, 'user_name': user_name, 'csrf_token': csrf_token})
     except Exception as e:
         traceback.print_exc()
         return rsp.failed(e), 500
