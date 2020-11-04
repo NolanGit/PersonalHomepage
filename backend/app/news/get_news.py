@@ -656,38 +656,6 @@ def parse_nytimes():
     except:
         print(sys._getframe().f_code.co_name+"采集错误，请及时更新规则！")
 
-#新京报-排行
-def parse_bjnews():
-    try:
-        url = "http://www.bjnews.com.cn/"
-        headers = {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36'
-        }
-        fname = dir + "bjnews.json"
-        r = requests.get(url, headers=headers, timeout=(5, 10))
-        r.encoding='utf-8'
-        soup = etree.HTML(r.text)
-        list = []
-        jsondict= {}
-        list_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
-        jsondict["time"] = list_time
-        jsondict["title"] = "新京报-排行"
-        for soup_a in soup.xpath("//li/h3/a"):
-            blist = {}
-            print(soup_a.text)
-            hot_name = soup_a.text.replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").strip()
-            hot_url = soup_a.get('href')
-            group = "bjnews"
-            # hot_url = "get/?url=" + multiple_replace(base64.urlsafe_b64encode(base64.urlsafe_b64encode(hot_url.encode("utf-8")).decode("utf-8").encode("utf-8")).decode("utf-8").replace("=", "")[::-1]) + "&group=" + group + "&title=" + multiple_replace(base64.urlsafe_b64encode(base64.urlsafe_b64encode(hot_name.encode("utf-8")).decode("utf-8").encode("utf-8")).decode("utf-8").replace("=", "")[::-1])
-            blist["name"]=hot_name
-            blist["url"]=hot_url
-            list.append(blist)
-        jsondict["data"]=list
-        with open(fname,"w+",encoding='utf-8') as f:
-            f.write(json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',',':')))
-    except:
-        print(sys._getframe().f_code.co_name+"采集错误，请及时更新规则！")
-
 #奇客的资讯
 def parse_solidot():
     try:
@@ -879,7 +847,6 @@ def single_run():
     parse_hostloc()
     parse_sinatech()
     parse_solidot()
-    parse_bjnews()
     parse_nytimes()
     parse_thepaper()
     parse_weixin()
@@ -913,7 +880,6 @@ def multi_run():
     ts2 = Thread(target=parse_hostloc)
     ts3 = Thread(target=parse_sinatech)
     ts4 = Thread(target=parse_solidot)
-    ts5 = Thread(target=parse_bjnews)
     ts6 = Thread(target=parse_nytimes)
     ts7 = Thread(target=parse_thepaper)
     ts8 = Thread(target=parse_weixin)
