@@ -45,6 +45,8 @@
   </section>
 </template>
 <script>
+import { deepClone } from "../../js/common";
+
 export default {
   name: "newsModule",
   props: {
@@ -64,7 +66,7 @@ export default {
         console.log(this.newsData.data[x].title);
         if (this.newsData.data[x].title == newsDataCategory) {
           console.log(this.newsData.data[x].data);
-          this.newsDataShow = this.newsData.data[x].data;
+          this.newsDataShow = deepClone(this.newsData.data[x].data);
           return;
         }
       }
@@ -72,7 +74,7 @@ export default {
   },
   mounted() {
     this.newsDataCategory = this.newsData.choose;
-    this.newsDataShow = this.newsData.show;
+    this.newsDataShow = deepClone(this.newsData.show);
     console.log(this.newsData);
   },
 };
