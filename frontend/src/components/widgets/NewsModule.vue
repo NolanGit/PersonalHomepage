@@ -25,8 +25,8 @@
           v-for="(link, i) in newsDataShow"
           :key="link"
         >
-          <p>{{ i }}</p>
-          <p>.</p>
+          <a style="color: #409eff; font-size: 14px">{{ i + 1 }}</a>
+          <a>.</a>
           <el-link type="primary" :href="link.url">{{ link.name }} </el-link>
           <br />
         </div>
