@@ -5,15 +5,16 @@
         <div>{{ newsData.title }}</div>
         <el-radio-group
           size="mini"
-          v-model="newsData.choose"
+          v-model="newsDatachoose"
           v-if="newsData.chooseItems.length > 1"
           @change="aaa(newsData.choose)"
         >
-          <el-radio-button
+          <el-radio
+            :id="singleValue"
             :label="singleValue"
             v-for="singleValue in newsData.chooseItems"
             :key="singleValue"
-          ></el-radio-button>
+          ></el-radio>
         </el-radio-group>
       </div>
     </el-row>
@@ -39,6 +40,7 @@ export default {
   watch: {},
   data() {
     return {
+      newsDatachoose: undefined,
       //   newsData: {
       //     title: "百度",
       //     choose: "百度实时热点",
