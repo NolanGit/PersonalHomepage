@@ -943,46 +943,12 @@ def parse_zhihu_good():
         print(sys._getframe().f_code.co_name + "采集错误，请及时更新规则！")
 
 
-#单线程运行
-def single_run():
-    print("单线程采集开始", time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))
-    t1 = time.time()
-    parse_smzdm_article("today")
-    parse_baidu("now")
-    parse_hostloc()
-    parse_sinatech()
-    parse_solidot()
-    parse_nytimes()
-    parse_thepaper()
-    parse_weixin()
-    parse_zaobao()
-    parse_cnbeta()
-    parse_baidu("today")
-    parse_cctv()
-    parse_guokr()
-    parse_mop()
-    parse_hacpai("play")
-    parse_smzdm_article("week")
-    parse_zhihu_daily()
-    parse_jandan()
-    parse_chouti()
-    parse_tianya()
-    parse_v2ex()
-    parse_weibo()
-    parse_baidu("week")
-    parse_zhihu_hot()
-    parse_zhihu_good()
-    parse_smzdm_article("month")
-    parse_hacpai("hot")
-    print("单线程采集完成", time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))
-    print("耗时:", time.time() - t1)
-
-
 #多线程抓取
 def multi_run():
     print("多线程采集开始", time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))
     t1 = time.time()
     threads = []
+    ts1 = Thread(target=parse_bilibili)
     ts2 = Thread(target=parse_hostloc)
     ts3 = Thread(target=parse_sinatech)
     ts4 = Thread(target=parse_solidot)
@@ -1010,6 +976,7 @@ def multi_run():
     ts38 = Thread(target=parse_smzdm_article, args=("today", ))
     ts39 = Thread(target=parse_smzdm_article, args=("week", ))
     ts40 = Thread(target=parse_smzdm_article, args=("month", ))
+    threads.append(ts1)
     threads.append(ts38)
     threads.append(ts2)
     threads.append(ts3)
