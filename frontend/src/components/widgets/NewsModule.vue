@@ -103,7 +103,6 @@ export default {
     },
   },
   mounted() {
-    console.log(this.newsData);
     this.init();
   },
 };

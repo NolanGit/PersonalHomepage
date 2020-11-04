@@ -674,6 +674,7 @@ def parse_bjnews():
         jsondict["title"] = "新京报-排行"
         for soup_a in soup.xpath("//li/h3/a"):
             blist = {}
+            print(soup_a.text)
             hot_name = soup_a.text.replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").strip()
             hot_url = soup_a.get('href')
             group = "bjnews"
