@@ -314,6 +314,13 @@
 
 📧邮箱：shr1213@live.com
 
+## 捐赠
+
+🥳如果本项目对你有启发或帮助，不妨支持一下开发者
+
+![支付宝红包](https://user-images.githubusercontent.com/27627484/98138508-24a12880-1efe-11eb-9393-49236bf5b0a8.jpg)
+![支付宝](https://user-images.githubusercontent.com/27627484/98138498-223ece80-1efe-11eb-8ccf-9eab3788899f.jpg)
+![微信](https://user-images.githubusercontent.com/27627484/98138506-24089200-1efe-11eb-80d7-1fbba58df3fa.jpg)
 ## License
 
 [MPL-2.0](https://opensource.org/licenses/MPL-2.0)
