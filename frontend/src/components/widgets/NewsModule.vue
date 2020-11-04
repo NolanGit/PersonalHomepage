@@ -22,11 +22,11 @@
       <div
         class="scrollbar-div"
         style="max-height: 300px"
-        v-if="newsDataShow.length > 0"
+        v-if="newsDataShow.data.length > 0"
       >
         <div
           class="margin_bottom-mini"
-          v-for="(link, i) in newsDataShow"
+          v-for="(link, i) in newsDataShow.data"
           :key="link"
         >
           <el-link type="primary" :href="link.url"
@@ -35,7 +35,7 @@
           <br />
         </div>
       </div>
-      <div class="better_font_style" v-if="(newsDataShow.length = 0)">
+      <div class="better_font_style" v-if="(newsDataShow.data.length = 0)">
         源站访问失败（宕机或限制），请稍后再试
       </div>
     </div>
@@ -66,7 +66,7 @@ export default {
         console.log(this.newsData.data[x].title);
         if (this.newsData.data[x].title == newsDataCategory) {
           console.log(this.newsData.data[x].data);
-          this.newsDataShow = deepClone(this.newsData.data[x].data);
+          this.newsDataShow = deepClone(this.newsData.data[x]);
           return;
         }
       }

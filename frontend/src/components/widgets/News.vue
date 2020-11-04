@@ -46,7 +46,7 @@ export default {
         temp[temp.length - 1] = [];
         for (let x = 0; x < this.rawData.length; x++) {
           this.rawData[x].choose = this.rawData[x].data[0].title;
-          this.rawData[x].show = deepClone(this.rawData[x].data[0].data);
+          this.rawData[x].show = deepClone(this.rawData[x].data[0]);
           this.rawData[x].chooseItems = [];
           for (let y = 0; y < this.rawData[x].data.length; y++) {
             this.rawData[x].chooseItems.push(this.rawData[x].data[y].title);
