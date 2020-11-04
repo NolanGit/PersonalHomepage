@@ -55,7 +55,7 @@ export default {
         const { data: res } = await axios.post(api.userInfo, {
           user_id: this.user_id,
         });
-        console.log(res);
+        this.$cookies.set("csrf_token", res.data.csrf_token);
       } catch (e) {
         if (e.response.status == 401) {
           this.$cookies.remove("user_key");

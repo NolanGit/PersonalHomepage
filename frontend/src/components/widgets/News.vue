@@ -43,7 +43,9 @@ export default {
     },
     async get() {
       try {
-        const { data: res } = await axios.post(api.get);
+        const { data: res } = await axios.post(api.get, {
+          token: this.$cookies.get("csrf_token"),
+        });
         this.rawData = res.data;
         const STEP = 4; // 每行有几个
         let temp = [];

@@ -32,6 +32,11 @@ def get():
     try:
         if not request.referrer.startswith(DOMAIN_NAME):
             return rsp.refuse(), 403
+        csrf_token_send = request.get_json()['token']
+        csrf_token = request.cookies.get('csrf_token')
+        if csrf_token != csrf_token_send:
+            return rsp.refuse(), 403
+
         temp = {}
         r = []
         files = os.listdir(NEWS_JSON_PATH)

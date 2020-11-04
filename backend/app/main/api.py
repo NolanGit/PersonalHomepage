@@ -122,7 +122,8 @@ def userInfo():
         except:
             user_id = 0
             user_name = ''
-        csrf_token = base_58(random.randint(100000000000, 1000000000000))
+        random_int = random.randint(10000000000000000, 100000000000000000)
+        csrf_token = base_58(random_int) + str(random_int)
         return rsp.success({'user_id': user_id, 'user_name': user_name, 'csrf_token': csrf_token})
     except Exception as e:
         traceback.print_exc()
