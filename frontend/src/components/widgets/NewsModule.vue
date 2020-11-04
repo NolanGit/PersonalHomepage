@@ -46,8 +46,12 @@ export default {
   },
   methods: {
     aaa(newsDataChoose) {
+      console.log(newsDataChoose);
       for (let x = 0; x < this.newsData.data.length; x++) {
+        console.log(this.newsData.data[x]);
+        console.log(this.newsData.data[x].title);
         if (this.newsData.data[x].title == newsDataChoose) {
+          console.log(this.newsData.data[x].data);
           this.newsDataShow = this.newsData.data[x].data;
           return;
         }
