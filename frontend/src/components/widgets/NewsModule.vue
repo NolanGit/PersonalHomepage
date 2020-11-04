@@ -7,7 +7,7 @@
           size="mini"
           v-model="newsDataChoose"
           v-if="newsData.chooseItems.length > 1"
-          @change="aaa(newsData.choose)"
+          @change="aaa(newsDataChoose)"
         >
           <el-radio-button
             :id="singleValue"
