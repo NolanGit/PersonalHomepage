@@ -26,6 +26,7 @@
       >
         <div
           class="margin_bottom-mini"
+          style="color: #606266"
           v-for="(link, i) in newsDataShow.data"
           :key="link"
         >
