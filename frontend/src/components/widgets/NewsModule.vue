@@ -40,7 +40,6 @@
         源站访问失败（宕机或限制），请稍后再试
       </div>
     </div>
-    <el-divider></el-divider>
     <div
       class="better_font_style"
       style="
@@ -65,8 +64,8 @@ export default {
   watch: {},
   data() {
     return {
-      newsDataCategory: undefined,
-      newsDataShow: undefined,
+      newsDataCategory: [],
+      newsDataShow: [],
     };
   },
   methods: {
@@ -85,7 +84,7 @@ export default {
   mounted() {
     this.newsDataCategory = this.newsData.choose;
     this.newsDataShow = deepClone(this.newsData.show);
-    console.log(this.newsData);
+    console.log(this.newsDataShow);
   },
 };
 </script>
