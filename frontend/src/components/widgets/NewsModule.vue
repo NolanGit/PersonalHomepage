@@ -76,7 +76,7 @@ export default {
   },
   watch: {
     newsData(newVal, oldVal) {
-      init();
+      this.init();
     },
   },
   data() {
@@ -103,7 +103,7 @@ export default {
     },
   },
   mounted() {
-    init();
+    this.init();
   },
 };
 </script>
