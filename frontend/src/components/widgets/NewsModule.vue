@@ -1,6 +1,6 @@
 <template>
   <section>
-    <el-row>
+    <el-row class="margin_bottom-medium">
       <div class="div-flex">
         <div>{{ newsData.title }}</div>
         <el-radio-group
@@ -18,7 +18,7 @@
         </el-radio-group>
       </div>
     </el-row>
-    <el-row>
+    <div>
       <div class="scrollbar-div" style="max-height: 300px">
         <el-link
           type="primary"
@@ -28,7 +28,7 @@
           >{{ link.name }}</el-link
         >
       </div>
-    </el-row>
+    </div>
   </section>
 </template>
 <script>

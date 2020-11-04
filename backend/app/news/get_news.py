@@ -46,13 +46,13 @@ def parse_baidu(name):
     try:
         jsondict= {}
         if name == 'now':
-            jsondict["title"] = "百度实时热点"
+            jsondict["title"] = "实时"
             url = "http://top.baidu.com/buzz?b=1"
         if name == 'today':
-            jsondict["title"] = "百度今日热点"
+            jsondict["title"] = "今日"
             url = "http://top.baidu.com/buzz?b=341"
         if name == 'week':
-            jsondict["title"] = "百度七日热点"
+            jsondict["title"] = "七日"
             url = "http://top.baidu.com/buzz?b=42"
         fname = dir + "baidu_" + name + ".json"
         r = requests.get(url, timeout=(5, 10))
@@ -96,7 +96,7 @@ def parse_zhihu_hot():
         jsondict= {}
         list_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
         jsondict["time"] = list_time
-        jsondict["title"] = "知乎全站热榜"
+        jsondict["title"] = "热榜"
         for n in news:
             blist = {}
             hot_name = n['target']['title'].replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").strip()
@@ -310,11 +310,11 @@ def parse_hacpai(name):
     try:
         jsondict= {}
         if name=="play":
-            jsondict["title"] = "黑客派-好玩"
+            jsondict["title"] = "好玩"
             group = "hacpai_play"
             url = "https://hacpai.com/domain/play"
         if name=="hot":
-            jsondict["title"] = "黑客派-热议"
+            jsondict["title"] = "热议"
             group = "hacpai_hot"
             url = "https://hacpai.com/recent/hot"
         headers = {
@@ -559,7 +559,7 @@ def parse_weixin():
         jsondict= {}
         list_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
         jsondict["time"] = list_time
-        jsondict["title"] = "微信公众号搜索热词"
+        jsondict["title"] = "搜索热词"
         for soup_a in soup.xpath("//ol[@class='hot-news']/li"):
             blist = {}
             hot_name = soup_a.xpath("./a/text()")[0].replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").strip()
@@ -577,7 +577,7 @@ def parse_weixin():
         list = []
         jsondict= {}
         jsondict["time"] = list_time
-        jsondict["title"] = "微信公众号热门文章"
+        jsondict["title"] = "热门文章"
         for soup_a in soup.xpath("//div[@class='txt-box']/h3/a"):
             blist = {}
             hot_name = soup_a.text.replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").strip()
@@ -786,13 +786,13 @@ def  parse_smzdm_article(name):
         jsondict= {}
         if name=="today":
             id="1"
-            jsondict["title"] = "什么值得买热门文章(日榜)"
+            jsondict["title"] = "日榜"
         if name=="week":
             id="7"
-            jsondict["title"] = "什么值得买热门文章(周榜)"
+            jsondict["title"] = "周榜"
         if name=="month":
             id="30"
-            jsondict["title"] = "什么值得买热门文章(月榜)"
+            jsondict["title"] = "月榜"
         url = "https://post.smzdm.com/rank/json_more/?unit="+id+"&p=1"
         url2 = "https://post.smzdm.com/rank/json_more/?unit="+id+"&p=2"
         headers = {
@@ -850,7 +850,7 @@ def parse_zhihu_good():
         jsondict= {}
         list_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
         jsondict["time"] = list_time
-        jsondict["title"] = "知乎每日精选-编辑推荐"
+        jsondict["title"] = "推荐"
         for json_d in json.loads(r.text)['msg']:
             json_data = json_data + json_d
         soup = etree.HTML(json_data)
