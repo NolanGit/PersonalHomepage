@@ -7,7 +7,7 @@
           size="mini"
           v-model="newsData.choose"
           v-if="newsData.chooseItems.length > 1"
-          @change="aaa()"
+          @change="aaa(newsData.choose)"
         >
           <el-radio-button
             :label="singleValue"
@@ -33,17 +33,17 @@
 <script>
 export default {
   name: "newsModule",
-  //   props: {
-  //     newsData: {},
-  //   },
+  props: {
+    newsData: {},
+  },
   watch: {},
   data() {
     return {
-      newsData: {
-        title: "百度",
-        choose: "百度实时热点",
-        chooseItems: ["百度实时热点", "百度今日热点", "百度七日热点"],
-      },
+      //   newsData: {
+      //     title: "百度",
+      //     choose: "百度实时热点",
+      //     chooseItems: ["百度实时热点", "百度今日热点", "百度七日热点"],
+      //   },
     };
   },
   methods: {
@@ -51,7 +51,9 @@ export default {
       console.log(x);
     },
   },
-  mounted() {},
+  mounted() {
+    console.log(newsData);
+  },
 };
 </script>
 </style>
