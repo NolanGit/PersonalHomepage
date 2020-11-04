@@ -762,7 +762,9 @@ def parse_bilibili():
         jsondict["time"] = list_time
         jsondict["title"] = "Bilibili"
         for soup_a in soup.xpath("//ul[@class='rank-list']"):
+            print(soup_a)
             soup_b = soup_a.xpath("//div[@class='info']/a")
+            print(soup_b)
             blist = {}
             hot_name = soup_b.text.replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").strip()
             hot_url = soup_b.get('href')
