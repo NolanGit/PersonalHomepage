@@ -6,7 +6,7 @@
       :key="singleDataSuite"
     >
       <el-col :span="6" v-for="data in singleDataSuite" :key="data">
-        <el-card>
+        <el-card shadow="hover" class="margin_bottom-medium">
           <newsModule :newsData="data" />
         </el-card>
       </el-col>

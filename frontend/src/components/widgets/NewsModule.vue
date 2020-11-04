@@ -40,7 +40,7 @@
       </div>
     </div>
     <div class="better_font_style" style="text-align: right">
-      {{ newsData.time }}
+      {{ newsDataShow.time }}
     </div>
   </section>
 </template>
