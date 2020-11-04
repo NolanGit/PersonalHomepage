@@ -19,20 +19,28 @@
       </div>
     </el-row>
     <div style="text-align: left">
-      <div class="scrollbar-div" style="max-height: 300px">
+      <div
+        class="scrollbar-div"
+        style="max-height: 300px"
+        v-if="newsDataShow.length > 0"
+      >
         <div
           class="margin_bottom-mini"
           v-for="(link, i) in newsDataShow"
           :key="link"
         >
-          <!-- <a style="color: #409eff; font-size: 14px">{{ i + 1 }}</a>
-          <a>.</a> -->
           <el-link type="primary" :href="link.url"
             >{{ i + 1 + "." + link.name }}
           </el-link>
           <br />
         </div>
       </div>
+      <div class="better_font_style" v-if="(newsDataShow.length = 0)">
+        源站访问失败（宕机或限制），请稍后再试
+      </div>
+    </div>
+    <div class="better_font_style" style="text-align: right">
+      {{ newsData.time }}
     </div>
   </section>
 </template>
