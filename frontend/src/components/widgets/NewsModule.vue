@@ -21,11 +21,11 @@
     <div style="text-align: left">
       <div
         class="scrollbar-div"
-        style="max-height: 300px"
+        style="height: 300px"
         v-if="newsDataShow.data.length > 0"
       >
         <div
-          class="margin_bottom-mini"
+          class="margin_bottom-mini margin_right-small"
           v-for="(link, i) in newsDataShow.data"
           :key="link"
         >
@@ -34,13 +34,22 @@
             :href="link.url"
             style="color: #606266"
             target="_blank"
-            underline="false"
+            :underline="false"
             >{{ i + 1 + "." + link.name }}
           </el-link>
           <br />
         </div>
       </div>
-      <div class="better_font_style" v-if="newsDataShow.data.length == 0">
+      <div
+        class="better_font_style"
+        v-if="newsDataShow.data.length == 0"
+        style="
+          margin-top: 15px;
+          text-align: left;
+          font-size: 14px;
+          color: #606266;
+        "
+      >
         源站访问失败（宕机或限制），请稍后再试
       </div>
     </div>
