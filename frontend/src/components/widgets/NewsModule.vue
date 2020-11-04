@@ -74,7 +74,11 @@ export default {
   props: {
     newsData: {},
   },
-  watch: {},
+  watch: {
+    newsData(newVal, oldVal) {
+      init();
+    },
+  },
   data() {
     return {
       newsDataCategory: [],
@@ -84,12 +88,14 @@ export default {
     };
   },
   methods: {
+    init() {
+      this.newsDataCategory = this.newsData.choose;
+      this.newsDataShow = deepClone(this.newsData.show);
+      this.$emit("done");
+    },
     categoryChoosed(newsDataCategory) {
       for (let x = 0; x < this.newsData.data.length; x++) {
-        console.log(this.newsData.data[x]);
-        console.log(this.newsData.data[x].title);
         if (this.newsData.data[x].title == newsDataCategory) {
-          console.log(this.newsData.data[x].data);
           this.newsDataShow = deepClone(this.newsData.data[x]);
           return;
         }
@@ -97,9 +103,7 @@ export default {
     },
   },
   mounted() {
-    this.newsDataCategory = this.newsData.choose;
-    this.newsDataShow = deepClone(this.newsData.show);
-    console.log(this.newsDataShow);
+    init();
   },
 };
 </script>

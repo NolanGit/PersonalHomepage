@@ -73,7 +73,10 @@ export default {
   },
   mounted() {
     this.get();
-    this.$emit("done");
+    this.timer = window.setInterval(this.notesGet, this.flush);
+  },
+  beforeDestroy() {
+    window.clearInterval(this.timer);
   },
 };
 </script>
