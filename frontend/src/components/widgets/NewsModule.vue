@@ -33,12 +33,18 @@
 <script>
 export default {
   name: "newsModule",
-  props: {
-    newsData: {},
-  },
+  //   props: {
+  //     newsData: {},
+  //   },
   watch: {},
   data() {
-    return {};
+    return {
+      newsData: {
+        title: "百度",
+        choose: "百度实时热点",
+        chooseItems: ["百度实时热点", "百度今日热点", "百度七日热点"],
+      },
+    };
   },
   methods: {
     aaa(x) {
