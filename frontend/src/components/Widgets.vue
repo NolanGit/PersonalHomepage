@@ -222,16 +222,14 @@ export default {
       this.widgetSuite = [];
       this.widgetSuite.push([]);
       for (let x = 0; x < this.widget.length; x++) {
-        console.log(this.widget[x].name)
-        console.log(count)
         count += this.widget[x].span;
-        if (count >= 24) {
+        if (count > 24) {
           this.widgetSuite.push([]);
           count = 0;
+          count += this.widget[x].span
         }
         this.widgetSuite[this.widgetSuite.length - 1].push(this.widget[x]);
       }
-      console.log(this.widgetSuite);
     },
     done(suiteIndex, index) {
       this.widgetSuite[suiteIndex][index].show = true;
