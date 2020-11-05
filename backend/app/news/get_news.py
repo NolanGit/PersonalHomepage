@@ -9,6 +9,8 @@ import datetime
 import requests
 from lxml import etree
 from threading import Thread
+from bs4 import BeautifulSoup
+
 
 #单线程，多线程采集方式选择(多线程采集速度快但机器负载短时高)
 thread = 'multi'
@@ -746,27 +748,25 @@ def parse_solidot():
         print(sys._getframe().f_code.co_name + "采集错误，请及时更新规则！")
 
 
-#奇客的资讯
+#bilibili
 def parse_bilibili():
     try:
+        from bs4 import BeautifulSoup
         url = "https://www.bilibili.com/v/popular/rank/all"
         headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36'}
-        fname = dir + "solidot.json"
+        fname = dir + "bilibili.json"
         r = requests.get(url, headers=headers, timeout=(5, 10))
         r.encoding = 'utf-8'
-        soup = etree.HTML(r.text)
+        soup = BeautifulSoup(r.text,'html.parser')
         list = []
         jsondict = {}
         list_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
         jsondict["time"] = list_time
         jsondict["title"] = "Bilibili"
-        for soup_a in soup.xpath("//ul[@class='rank-list']"):
-            print(soup_a)
-            soup_b = soup_a.xpath("//div[@class='info']/a")
-            print(soup_b)
+        for soup_a in soup.find_all("a","title"):
             blist = {}
-            hot_name = soup_b.text.replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").strip()
-            hot_url = soup_b.get('href')
+            hot_name = soup_a.text.replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").strip()
+            hot_url = soup_a.get('href')
             group = "Bilibili"
             # hot_url = "get/?url=" + multiple_replace(base64.urlsafe_b64encode(base64.urlsafe_b64encode(hot_url.encode("utf-8")).decode("utf-8").encode("utf-8")).decode("utf-8").replace("=", "")[::-1]) + "&group=" + group + "&title=" + multiple_replace(base64.urlsafe_b64encode(base64.urlsafe_b64encode(hot_name.encode("utf-8")).decode("utf-8").encode("utf-8")).decode("utf-8").replace("=", "")[::-1])
             blist["name"] = hot_name
