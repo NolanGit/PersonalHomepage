@@ -223,7 +223,7 @@ export default {
       this.widgetSuite.push([]);
       for (let x = 0; x < this.widget.length; x++) {
         count += this.widget[x].span;
-        if (count >= 24) {
+        if (count > 24) {
           this.widgetSuite.push([]);
           count = 0;
         }
