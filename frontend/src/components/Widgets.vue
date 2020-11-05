@@ -222,6 +222,8 @@ export default {
       this.widgetSuite = [];
       this.widgetSuite.push([]);
       for (let x = 0; x < this.widget.length; x++) {
+        console.log(this.widget[x].name)
+        console.log(count)
         count += this.widget[x].span;
         if (count > 24) {
           this.widgetSuite.push([]);
