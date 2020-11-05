@@ -6,7 +6,11 @@
   <div id="app" v-if="initial">
     <githubConner />
     <el-row class="loginRow">
-      <login :user_id="user_id" :user_name="user_name" :login_name="login_name" />
+      <login
+        :user_id="user_id"
+        :user_name="user_name"
+        :login_name="login_name"
+      />
     </el-row>
     <el-row class="searchRow">
       <search :user_id="user_id" />
@@ -25,7 +29,7 @@ import login from "./components/Login.vue";
 import widgets from "./components/Widgets.vue";
 
 const api = {
-  userInfo: "/userInfo"
+  userInfo: "/userInfo",
 };
 
 export default {
@@ -33,7 +37,7 @@ export default {
     githubConner,
     search,
     login,
-    widgets
+    widgets,
   },
   data() {
     return {
@@ -42,15 +46,16 @@ export default {
       widget: [],
       widgetSuite: [],
       flush: false,
-      activeName: "second"
+      activeName: "second",
     };
   },
   methods: {
     async userInfo() {
       try {
         const { data: res } = await axios.post(api.userInfo, {
-          user_id: this.user_id
+          user_id: this.user_id,
         });
+        this.$cookies.set("csrf_token", res.data.csrf_token);
       } catch (e) {
         if (e.response.status == 401) {
           this.$cookies.remove("user_key");
@@ -62,7 +67,7 @@ export default {
         } else {
           this.$message({
             message: e.response.data.msg,
-            type: "error"
+            type: "error",
           });
         }
       }
@@ -88,14 +93,14 @@ export default {
         this.user_id = 0;
         this.login_name = "";
       }
-    }
+    },
   },
   async created() {
     await this.userIdFlush();
   },
   async mounted() {
     await this.userInfo();
-  }
+  },
 };
 </script>
 

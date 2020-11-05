@@ -184,7 +184,7 @@ print('')
 mysql_password = input('[第7步/共8步]请输入本地MySQL的root账号的密码:')
 print(mysql_password)
 print('')
-domain = input('[第8步/共8步]请输入服务域名及端口(用于生成网盘的分享链接，不填写则为默认值"http://localhost:50000"；如果你有域名或公网IP，则填写"http://+公网IP或域名+端口"，如"http://baidu.com:666"):')
+domain = input('[第8步/共8步]请输入服务域名及端口(用于生成网盘的分享链接和防止csrf攻击，不填写则为默认值"http://localhost:50000"；如果你有域名或公网IP，则填写"http://+公网IP或域名+端口"，如"http://baidu.com:666"):')
 if domain == None:
     domain = "http://localhost:50000"
 print(domain)
@@ -200,8 +200,8 @@ flag = True
 try:
     print('%s开始配置' % CONFIG_PATH)
     backup(CONFIG_PATH)
-    homepage_text = '[config]\nADMIN_EMAIL = %s\nSENDER = %s\nPASSWORD = %s\nDB_PASS=%s\nKEY = %s\nLOCATION = %s\nUPLOAD_FILE_PATH = %s\nBING_WALLPAPERS_PATH = %s\nDOMAIN_NAME = %s\'' % (
-        admin_email, mail_sender_address, mail_sender_password, mysql_password, weather_api_key, weather_default_location, UPLOAD_FILE_PATH, BING_WALLPAPERS_PATH, domain)
+    homepage_text = '[config]\nADMIN_EMAIL = %s\nSENDER = %s\nPASSWORD = %s\nDB_PASS=%s\nKEY = %s\nLOCATION = %s\nBASE_PATH = %s\nDOMAIN_NAME = %s\'' % (
+        admin_email, mail_sender_address, mail_sender_password, mysql_password, weather_api_key, weather_default_location, CURRENT_RUNNING_PATH, domain)
     with open(CONFIG_PATH, 'w') as w:
         w.write(homepage_text)
         print('%s配置成功' % CONFIG_PATH)

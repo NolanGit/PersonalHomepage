@@ -3,7 +3,6 @@ import json
 import requests
 import datetime
 import traceback
-import collections
 from flask_cors import cross_origin
 from flask import render_template, session, redirect, url_for, current_app, flash, request, jsonify
 

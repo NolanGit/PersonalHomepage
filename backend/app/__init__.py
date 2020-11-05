@@ -54,24 +54,28 @@ def create_app(config_name):
     from .gold_price_monitor import gold_price_monitor as gold_price_monitor_blueprint
     app.register_blueprint(gold_price_monitor_blueprint, url_prefix='/gold')
 
-    from .notes import notes as  notes_blueprint
+    from .notes import notes as notes_blueprint
     app.register_blueprint(notes_blueprint, url_prefix='/notes')
 
-    from .short_url import short_url as  short_url_blueprint
+    from .short_url import short_url as short_url_blueprint
     app.register_blueprint(short_url_blueprint, url_prefix='/s')
 
-    from .image_hosting import image_hosting as  image_hosting_blueprint
+    from .image_hosting import image_hosting as image_hosting_blueprint
     app.register_blueprint(image_hosting_blueprint, url_prefix='/imageHosting')
 
-    from .translator import translator as  translator_blueprint
+    from .translator import translator as translator_blueprint
     app.register_blueprint(translator_blueprint, url_prefix='/translator')
 
-    from .wallpapers import wallpapers as  wallpapers_blueprint
+    from .wallpapers import wallpapers as wallpapers_blueprint
     app.register_blueprint(wallpapers_blueprint, url_prefix='/wallpapers')
 
-    from .stock import stock as  stock_blueprint
+    from .stock import stock as stock_blueprint
     app.register_blueprint(stock_blueprint, url_prefix='/stock')
 
-    from .fund import fund as  fund_blueprint
+    from .fund import fund as fund_blueprint
     app.register_blueprint(fund_blueprint, url_prefix='/fund')
+
+    from .news import news as news_blueprint
+    app.register_blueprint(news_blueprint, url_prefix='/news')
+
     return app

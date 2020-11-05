@@ -104,6 +104,7 @@ venv.bak/
 
 backend/data.sqlite
 backend/app/homepage.config
+backend/app/news/json
 /upload
 /wallpapers
 *.crt
