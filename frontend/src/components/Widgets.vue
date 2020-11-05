@@ -229,6 +229,7 @@ export default {
         this.widgetSuite[this.widgetSuite.length - 1].push(this.widget[x]);
         count += this.widget[x].span;
       }
+      console.log(this.widgetSuite)
     },
     done(suiteIndex, index) {
       this.widgetSuite[suiteIndex][index].show = true;
