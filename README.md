@@ -10,7 +10,7 @@
 
 - ⭐ 欢迎star！尽量保证每天都有提交！
 
-![screenshot-2020 10 29-20_41_05](https://user-images.githubusercontent.com/27627484/97575085-29aa3780-1a27-11eb-8f82-198e85cc870f.png)
+![screenshot-2020 11 05-12_45_52](https://user-images.githubusercontent.com/27627484/98199030-4e416a80-1f65-11eb-9934-8b6e269b5d07.png)
 
 ## 特性
 
