@@ -222,12 +222,13 @@ export default {
       this.widgetSuite = [];
       this.widgetSuite.push([]);
       for (let x = 0; x < this.widget.length; x++) {
-        if (count >= 24) {
+        count += this.widget[x].span;
+        if (count > 24) {
           this.widgetSuite.push([]);
           count = 0;
+          count += this.widget[x].span
         }
         this.widgetSuite[this.widgetSuite.length - 1].push(this.widget[x]);
-        count += this.widget[x].span;
       }
     },
     done(suiteIndex, index) {
