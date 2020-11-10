@@ -16,8 +16,42 @@
       >
         暂无数据
       </a>
+      <div class="better_font_style" style="text-align: left; font-size: 12px">
+        <span class="margin_right-medium">{{"当前单价：" + latestUnitPrice}}</span>
+        <span v-if="chartData.rows.length != 0"> 涨跌幅： </span>
+        <span
+          style="color: #f56c6c"
+          v-if="(chartData.rows.length != 0) & (latestRange > 0)"
+        >
+          +
+        </span>
+        <span
+          style="color: #f56c6c"
+          v-if="(chartData.rows.length != 0) & (latestRange > 0)"
+        >
+          {{ latestRange }}
+        </span>
+        <span
+          style="color: #f56c6c"
+          v-if="(chartData.rows.length != 0) & (latestRange > 0)"
+        >
+          %
+        </span>
+        <span
+          style="color: #67c23a"
+          v-if="(chartData.rows.length != 0) & (latestRange <= 0)"
+        >
+          {{ latestRange }}
+        </span>
+        <span
+          style="color: #67c23a"
+          v-if="(chartData.rows.length != 0) & (latestRange <= 0)"
+        >
+          %
+        </span>
+      </div>
       <ve-line
-        height="230px"
+        height="215px"
         :settings="chartSettings"
         :data="chartData"
         ref="chart"
@@ -175,6 +209,8 @@ export default {
       chartData: {
         rows: [],
       },
+      latestRange: 0,
+      latestUnitPrice: 0,
       activeName: "",
       notifyVisible: false,
       edit: {
@@ -344,6 +380,11 @@ export default {
             columns: ["时间", "价格"],
             rows: temp,
           };
+          if (this.stockData[x].price_list.length != 0) {
+            var listLen = this.stockData[x].price_list.length;
+            this.latestRange = this.stockData[x].price_list[listLen - 1].range;
+            this.latestUnitPrice = this.stockData[x].price_list[listLen - 1].price;
+          }
           return;
         }
       }
@@ -384,6 +425,10 @@ export default {
           rows: temp,
         };
 
+        var listLen = res.data[0].price_list.length;
+        this.latestRange = res.data[0].price_list[listLen - 1].range;
+        this.latestUnitPrice = res.data[0].price_list[listLen - 1].price;
+        
         this.$nextTick((_) => {
           for (let x = 0; x < this.stockData.length; x++) {
             this.$refs[`chart`].echarts.resize();
