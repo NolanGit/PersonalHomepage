@@ -17,6 +17,7 @@
         暂无数据
       </a>
       <div class="better_font_style" style="text-align: left; font-size: 12px">
+        <span class="margin_right-medium">{{"当前单价：" + latestUnitPrice}}</span>
         <span v-if="chartData.rows.length != 0"> 涨跌幅： </span>
         <span
           style="color: #f56c6c"
@@ -200,6 +201,7 @@ export default {
         rows: [],
       },
       latestRange: 0,
+      latestUnitPrice: 0,
       activeName: "",
       notifyVisible: false,
       edit: {
@@ -355,6 +357,7 @@ export default {
           if (this.fundData[x].price_list.length != 0) {
             var listLen = this.fundData[x].price_list.length;
             this.latestRange = this.fundData[x].price_list[listLen - 1].range;
+            this.latestUnitPrice = this.fundData[x].price_list[listLen - 1].price;
           }
 
           return;
@@ -395,6 +398,7 @@ export default {
         // 初始化默认展示的基金
         var listLen = res.data[0].price_list.length;
         this.latestRange = res.data[0].price_list[listLen - 1].range;
+        this.latestUnitPrice = res.data[0].price_list[listLen - 1].price;
 
         this.$nextTick((_) => {
           for (let x = 0; x < this.fundData.length; x++) {
