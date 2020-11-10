@@ -509,8 +509,9 @@ def parse_guokr():
         print(sys._getframe().f_code.co_name + "采集错误，请及时更新规则！")
 
 
-#央视要闻
-def parse_cctv():
+#虎嗅
+def parse_huxiu():
+    return
     try:
         url = "http://news.cctv.com/data/index.json"
         headers = {'Referer': 'https://news.cctv.com/', 'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36'}
@@ -958,7 +959,7 @@ def multi_run():
     ts8 = Thread(target=parse_weixin)
     ts9 = Thread(target=parse_zaobao)
     ts10 = Thread(target=parse_cnbeta)
-    ts11 = Thread(target=parse_cctv)
+    ts11 = Thread(target=parse_huxiu)
     ts13 = Thread(target=parse_guokr)
     ts14 = Thread(target=parse_mop)
     ts16 = Thread(target=parse_hacpai, args=("play", ))
