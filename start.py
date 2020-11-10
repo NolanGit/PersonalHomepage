@@ -6,7 +6,7 @@ import traceback
 import subprocess
 
 CURRENT_RUNNING_PATH = os.path.abspath('.')
-TOMORROW = datetime.datetime.today().replace(hour=0, minute=0, second=0, microsecond=0) + datetime.timedelta(days=1)
+TOMORROW = (datetime.datetime.today().replace(hour=0, minute=0, second=0, microsecond=0) + datetime.timedelta(days=1)).strftime("%Y-%m-%d")
 PYTHON_PATH = sys.executable
 INIT_SQL_PATH = CURRENT_RUNNING_PATH + '/backend/init.sql'
 CONFIG_PATH = CURRENT_RUNNING_PATH + '/backend/app/homepage.config'
@@ -218,11 +218,7 @@ try:
         'my_wechat_key': admin_wechat_key,
         '/home/pi/Documents/Github/PersonalHomepage': CURRENT_RUNNING_PATH,
         'python3': PYTHON_PATH,
-        '2020-06-20 00:00:00': str(TOMORROW),
-        '2020-06-20 00:15:00': str(TOMORROW + datetime.timedelta(minutes=15)),
-        '2020-06-20 00:30:00': str(TOMORROW + datetime.timedelta(minutes=30)),
-        '2020-06-20 03:00:00': str(TOMORROW + datetime.timedelta(hours=3)),
-        '2020-06-20 17:00:00': str(TOMORROW + datetime.timedelta(hours=17)),
+        '2020-06-20': str(TOMORROW),
     }
     alter(INIT_SQL_PATH, alter_dict)
     print('%s配置成功' % INIT_SQL_PATH)
