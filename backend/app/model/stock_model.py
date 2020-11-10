@@ -16,6 +16,7 @@ class stock(BaseModel):
 class stock_price(BaseModel):
     stock_id = IntegerField()
     price = FloatField()
+    range = FloatField()
     update_time = DateTimeField()
 
     class Meta:

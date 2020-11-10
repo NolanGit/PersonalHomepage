@@ -92,15 +92,18 @@ def get_stock_price(stock_id, stock_code, market):
 
     if market == 1 or market == 2:
         price = float(splited_text[3])
+        data_range = round((((price - float(splited_text[2])) / float(splited_text[2])) * 100), 2)
         print('[' + code_text + ']的价格为:' + str(price) + '元')
     if market == 3:
         price = float(splited_text[6])
+        data_range = float(splited_text[8])
         print('[' + code_text + ']的价格为:' + str(price) + '港币')
     if market == 4:
         price = float(splited_text[1])
+        data_range = float(splited_text[2])
         print('[' + code_text + ']的价格为:' + str(price) + '美元')
 
-    data_source.append((stock_id, price, datetime.datetime.now()))
+    data_source.append((stock_id, price, data_range, datetime.datetime.now()))
 
 
 def check_time(market):
@@ -195,6 +198,6 @@ if __name__ == '__main__':
     for t in threads:
         t.join()
 
-    field = [stock_price.stock_id, stock_price.price, stock_price.update_time]
+    field = [stock_price.stock_id, stock_price.price, stock_price.range, stock_price.update_time]
     stock_price.insert_many(data_source, field).execute()
     stock_push_generator()
