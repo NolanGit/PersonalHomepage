@@ -522,7 +522,7 @@ def parse_huxiu():
         list_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
         jsondict["time"] = list_time
         jsondict["title"] = "虎嗅"
-        for soup_a in soup.find_all(class_=re.compile("article-item*[^img][^content]")):
+        for soup_a in soup.find_all(class_=re.compile("article-item  article-item--normal")):
             blist = {}
             hot_name = soup_a.find('h5').text.replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").strip()
             hot_url = soup_a.find('a').get('href')
