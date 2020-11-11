@@ -524,7 +524,7 @@ def parse_huxiu():
 
         def class_filter(class_text):
             print(class_text)
-            return (("article-item--large" in class_text) or ('article-item--normal' in class_text))
+            return (class_text is not None) and (("article-item--large" in class_text) or ('article-item--normal' in class_text))
 
         for soup_a in soup.find_all(class_=class_filter):
             blist = {}
