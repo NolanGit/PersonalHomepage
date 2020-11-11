@@ -523,7 +523,7 @@ def parse_huxiu():
         jsondict["title"] = "虎嗅"
 
         def class_filter(class_text):
-            return class_text == "article-item--large" or class_text == "article-item  article-item--normal"
+            return ("article-item--large" in class_text) or ('article-item--normal' in class_text)
 
         for soup_a in soup.find_all(class_=class_filter):
             blist = {}
