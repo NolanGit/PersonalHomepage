@@ -513,7 +513,7 @@ def parse_huxiu():
     try:
         url = "https://www.huxiu.com/article/"
         headers = {'Referer': 'https://news.cctv.com/', 'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36'}
-        fname = dir + "cctv.json"
+        fname = dir + "huxiu.json"
         r = requests.get(url, headers=headers, timeout=(5, 10))
         soup = BeautifulSoup(r.text, 'html.parser')
         list = []
@@ -529,13 +529,13 @@ def parse_huxiu():
             blist = {}
             hot_name = soup_a.find('h5').text.replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").strip()
             hot_url = soup_a.find('a').get('href')
+            if not hot_url.start_with('https://www.huxiu.com'):
+                hot_url = 'https://www.huxiu.com' + hot_url
             group = "huxiu"
-            print(hot_name, hot_url)
             # hot_url = "get/?url=" + multiple_replace(base64.urlsafe_b64encode(base64.urlsafe_b64encode(hot_url.encode("utf-8")).decode("utf-8").encode("utf-8")).decode("utf-8").replace("=", "")[::-1]) + "&group=" + group + "&title=" + multiple_replace(base64.urlsafe_b64encode(base64.urlsafe_b64encode(hot_name.encode("utf-8")).decode("utf-8").encode("utf-8")).decode("utf-8").replace("=", "")[::-1])
             blist["name"] = hot_name
             blist["url"] = hot_url
             list.append(blist)
-        return
         jsondict["data"] = list
         with open(fname, "w+", encoding='utf-8') as f:
             f.write(json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':')))
