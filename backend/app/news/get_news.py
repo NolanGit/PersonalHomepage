@@ -11,17 +11,11 @@ from lxml import etree
 from threading import Thread
 from bs4 import BeautifulSoup
 
-#单线程，多线程采集方式选择(多线程采集速度快但机器负载短时高)
-thread = 'multi'
-#thread = 'single'
-
 #理论python和前端js会自动转义，但如果采集名称因引号或其它需转义的字符报错，请将相应采集名修改如下
 #hot_name = .replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").replace("\"", "").replace("\'", "").strip()
 
 #采集数据保存目录,为了安全请修改本程序名字,或移动到其他目录,并修改以下路径,默认与程序同目录
 dir = os.path.dirname(os.path.abspath(__file__)) + "/json/"
-#dir = "webrootdir/json/"
-#dir = "/tmp/json/"
 
 try:
     os.mkdir(dir)
@@ -1019,7 +1013,4 @@ def multi_run():
 
 
 if __name__ == "__main__":
-    if thread == 'single':
-        single_run()
-    if thread == 'multi':
-        multi_run()
+    multi_run()
