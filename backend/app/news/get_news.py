@@ -11,7 +11,6 @@ from lxml import etree
 from threading import Thread
 from bs4 import BeautifulSoup
 
-
 #单线程，多线程采集方式选择(多线程采集速度快但机器负载短时高)
 thread = 'multi'
 #thread = 'single'
@@ -516,18 +515,22 @@ def parse_huxiu():
         headers = {'Referer': 'https://news.cctv.com/', 'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36'}
         fname = dir + "cctv.json"
         r = requests.get(url, headers=headers, timeout=(5, 10))
-        soup = BeautifulSoup(r.text,'html.parser')
+        soup = BeautifulSoup(r.text, 'html.parser')
         list = []
         jsondict = {}
         list_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
         jsondict["time"] = list_time
         jsondict["title"] = "虎嗅"
-        for soup_a in soup.find_all(class_=re.compile("article-item  article-item--normal")):
+
+        def class_filter(class_text):
+            return class_text == "article-item--large" or class_text == "article-item  article-item--normal"
+
+        for soup_a in soup.find_all(class_=class_filter):
             blist = {}
             hot_name = soup_a.find('h5').text.replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").strip()
             hot_url = soup_a.find('a').get('href')
             group = "huxiu"
-            print(hot_name,hot_url)
+            print(hot_name, hot_url)
             # hot_url = "get/?url=" + multiple_replace(base64.urlsafe_b64encode(base64.urlsafe_b64encode(hot_url.encode("utf-8")).decode("utf-8").encode("utf-8")).decode("utf-8").replace("=", "")[::-1]) + "&group=" + group + "&title=" + multiple_replace(base64.urlsafe_b64encode(base64.urlsafe_b64encode(hot_name.encode("utf-8")).decode("utf-8").encode("utf-8")).decode("utf-8").replace("=", "")[::-1])
             blist["name"] = hot_name
             blist["url"] = hot_url
@@ -759,13 +762,13 @@ def parse_bilibili():
         fname = dir + "bilibili.json"
         r = requests.get(url, headers=headers, timeout=(5, 10))
         r.encoding = 'utf-8'
-        soup = BeautifulSoup(r.text,'html.parser')
+        soup = BeautifulSoup(r.text, 'html.parser')
         list = []
         jsondict = {}
         list_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
         jsondict["time"] = list_time
         jsondict["title"] = "Bilibili"
-        for soup_a in soup.find_all("a","title"):
+        for soup_a in soup.find_all("a", "title"):
             blist = {}
             hot_name = soup_a.text.replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").strip()
             hot_url = soup_a.get('href')
