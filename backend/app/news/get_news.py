@@ -529,7 +529,7 @@ def parse_huxiu():
             blist = {}
             hot_name = soup_a.find('h5').text.replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").strip()
             hot_url = soup_a.find('a').get('href')
-            if not hot_url.start_with('https://www.huxiu.com'):
+            if not hot_url.startswith('https://www.huxiu.com'):
                 hot_url = 'https://www.huxiu.com' + hot_url
             group = "huxiu"
             # hot_url = "get/?url=" + multiple_replace(base64.urlsafe_b64encode(base64.urlsafe_b64encode(hot_url.encode("utf-8")).decode("utf-8").encode("utf-8")).decode("utf-8").replace("=", "")[::-1]) + "&group=" + group + "&title=" + multiple_replace(base64.urlsafe_b64encode(base64.urlsafe_b64encode(hot_name.encode("utf-8")).decode("utf-8").encode("utf-8")).decode("utf-8").replace("=", "")[::-1])
