@@ -522,7 +522,7 @@ def parse_huxiu():
         list_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
         jsondict["time"] = list_time
         jsondict["title"] = "虎嗅"
-        for soup_a in soup.find_all(class_=re.compile("article-item")):
+        for soup_a in soup.find_all(class_=re.compile("article-item*[^img][^content]")):
             blist = {}
             hot_name = soup_a.find('h5').text.replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").strip()
             hot_url = soup_a.find('a').get('href')
@@ -533,15 +533,6 @@ def parse_huxiu():
             blist["url"] = hot_url
             list.append(blist)
         return
-        for n in data['rollData']:
-            blist = {}
-            hot_url = n['url']
-            hot_name = n['title'].replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").strip()
-            group = "cctv"
-            # hot_url = "get/?url=" + multiple_replace(base64.urlsafe_b64encode(base64.urlsafe_b64encode(hot_url.encode("utf-8")).decode("utf-8").encode("utf-8")).decode("utf-8").replace("=", "")[::-1]) + "&group=" + group + "&title=" + multiple_replace(base64.urlsafe_b64encode(base64.urlsafe_b64encode(hot_name.encode("utf-8")).decode("utf-8").encode("utf-8")).decode("utf-8").replace("=", "")[::-1])
-            blist["name"] = hot_name
-            blist["url"] = hot_url
-            list.append(blist)
         jsondict["data"] = list
         with open(fname, "w+", encoding='utf-8') as f:
             f.write(json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':')))
