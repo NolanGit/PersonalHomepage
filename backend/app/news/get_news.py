@@ -511,7 +511,6 @@ def parse_guokr():
 
 #虎嗅
 def parse_huxiu():
-    return
     try:
         url = "https://www.huxiu.com/article/"
         headers = {'Referer': 'https://news.cctv.com/', 'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36'}
