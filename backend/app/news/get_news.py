@@ -513,16 +513,27 @@ def parse_guokr():
 def parse_huxiu():
     return
     try:
-        url = "http://news.cctv.com/data/index.json"
+        url = "https://www.huxiu.com/article/"
         headers = {'Referer': 'https://news.cctv.com/', 'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36'}
         fname = dir + "cctv.json"
-        r = requests.get(url, headers=headers, timeout=(5, 10)).text
-        data = json.loads(r)
+        r = requests.get(url, headers=headers, timeout=(5, 10))
+        soup = BeautifulSoup(r.text,'html.parser')
         list = []
         jsondict = {}
-        list_time = data['updateTime']
+        list_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
         jsondict["time"] = list_time
-        jsondict["title"] = "央视要闻"
+        jsondict["title"] = "虎嗅"
+        for soup_a in soup.find_all(class_=re.compile("article-item")):
+            blist = {}
+            hot_name = soup_a.find('h5').text.replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").strip()
+            hot_url = soup_a.find('a').get('href')
+            group = "huxiu"
+            print(hot_name,hot_url)
+            # hot_url = "get/?url=" + multiple_replace(base64.urlsafe_b64encode(base64.urlsafe_b64encode(hot_url.encode("utf-8")).decode("utf-8").encode("utf-8")).decode("utf-8").replace("=", "")[::-1]) + "&group=" + group + "&title=" + multiple_replace(base64.urlsafe_b64encode(base64.urlsafe_b64encode(hot_name.encode("utf-8")).decode("utf-8").encode("utf-8")).decode("utf-8").replace("=", "")[::-1])
+            blist["name"] = hot_name
+            blist["url"] = hot_url
+            list.append(blist)
+        return
         for n in data['rollData']:
             blist = {}
             hot_url = n['url']
