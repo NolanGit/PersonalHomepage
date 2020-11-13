@@ -398,42 +398,24 @@ def parse_hacpai(name):
         print(sys._getframe().f_code.co_name + "(" + name + ")" + "采集错误，请及时更新规则！")
 
 
-#猫扑热帖
-def parse_mop():
+#豆瓣
+def parse_douban():
     try:
-        url = "https://www.mop.com/"
+        url = "https://www.douban.com/group/explore"
         headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36'}
-        fname = dir + "mop.json"
+        fname = dir + "douban.json"
         r = requests.get(url, headers=headers, timeout=(5, 10))
         r.encoding = 'utf-8'
-        soup = etree.HTML(r.text.replace("<h3>", "").replace("</h3>", ""))
+        soup = BeautifulSoup(r.text,'html.parser')
         list = []
         jsondict = {}
         list_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
         jsondict["time"] = list_time
-        jsondict["title"] = "猫扑热帖"
-        for soup_a in soup.xpath("//div[@class='swiper-wrapper']")[0]:
+        jsondict["title"] = "豆瓣热帖"
+        for soup_a in soup.find_all("div","channel-item"):
             blist = {}
-            hot_name = soup_a.xpath("./a/div/h2/text()")[0].replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").strip()
-            hot_url = soup_a.xpath("./a/@href")[0]
-            group = "mop"
-            # hot_url = "get/?url=" + multiple_replace(base64.urlsafe_b64encode(base64.urlsafe_b64encode(hot_url.encode("utf-8")).decode("utf-8").encode("utf-8")).decode("utf-8").replace("=", "")[::-1]) + "&group=" + group + "&title=" + multiple_replace(base64.urlsafe_b64encode(base64.urlsafe_b64encode(hot_name.encode("utf-8")).decode("utf-8").encode("utf-8")).decode("utf-8").replace("=", "")[::-1])
-            blist["name"] = hot_name
-            blist["url"] = hot_url
-            list.append(blist)
-        for soup_b in soup.xpath("//div[@class='shuffling-two']/a"):
-            blist = {}
-            hot_name = soup_b.xpath("./div/p/text()")[0].replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").strip()
-            hot_url = soup_b.get('href')
-            group = "mop"
-            # hot_url = "get/?url=" + multiple_replace(base64.urlsafe_b64encode(base64.urlsafe_b64encode(hot_url.encode("utf-8")).decode("utf-8").encode("utf-8")).decode("utf-8").replace("=", "")[::-1]) + "&group=" + group + "&title=" + multiple_replace(base64.urlsafe_b64encode(base64.urlsafe_b64encode(hot_name.encode("utf-8")).decode("utf-8").encode("utf-8")).decode("utf-8").replace("=", "")[::-1])
-            blist["name"] = hot_name
-            blist["url"] = hot_url
-            list.append(blist)
-        for soup_c in soup.xpath("//div[@class='mop-hot']/div[1]/div/div/div/div/div[2]/a"):
-            blist = {}
-            hot_name = soup_c.text.replace("\r", "").replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").strip()
-            hot_url = soup_c.get('href')
+            hot_name = soup_a.find('h3').find('a').text.replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").strip()
+            hot_url = soup_a.find('h3').find('a').get('href')
             group = "mop"
             # hot_url = "get/?url=" + multiple_replace(base64.urlsafe_b64encode(base64.urlsafe_b64encode(hot_url.encode("utf-8")).decode("utf-8").encode("utf-8")).decode("utf-8").replace("=", "")[::-1]) + "&group=" + group + "&title=" + multiple_replace(base64.urlsafe_b64encode(base64.urlsafe_b64encode(hot_name.encode("utf-8")).decode("utf-8").encode("utf-8")).decode("utf-8").replace("=", "")[::-1])
             blist["name"] = hot_name
@@ -959,7 +941,7 @@ def multi_run():
     ts10 = Thread(target=parse_cnbeta)
     ts11 = Thread(target=parse_huxiu)
     ts13 = Thread(target=parse_guokr)
-    ts14 = Thread(target=parse_mop)
+    ts14 = Thread(target=parse_douban)
     ts16 = Thread(target=parse_hacpai, args=("play", ))
     ts17 = Thread(target=parse_hacpai, args=("hot", ))
     ts18 = Thread(target=parse_zhihu_daily)
