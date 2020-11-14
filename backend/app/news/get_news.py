@@ -183,7 +183,7 @@ def parse_36kr():
             'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36',
         }
         r = requests.get(url, headers=headers, timeout=(5, 10))
-        soup = etree.HTML(r.text)
+        soup = BeautifulSoup(r.text, 'html.parser')
         list = []
         jsondict = {}
         list_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
