@@ -200,7 +200,7 @@ def parse_36kr():
             blist["name"] = hot_name
             blist["url"] = hot_url
             list.append(blist)
-        jsondict["title"] = "24小时热门"
+        jsondict["title"] = "热门"
         jsondict["data"] = list
         fname = dir + "36kr_hot.json"
         with open(fname, "w+", encoding='utf-8') as f:
@@ -218,7 +218,7 @@ def parse_36kr():
             blist["name"] = hot_name
             blist["url"] = hot_url
             list.append(blist)
-        jsondict["title"] = "最新文章"
+        jsondict["title"] = "最新"
         jsondict["data"] = list
         fname = dir + "36kr_article.json"
         with open(fname, "w+", encoding='utf-8') as f:
