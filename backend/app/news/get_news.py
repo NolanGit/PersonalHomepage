@@ -188,7 +188,6 @@ def parse_36kr():
         jsondict = {}
         list_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
         jsondict["time"] = list_time
-        jsondict["title"] = "36Kr"
 
         def hot_class_filter(class_text):
             return (class_text is not None) and (('hotlist-item-other-title' in class_text) or ('hotlist-item-toptwo-title' in class_text))
@@ -201,6 +200,7 @@ def parse_36kr():
             blist["name"] = hot_name
             blist["url"] = hot_url
             list.append(blist)
+        jsondict["title"] = "24小时热门"
         jsondict["data"] = list
         fname = dir + "36kr_hot.json"
         with open(fname, "w+", encoding='utf-8') as f:
@@ -217,6 +217,7 @@ def parse_36kr():
             blist["name"] = hot_name
             blist["url"] = hot_url
             list.append(blist)
+        jsondict["title"] = "最新文章"
         jsondict["data"] = list
         fname = dir + "36kr_article.json"
         with open(fname, "w+", encoding='utf-8') as f:
