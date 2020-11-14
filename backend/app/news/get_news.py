@@ -24,66 +24,6 @@ except Exception as e:
     print("json文件夹创建失败(已存在或无写入权限)")
 
 
-#字符替换加密(默认为大小写反转),修改此处顺序和添加数字替换可实现不同密码加密(并同时修改get/index.php内密码)
-def multiple_replace(text):
-    dic = {
-        "a": "A",
-        "b": "B",
-        "c": "C",
-        "d": "D",
-        "e": "E",
-        "f": "F",
-        "g": "G",
-        "h": "H",
-        "i": "I",
-        "j": "J",
-        "k": "K",
-        "l": "L",
-        "m": "M",
-        "n": "N",
-        "o": "O",
-        "p": "P",
-        "q": "Q",
-        "r": "R",
-        "s": "S",
-        "t": "T",
-        "u": "U",
-        "v": "V",
-        "w": "W",
-        "x": "X",
-        "y": "Y",
-        "z": "Z",
-        "A": "a",
-        "B": "b",
-        "C": "c",
-        "D": "d",
-        "E": "e",
-        "F": "f",
-        "G": "g",
-        "H": "h",
-        "I": "i",
-        "J": "j",
-        "K": "k",
-        "L": "l",
-        "M": "m",
-        "N": "n",
-        "O": "o",
-        "P": "p",
-        "Q": "q",
-        "R": "r",
-        "S": "s",
-        "T": "t",
-        "U": "u",
-        "V": "v",
-        "W": "w",
-        "X": "x",
-        "Y": "y",
-        "Z": "z"
-    }
-    pattern = "|".join(map(re.escape, list(dic.keys())))
-    return re.sub(pattern, lambda m: dic[m.group()], text)
-
-
 #UTC时间转本地时间（+8:00）
 def utc2local(utc_st):
     now_stamp = time.time()
@@ -119,7 +59,6 @@ def parse_baidu(name):
             hot_url = soup_a.xpath("./td[2]/a[1]/@href")[0]
             hot_num = soup_a.xpath("./td[@class='last']/span/text()")[0]
             group = name
-            # hot_url = "get/?url=" + multiple_replace(base64.urlsafe_b64encode(base64.urlsafe_b64encode(hot_url.encode("utf-8")).decode("utf-8").encode("utf-8")).decode("utf-8").replace("=", "")[::-1]) + "&group=" + group + "&title=" + multiple_replace(base64.urlsafe_b64encode(base64.urlsafe_b64encode(hot_name.encode("utf-8")).decode("utf-8").encode("utf-8")).decode("utf-8").replace("=", "")[::-1])
             blist["name"] = hot_name
             blist["url"] = hot_url
             blist["num"] = hot_num
@@ -156,7 +95,6 @@ def parse_zhihu_hot():
             hot_name = n['target']['title'].replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").strip()
             hot_url = n['target']['url'].replace("api.zhihu.com/questions/", "www.zhihu.com/question/")
             group = "zhihu_hot"
-            # hot_url = "get/?url=" + multiple_replace(base64.urlsafe_b64encode(base64.urlsafe_b64encode(hot_url.encode("utf-8")).decode("utf-8").encode("utf-8")).decode("utf-8").replace("=", "")[::-1]) + "&group=" + group + "&title=" + multiple_replace(base64.urlsafe_b64encode(base64.urlsafe_b64encode(hot_name.encode("utf-8")).decode("utf-8").encode("utf-8")).decode("utf-8").replace("=", "")[::-1])
             blist["name"] = hot_name
             blist["url"] = hot_url
             list.append(blist)
@@ -195,7 +133,6 @@ def parse_weibo():
                 str_list = ""
             else:
                 group = "weibo"
-                # hot_url = "get/?url=" + multiple_replace(base64.urlsafe_b64encode(base64.urlsafe_b64encode(hot_url.encode("utf-8")).decode("utf-8").encode("utf-8")).decode("utf-8").replace("=", "")[::-1]) + "&group=" + group + "&title=" + multiple_replace(base64.urlsafe_b64encode(base64.urlsafe_b64encode(hot_name.encode("utf-8")).decode("utf-8").encode("utf-8")).decode("utf-8").replace("=", "")[::-1])
                 blist["name"] = hot_name
                 blist["url"] = hot_url
                 if hot_num:
@@ -226,7 +163,6 @@ def parse_v2ex():
             hot_name = soup_a.text.replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").strip()
             hot_url = "https://www.v2ex.com" + soup_a.get('href')
             group = "v2ex"
-            # hot_url = "get/?url=" + multiple_replace(base64.urlsafe_b64encode(base64.urlsafe_b64encode(hot_url.encode("utf-8")).decode("utf-8").encode("utf-8")).decode("utf-8").replace("=", "")[::-1]) + "&group=" + group + "&title=" + multiple_replace(base64.urlsafe_b64encode(base64.urlsafe_b64encode(hot_name.encode("utf-8")).decode("utf-8").encode("utf-8")).decode("utf-8").replace("=", "")[::-1])
             blist["name"] = hot_name
             blist["url"] = hot_url
             list.append(blist)
@@ -238,31 +174,54 @@ def parse_v2ex():
         print(sys._getframe().f_code.co_name + "采集错误，请及时更新规则！")
 
 
-#天涯热帖
-def parse_tianya():
+#36Kr
+def parse_36kr():
     try:
-        url = "http://bbs.tianya.cn/hotArticle.jsp"
-        headers = {'Host': 'bbs.tianya.cn', 'Referer': 'http://bbs.tianya.cn/hotArticle.jsp'}
-        fname = dir + "tianya.json"
+        url = "https://36kr.com/"
+        headers = {
+            'Referer': 'https://36kr.com/',
+            'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36',
+        }
         r = requests.get(url, headers=headers, timeout=(5, 10))
         soup = etree.HTML(r.text)
         list = []
         jsondict = {}
         list_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
         jsondict["time"] = list_time
-        jsondict["title"] = "天涯热帖"
-        for soup_a in soup.xpath("//div[@class='mt5']/table/tbody/tr/td[@class='td-title']/a"):
+        jsondict["title"] = "36Kr"
+
+        def hot_class_filter(class_text):
+            return (class_text is not None) and (('hotlist-item-other-title' in class_text) or ('hotlist-item-toptwo-title' in class_text))
+
+        for soup_a in soup.find_all(class_=hot_class_filter):
             blist = {}
             hot_name = soup_a.text.replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").strip()
-            hot_url = 'http://bbs.tianya.cn' + soup_a.get('href')
-            group = "tianya"
-            # hot_url = "get/?url=" + multiple_replace(base64.urlsafe_b64encode(base64.urlsafe_b64encode(hot_url.encode("utf-8")).decode("utf-8").encode("utf-8")).decode("utf-8").replace("=", "")[::-1]) + "&group=" + group + "&title=" + multiple_replace(base64.urlsafe_b64encode(base64.urlsafe_b64encode(hot_name.encode("utf-8")).decode("utf-8").encode("utf-8")).decode("utf-8").replace("=", "")[::-1])
+            hot_url = 'https://36kr.com/' + soup_a.get('href')
+            group = "36Kr"
             blist["name"] = hot_name
             blist["url"] = hot_url
             list.append(blist)
         jsondict["data"] = list
+        fname = dir + "36kr_hot.json"
         with open(fname, "w+", encoding='utf-8') as f:
             f.write(json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':')))
+
+        def article_class_filter(class_text):
+            return (class_text is not None) and ('article-item-title' in class_text)
+
+        for soup_a in soup.find_all(class_=article_class_filter):
+            blist = {}
+            hot_name = soup_a.text.replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").strip()
+            hot_url = 'https://36kr.com/' + soup_a.get('href')
+            group = "36Kr"
+            blist["name"] = hot_name
+            blist["url"] = hot_url
+            list.append(blist)
+        jsondict["data"] = list
+        fname = dir + "36kr_article.json"
+        with open(fname, "w+", encoding='utf-8') as f:
+            f.write(json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':')))
+
     except Exception as e:
         print(e)
         print(sys._getframe().f_code.co_name + "采集错误，请及时更新规则！")
@@ -291,7 +250,6 @@ def parse_chouti():
             if 'chouti.com' not in hot_url:
                 hot_name = n['title'].replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").strip()
                 group = "chouti"
-                # hot_url = "get/?url=" + multiple_replace(base64.urlsafe_b64encode(base64.urlsafe_b64encode(hot_url.encode("utf-8")).decode("utf-8").encode("utf-8")).decode("utf-8").replace("=", "")[::-1]) + "&group=" + group + "&title=" + multiple_replace(base64.urlsafe_b64encode(base64.urlsafe_b64encode(hot_name.encode("utf-8")).decode("utf-8").encode("utf-8")).decode("utf-8").replace("=", "")[::-1])
                 blist["name"] = hot_name
                 blist["url"] = hot_url
                 list.append(blist)
@@ -321,7 +279,6 @@ def parse_jandan():
             hot_name = soup_a.text.replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").strip()
             hot_url = soup_a.get('href')
             group = "jandan"
-            # hot_url = "get/?url=" + multiple_replace(base64.urlsafe_b64encode(base64.urlsafe_b64encode(hot_url.encode("utf-8")).decode("utf-8").encode("utf-8")).decode("utf-8").replace("=", "")[::-1]) + "&group=" + group + "&title=" + multiple_replace(base64.urlsafe_b64encode(base64.urlsafe_b64encode(hot_name.encode("utf-8")).decode("utf-8").encode("utf-8")).decode("utf-8").replace("=", "")[::-1])
             blist["name"] = hot_name
             blist["url"] = hot_url
             list.append(blist)
@@ -351,7 +308,6 @@ def parse_zhihu_daily():
             hot_name = soup_a.xpath('./span/text()')[0].replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").strip()
             hot_url = "https://daily.zhihu.com" + soup_a.get('href')
             group = "zhihu_daily"
-            # hot_url = "get/?url=" + multiple_replace(base64.urlsafe_b64encode(base64.urlsafe_b64encode(hot_url.encode("utf-8")).decode("utf-8").encode("utf-8")).decode("utf-8").replace("=", "")[::-1]) + "&group=" + group + "&title=" + multiple_replace(base64.urlsafe_b64encode(base64.urlsafe_b64encode(hot_name.encode("utf-8")).decode("utf-8").encode("utf-8")).decode("utf-8").replace("=", "")[::-1])
             blist["name"] = hot_name
             blist["url"] = hot_url
             list.append(blist)
@@ -386,7 +342,6 @@ def parse_hacpai(name):
             blist = {}
             hot_name = soup_a.text.replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").strip()
             hot_url = soup_a.get('href')
-            # hot_url = "get/?url=" + multiple_replace(base64.urlsafe_b64encode(base64.urlsafe_b64encode(hot_url.encode("utf-8")).decode("utf-8").encode("utf-8")).decode("utf-8").replace("=", "")[::-1]) + "&group=" + group + "&title=" + multiple_replace(base64.urlsafe_b64encode(base64.urlsafe_b64encode(hot_name.encode("utf-8")).decode("utf-8").encode("utf-8")).decode("utf-8").replace("=", "")[::-1])
             blist["name"] = hot_name
             blist["url"] = hot_url
             list.append(blist)
@@ -406,18 +361,17 @@ def parse_douban():
         fname = dir + "douban.json"
         r = requests.get(url, headers=headers, timeout=(5, 10))
         r.encoding = 'utf-8'
-        soup = BeautifulSoup(r.text,'html.parser')
+        soup = BeautifulSoup(r.text, 'html.parser')
         list = []
         jsondict = {}
         list_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
         jsondict["time"] = list_time
         jsondict["title"] = "豆瓣热帖"
-        for soup_a in soup.find_all("div","channel-item"):
+        for soup_a in soup.find_all("div", "channel-item"):
             blist = {}
             hot_name = soup_a.find('h3').find('a').text.replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").strip()
             hot_url = soup_a.find('h3').find('a').get('href')
             group = "mop"
-            # hot_url = "get/?url=" + multiple_replace(base64.urlsafe_b64encode(base64.urlsafe_b64encode(hot_url.encode("utf-8")).decode("utf-8").encode("utf-8")).decode("utf-8").replace("=", "")[::-1]) + "&group=" + group + "&title=" + multiple_replace(base64.urlsafe_b64encode(base64.urlsafe_b64encode(hot_name.encode("utf-8")).decode("utf-8").encode("utf-8")).decode("utf-8").replace("=", "")[::-1])
             blist["name"] = hot_name
             blist["url"] = hot_url
             list.append(blist)
@@ -454,7 +408,6 @@ def parse_guokr():
             hot_name = soup_a.text.replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").strip()
             hot_url = soup_a.get('href')
             group = "guokr"
-            # hot_url = "get/?url=" + multiple_replace(base64.urlsafe_b64encode(base64.urlsafe_b64encode(hot_url.encode("utf-8")).decode("utf-8").encode("utf-8")).decode("utf-8").replace("=", "")[::-1]) + "&group=" + group + "&title=" + multiple_replace(base64.urlsafe_b64encode(base64.urlsafe_b64encode(hot_name.encode("utf-8")).decode("utf-8").encode("utf-8")).decode("utf-8").replace("=", "")[::-1])
             blist["name"] = hot_name
             blist["url"] = hot_url
             list.append(blist)
@@ -463,7 +416,6 @@ def parse_guokr():
             hot_url = "https://www.guokr.com/article/" + str(n['id']) + "/"
             hot_name = n['title'].replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").strip()
             group = "guokr"
-            # hot_url = "get/?url=" + multiple_replace(base64.urlsafe_b64encode(base64.urlsafe_b64encode(hot_url.encode("utf-8")).decode("utf-8").encode("utf-8")).decode("utf-8").replace("=", "")[::-1]) + "&group=" + group + "&title=" + multiple_replace(base64.urlsafe_b64encode(base64.urlsafe_b64encode(hot_name.encode("utf-8")).decode("utf-8").encode("utf-8")).decode("utf-8").replace("=", "")[::-1])
             blist["name"] = hot_name
             blist["url"] = hot_url
             list.append(blist)
@@ -472,7 +424,6 @@ def parse_guokr():
             hot_url = "https://www.guokr.com/article/" + str(n['id']) + "/"
             hot_name = n['title'].replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").strip()
             group = "guokr"
-            # hot_url = "get/?url=" + multiple_replace(base64.urlsafe_b64encode(base64.urlsafe_b64encode(hot_url.encode("utf-8")).decode("utf-8").encode("utf-8")).decode("utf-8").replace("=", "")[::-1]) + "&group=" + group + "&title=" + multiple_replace(base64.urlsafe_b64encode(base64.urlsafe_b64encode(hot_name.encode("utf-8")).decode("utf-8").encode("utf-8")).decode("utf-8").replace("=", "")[::-1])
             blist["name"] = hot_name
             blist["url"] = hot_url
             list.append(blist)
@@ -508,7 +459,6 @@ def parse_huxiu():
             if not hot_url.startswith('https://www.huxiu.com'):
                 hot_url = 'https://www.huxiu.com' + hot_url
             group = "huxiu"
-            # hot_url = "get/?url=" + multiple_replace(base64.urlsafe_b64encode(base64.urlsafe_b64encode(hot_url.encode("utf-8")).decode("utf-8").encode("utf-8")).decode("utf-8").replace("=", "")[::-1]) + "&group=" + group + "&title=" + multiple_replace(base64.urlsafe_b64encode(base64.urlsafe_b64encode(hot_name.encode("utf-8")).decode("utf-8").encode("utf-8")).decode("utf-8").replace("=", "")[::-1])
             blist["name"] = hot_name
             blist["url"] = hot_url
             list.append(blist)
@@ -543,7 +493,6 @@ def parse_cnbeta():
                 hot_name = soup_a.text.replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").strip()
             hot_url = soup_a.get('href').replace("//hot", "https://hot").strip()
             group = "cnbeta"
-            # hot_url = "get/?url=" + multiple_replace(base64.urlsafe_b64encode(base64.urlsafe_b64encode(hot_url.encode("utf-8")).decode("utf-8").encode("utf-8")).decode("utf-8").replace("=", "")[::-1]) + "&group=" + group + "&title=" + multiple_replace(base64.urlsafe_b64encode(base64.urlsafe_b64encode(hot_name.encode("utf-8")).decode("utf-8").encode("utf-8")).decode("utf-8").replace("=", "")[::-1])
             blist["name"] = hot_name
             blist["url"] = hot_url
             list.append(blist)
@@ -574,7 +523,6 @@ def parse_zaobao():
             hot_name = soup_a.xpath("./div/span/text()")[0].replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").strip()
             hot_url = "https://www.zaobao.com.sg" + soup_a.get('href').strip()
             group = "zaobao"
-            # hot_url = "get/?url=" + multiple_replace(base64.urlsafe_b64encode(base64.urlsafe_b64encode(hot_url.encode("utf-8")).decode("utf-8").encode("utf-8")).decode("utf-8").replace("=", "")[::-1]) + "&group=" + group + "&title=" + multiple_replace(base64.urlsafe_b64encode(base64.urlsafe_b64encode(hot_name.encode("utf-8")).decode("utf-8").encode("utf-8")).decode("utf-8").replace("=", "")[::-1])
             blist["name"] = hot_name
             blist["url"] = hot_url
             list.append(blist)
@@ -607,7 +555,6 @@ def parse_weixin():
             hot_url = soup_a.xpath("./a/@href")[0]
             hot_num = soup_a.xpath("./span/span/@style")[0].replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").replace("width:", "").replace("%", "").strip()
             group = "weixin"
-            # hot_url = "get/?url=" + multiple_replace(base64.urlsafe_b64encode(base64.urlsafe_b64encode(hot_url.encode("utf-8")).decode("utf-8").encode("utf-8")).decode("utf-8").replace("=", "")[::-1]) + "&group=" + group + "&title=" + multiple_replace(base64.urlsafe_b64encode(base64.urlsafe_b64encode(hot_name.encode("utf-8")).decode("utf-8").encode("utf-8")).decode("utf-8").replace("=", "")[::-1])
             blist["name"] = hot_name
             blist["url"] = hot_url
             blist["num"] = hot_num
@@ -624,7 +571,6 @@ def parse_weixin():
             hot_name = soup_a.text.replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").strip()
             hot_url = soup_a.get('href')
             group = "weixin"
-            # hot_url = "get/?url=" + multiple_replace(base64.urlsafe_b64encode(base64.urlsafe_b64encode(hot_url.encode("utf-8")).decode("utf-8").encode("utf-8")).decode("utf-8").replace("=", "")[::-1]) + "&group=" + group + "&title=" + multiple_replace(base64.urlsafe_b64encode(base64.urlsafe_b64encode(hot_name.encode("utf-8")).decode("utf-8").encode("utf-8")).decode("utf-8").replace("=", "")[::-1])
             blist["name"] = hot_name
             blist["url"] = hot_url
             list.append(blist)
@@ -655,7 +601,6 @@ def parse_thepaper():
             hot_name = soup_a.text.replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").strip()
             hot_url = "https://www.thepaper.cn/" + soup_a.get('href')
             group = "thepaper"
-            # hot_url = "get/?url=" + multiple_replace(base64.urlsafe_b64encode(base64.urlsafe_b64encode(hot_url.encode("utf-8")).decode("utf-8").encode("utf-8")).decode("utf-8").replace("=", "")[::-1]) + "&group=" + group + "&title=" + multiple_replace(base64.urlsafe_b64encode(base64.urlsafe_b64encode(hot_name.encode("utf-8")).decode("utf-8").encode("utf-8")).decode("utf-8").replace("=", "")[::-1])
             blist["name"] = hot_name
             blist["url"] = hot_url
             list.append(blist)
@@ -686,7 +631,6 @@ def parse_nytimes():
             hot_name = soup_a.get('title').replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").strip()
             hot_url = soup_a.get('href')
             group = "nytimes"
-            # hot_url = "get/?url=" + multiple_replace(base64.urlsafe_b64encode(base64.urlsafe_b64encode(hot_url.encode("utf-8")).decode("utf-8").encode("utf-8")).decode("utf-8").replace("=", "")[::-1]) + "&group=" + group + "&title=" + multiple_replace(base64.urlsafe_b64encode(base64.urlsafe_b64encode(hot_name.encode("utf-8")).decode("utf-8").encode("utf-8")).decode("utf-8").replace("=", "")[::-1])
             blist["name"] = hot_name
             blist["url"] = hot_url
             list.append(blist)
@@ -717,7 +661,6 @@ def parse_solidot():
             hot_name = soup_a.text.replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").strip()
             hot_url = "https://www.solidot.org" + soup_a.get('href')
             group = "solidot"
-            # hot_url = "get/?url=" + multiple_replace(base64.urlsafe_b64encode(base64.urlsafe_b64encode(hot_url.encode("utf-8")).decode("utf-8").encode("utf-8")).decode("utf-8").replace("=", "")[::-1]) + "&group=" + group + "&title=" + multiple_replace(base64.urlsafe_b64encode(base64.urlsafe_b64encode(hot_name.encode("utf-8")).decode("utf-8").encode("utf-8")).decode("utf-8").replace("=", "")[::-1])
             blist["name"] = hot_name
             blist["url"] = hot_url
             list.append(blist)
@@ -749,7 +692,6 @@ def parse_bilibili():
             hot_name = soup_a.text.replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").strip()
             hot_url = soup_a.get('href')
             group = "Bilibili"
-            # hot_url = "get/?url=" + multiple_replace(base64.urlsafe_b64encode(base64.urlsafe_b64encode(hot_url.encode("utf-8")).decode("utf-8").encode("utf-8")).decode("utf-8").replace("=", "")[::-1]) + "&group=" + group + "&title=" + multiple_replace(base64.urlsafe_b64encode(base64.urlsafe_b64encode(hot_name.encode("utf-8")).decode("utf-8").encode("utf-8")).decode("utf-8").replace("=", "")[::-1])
             blist["name"] = hot_name
             blist["url"] = hot_url
             list.append(blist)
@@ -782,7 +724,6 @@ def parse_sinatech():
             hot_url = n['url']
             hot_name = n['title'].replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").strip()
             group = "sinatech"
-            # hot_url = "get/?url=" + multiple_replace(base64.urlsafe_b64encode(base64.urlsafe_b64encode(hot_url.encode("utf-8")).decode("utf-8").encode("utf-8")).decode("utf-8").replace("=", "")[::-1]) + "&group=" + group + "&title=" + multiple_replace(base64.urlsafe_b64encode(base64.urlsafe_b64encode(hot_name.encode("utf-8")).decode("utf-8").encode("utf-8")).decode("utf-8").replace("=", "")[::-1])
             blist["name"] = hot_name
             blist["url"] = hot_url
             list.append(blist)
@@ -823,7 +764,6 @@ def parse_hostloc():
             hot_name = soup_a.text.replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").strip()
             hot_url = "https://www.hostloc.com/" + soup_a.get('href')
             group = "hostloc"
-            # hot_url = "get/?url=" + multiple_replace(base64.urlsafe_b64encode(base64.urlsafe_b64encode(hot_url.encode("utf-8")).decode("utf-8").encode("utf-8")).decode("utf-8").replace("=", "")[::-1]) + "&group=" + group + "&title=" + multiple_replace(base64.urlsafe_b64encode(base64.urlsafe_b64encode(hot_name.encode("utf-8")).decode("utf-8").encode("utf-8")).decode("utf-8").replace("=", "")[::-1])
             blist["name"] = hot_name
             blist["url"] = hot_url
             list.append(blist)
@@ -864,7 +804,6 @@ def parse_smzdm_article(name):
             hot_url = n['article_url']
             hot_name = n['title'].replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").strip()
             group = "smzdm_article"
-            # hot_url = "get/?url=" + multiple_replace(base64.urlsafe_b64encode(base64.urlsafe_b64encode(hot_url.encode("utf-8")).decode("utf-8").encode("utf-8")).decode("utf-8").replace("=", "")[::-1]) + "&group=" + group + "&title=" + multiple_replace(base64.urlsafe_b64encode(base64.urlsafe_b64encode(hot_name.encode("utf-8")).decode("utf-8").encode("utf-8")).decode("utf-8").replace("=", "")[::-1])
             blist["name"] = hot_name
             blist["url"] = hot_url
             list.append(blist)
@@ -873,7 +812,6 @@ def parse_smzdm_article(name):
             hot_url = n['article_url']
             hot_name = n['title'].replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").strip()
             group = "smzdm_article"
-            # hot_url = "get/?url=" + multiple_replace(base64.urlsafe_b64encode(base64.urlsafe_b64encode(hot_url.encode("utf-8")).decode("utf-8").encode("utf-8")).decode("utf-8").replace("=", "")[::-1]) + "&group=" + group + "&title=" + multiple_replace(base64.urlsafe_b64encode(base64.urlsafe_b64encode(hot_name.encode("utf-8")).decode("utf-8").encode("utf-8")).decode("utf-8").replace("=", "")[::-1])
             blist["name"] = hot_name
             blist["url"] = hot_url
             list.append(blist)
@@ -913,7 +851,6 @@ def parse_zhihu_good():
             hot_name = soup_a.text.replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").strip()
             hot_url = soup_a.get('href').replace("/question/", "https://www.zhihu.com/question/")
             group = "zhihu_good"
-            # hot_url = "get/?url=" + multiple_replace(base64.urlsafe_b64encode(base64.urlsafe_b64encode(hot_url.encode("utf-8")).decode("utf-8").encode("utf-8")).decode("utf-8").replace("=", "")[::-1]) + "&group=" + group + "&title=" + multiple_replace(base64.urlsafe_b64encode(base64.urlsafe_b64encode(hot_name.encode("utf-8")).decode("utf-8").encode("utf-8")).decode("utf-8").replace("=", "")[::-1])
             blist["name"] = hot_name
             blist["url"] = hot_url
             list.append(blist)
@@ -947,7 +884,7 @@ def multi_run():
     ts18 = Thread(target=parse_zhihu_daily)
     ts19 = Thread(target=parse_jandan)
     ts21 = Thread(target=parse_chouti)
-    ts22 = Thread(target=parse_tianya)
+    ts22 = Thread(target=parse_36kr)
     ts24 = Thread(target=parse_v2ex)
     ts26 = Thread(target=parse_weibo)
     ts27 = Thread(target=parse_baidu, args=("now", ))
