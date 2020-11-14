@@ -184,7 +184,6 @@ def parse_36kr():
         }
         r = requests.get(url, headers=headers, timeout=(5, 10))
         soup = BeautifulSoup(r.text, 'html.parser')
-        list = []
         jsondict = {}
         list_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
         jsondict["time"] = list_time
@@ -192,6 +191,7 @@ def parse_36kr():
         def hot_class_filter(class_text):
             return (class_text is not None) and (('hotlist-item-other-title' in class_text) or ('hotlist-item-toptwo-title' in class_text))
 
+        list = []
         for soup_a in soup.find_all(class_=hot_class_filter):
             blist = {}
             hot_name = soup_a.text.replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").strip()
@@ -209,6 +209,7 @@ def parse_36kr():
         def article_class_filter(class_text):
             return (class_text is not None) and ('article-item-title' in class_text)
 
+        list = []
         for soup_a in soup.find_all(class_=article_class_filter):
             blist = {}
             hot_name = soup_a.text.replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").strip()
