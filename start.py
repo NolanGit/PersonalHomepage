@@ -11,7 +11,7 @@ PYTHON_PATH = sys.executable
 INIT_SQL_PATH = CURRENT_RUNNING_PATH + '/backend/init.sql'
 CONFIG_PATH = CURRENT_RUNNING_PATH + '/backend/app/homepage.config'
 REQUIREMENTS_PATH = CURRENT_RUNNING_PATH + '/requirements.txt'
-SCHEDULE_SCRIPT_PATH = CURRENT_RUNNING_PATH + '/backend/app/script/schedule_monitor.sh'
+SCHEDULE_SCRIPT_PATH = CURRENT_RUNNING_PATH + '/backend/app/script'
 UPLOAD_FILE_PATH = CURRENT_RUNNING_PATH + '/upload/'
 BING_WALLPAPERS_PATH = CURRENT_RUNNING_PATH + '/wallpapers/'
 BYE = ['海内存知己，天涯若比邻。', '何当重相见，樽酒慰离颜。', '日暮征帆何处泊？天涯一望断人肠。', '日暮酒醒人已远，满天风雨下西楼。', '离心不异西江水，直送征帆万里行。', '劝君更尽一杯酒，西出阳关无故人。', '人情却似杨柳絮，悠扬便逐春风去。', '衰兰送客咸阳道，天若有情天亦老。']
@@ -77,7 +77,8 @@ def alter(file, alter_dict):
 def msg():
     print('\n')
     print('- 首先，在"frontend"目录下使用"npm i"安装必需前端组件，使用"npm run build"打包前端代码')
-    print('- 接着，使用crontab将%s加入定时任务，频率为每15分钟运行一次，可直接复制参数:"*/5 * * * * %s"，配置完成后，应用内配置的脚本（获取App价格脚本、推送脚本）将在明天后被驱动运行，具体可在"控制台-运行脚本-定时任务"查看' % (SCHEDULE_SCRIPT_PATH, SCHEDULE_SCRIPT_PATH))
+    print('- 接着，使用crontab配置定时任务脚本，频率为每5分钟运行一次，可直接复制参数:"*/5 * * * * %s"粘贴到crontab中，配置完成后，应用内配置的脚本（获取App价格脚本、推送脚本）将在明天后被驱动运行，具体可在"控制台-运行脚本-定时任务"查看' %
+          ('cd ' + SCHEDULE_SCRIPT_PATH + ' && ' + PYTHON_PATH + 'schedule_monitor.py'))
     print('- 然后，在backend/目录下运行"python3 run.py"（如不在此目录下运行会产生问题），此操作会启用服务并自动建表')
     print('- 接着，运行了run.py后，使用"ctrl+c"停止服务，切回到根目录，运行此初始化脚本(python3 start.py)以执行初始化SQL')
     print('- 最后，在backend/目录下运行"python3 run.py"，登录50000端口试试看吧！初始用户名为admin，密码为123456')
@@ -106,9 +107,9 @@ if first_excution == 'n' or first_excution == 'N':
         elif str(option) == '2':
             break
         elif str(option) == '3':
-            is_https=input('是否打开https（需要有证书）(y/n)')
-            if str(is_https)=='y':
-                with open(CONFIG_PATH,'a')as w:
+            is_https = input('是否打开https（需要有证书）(y/n)')
+            if str(is_https) == 'y':
+                with open(CONFIG_PATH, 'a') as w:
                     w.write('\nHTTPS = True')
                 print('\n打开成功！')
                 msg2()
