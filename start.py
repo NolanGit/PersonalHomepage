@@ -78,7 +78,7 @@ def msg():
     print('\n')
     print('- 首先，在"frontend"目录下使用"npm i"安装必需前端组件，使用"npm run build"打包前端代码')
     print('- 接着，使用crontab配置定时任务脚本，频率为每5分钟运行一次，可直接复制参数:"*/5 * * * * %s"粘贴到crontab中，配置完成后，应用内配置的脚本（获取App价格脚本、推送脚本）将在明天后被驱动运行，具体可在"控制台-运行脚本-定时任务"查看' %
-          ('cd ' + SCHEDULE_SCRIPT_PATH + ' && ' + PYTHON_PATH + 'schedule_monitor.py'))
+          ('cd ' + SCHEDULE_SCRIPT_PATH + ' && ' + PYTHON_PATH + ' schedule_monitor.py'))
     print('- 然后，在backend/目录下运行"python3 run.py"（如不在此目录下运行会产生问题），此操作会启用服务并自动建表')
     print('- 接着，运行了run.py后，使用"ctrl+c"停止服务，切回到根目录，运行此初始化脚本(python3 start.py)以执行初始化SQL')
     print('- 最后，在backend/目录下运行"python3 run.py"，登录50000端口试试看吧！初始用户名为admin，密码为123456')
