@@ -122,6 +122,7 @@ export default {
       try {
         const { data: res } = await axios.post(api.flush, {
           target: target,
+          token: this.$cookies.get("csrf_token"),
         });
       } catch (e) {
         console.log(e);
