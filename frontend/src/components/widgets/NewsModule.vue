@@ -130,6 +130,7 @@ export default {
         for (let y = 0; y < res.data.length; y++) {
           this.newsData.chooseItems.push(res.data[y].title);
         }
+        this.init();
       } catch (e) {
         console.log(e);
         this.$message({

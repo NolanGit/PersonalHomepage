@@ -39,35 +39,6 @@ class MyThread(Thread):
         self.result = self.target(*self.args)
 
 
-news_dict = {
-    '36kr': [MyThread(target=parse_36kr)],
-    'v2ex': [MyThread(target=parse_v2ex)],
-    'huxiu': [MyThread(target=parse_huxiu)],
-    'guokr': [MyThread(target=parse_guokr)],
-    'weibo': [MyThread(target=parse_weibo)],
-    'weixin': [MyThread(target=parse_weixin)],
-    'zaobao': [MyThread(target=parse_zaobao)],
-    'cnbeta': [MyThread(target=parse_cnbeta)],
-    'douban': [MyThread(target=parse_douban)],
-    'jandan': [MyThread(target=parse_jandan)],
-    'chouti': [MyThread(target=parse_chouti)],
-    'hostloc': [MyThread(target=parse_hostloc)],
-    'solidot': [MyThread(target=parse_solidot)],
-    'nytimes': [MyThread(target=parse_nytimes)],
-    'bilibili': [MyThread(target=parse_bilibili)],
-    'sinatech': [MyThread(target=parse_sinatech)],
-    'thepaper': [MyThread(target=parse_thepaper)],
-    'zhihu_daily': [MyThread(target=parse_zhihu_daily)],
-    'zhihu_hot': [MyThread(target=parse_zhihu_hot), MyThread(target=parse_zhihu_good)],
-    'hacpai': [MyThread(target=parse_hacpai, args=("play", )), MyThread(target=parse_hacpai, args=("hot", ))],
-    'baidu': [MyThread(target=parse_baidu, args=("now", )), MyThread(target=parse_baidu, args=("today", )),
-              MyThread(target=parse_baidu, args=("week", ))],
-    'smzdm_article': [MyThread(target=parse_smzdm_article, args=("today", )),
-                      MyThread(target=parse_smzdm_article, args=("week", )),
-                      MyThread(target=parse_smzdm_article, args=("month", ))]
-}
-
-
 @news.route('/get', methods=['POST'])
 @limiter.limit(LIMITER_FREQUENCY_NEWS_GET)
 def get():
@@ -113,12 +84,42 @@ def flush():
             return rsp.refuse(), 403
 
         target = request.get_json()['target']
+        if target == 'zhihu_hot':
+            threads = [MyThread(target=parse_zhihu_hot), MyThread(target=parse_zhihu_good)]
+        elif target == 'hacpai':
+            threads = [MyThread(target=parse_hacpai, args=("play", )), MyThread(target=parse_hacpai, args=("hot", ))]
+        elif target == 'baidu':
+            threads = [MyThread(target=parse_baidu, args=("now", )), MyThread(target=parse_baidu, args=("today", )), MyThread(target=parse_baidu, args=("week", ))]
+        elif target == 'smzdm_article':
+            threads = [MyThread(target=parse_smzdm_article, args=("today", )), MyThread(target=parse_smzdm_article, args=("week", )), MyThread(target=parse_smzdm_article, args=("month", ))]
+        else:
+            news_dict = {
+                '36kr': [MyThread(target=parse_36kr)],
+                'v2ex': [MyThread(target=parse_v2ex)],
+                'huxiu': [MyThread(target=parse_huxiu)],
+                'guokr': [MyThread(target=parse_guokr)],
+                'weibo': [MyThread(target=parse_weibo)],
+                'weixin': [MyThread(target=parse_weixin)],
+                'zaobao': [MyThread(target=parse_zaobao)],
+                'cnbeta': [MyThread(target=parse_cnbeta)],
+                'douban': [MyThread(target=parse_douban)],
+                'jandan': [MyThread(target=parse_jandan)],
+                'chouti': [MyThread(target=parse_chouti)],
+                'hostloc': [MyThread(target=parse_hostloc)],
+                'solidot': [MyThread(target=parse_solidot)],
+                'nytimes': [MyThread(target=parse_nytimes)],
+                'bilibili': [MyThread(target=parse_bilibili)],
+                'sinatech': [MyThread(target=parse_sinatech)],
+                'thepaper': [MyThread(target=parse_thepaper)],
+                'zhihu_daily': [MyThread(target=parse_zhihu_daily)]
+            }
+            threads = news_dict[target]
         result = []
-        for t in news_dict[target]:
+        for t in threads:
             t.start()
-        for t in news_dict[target]:
+        for t in threads:
             t.join()
-        for t in news_dict[target]:
+        for t in threads:
             result.append(t.result)
         return rsp.success(result)
     except Exception as e:
