@@ -112,14 +112,16 @@ export default {
       }
     },
     async newsFlush() {
+      var target = "";
       for (let x = 0; x < this.newsData.data.length; x++) {
         if (this.newsData.data[x].title == this.newsDataCategory) {
-          console.log(this.newsData.data[x].website);
+          target = this.newsData.data[x].website;
+          break;
         }
       }
       try {
         const { data: res } = await axios.post(api.flush, {
-          target: this.newsData.data[x].website,
+          target: target,
         });
       } catch (e) {
         console.log(e);

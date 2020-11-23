@@ -65,8 +65,10 @@ def parse_baidu(name):
             blist["num"] = hot_num
             list.append(blist)
         jsondict["data"] = list
+        content=json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
         with open(fname, "w+", encoding='utf-8') as f:
-            f.write(json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':')))
+            f.write(content)
+        return content
     except Exception as e:
         print(e)
         print(sys._getframe().f_code.co_name + "(" + name + ")" + "采集错误，请及时更新规则！")
@@ -101,8 +103,10 @@ def parse_zhihu_hot():
             blist["url"] = hot_url
             list.append(blist)
         jsondict["data"] = list
+        content=json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
         with open(fname, "w+", encoding='utf-8') as f:
-            f.write(json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':')))
+            f.write(content)
+        return content
     except Exception as e:
         print(e)
         print(sys._getframe().f_code.co_name + "采集错误，请及时更新规则！")
@@ -142,8 +146,10 @@ def parse_weibo():
                     blist["num"] = hot_num
                 list.append(blist)
                 jsondict["data"] = list
+        content=json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
         with open(fname, "w+", encoding='utf-8') as f:
-            f.write(json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':')))
+            f.write(content)
+        return content
     except Exception as e:
         print(e)
         print(sys._getframe().f_code.co_name + "采集错误，请及时更新规则！")
@@ -171,8 +177,10 @@ def parse_v2ex():
             blist["url"] = hot_url
             list.append(blist)
         jsondict["data"] = list
+        content=json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
         with open(fname, "w+", encoding='utf-8') as f:
-            f.write(json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':')))
+            f.write(content)
+        return content
     except Exception as e:
         print(e)
         print(sys._getframe().f_code.co_name + "采集错误，请及时更新规则！")
@@ -208,8 +216,10 @@ def parse_36kr():
         jsondict["title"] = "热门"
         jsondict["data"] = list
         fname = dir + "36kr_hot.json"
+        content=json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
         with open(fname, "w+", encoding='utf-8') as f:
-            f.write(json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':')))
+            f.write(content)
+        return content
 
         def article_class_filter(class_text):
             return (class_text is not None) and ('article-item-title' in class_text)
@@ -226,8 +236,10 @@ def parse_36kr():
         jsondict["title"] = "最新"
         jsondict["data"] = list
         fname = dir + "36kr_article.json"
+        content=json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
         with open(fname, "w+", encoding='utf-8') as f:
-            f.write(json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':')))
+            f.write(content)
+        return content
 
     except Exception as e:
         print(e)
@@ -262,8 +274,10 @@ def parse_chouti():
                 blist["url"] = hot_url
                 list.append(blist)
         jsondict["data"] = list
+        content=json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
         with open(fname, "w+", encoding='utf-8') as f:
-            f.write(json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':')))
+            f.write(content)
+        return content
     except Exception as e:
         print(e)
         print(sys._getframe().f_code.co_name + "采集错误，请及时更新规则！")
@@ -292,8 +306,10 @@ def parse_jandan():
             blist["url"] = hot_url
             list.append(blist)
         jsondict["data"] = list
+        content=json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
         with open(fname, "w+", encoding='utf-8') as f:
-            f.write(json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':')))
+            f.write(content)
+        return content
     except Exception as e:
         print(e)
         print(sys._getframe().f_code.co_name + "采集错误，请及时更新规则！")
@@ -322,8 +338,10 @@ def parse_zhihu_daily():
             blist["url"] = hot_url
             list.append(blist)
         jsondict["data"] = list
+        content=json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
         with open(fname, "w+", encoding='utf-8') as f:
-            f.write(json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':')))
+            f.write(content)
+        return content
     except Exception as e:
         print(e)
         print(sys._getframe().f_code.co_name + "采集错误，请及时更新规则！")
@@ -357,8 +375,10 @@ def parse_hacpai(name):
             blist["url"] = hot_url
             list.append(blist)
         jsondict["data"] = list
+        content=json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
         with open(fname, "w+", encoding='utf-8') as f:
-            f.write(json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':')))
+            f.write(content)
+        return content
     except Exception as e:
         print(e)
         print(sys._getframe().f_code.co_name + "(" + name + ")" + "采集错误，请及时更新规则！")
@@ -388,8 +408,10 @@ def parse_douban():
             blist["url"] = hot_url
             list.append(blist)
         jsondict["data"] = list
+        content=json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
         with open(fname, "w+", encoding='utf-8') as f:
-            f.write(json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':')))
+            f.write(content)
+        return content
     except Exception as e:
         print(e)
         print(sys._getframe().f_code.co_name + "采集错误，请及时更新规则！")
@@ -441,8 +463,10 @@ def parse_guokr():
             blist["url"] = hot_url
             list.append(blist)
         jsondict["data"] = list
+        content=json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
         with open(fname, "w+", encoding='utf-8') as f:
-            f.write(json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':')))
+            f.write(content)
+        return content
     except Exception as e:
         print(e)
         print(sys._getframe().f_code.co_name + "采集错误，请及时更新规则！")
@@ -477,8 +501,10 @@ def parse_huxiu():
             blist["url"] = hot_url
             list.append(blist)
         jsondict["data"] = list
+        content=json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
         with open(fname, "w+", encoding='utf-8') as f:
-            f.write(json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':')))
+            f.write(content)
+        return content
     except Exception as e:
         print(e)
         print(sys._getframe().f_code.co_name + "采集错误，请及时更新规则！")
@@ -512,8 +538,10 @@ def parse_cnbeta():
             blist["url"] = hot_url
             list.append(blist)
         jsondict["data"] = list
+        content=json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
         with open(fname, "w+", encoding='utf-8') as f:
-            f.write(json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':')))
+            f.write(content)
+        return content
     except Exception as e:
         print(e)
         print(sys._getframe().f_code.co_name + "采集错误，请及时更新规则！")
@@ -543,8 +571,10 @@ def parse_zaobao():
             blist["url"] = hot_url
             list.append(blist)
         jsondict["data"] = list
+        content=json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
         with open(fname, "w+", encoding='utf-8') as f:
-            f.write(json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':')))
+            f.write(content)
+        return content
     except Exception as e:
         print(e)
         print(sys._getframe().f_code.co_name + "采集错误，请及时更新规则！")
@@ -577,8 +607,10 @@ def parse_weixin():
             blist["num"] = hot_num
             list.append(blist)
         jsondict["data"] = list
+        content=json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
         with open(fname, "w+", encoding='utf-8') as f:
-            f.write(json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':')))
+            f.write(content)
+        return content
         list = []
         jsondict["time"] = list_time
         jsondict["title"] = "热门文章"
@@ -591,8 +623,10 @@ def parse_weixin():
             blist["url"] = hot_url
             list.append(blist)
         jsondict["data"] = list
+        content=json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
         with open(fname2, "w+", encoding='utf-8') as f:
-            f.write(json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':')))
+            f.write(content)
+        return content
     except Exception as e:
         print(e)
         print(sys._getframe().f_code.co_name + "采集错误，请及时更新规则！")
@@ -622,8 +656,10 @@ def parse_thepaper():
             blist["url"] = hot_url
             list.append(blist)
         jsondict["data"] = list
+        content=json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
         with open(fname, "w+", encoding='utf-8') as f:
-            f.write(json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':')))
+            f.write(content)
+        return content
     except Exception as e:
         print(e)
         print(sys._getframe().f_code.co_name + "采集错误，请及时更新规则！")
@@ -653,8 +689,10 @@ def parse_nytimes():
             blist["url"] = hot_url
             list.append(blist)
         jsondict["data"] = list
+        content=json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
         with open(fname, "w+", encoding='utf-8') as f:
-            f.write(json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':')))
+            f.write(content)
+        return content
     except Exception as e:
         print(e)
         print(sys._getframe().f_code.co_name + "采集错误，请及时更新规则！")
@@ -684,8 +722,10 @@ def parse_solidot():
             blist["url"] = hot_url
             list.append(blist)
         jsondict["data"] = list
+        content=json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
         with open(fname, "w+", encoding='utf-8') as f:
-            f.write(json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':')))
+            f.write(content)
+        return content
     except Exception as e:
         print(e)
         print(sys._getframe().f_code.co_name + "采集错误，请及时更新规则！")
@@ -716,8 +756,10 @@ def parse_bilibili():
             blist["url"] = hot_url
             list.append(blist)
         jsondict["data"] = list
+        content=json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
         with open(fname, "w+", encoding='utf-8') as f:
-            f.write(json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':')))
+            f.write(content)
+        return content
     except Exception as e:
         print(e)
         print(sys._getframe().f_code.co_name + "采集错误，请及时更新规则！")
@@ -749,8 +791,10 @@ def parse_sinatech():
             blist["url"] = hot_url
             list.append(blist)
         jsondict["data"] = list
+        content=json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
         with open(fname, "w+", encoding='utf-8') as f:
-            f.write(json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':')))
+            f.write(content)
+        return content
     except Exception as e:
         print(e)
         print(sys._getframe().f_code.co_name + "采集错误，请及时更新规则！")
@@ -790,8 +834,10 @@ def parse_hostloc():
             blist["url"] = hot_url
             list.append(blist)
         jsondict["data"] = list
+        content=json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
         with open(fname, "w+", encoding='utf-8') as f:
-            f.write(json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':')))
+            f.write(content)
+        return content
     except Exception as e:
         print(e)
         print(sys._getframe().f_code.co_name + "采集错误，请及时更新规则！")
@@ -839,8 +885,10 @@ def parse_smzdm_article(name):
             blist["url"] = hot_url
             list.append(blist)
         jsondict["data"] = list
+        content=json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
         with open(fname, "w+", encoding='utf-8') as f:
-            f.write(json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':')))
+            f.write(content)
+        return content
     except Exception as e:
         print(e)
         print(sys._getframe().f_code.co_name + "(" + name + ")" + "采集错误，请及时更新规则！")
@@ -879,8 +927,10 @@ def parse_zhihu_good():
             blist["url"] = hot_url
             list.append(blist)
         jsondict["data"] = list
+        content=json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
         with open(fname, "w+", encoding='utf-8') as f:
-            f.write(json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':')))
+            f.write(content)
+        return content
     except Exception as e:
         print(e)
         print(sys._getframe().f_code.co_name + "采集错误，请及时更新规则！")

@@ -20,7 +20,6 @@ from .get_news import parse_baidu, parse_zhihu_hot, parse_weibo, parse_v2ex, par
 from . import news
 
 rsp = MyResponse()
-
 cf = configparser.ConfigParser()
 cf.read('app/homepage.config')
 NEWS_JSON_PATH = cf.get('config', 'BASE_PATH') + 'backend/app/news/json'
@@ -28,32 +27,44 @@ DOMAIN_NAME = cf.get('config', 'DOMAIN_NAME')
 LIMITER_FREQUENCY_NEWS_GET = '10/minute'  # 接口限制的新闻获取访问频次
 LIMITER_FREQUENCY_NEWS_FLUSH = '10/hour'  # 接口限制的新闻刷新访问频次
 
+
+class MyThread(Thread):
+
+    def __init__(self, target, args=()):
+        super(MyThread, self).__init__()
+        self.target = target
+        self.args = args
+
+    def run(self):
+        self.result = self.target(*self.args)
+
+
 news_dict = {
-    '36kr': [Thread(target=parse_36kr)],
-    'v2ex': [Thread(target=parse_v2ex)],
-    'huxiu': [Thread(target=parse_huxiu)],
-    'guokr': [Thread(target=parse_guokr)],
-    'weibo': [Thread(target=parse_weibo)],
-    'weixin': [Thread(target=parse_weixin)],
-    'zaobao': [Thread(target=parse_zaobao)],
-    'cnbeta': [Thread(target=parse_cnbeta)],
-    'douban': [Thread(target=parse_douban)],
-    'jandan': [Thread(target=parse_jandan)],
-    'chouti': [Thread(target=parse_chouti)],
-    'hostloc': [Thread(target=parse_hostloc)],
-    'solidot': [Thread(target=parse_solidot)],
-    'nytimes': [Thread(target=parse_nytimes)],
-    'bilibili': [Thread(target=parse_bilibili)],
-    'sinatech': [Thread(target=parse_sinatech)],
-    'thepaper': [Thread(target=parse_thepaper)],
-    'zhihu_daily': [Thread(target=parse_zhihu_daily)],
-    'zhihu_hot': [Thread(target=parse_zhihu_hot), Thread(target=parse_zhihu_good)],
-    'hacpai': [Thread(target=parse_hacpai, args=("play", )), Thread(target=parse_hacpai, args=("hot", ))],
-    'baidu': [Thread(target=parse_baidu, args=("now", )), Thread(target=parse_baidu, args=("today", )),
-              Thread(target=parse_baidu, args=("week", ))],
-    'smzdm_article': [Thread(target=parse_smzdm_article, args=("today", )),
-                      Thread(target=parse_smzdm_article, args=("week", )),
-                      Thread(target=parse_smzdm_article, args=("month", ))]
+    '36kr': [MyThread(target=parse_36kr)],
+    'v2ex': [MyThread(target=parse_v2ex)],
+    'huxiu': [MyThread(target=parse_huxiu)],
+    'guokr': [MyThread(target=parse_guokr)],
+    'weibo': [MyThread(target=parse_weibo)],
+    'weixin': [MyThread(target=parse_weixin)],
+    'zaobao': [MyThread(target=parse_zaobao)],
+    'cnbeta': [MyThread(target=parse_cnbeta)],
+    'douban': [MyThread(target=parse_douban)],
+    'jandan': [MyThread(target=parse_jandan)],
+    'chouti': [MyThread(target=parse_chouti)],
+    'hostloc': [MyThread(target=parse_hostloc)],
+    'solidot': [MyThread(target=parse_solidot)],
+    'nytimes': [MyThread(target=parse_nytimes)],
+    'bilibili': [MyThread(target=parse_bilibili)],
+    'sinatech': [MyThread(target=parse_sinatech)],
+    'thepaper': [MyThread(target=parse_thepaper)],
+    'zhihu_daily': [MyThread(target=parse_zhihu_daily)],
+    'zhihu_hot': [MyThread(target=parse_zhihu_hot), MyThread(target=parse_zhihu_good)],
+    'hacpai': [MyThread(target=parse_hacpai, args=("play", )), MyThread(target=parse_hacpai, args=("hot", ))],
+    'baidu': [MyThread(target=parse_baidu, args=("now", )), MyThread(target=parse_baidu, args=("today", )),
+              MyThread(target=parse_baidu, args=("week", ))],
+    'smzdm_article': [MyThread(target=parse_smzdm_article, args=("today", )),
+                      MyThread(target=parse_smzdm_article, args=("week", )),
+                      MyThread(target=parse_smzdm_article, args=("month", ))]
 }
 
 
@@ -102,11 +113,14 @@ def flush():
             return rsp.refuse(), 403
 
         target = request.get_json()['target']
+        result=[]
         for t in news_dict[target]:
             t.start()
         for t in news_dict[target]:
             t.join()
-        return rsp.success()
+        for t in news_dict[target]:
+            result.append(t.result)
+        return rsp.success(result)
     except Exception as e:
         traceback.print_exc()
         return rsp.failed(e), 500
