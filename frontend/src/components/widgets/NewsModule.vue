@@ -111,11 +111,22 @@ export default {
         }
       }
     },
-    newsFlush() {
+    async newsFlush() {
       for (let x = 0; x < this.newsData.data.length; x++) {
-        if (this.newsData.data[x].title == newsDataCategory) {
+        if (this.newsData.data[x].title == this.newsDataCategory) {
           console.log(this.newsData.data[x].website);
         }
+      }
+      try {
+        const { data: res } = await axios.post(api.flush, {
+          target: this.newsData.data[x].website,
+        });
+      } catch (e) {
+        console.log(e);
+        this.$message({
+          message: e.response.data.msg,
+          type: "error",
+        });
       }
     },
   },

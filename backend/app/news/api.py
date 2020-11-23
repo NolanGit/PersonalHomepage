@@ -102,7 +102,10 @@ def flush():
             return rsp.refuse(), 403
 
         target = request.get_json()['target']
-
+        for t in news_dict[target]:
+            t.start()
+        for t in news_dict[target]:
+            t.join()
         return rsp.success()
     except Exception as e:
         traceback.print_exc()
