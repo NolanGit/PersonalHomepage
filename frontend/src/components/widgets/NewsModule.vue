@@ -2,7 +2,12 @@
   <section>
     <el-row class="margin_bottom-medium">
       <div class="div-flex">
-        <div style="text-align: left; flex-grow: 1; font-weight: bold;">{{ newsData.title }}</div>
+        <div
+          style="text-align: left; flex-grow: 1; font-weight: bold"
+          @click="newsFlush()"
+        >
+          {{ newsData.title }}
+        </div>
         <el-radio-group
           size="mini"
           v-model="newsDataCategory"
@@ -67,7 +72,12 @@
   </section>
 </template>
 <script>
+import axios from "axios";
 import { deepClone } from "../../js/common";
+
+const api = {
+  flush: "/news/flush",
+};
 
 export default {
   name: "newsModule",
@@ -81,7 +91,7 @@ export default {
   },
   data() {
     return {
-      newsDataCategory: [],
+      newsDataCategory: "",
       newsDataShow: {
         data: [],
       },
@@ -98,6 +108,13 @@ export default {
         if (this.newsData.data[x].title == newsDataCategory) {
           this.newsDataShow = deepClone(this.newsData.data[x]);
           return;
+        }
+      }
+    },
+    newsFlush() {
+      for (let x = 0; x < this.newsData.data.length; x++) {
+        if (this.newsData.data[x].title == newsDataCategory) {
+          console.log(this.newsData.data[x].website);
         }
       }
     },
