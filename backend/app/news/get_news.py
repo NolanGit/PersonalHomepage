@@ -37,6 +37,7 @@ def utc2local(utc_st):
 def parse_baidu(name):
     try:
         jsondict = {}
+        jsondict['website'] = 'baidu'
         if name == 'now':
             jsondict["title"] = "实时"
             url = "http://top.baidu.com/buzz?b=1"
@@ -87,6 +88,7 @@ def parse_zhihu_hot():
         news = data['data']
         list = []
         jsondict = {}
+        jsondict['website'] = 'zhihu_hot'
         list_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
         jsondict["time"] = list_time
         jsondict["title"] = "热榜"
@@ -117,6 +119,7 @@ def parse_weibo():
         soup = etree.HTML(r.text)
         list = []
         jsondict = {}
+        jsondict['website'] = 'weibo'
         list_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
         jsondict["time"] = list_time
         jsondict["title"] = "微博热点排行榜"
@@ -155,6 +158,7 @@ def parse_v2ex():
         soup = etree.HTML(r.text)
         list = []
         jsondict = {}
+        jsondict['website'] = 'v2ex'
         list_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
         jsondict["time"] = list_time
         jsondict["title"] = "V2EX热帖"
@@ -185,6 +189,7 @@ def parse_36kr():
         r = requests.get(url, headers=headers, timeout=(5, 10))
         soup = BeautifulSoup(r.text, 'html.parser')
         jsondict = {}
+        jsondict['website'] = '36kr'
         list_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
         jsondict["time"] = list_time
 
@@ -243,6 +248,7 @@ def parse_chouti():
         news = data['data']
         list = []
         jsondict = {}
+        jsondict['website'] = 'chouti'
         list_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(int(str(data['data'][0]['time_into_pool'])[0:10])))
         jsondict["time"] = list_time
         jsondict["title"] = "抽屉新热榜"
@@ -273,6 +279,7 @@ def parse_jandan():
         soup = etree.HTML(r.text)
         list = []
         jsondict = {}
+        jsondict['website'] = 'jandan'
         list_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
         jsondict["time"] = list_time
         jsondict["title"] = "煎蛋网"
@@ -302,6 +309,7 @@ def parse_zhihu_daily():
         soup = etree.HTML(r)
         list = []
         jsondict = {}
+        jsondict['website'] = 'zhihu_daily'
         list_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
         jsondict["time"] = list_time
         jsondict["title"] = "知乎日报"
@@ -325,6 +333,7 @@ def parse_zhihu_daily():
 def parse_hacpai(name):
     try:
         jsondict = {}
+        jsondict['website'] = 'hacpai'
         if name == "play":
             jsondict["title"] = "好玩"
             group = "hacpai_play"
@@ -366,6 +375,7 @@ def parse_douban():
         soup = BeautifulSoup(r.text, 'html.parser')
         list = []
         jsondict = {}
+        jsondict['website'] = 'douban'
         list_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
         jsondict["time"] = list_time
         jsondict["title"] = "豆瓣热帖"
@@ -402,6 +412,7 @@ def parse_guokr():
         data3 = json.loads(r3)
         list = []
         jsondict = {}
+        jsondict['website'] = 'guokr'
         list_time = soup.xpath("//div[@class='article-info']/text()")[1].replace("\"", "").strip()
         jsondict["time"] = list_time
         jsondict["title"] = "果壳-科学人"
@@ -447,6 +458,7 @@ def parse_huxiu():
         soup = BeautifulSoup(r.text, 'html.parser')
         list = []
         jsondict = {}
+        jsondict['website'] = 'huxiu'
         list_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
         jsondict["time"] = list_time
         jsondict["title"] = "虎嗅"
@@ -483,6 +495,7 @@ def parse_cnbeta():
         soup = etree.HTML(r.text)
         list = []
         jsondict = {}
+        jsondict['website'] = 'cnbeta'
         list_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
         jsondict["time"] = list_time
         jsondict["title"] = "cnBeta"
@@ -517,6 +530,7 @@ def parse_zaobao():
         soup = etree.HTML(r.text)
         list = []
         jsondict = {}
+        jsondict['website'] = 'zaobao'
         list_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
         jsondict["time"] = list_time
         jsondict["title"] = "联合早报-中港台"
@@ -548,6 +562,7 @@ def parse_weixin():
         soup = etree.HTML(r.text)
         list = []
         jsondict = {}
+        jsondict['website'] = 'weixin'
         list_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
         jsondict["time"] = list_time
         jsondict["title"] = "搜索热词"
@@ -565,7 +580,6 @@ def parse_weixin():
         with open(fname, "w+", encoding='utf-8') as f:
             f.write(json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':')))
         list = []
-        jsondict = {}
         jsondict["time"] = list_time
         jsondict["title"] = "热门文章"
         for soup_a in soup.xpath("//div[@class='txt-box']/h3/a"):
@@ -595,6 +609,7 @@ def parse_thepaper():
         soup = etree.HTML(r.text)
         list = []
         jsondict = {}
+        jsondict['website'] = 'thepaper'
         list_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
         jsondict["time"] = list_time
         jsondict["title"] = "澎湃新闻"
@@ -625,6 +640,7 @@ def parse_nytimes():
         soup = etree.HTML(r.text)
         list = []
         jsondict = {}
+        jsondict['website'] = 'nytimes'
         list_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
         jsondict["time"] = list_time
         jsondict["title"] = "纽约时报中文网-国际简报"
@@ -655,6 +671,7 @@ def parse_solidot():
         soup = etree.HTML(r.text)
         list = []
         jsondict = {}
+        jsondict['website'] = 'solidot'
         list_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
         jsondict["time"] = list_time
         jsondict["title"] = "solidot"
@@ -686,6 +703,7 @@ def parse_bilibili():
         soup = BeautifulSoup(r.text, 'html.parser')
         list = []
         jsondict = {}
+        jsondict['website'] = 'bilibili'
         list_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
         jsondict["time"] = list_time
         jsondict["title"] = "Bilibili"
@@ -718,6 +736,7 @@ def parse_sinatech():
         data = json.loads(r)
         list = []
         jsondict = {}
+        jsondict['website'] = 'sinatech'
         list_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(int(data['result']['data'][0]['ctime'])))
         jsondict["time"] = list_time
         jsondict["title"] = "新浪科技"
@@ -758,6 +777,7 @@ def parse_hostloc():
         soup = etree.HTML(r)
         list = []
         jsondict = {}
+        jsondict['website'] = 'hostloc'
         list_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
         jsondict["time"] = list_time
         jsondict["title"] = "全球主机交流论坛"
@@ -781,6 +801,7 @@ def parse_hostloc():
 def parse_smzdm_article(name):
     try:
         jsondict = {}
+        jsondict['website'] = 'smzdm_article'
         if name == "today":
             id = "1"
             jsondict["title"] = "日榜"
@@ -842,6 +863,7 @@ def parse_zhihu_good():
         json_data = ""
         list = []
         jsondict = {}
+        jsondict['website'] = 'zhihu_good'
         list_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
         jsondict["time"] = list_time
         jsondict["title"] = "推荐"
