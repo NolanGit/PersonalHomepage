@@ -59,6 +59,7 @@ export default {
           for (let y = 0; y < this.rawData[x].data.length; y++) {
             this.rawData[x].chooseItems.push(this.rawData[x].data[y].title);
           }
+          console.log(this.rawData);
           if (count < STEP) {
             count += 1;
           } else {

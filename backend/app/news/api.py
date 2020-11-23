@@ -119,7 +119,7 @@ def flush():
         for t in news_dict[target]:
             t.join()
         for t in news_dict[target]:
-            result.append(json.load(t.result))
+            result.append(t.result)
         return rsp.success(result)
     except Exception as e:
         traceback.print_exc()
