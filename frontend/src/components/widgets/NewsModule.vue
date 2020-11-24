@@ -2,12 +2,27 @@
   <section>
     <el-row class="margin_bottom-medium">
       <div class="div-flex">
-        <div
-          style="text-align: left; flex-grow: 1; font-weight: bold"
-          @click="newsFlush()"
+        <el-tooltip
+          class="item"
+          effect="dark"
+          content="点击刷新"
+          placement="top"
+          transition="el-zoom-in-bottom"
+          open-delay="500"
+          enterable="false"
         >
-          {{ newsData.title }}
-        </div>
+          <div
+            style="
+              text-align: left;
+              flex-grow: 1;
+              font-weight: bold;
+              cursor: pointer;
+            "
+            @click="newsFlush()"
+          >
+            {{ newsData.title }}
+          </div>
+        </el-tooltip>
         <el-radio-group
           size="mini"
           v-model="newsDataCategory"
