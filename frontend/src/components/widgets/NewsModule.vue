@@ -37,7 +37,7 @@
         </el-radio-group>
       </div>
     </el-row>
-    <div style="text-align: left">
+    <div style="text-align: left" v-loading="loading">
       <div
         class="scrollbar-div"
         style="height: 300px"
@@ -105,6 +105,7 @@ export default {
   },
   data() {
     return {
+      loading: false,
       newsDataCategory: "",
       newsDataShow: {
         data: [],
@@ -126,6 +127,7 @@ export default {
       }
     },
     async newsFlush() {
+      this.loading = true;
       var target = "";
       for (let x = 0; x < this.newsData.data.length; x++) {
         if (this.newsData.data[x].title == this.newsDataCategory) {
@@ -146,12 +148,14 @@ export default {
           this.newsData.chooseItems.push(res.data[y].title);
         }
         this.init();
+        this.loading = false;
       } catch (e) {
         console.log(e);
         this.$message({
           message: e.response.data.msg,
           type: "error",
         });
+        this.loading = false;
       }
     },
   },
