@@ -19,7 +19,7 @@
             open-delay="500"
             :enterable="false"
           >
-            {{ newsData.title }}
+            <span>{{ newsData.title }}</span>
           </el-tooltip>
         </div>
         <el-radio-group
