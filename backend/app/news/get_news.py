@@ -34,6 +34,7 @@ def utc2local(utc_st):
     return local_st
 
 
+#百度
 def parse_baidu(name):
     try:
         jsondict = {}
@@ -65,13 +66,160 @@ def parse_baidu(name):
             blist["num"] = hot_num
             list.append(blist)
         jsondict["data"] = list
-        content=json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
+        content = json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
         with open(fname, "w+", encoding='utf-8') as f:
             f.write(content)
         return jsondict
     except Exception as e:
         print(e)
         print(sys._getframe().f_code.co_name + "(" + name + ")" + "采集错误，请及时更新规则！")
+
+
+#黑客派-好玩
+def parse_hacpai(name):
+    try:
+        jsondict = {}
+        jsondict['website'] = 'hacpai'
+        if name == "play":
+            jsondict["title"] = "好玩"
+            group = "hacpai_play"
+            url = "https://hacpai.com/domain/play"
+        if name == "hot":
+            jsondict["title"] = "热议"
+            group = "hacpai_hot"
+            url = "https://hacpai.com/recent/hot"
+        headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36', 'Referer': 'https://hacpai.com/'}
+        fname = dir + "hacpai_" + name + ".json"
+        r = requests.get(url, headers=headers, timeout=(5, 10))
+        soup = etree.HTML(r.text)
+        list = []
+        list_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+        jsondict["time"] = list_time
+        for soup_a in soup.xpath("//h2[@class='article-list__title article-list__title--view fn__flex-1']/a[@data-id]"):
+            blist = {}
+            hot_name = soup_a.text.replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").strip()
+            hot_url = soup_a.get('href')
+            blist["name"] = hot_name
+            blist["url"] = hot_url
+            list.append(blist)
+        jsondict["data"] = list
+        content = json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
+        with open(fname, "w+", encoding='utf-8') as f:
+            f.write(content)
+        return jsondict
+    except Exception as e:
+        print(e)
+        print(sys._getframe().f_code.co_name + "(" + name + ")" + "采集错误，请及时更新规则！")
+
+
+#什么值得买-今日热门文章
+def parse_smzdm_article(name):
+    try:
+        jsondict = {}
+        jsondict['website'] = 'smzdm_article'
+        if name == "today":
+            id = "1"
+            jsondict["title"] = "日榜"
+        if name == "week":
+            id = "7"
+            jsondict["title"] = "周榜"
+        if name == "month":
+            id = "30"
+            jsondict["title"] = "月榜"
+        url = "https://post.smzdm.com/rank/json_more/?unit=" + id + "&p=1"
+        url2 = "https://post.smzdm.com/rank/json_more/?unit=" + id + "&p=2"
+        headers = {'Referer': 'https://post.smzdm.com/', 'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36'}
+        fname = dir + "smzdm_article_" + name + ".json"
+        r = requests.get(url, headers=headers, timeout=(5, 10)).text
+        data = json.loads(r)
+        r2 = requests.get(url2, headers=headers, timeout=(5, 10)).text
+        data2 = json.loads(r2)
+        list = []
+        list_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+        jsondict["time"] = list_time
+        for n in data['data']:
+            blist = {}
+            hot_url = n['article_url']
+            hot_name = n['title'].replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").strip()
+            group = "smzdm_article"
+            blist["name"] = hot_name
+            blist["url"] = hot_url
+            list.append(blist)
+        for n in data2['data']:
+            blist = {}
+            hot_url = n['article_url']
+            hot_name = n['title'].replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").strip()
+            group = "smzdm_article"
+            blist["name"] = hot_name
+            blist["url"] = hot_url
+            list.append(blist)
+        jsondict["data"] = list
+        content = json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
+        with open(fname, "w+", encoding='utf-8') as f:
+            f.write(content)
+        return jsondict
+    except Exception as e:
+        print(e)
+        print(sys._getframe().f_code.co_name + "(" + name + ")" + "采集错误，请及时更新规则！")
+
+
+#36Kr
+def parse_36kr():
+    try:
+        url = "https://36kr.com/"
+        headers = {
+            'Referer': 'https://36kr.com/',
+            'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36',
+        }
+        r = requests.get(url, headers=headers, timeout=(5, 10))
+        soup = BeautifulSoup(r.text, 'html.parser')
+        jsondict = {}
+        jsondict['website'] = '36kr'
+        list_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+        jsondict["time"] = list_time
+
+        def hot_class_filter(class_text):
+            return (class_text is not None) and (('hotlist-item-other-title' in class_text) or ('hotlist-item-toptwo-title' in class_text))
+
+        list = []
+        for soup_a in soup.find_all(class_=hot_class_filter):
+            blist = {}
+            hot_name = soup_a.text.replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").strip()
+            hot_url = 'https://36kr.com' + soup_a.get('href')
+            group = "36Kr"
+            blist["name"] = hot_name
+            blist["url"] = hot_url
+            list.append(blist)
+        jsondict["title"] = "热门"
+        jsondict["data"] = list
+        fname = dir + "36kr_hot.json"
+        content = json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
+        with open(fname, "w+", encoding='utf-8') as f:
+            f.write(content)
+
+        def article_class_filter(class_text):
+            return (class_text is not None) and ('article-item-title' in class_text)
+
+        list = []
+        for soup_a in soup.find_all(class_=article_class_filter):
+            blist = {}
+            hot_name = soup_a.text.replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").strip()
+            hot_url = 'https://36kr.com/' + soup_a.get('href')
+            group = "36Kr"
+            blist["name"] = hot_name
+            blist["url"] = hot_url
+            list.append(blist)
+        jsondict["title"] = "最新"
+        jsondict["data"] = list
+        fname = dir + "36kr_article.json"
+        content = json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
+        with open(fname, "w+", encoding='utf-8') as f:
+            f.write(content)
+        return jsondict
+
+    except Exception as e:
+        print(e)
+        print(sys._getframe().f_code.co_name + "采集错误，请及时更新规则！")
 
 
 #知乎热榜
@@ -90,7 +238,7 @@ def parse_zhihu_hot():
         news = data['data']
         list = []
         jsondict = {}
-        jsondict['website'] = 'zhihu_hot'
+        jsondict['website'] = 'zhihu'
         list_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
         jsondict["time"] = list_time
         jsondict["title"] = "热榜"
@@ -103,8 +251,133 @@ def parse_zhihu_hot():
             blist["url"] = hot_url
             list.append(blist)
         jsondict["data"] = list
-        content=json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
+        content = json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
         with open(fname, "w+", encoding='utf-8') as f:
+            f.write(content)
+        return jsondict
+    except Exception as e:
+        print(e)
+        print(sys._getframe().f_code.co_name + "采集错误，请及时更新规则！")
+
+
+#知乎每日精选-编辑推荐
+def parse_zhihu_good():
+    try:
+        url = "https://www.zhihu.com/node/ExploreRecommendListV2"
+        headers = {
+            'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
+            'authority': 'www.zhihu.com',
+            'Referer': 'https://www.zhihu.com/explore/recommendations',
+            'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36'
+        }
+        d = {'method': 'next', 'params': '{"limit":40,"offset":0}'}
+        fname = dir + "zhihu_good.json"
+        r = requests.post(url, data=d, headers=headers, timeout=(5, 10))
+        r.encoding = 'utf-8'
+        json_data = ""
+        list = []
+        jsondict = {}
+        jsondict['website'] = 'zhihu'
+        list_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+        jsondict["time"] = list_time
+        jsondict["title"] = "推荐"
+        for json_d in json.loads(r.text)['msg']:
+            json_data = json_data + json_d
+        soup = etree.HTML(json_data)
+        for soup_a in soup.xpath("//div[@class='zm-item']/h2/a"):
+            blist = {}
+            hot_name = soup_a.text.replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").strip()
+            hot_url = soup_a.get('href').replace("/question/", "https://www.zhihu.com/question/")
+            group = "zhihu_good"
+            blist["name"] = hot_name
+            blist["url"] = hot_url
+            list.append(blist)
+        jsondict["data"] = list
+        content = json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
+        with open(fname, "w+", encoding='utf-8') as f:
+            f.write(content)
+        return jsondict
+    except Exception as e:
+        print(e)
+        print(sys._getframe().f_code.co_name + "采集错误，请及时更新规则！")
+
+
+#知乎日报
+def parse_zhihu_daily():
+    try:
+        url = "https://daily.zhihu.com/"
+        headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36', 'Referer': 'https://daily.zhihu.com/'}
+        fname = dir + "zhihu_daily.json"
+        r = requests.get(url, headers=headers, timeout=(5, 10)).text.replace(" class=\"home\"", "")
+        soup = etree.HTML(r)
+        list = []
+        jsondict = {}
+        jsondict['website'] = 'zhihu'
+        list_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+        jsondict["time"] = list_time
+        jsondict["title"] = "知乎日报"
+        for soup_a in soup.xpath("//div[@class='box']/a"):
+            blist = {}
+            hot_name = soup_a.xpath('./span/text()')[0].replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").strip()
+            hot_url = "https://daily.zhihu.com" + soup_a.get('href')
+            group = "zhihu_daily"
+            blist["name"] = hot_name
+            blist["url"] = hot_url
+            list.append(blist)
+        jsondict["data"] = list
+        content = json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
+        with open(fname, "w+", encoding='utf-8') as f:
+            f.write(content)
+        return jsondict
+    except Exception as e:
+        print(e)
+        print(sys._getframe().f_code.co_name + "采集错误，请及时更新规则！")
+
+
+#微信公众号热门文章
+def parse_weixin():
+    try:
+        url = "https://weixin.sogou.com/"
+        headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36'}
+        fname = dir + "weixin.json"
+        fname2 = dir + "weixin_hot.json"
+        r = requests.get(url, headers=headers, timeout=(5, 10))
+        r.encoding = 'utf-8'
+        soup = etree.HTML(r.text)
+        list = []
+        jsondict = {}
+        jsondict['website'] = 'weixin'
+        list_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+        jsondict["time"] = list_time
+        jsondict["title"] = "搜索热词"
+        for soup_a in soup.xpath("//ol[@class='hot-news']/li"):
+            blist = {}
+            hot_name = soup_a.xpath("./a/text()")[0].replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").strip()
+            hot_url = soup_a.xpath("./a/@href")[0]
+            hot_num = soup_a.xpath("./span/span/@style")[0].replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").replace("width:", "").replace("%", "").strip()
+            group = "weixin"
+            blist["name"] = hot_name
+            blist["url"] = hot_url
+            blist["num"] = hot_num
+            list.append(blist)
+        jsondict["data"] = list
+        content = json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
+        with open(fname, "w+", encoding='utf-8') as f:
+            f.write(content)
+        list = []
+        jsondict["time"] = list_time
+        jsondict["title"] = "热门文章"
+        for soup_a in soup.xpath("//div[@class='txt-box']/h3/a"):
+            blist = {}
+            hot_name = soup_a.text.replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").strip()
+            hot_url = soup_a.get('href')
+            group = "weixin"
+            blist["name"] = hot_name
+            blist["url"] = hot_url
+            list.append(blist)
+        jsondict["data"] = list
+        content = json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
+        with open(fname2, "w+", encoding='utf-8') as f:
             f.write(content)
         return jsondict
     except Exception as e:
@@ -146,7 +419,7 @@ def parse_weibo():
                     blist["num"] = hot_num
                 list.append(blist)
                 jsondict["data"] = list
-        content=json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
+        content = json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
         with open(fname, "w+", encoding='utf-8') as f:
             f.write(content)
         return jsondict
@@ -177,70 +450,10 @@ def parse_v2ex():
             blist["url"] = hot_url
             list.append(blist)
         jsondict["data"] = list
-        content=json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
+        content = json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
         with open(fname, "w+", encoding='utf-8') as f:
             f.write(content)
         return jsondict
-    except Exception as e:
-        print(e)
-        print(sys._getframe().f_code.co_name + "采集错误，请及时更新规则！")
-
-
-#36Kr
-def parse_36kr():
-    try:
-        url = "https://36kr.com/"
-        headers = {
-            'Referer': 'https://36kr.com/',
-            'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36',
-        }
-        r = requests.get(url, headers=headers, timeout=(5, 10))
-        soup = BeautifulSoup(r.text, 'html.parser')
-        jsondict = {}
-        jsondict['website'] = '36kr'
-        list_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
-        jsondict["time"] = list_time
-
-        def hot_class_filter(class_text):
-            return (class_text is not None) and (('hotlist-item-other-title' in class_text) or ('hotlist-item-toptwo-title' in class_text))
-
-        list = []
-        for soup_a in soup.find_all(class_=hot_class_filter):
-            blist = {}
-            hot_name = soup_a.text.replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").strip()
-            hot_url = 'https://36kr.com' + soup_a.get('href')
-            group = "36Kr"
-            blist["name"] = hot_name
-            blist["url"] = hot_url
-            list.append(blist)
-        jsondict["title"] = "热门"
-        jsondict["data"] = list
-        fname = dir + "36kr_hot.json"
-        content=json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
-        with open(fname, "w+", encoding='utf-8') as f:
-            f.write(content)
-        return jsondict
-
-        def article_class_filter(class_text):
-            return (class_text is not None) and ('article-item-title' in class_text)
-
-        list = []
-        for soup_a in soup.find_all(class_=article_class_filter):
-            blist = {}
-            hot_name = soup_a.text.replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").strip()
-            hot_url = 'https://36kr.com/' + soup_a.get('href')
-            group = "36Kr"
-            blist["name"] = hot_name
-            blist["url"] = hot_url
-            list.append(blist)
-        jsondict["title"] = "最新"
-        jsondict["data"] = list
-        fname = dir + "36kr_article.json"
-        content=json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
-        with open(fname, "w+", encoding='utf-8') as f:
-            f.write(content)
-        return jsondict
-
     except Exception as e:
         print(e)
         print(sys._getframe().f_code.co_name + "采集错误，请及时更新规则！")
@@ -274,7 +487,7 @@ def parse_chouti():
                 blist["url"] = hot_url
                 list.append(blist)
         jsondict["data"] = list
-        content=json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
+        content = json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
         with open(fname, "w+", encoding='utf-8') as f:
             f.write(content)
         return jsondict
@@ -306,82 +519,13 @@ def parse_jandan():
             blist["url"] = hot_url
             list.append(blist)
         jsondict["data"] = list
-        content=json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
+        content = json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
         with open(fname, "w+", encoding='utf-8') as f:
             f.write(content)
         return jsondict
     except Exception as e:
         print(e)
         print(sys._getframe().f_code.co_name + "采集错误，请及时更新规则！")
-
-
-#知乎日报
-def parse_zhihu_daily():
-    try:
-        url = "https://daily.zhihu.com/"
-        headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36', 'Referer': 'https://daily.zhihu.com/'}
-        fname = dir + "zhihu_daily.json"
-        r = requests.get(url, headers=headers, timeout=(5, 10)).text.replace(" class=\"home\"", "")
-        soup = etree.HTML(r)
-        list = []
-        jsondict = {}
-        jsondict['website'] = 'zhihu_daily'
-        list_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
-        jsondict["time"] = list_time
-        jsondict["title"] = "知乎日报"
-        for soup_a in soup.xpath("//div[@class='box']/a"):
-            blist = {}
-            hot_name = soup_a.xpath('./span/text()')[0].replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").strip()
-            hot_url = "https://daily.zhihu.com" + soup_a.get('href')
-            group = "zhihu_daily"
-            blist["name"] = hot_name
-            blist["url"] = hot_url
-            list.append(blist)
-        jsondict["data"] = list
-        content=json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
-        with open(fname, "w+", encoding='utf-8') as f:
-            f.write(content)
-        return jsondict
-    except Exception as e:
-        print(e)
-        print(sys._getframe().f_code.co_name + "采集错误，请及时更新规则！")
-
-
-#黑客派-好玩
-def parse_hacpai(name):
-    try:
-        jsondict = {}
-        jsondict['website'] = 'hacpai'
-        if name == "play":
-            jsondict["title"] = "好玩"
-            group = "hacpai_play"
-            url = "https://hacpai.com/domain/play"
-        if name == "hot":
-            jsondict["title"] = "热议"
-            group = "hacpai_hot"
-            url = "https://hacpai.com/recent/hot"
-        headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36', 'Referer': 'https://hacpai.com/'}
-        fname = dir + "hacpai_" + name + ".json"
-        r = requests.get(url, headers=headers, timeout=(5, 10))
-        soup = etree.HTML(r.text)
-        list = []
-        list_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
-        jsondict["time"] = list_time
-        for soup_a in soup.xpath("//h2[@class='article-list__title article-list__title--view fn__flex-1']/a[@data-id]"):
-            blist = {}
-            hot_name = soup_a.text.replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").strip()
-            hot_url = soup_a.get('href')
-            blist["name"] = hot_name
-            blist["url"] = hot_url
-            list.append(blist)
-        jsondict["data"] = list
-        content=json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
-        with open(fname, "w+", encoding='utf-8') as f:
-            f.write(content)
-        return jsondict
-    except Exception as e:
-        print(e)
-        print(sys._getframe().f_code.co_name + "(" + name + ")" + "采集错误，请及时更新规则！")
 
 
 #豆瓣
@@ -408,7 +552,7 @@ def parse_douban():
             blist["url"] = hot_url
             list.append(blist)
         jsondict["data"] = list
-        content=json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
+        content = json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
         with open(fname, "w+", encoding='utf-8') as f:
             f.write(content)
         return jsondict
@@ -463,7 +607,7 @@ def parse_guokr():
             blist["url"] = hot_url
             list.append(blist)
         jsondict["data"] = list
-        content=json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
+        content = json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
         with open(fname, "w+", encoding='utf-8') as f:
             f.write(content)
         return jsondict
@@ -501,7 +645,7 @@ def parse_huxiu():
             blist["url"] = hot_url
             list.append(blist)
         jsondict["data"] = list
-        content=json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
+        content = json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
         with open(fname, "w+", encoding='utf-8') as f:
             f.write(content)
         return jsondict
@@ -538,7 +682,7 @@ def parse_cnbeta():
             blist["url"] = hot_url
             list.append(blist)
         jsondict["data"] = list
-        content=json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
+        content = json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
         with open(fname, "w+", encoding='utf-8') as f:
             f.write(content)
         return jsondict
@@ -571,60 +715,8 @@ def parse_zaobao():
             blist["url"] = hot_url
             list.append(blist)
         jsondict["data"] = list
-        content=json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
+        content = json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
         with open(fname, "w+", encoding='utf-8') as f:
-            f.write(content)
-        return jsondict
-    except Exception as e:
-        print(e)
-        print(sys._getframe().f_code.co_name + "采集错误，请及时更新规则！")
-
-
-#微信公众号热门文章
-def parse_weixin():
-    try:
-        url = "https://weixin.sogou.com/"
-        headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36'}
-        fname = dir + "weixin.json"
-        fname2 = dir + "weixin_hot.json"
-        r = requests.get(url, headers=headers, timeout=(5, 10))
-        r.encoding = 'utf-8'
-        soup = etree.HTML(r.text)
-        list = []
-        jsondict = {}
-        jsondict['website'] = 'weixin'
-        list_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
-        jsondict["time"] = list_time
-        jsondict["title"] = "搜索热词"
-        for soup_a in soup.xpath("//ol[@class='hot-news']/li"):
-            blist = {}
-            hot_name = soup_a.xpath("./a/text()")[0].replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").strip()
-            hot_url = soup_a.xpath("./a/@href")[0]
-            hot_num = soup_a.xpath("./span/span/@style")[0].replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").replace("width:", "").replace("%", "").strip()
-            group = "weixin"
-            blist["name"] = hot_name
-            blist["url"] = hot_url
-            blist["num"] = hot_num
-            list.append(blist)
-        jsondict["data"] = list
-        content=json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
-        with open(fname, "w+", encoding='utf-8') as f:
-            f.write(content)
-        return jsondict
-        list = []
-        jsondict["time"] = list_time
-        jsondict["title"] = "热门文章"
-        for soup_a in soup.xpath("//div[@class='txt-box']/h3/a"):
-            blist = {}
-            hot_name = soup_a.text.replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").strip()
-            hot_url = soup_a.get('href')
-            group = "weixin"
-            blist["name"] = hot_name
-            blist["url"] = hot_url
-            list.append(blist)
-        jsondict["data"] = list
-        content=json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
-        with open(fname2, "w+", encoding='utf-8') as f:
             f.write(content)
         return jsondict
     except Exception as e:
@@ -656,7 +748,7 @@ def parse_thepaper():
             blist["url"] = hot_url
             list.append(blist)
         jsondict["data"] = list
-        content=json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
+        content = json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
         with open(fname, "w+", encoding='utf-8') as f:
             f.write(content)
         return jsondict
@@ -689,7 +781,7 @@ def parse_nytimes():
             blist["url"] = hot_url
             list.append(blist)
         jsondict["data"] = list
-        content=json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
+        content = json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
         with open(fname, "w+", encoding='utf-8') as f:
             f.write(content)
         return jsondict
@@ -722,7 +814,7 @@ def parse_solidot():
             blist["url"] = hot_url
             list.append(blist)
         jsondict["data"] = list
-        content=json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
+        content = json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
         with open(fname, "w+", encoding='utf-8') as f:
             f.write(content)
         return jsondict
@@ -756,7 +848,7 @@ def parse_bilibili():
             blist["url"] = hot_url
             list.append(blist)
         jsondict["data"] = list
-        content=json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
+        content = json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
         with open(fname, "w+", encoding='utf-8') as f:
             f.write(content)
         return jsondict
@@ -791,7 +883,7 @@ def parse_sinatech():
             blist["url"] = hot_url
             list.append(blist)
         jsondict["data"] = list
-        content=json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
+        content = json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
         with open(fname, "w+", encoding='utf-8') as f:
             f.write(content)
         return jsondict
@@ -834,100 +926,7 @@ def parse_hostloc():
             blist["url"] = hot_url
             list.append(blist)
         jsondict["data"] = list
-        content=json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
-        with open(fname, "w+", encoding='utf-8') as f:
-            f.write(content)
-        return jsondict
-    except Exception as e:
-        print(e)
-        print(sys._getframe().f_code.co_name + "采集错误，请及时更新规则！")
-
-
-#什么值得买-今日热门文章
-def parse_smzdm_article(name):
-    try:
-        jsondict = {}
-        jsondict['website'] = 'smzdm_article'
-        if name == "today":
-            id = "1"
-            jsondict["title"] = "日榜"
-        if name == "week":
-            id = "7"
-            jsondict["title"] = "周榜"
-        if name == "month":
-            id = "30"
-            jsondict["title"] = "月榜"
-        url = "https://post.smzdm.com/rank/json_more/?unit=" + id + "&p=1"
-        url2 = "https://post.smzdm.com/rank/json_more/?unit=" + id + "&p=2"
-        headers = {'Referer': 'https://post.smzdm.com/', 'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36'}
-        fname = dir + "smzdm_article_" + name + ".json"
-        r = requests.get(url, headers=headers, timeout=(5, 10)).text
-        data = json.loads(r)
-        r2 = requests.get(url2, headers=headers, timeout=(5, 10)).text
-        data2 = json.loads(r2)
-        list = []
-        list_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
-        jsondict["time"] = list_time
-        for n in data['data']:
-            blist = {}
-            hot_url = n['article_url']
-            hot_name = n['title'].replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").strip()
-            group = "smzdm_article"
-            blist["name"] = hot_name
-            blist["url"] = hot_url
-            list.append(blist)
-        for n in data2['data']:
-            blist = {}
-            hot_url = n['article_url']
-            hot_name = n['title'].replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").strip()
-            group = "smzdm_article"
-            blist["name"] = hot_name
-            blist["url"] = hot_url
-            list.append(blist)
-        jsondict["data"] = list
-        content=json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
-        with open(fname, "w+", encoding='utf-8') as f:
-            f.write(content)
-        return jsondict
-    except Exception as e:
-        print(e)
-        print(sys._getframe().f_code.co_name + "(" + name + ")" + "采集错误，请及时更新规则！")
-
-
-#知乎每日精选-编辑推荐
-def parse_zhihu_good():
-    try:
-        url = "https://www.zhihu.com/node/ExploreRecommendListV2"
-        headers = {
-            'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
-            'authority': 'www.zhihu.com',
-            'Referer': 'https://www.zhihu.com/explore/recommendations',
-            'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36'
-        }
-        d = {'method': 'next', 'params': '{"limit":40,"offset":0}'}
-        fname = dir + "zhihu_good.json"
-        r = requests.post(url, data=d, headers=headers, timeout=(5, 10))
-        r.encoding = 'utf-8'
-        json_data = ""
-        list = []
-        jsondict = {}
-        jsondict['website'] = 'zhihu_good'
-        list_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
-        jsondict["time"] = list_time
-        jsondict["title"] = "推荐"
-        for json_d in json.loads(r.text)['msg']:
-            json_data = json_data + json_d
-        soup = etree.HTML(json_data)
-        for soup_a in soup.xpath("//div[@class='zm-item']/h2/a"):
-            blist = {}
-            hot_name = soup_a.text.replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").strip()
-            hot_url = soup_a.get('href').replace("/question/", "https://www.zhihu.com/question/")
-            group = "zhihu_good"
-            blist["name"] = hot_name
-            blist["url"] = hot_url
-            list.append(blist)
-        jsondict["data"] = list
-        content=json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
+        content = json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
         with open(fname, "w+", encoding='utf-8') as f:
             f.write(content)
         return jsondict

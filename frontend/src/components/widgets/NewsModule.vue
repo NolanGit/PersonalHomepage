@@ -124,6 +124,7 @@ export default {
           target: target,
           token: this.$cookies.get("csrf_token"),
         });
+        this.newsData.data = res.data;
         this.newsData.choose = res.data[0].title;
         this.newsData.show = deepClone(res.data[0]);
         this.newsData.chooseItems = [];

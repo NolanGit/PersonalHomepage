@@ -84,43 +84,53 @@ def flush():
             return rsp.refuse(), 403
 
         target = request.get_json()['target']
-        if target == 'zhihu_hot':
-            threads = [MyThread(target=parse_zhihu_hot), MyThread(target=parse_zhihu_good)]
-        elif target == 'hacpai':
-            threads = [MyThread(target=parse_hacpai, args=("play", )), MyThread(target=parse_hacpai, args=("hot", ))]
-        elif target == 'baidu':
+        if target == 'baidu':
             threads = [MyThread(target=parse_baidu, args=("now", )), MyThread(target=parse_baidu, args=("today", )), MyThread(target=parse_baidu, args=("week", ))]
+            file_path = ['baidu_now.json', 'baidu_today.json', 'baidu_week.json']
         elif target == 'smzdm_article':
             threads = [MyThread(target=parse_smzdm_article, args=("today", )), MyThread(target=parse_smzdm_article, args=("week", )), MyThread(target=parse_smzdm_article, args=("month", ))]
+            file_path = ['smzdm_article_today.json', 'smzdm_article_week.json', 'smzdm_article_month.json']
+        elif target == 'zhihu':
+            threads = [MyThread(target=parse_zhihu_hot), MyThread(target=parse_zhihu_good), MyThread(target=parse_zhihu_daily)]
+            file_path = ['zhihu_daily.json', 'zhihu_good.json', 'zhihu_hot.json']
+        elif target == 'weixin':
+            threads = [MyThread(target=parse_weixin)]
+            file_path = ['weixin.json', 'weixin_hot.json']
+        elif target == '36kr':
+            threads = [MyThread(target=parse_36kr)]
+            file_path = ['36kr_hot.json', '36kr_article.json']
+        elif target == 'hacpai':
+            threads = [MyThread(target=parse_hacpai, args=("play", )), MyThread(target=parse_hacpai, args=("hot", ))]
+            file_path = ['hacpai_hot.json', 'hacpai_play.json']
         else:
             news_dict = {
-                '36kr': [MyThread(target=parse_36kr)],
-                'v2ex': [MyThread(target=parse_v2ex)],
-                'huxiu': [MyThread(target=parse_huxiu)],
-                'guokr': [MyThread(target=parse_guokr)],
-                'weibo': [MyThread(target=parse_weibo)],
-                'weixin': [MyThread(target=parse_weixin)],
-                'zaobao': [MyThread(target=parse_zaobao)],
-                'cnbeta': [MyThread(target=parse_cnbeta)],
-                'douban': [MyThread(target=parse_douban)],
-                'jandan': [MyThread(target=parse_jandan)],
-                'chouti': [MyThread(target=parse_chouti)],
-                'hostloc': [MyThread(target=parse_hostloc)],
-                'solidot': [MyThread(target=parse_solidot)],
-                'nytimes': [MyThread(target=parse_nytimes)],
-                'bilibili': [MyThread(target=parse_bilibili)],
-                'sinatech': [MyThread(target=parse_sinatech)],
-                'thepaper': [MyThread(target=parse_thepaper)],
-                'zhihu_daily': [MyThread(target=parse_zhihu_daily)]
+                '36kr': {'parse_thread':[MyThread(target=parse_36kr)],'file_path':['36kr.json']},
+                'v2ex': {'parse_thread':[MyThread(target=parse_v2ex)],'file_path':['v2ex.json']},
+                'huxiu': {'parse_thread':[MyThread(target=parse_huxiu)],'file_path':['huxiu.json']},
+                'guokr': {'parse_thread':[MyThread(target=parse_guokr)],'file_path':['guokr.json']},
+                'weibo': {'parse_thread':[MyThread(target=parse_weibo)],'file_path':['weibo.json']},
+                'zaobao': {'parse_thread':[MyThread(target=parse_zaobao)],'file_path':['zaobao.json']},
+                'cnbeta': {'parse_thread':[MyThread(target=parse_cnbeta)],'file_path':['cnbeta.json']},
+                'douban': {'parse_thread':[MyThread(target=parse_douban)],'file_path':['douban.json']},
+                'jandan': {'parse_thread':[MyThread(target=parse_jandan)],'file_path':['jandan.json']},
+                'chouti': {'parse_thread':[MyThread(target=parse_chouti)],'file_path':['chouti.json']},
+                'hostloc': {'parse_thread':[MyThread(target=parse_hostloc)],'file_path':['hostloc.json']},
+                'solidot': {'parse_thread':[MyThread(target=parse_solidot)],'file_path':['solidot.json']},
+                'nytimes': {'parse_thread':[MyThread(target=parse_nytimes)],'file_path':['nytimes.json']},
+                'bilibili': {'parse_thread':[MyThread(target=parse_bilibili)],'file_path':['bilibili.json']},
+                'sinatech': {'parse_thread':[MyThread(target=parse_sinatech)],'file_path':['sinatech.json']},
+                'thepaper': {'parse_thread':[MyThread(target=parse_thepaper)],'file_path':['thepaper.json']},
             }
-            threads = news_dict[target]
+            threads = news_dict[target]['parse_thread']
+            file_path = news_dict[target]['file_path']
         result = []
         for t in threads:
             t.start()
         for t in threads:
             t.join()
-        for t in threads:
-            result.append(t.result)
+        for file in file_path:
+            file_path = os.path.join(NEWS_JSON_PATH, file)
+            result.append(json.load(open(file_path)))
         return rsp.success(result)
     except Exception as e:
         traceback.print_exc()
