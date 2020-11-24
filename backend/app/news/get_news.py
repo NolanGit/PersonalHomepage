@@ -579,7 +579,7 @@ def parse_guokr():
         list = []
         jsondict = {}
         jsondict['website'] = 'guokr'
-        list_time = soup.xpath("//div[@class='article-info']/text()")[1].replace("\"", "").strip()
+        list_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
         jsondict["time"] = list_time
         jsondict["title"] = "果壳-科学人"
         for soup_a in soup.xpath("//a[@class='article-title']"):
