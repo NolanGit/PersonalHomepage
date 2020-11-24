@@ -6,10 +6,9 @@
           class="item"
           effect="dark"
           content="点击刷新"
-          placement="top"
-          transition="el-zoom-in-bottom"
+          placement="left"
           open-delay="500"
-          enterable="false"
+          :enterable="false"
         >
           <div
             style="
