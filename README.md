@@ -295,7 +295,7 @@
 
 功能：聚合20几个网站的信息，通过定时任务每小时采集一次，并可以通过点击标题来进行手动刷新，部分内容截图如下。
 
-![image](https://user-images.githubusercontent.com/27627484/98206438-db3ff000-1f74-11eb-9b37-2f7120c8bb81.png)
+![image](https://user-images.githubusercontent.com/27627484/100202492-57a66d00-2f3c-11eb-99fb-248081c8baa4.gif)
 
 ## 致谢
 
