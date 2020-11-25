@@ -216,7 +216,7 @@
 
 功能描述：监控黄金价格，并且可以设定阈值，当价格超过阈值时发送提醒。需要在"脚本运行平台"中配置定时任务，爬虫在爬取数据的时候会跳过国内黄金不开盘的时间。
 
-![image](https://user-images.githubusercontent.com/27627484/100208273-7fe59a00-2f43-11eb-8dae-b544fa38b591.gif)
+![image](https://user-images.githubusercontent.com/27627484/100209162-7f99ce80-2f44-11eb-87ba-473bb598cf6e.gif)
 
 ### 小组件-App Store应用价格监控
 
@@ -238,9 +238,7 @@
 
 按钮：鼠标hover省略号，可以弹出三个按钮：编辑和删除-对选中的便签进行编辑或删除，提交后将所有便签保存为一个新版本；提醒-点击后弹出编辑提醒对话框，可以通过微信/邮件的方式提醒便签内容，最小颗粒度为五分钟。下方的圆形按钮分别为新增按钮和时间机器按钮，功能不再赘述
 
-![image](https://user-images.githubusercontent.com/27627484/97806132-097fb000-1c95-11eb-8bb7-aa3959567185.png)
-
-![image](https://user-images.githubusercontent.com/27627484/89022948-69448300-d355-11ea-893d-2deb553072bc.png)
+![image](https://user-images.githubusercontent.com/27627484/100209857-52015500-2f45-11eb-81f4-57e723a6efb6.gif)
 
 ### 小组件-翻译
 
