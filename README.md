@@ -206,17 +206,9 @@
 
 功能：登陆后可以自定义，不登录时展示的书签是在数据库中修改（bookmarks.user_id==0）
 
-按钮：新增-登陆后新增书签；设置：登陆后拖动排序、删除或修改书签的图标
+按钮：新增-登陆后新增书签；设置-登陆后拖动排序、删除或修改书签的图标
 
-- 拖动修改展示顺序
-
-![image](https://user-images.githubusercontent.com/27627484/87288831-72002100-c52e-11ea-9fe1-aca28bfabe73.png)
-- 修改书签详情
-
-![image](https://user-images.githubusercontent.com/27627484/87288878-8512f100-c52e-11ea-8a2a-4c771ff32143.png)
-- 修改书签图标
-
-![image](https://user-images.githubusercontent.com/27627484/93906905-5172f500-fd2f-11ea-9627-6c42936dc21e.png)
+![image](https://user-images.githubusercontent.com/27627484/100207827-00f06180-2f43-11eb-9be1-e8a21afa95fa.gif)
 
 ### 小组件-黄金价格
 
