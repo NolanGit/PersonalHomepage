@@ -111,7 +111,7 @@
                     plain
                     type="warning"
                     icon="el-icon-close"
-                    @click="unShare(scope.row.file_id)"
+                    @click="unShare(scope.row.id)"
                   ></el-button>
                 </el-tooltip>
                 <el-tooltip content="删除" placement="top">
@@ -308,7 +308,7 @@ export default {
     onError(e) {
       alert("复制失败");
     },
-    async unShare(fileId) {
+    async unShare(id) {
       this.$confirm(
         "取消分享后，原来的分享链接将失效，确定取消分享吗？",
         "提示",
@@ -317,7 +317,7 @@ export default {
         try {
           const { data: res } = await axios.post(api.unShare, {
             user_id: this.user_id,
-            id: fileId,
+            id: id,
           });
           this.get();
           this.$message({
