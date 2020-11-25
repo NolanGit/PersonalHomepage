@@ -204,7 +204,7 @@ def parse_36kr():
         for soup_a in soup.find_all(class_=article_class_filter):
             blist = {}
             hot_name = soup_a.text.replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").strip()
-            hot_url = 'https://36kr.com/' + soup_a.get('href')
+            hot_url = 'https://36kr.com' + soup_a.get('href')
             group = "36Kr"
             blist["name"] = hot_name
             blist["url"] = hot_url
