@@ -54,7 +54,7 @@
                     v-if="scope.row.editMode==true"
                     class="el-icon-check"
                     style="cursor: pointer; margin-top: 6px; font-size: 13px; color: #67C23A; padding-left: 5px"
-                    @click="submitEditMode(scope.row.id,scope.row.file_name)"
+                    @click="submitEditMode(scope.row.file_id,scope.row.file_name)"
                   ></i>
                   <i
                     v-if="scope.row.editMode==true"
@@ -192,11 +192,11 @@ export default {
     uploadProgress() {
       this.$emit("cloudStatusChanged", 1);
     },
-    async submitEditMode(rowId, rowFileName) {
+    async submitEditMode(file_id, rowFileName) {
       try {
         const { data: res } = await axios.post(api.changeName, {
           user_id: this.user_id,
-          id: rowId,
+          file_id: file_id,
           file_name: rowFileName,
         });
         await this.changeEditMode(rowId, "disable");
