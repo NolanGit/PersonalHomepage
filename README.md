@@ -216,9 +216,7 @@
 
 功能描述：监控黄金价格，并且可以设定阈值，当价格超过阈值时发送提醒。需要在"脚本运行平台"中配置定时任务，爬虫在爬取数据的时候会跳过国内黄金不开盘的时间。
 
-![image](https://user-images.githubusercontent.com/27627484/87305571-4b031880-c549-11ea-880a-115b891704db.png)
-
-![image](https://user-images.githubusercontent.com/27627484/87305626-62da9c80-c549-11ea-8bac-f33695ac4d71.png)
+![image](https://user-images.githubusercontent.com/27627484/100208273-7fe59a00-2f43-11eb-8dae-b544fa38b591.gif)
 
 ### 小组件-App Store应用价格监控
 
