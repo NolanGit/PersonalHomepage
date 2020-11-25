@@ -72,7 +72,7 @@
 
 - 自动提示和切换搜索引擎
 
-![image](https://user-images.githubusercontent.com/27627484/71998812-3f255980-327b-11ea-9e6d-7ad97cd5c18d.png)
+![image](https://user-images.githubusercontent.com/27627484/100199925-d9949700-2f38-11eb-92ab-2c532bb86b49.gif)
 
 ### 控制台
 
@@ -168,9 +168,7 @@
 
 按钮：使用左右拖拽的方式来编辑组件集的顺序，使用组件集右侧圆形加号按钮来添加组件集，使用每个组件集内部的编辑按钮来修改组件集的名称，使用每个组件集内部的删除按钮来删除组件集；组件集内的组件使用上下拖拽的方式来编辑顺序，使用每个组件集内的方形加号按钮来添加组件，使用组件右侧的删除按钮来删除组件。组件详情不支持修改，可以手动改库(widget)来对其进行修改
 
-![image](https://user-images.githubusercontent.com/27627484/90026670-33ef4c00-dcea-11ea-8357-1420224b60a1.png)
-
-![image](https://user-images.githubusercontent.com/27627484/90026706-3fdb0e00-dcea-11ea-8d3a-78db7d28bf62.png)
+![image](https://user-images.githubusercontent.com/27627484/100200367-75260780-2f39-11eb-9f5b-11214ab847bf.gif)
 
 ### 网盘&图床
 
