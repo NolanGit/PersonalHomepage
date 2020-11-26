@@ -280,6 +280,12 @@
 
 功能：聚合20几个网站的信息，通过定时任务每小时采集一次，并可以通过点击标题来进行手动刷新，部分内容截图如下。
 
+**注意：截至2020年11月，[百度](https://www.baidu.com/robots.txt)、[微博](https://weibo.com/robots.txt)、[煎蛋](http://jandan.net/robots.txt)、[搜狗](https://weixin.sogou.com/robots.txt)明确禁止个人用户爬取任何信息，请在运行项目时严格删除相关代码。**
+
+**由于网站规则可能变动，请在运行项目时依次检查本项目使用的数据源，当robots协议禁止个人用户爬取时，删除相关代码！**
+
+**遵守robots协议，遵守爬虫道德，建立更好的互联网环境。**
+
 ![image](https://user-images.githubusercontent.com/27627484/100202492-57a66d00-2f3c-11eb-99fb-248081c8baa4.gif)
 
 ## 致谢
@@ -297,7 +303,7 @@
 
 使用缓存数据和限制频次等方法对代码进行了优化，以避免爬取数据对网站造成较大的压力。
 
-所获得数据仅供学习使用，如有侵权，请联系删除。
+所获得数据仅供学习参考使用，如有侵权，请立即联系删除。
 
 ## 联系方式
 
@@ -310,6 +316,7 @@
 ![支付宝红包](https://user-images.githubusercontent.com/27627484/98138508-24a12880-1efe-11eb-9393-49236bf5b0a8.jpg)
 ![支付宝](https://user-images.githubusercontent.com/27627484/98138498-223ece80-1efe-11eb-8ccf-9eab3788899f.jpg)
 ![微信](https://user-images.githubusercontent.com/27627484/98138506-24089200-1efe-11eb-80d7-1fbba58df3fa.jpg)
+
 ## License
 
 [MPL-2.0](https://opensource.org/licenses/MPL-2.0)
