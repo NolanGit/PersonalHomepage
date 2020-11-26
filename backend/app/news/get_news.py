@@ -654,6 +654,39 @@ def parse_huxiu():
         print(sys._getframe().f_code.co_name + "采集错误，请及时更新规则！")
 
 
+#新京报
+def parse_bjnews():
+    try:
+        url = "http://www.bjnews.com.cn/"
+        headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36'}
+        fname = dir + "bjnews.json"
+        r = requests.get(url, headers=headers, timeout=(5, 10))
+        soup = BeautifulSoup(r.text, 'html.parser')
+        list = []
+        jsondict = {}
+        jsondict['website'] = 'bjnews'
+        list_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+        jsondict["time"] = list_time
+        jsondict["title"] = "新京报推荐"
+
+        for soup_a in soup.find_all('div', 'pin_demo'):
+            blist = {}
+            hot_name = soup_a.find('a').find('div').text.replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").strip()
+            hot_url = soup_a.find('a').get('href')
+            group = "bjnews"
+            blist["name"] = hot_name
+            blist["url"] = hot_url
+            list.append(blist)
+        jsondict["data"] = list
+        content = json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
+        with open(fname, "w+", encoding='utf-8') as f:
+            f.write(content)
+        return jsondict
+    except Exception as e:
+        print(e)
+        print(sys._getframe().f_code.co_name + "采集错误，请及时更新规则！")
+
+
 #cnBeta
 def parse_cnbeta():
     try:
@@ -941,7 +974,7 @@ def multi_run():
     t1 = time.time()
     threads = []
     threads.append(Thread(target=parse_bilibili))
-    threads.append(Thread(target=parse_hostloc))
+    threads.append(Thread(target=parse_bjnews))
     threads.append(Thread(target=parse_sinatech))
     threads.append(Thread(target=parse_solidot))
     threads.append(Thread(target=parse_nytimes))

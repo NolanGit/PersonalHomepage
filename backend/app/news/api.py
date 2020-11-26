@@ -15,7 +15,7 @@ from ..login.login_funtion import User
 from ..response import Response as MyResponse
 from ..privilege.privilege_control import privilegeFunction
 from ..privilege.privilege_control import permission_required
-from .get_news import parse_baidu, parse_zhihu_hot, parse_weibo, parse_v2ex, parse_36kr, parse_chouti, parse_jandan, parse_zhihu_daily, parse_hacpai, parse_douban, parse_guokr, parse_huxiu, parse_cnbeta, parse_zaobao, parse_weixin, parse_thepaper, parse_nytimes, parse_solidot, parse_bilibili, parse_sinatech, parse_hostloc, parse_smzdm_article, parse_zhihu_good
+from .get_news import parse_baidu, parse_zhihu_hot, parse_weibo, parse_v2ex, parse_36kr, parse_chouti, parse_jandan, parse_zhihu_daily, parse_hacpai, parse_douban, parse_guokr, parse_huxiu, parse_cnbeta, parse_zaobao, parse_weixin, parse_thepaper, parse_nytimes, parse_solidot, parse_bilibili, parse_sinatech, parse_bjnews, parse_smzdm_article, parse_zhihu_good
 
 from . import news
 
@@ -114,7 +114,7 @@ def flush():
                 'douban': {'parse_thread':[MyThread(target=parse_douban)],'file_path':['douban.json']},
                 'jandan': {'parse_thread':[MyThread(target=parse_jandan)],'file_path':['jandan.json']},
                 'chouti': {'parse_thread':[MyThread(target=parse_chouti)],'file_path':['chouti.json']},
-                'hostloc': {'parse_thread':[MyThread(target=parse_hostloc)],'file_path':['hostloc.json']},
+                'bjnews': {'parse_thread':[MyThread(target=parse_bjnews)],'file_path':['bjnews.json']},
                 'solidot': {'parse_thread':[MyThread(target=parse_solidot)],'file_path':['solidot.json']},
                 'nytimes': {'parse_thread':[MyThread(target=parse_nytimes)],'file_path':['nytimes.json']},
                 'bilibili': {'parse_thread':[MyThread(target=parse_bilibili)],'file_path':['bilibili.json']},
