@@ -431,7 +431,7 @@ def parse_weixin():
         for soup_a in soup.find('ul', 'news-list').find_all("div", "txt-box"):
             blist = {}
             hot_name = soup_a.find("h3").find("a").text.replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").strip()
-            hot_url = soup_a.find("h3").find("a").get('href')
+            hot_url = soup_a.find("h3").find("a").get('href').replace('×tamp','&timestamp')
             group = "weixin"
             blist["name"] = hot_name
             blist["url"] = hot_url
