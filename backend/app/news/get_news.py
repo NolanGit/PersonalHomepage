@@ -248,9 +248,10 @@ def parse_bjnews():
 
         list = []
         ranking = soup.find('div', 'ranking')
+        ranking['class'] = 'processed'
         for soup_a in ranking.find_all('a', 'link'):
             blist = {}
-            hot_name = soup_a.text.replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").strip()
+            hot_name = soup_a.text.replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").strip()[2:]
             hot_url = soup_a.get('href')
             group = "bjnews"
             blist["name"] = hot_name
@@ -263,14 +264,11 @@ def parse_bjnews():
         with open(fname, "w+", encoding='utf-8') as f:
             f.write(content)
 
-        def class_filter(class_text):
-            return (class_text is not None) and ('hotComment' in class_text) and ('ranking' not in class_text)
-
         list = []
-        ranking = soup.find(class_=class_filter)
+        ranking = soup.find('div', 'hotComment')
         for soup_a in ranking.find_all('a', 'link'):
             blist = {}
-            hot_name = soup_a.text.replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").strip()
+            hot_name = soup_a.text.replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").strip()[2:]
             hot_url = soup_a.get('href')
             group = "bjnews"
             blist["name"] = hot_name
