@@ -59,7 +59,7 @@ def get():
         r.append({'title': '百度', 'data': [temp.pop('baidu_now.json'), temp.pop('baidu_today.json'), temp.pop('baidu_week.json')]})
         r.append({'title': '什么值得买', 'data': [temp.pop('smzdm_article_today.json'), temp.pop('smzdm_article_week.json'), temp.pop('smzdm_article_month.json')]})
         r.append({'title': '知乎', 'data': [temp.pop('zhihu_daily.json'), temp.pop('zhihu_good.json'), temp.pop('zhihu_hot.json')]})
-        r.append({'title': '微信', 'data': [temp.pop('weixin.json'), temp.pop('weixin_hot.json')]})
+        r.append({'title': '微信', 'data': [temp.pop('weixin_hot.json'), temp.pop('weixin.json')]})
         r.append({'title': '36Kr', 'data': [temp.pop('36kr_hot.json'), temp.pop('36kr_article.json')]})
         r.append({'title': '新京报', 'data': [temp.pop('bjnews_suggestion.json'), temp.pop('bjnews_ranking.json'), temp.pop('bjnews_comment_ranking.json')]})
         r.append({'title': '黑客派', 'data': [temp.pop('hacpai_hot.json'), temp.pop('hacpai_play.json')]})
@@ -96,7 +96,7 @@ def flush():
             file_path = ['zhihu_daily.json', 'zhihu_good.json', 'zhihu_hot.json']
         elif target == 'weixin':
             threads = [MyThread(target=parse_weixin)]
-            file_path = ['weixin.json', 'weixin_hot.json']
+            file_path = ['weixin_hot.json', 'weixin.json']
         elif target == '36kr':
             threads = [MyThread(target=parse_36kr)]
             file_path = ['36kr_hot.json', '36kr_article.json']
