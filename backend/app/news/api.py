@@ -100,6 +100,9 @@ def flush():
         elif target == '36kr':
             threads = [MyThread(target=parse_36kr)]
             file_path = ['36kr_hot.json', '36kr_article.json']
+        elif target == 'bjnews':
+            threads = [MyThread(target=parse_bjnews)]
+            file_path = ['bjnews_suggestion.json', 'bjnews_ranking.json', 'bjnews_comment_ranking.json']
         elif target == 'hacpai':
             threads = [MyThread(target=parse_hacpai, args=("play", )), MyThread(target=parse_hacpai, args=("hot", ))]
             file_path = ['hacpai_hot.json', 'hacpai_play.json']
@@ -115,7 +118,6 @@ def flush():
                 'douban': {'parse_thread':[MyThread(target=parse_douban)],'file_path':['douban.json']},
                 'jandan': {'parse_thread':[MyThread(target=parse_jandan)],'file_path':['jandan.json']},
                 'chouti': {'parse_thread':[MyThread(target=parse_chouti)],'file_path':['chouti.json']},
-                'bjnews': {'parse_thread':[MyThread(target=parse_bjnews)],'file_path':['bjnews.json']},
                 'solidot': {'parse_thread':[MyThread(target=parse_solidot)],'file_path':['solidot.json']},
                 'nytimes': {'parse_thread':[MyThread(target=parse_nytimes)],'file_path':['nytimes.json']},
                 'bilibili': {'parse_thread':[MyThread(target=parse_bilibili)],'file_path':['bilibili.json']},
