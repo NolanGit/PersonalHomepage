@@ -179,7 +179,7 @@ def parse_36kr():
             return (class_text is not None) and (('hotlist-item-other-title' in class_text) or ('hotlist-item-toptwo-title' in class_text))
 
         list = []
-        for soup_a in soup.find_all(class_=hot_class_filter):
+        for soup_a in soup.find_all'li'(class_=hot_class_filter):
             blist = {}
             hot_name = soup_a.text.replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").strip()
             hot_url = 'https://36kr.com' + soup_a.get('href')
@@ -198,7 +198,7 @@ def parse_36kr():
             return (class_text is not None) and ('article-item-title' in class_text)
 
         list = []
-        for soup_a in soup.find_all(class_=article_class_filter):
+        for soup_a in soup.find_all'li'(class_=article_class_filter):
             blist = {}
             hot_name = soup_a.text.replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").strip()
             hot_url = 'https://36kr.com' + soup_a.get('href')
@@ -231,7 +231,7 @@ def parse_bjnews():
         jsondict["time"] = list_time
 
         list = []
-        for soup_a in soup.find_all('div', 'pin_demo'):
+        for soup_a in soup.find_all'li'('div', 'pin_demo'):
             blist = {}
             hot_name = soup_a.find('a').find('div').text.replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").strip()
             hot_url = soup_a.find('a').get('href')
@@ -249,7 +249,7 @@ def parse_bjnews():
         list = []
         ranking = soup.find('div', 'ranking')
         ranking['class'] = 'processed'
-        for soup_a in ranking.find_all('a', 'link'):
+        for soup_a in ranking.find_all'li'('a', 'link'):
             blist = {}
             hot_name = soup_a.text.replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").strip()[2:]
             hot_url = soup_a.get('href')
@@ -266,7 +266,7 @@ def parse_bjnews():
 
         list = []
         ranking = soup.find('div', 'hotComment')
-        for soup_a in ranking.find_all('a', 'link'):
+        for soup_a in ranking.find_all'li'('a', 'link'):
             blist = {}
             hot_name = soup_a.text.replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").strip()[2:]
             hot_url = soup_a.get('href')
@@ -404,22 +404,21 @@ def parse_weixin():
         fname2 = dir + "weixin_hot.json"
         r = requests.get(url, headers=headers, timeout=(5, 10))
         r.encoding = 'utf-8'
-        soup = etree.HTML(r.text)
+        soup = BeautifulSoup(r.text, 'html.parser')
         list = []
         jsondict = {}
         jsondict['website'] = 'weixin'
         list_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
         jsondict["time"] = list_time
         jsondict["title"] = "搜索热词"
-        for soup_a in soup.xpath("//ol[@class='hot-news']/li"):
+        hot_news=soup.find('ol', 'hot-news')
+        for soup_a in hot_news.find_all('li'):
             blist = {}
-            hot_name = soup_a.xpath("./a/text()")[0].replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").strip()
-            hot_url = soup_a.xpath("./a/@href")[0]
-            hot_num = soup_a.xpath("./span/span/@style")[0].replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").replace("width:", "").replace("%", "").strip()
+            hot_name = soup_a.find("a").get('title').replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").strip()
+            hot_url = soup_a.find("a").get('herf')
             group = "weixin"
             blist["name"] = hot_name
             blist["url"] = hot_url
-            blist["num"] = hot_num
             list.append(blist)
         jsondict["data"] = list
         content = json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
@@ -428,10 +427,10 @@ def parse_weixin():
         list = []
         jsondict["time"] = list_time
         jsondict["title"] = "热门文章"
-        for soup_a in soup.xpath("//div[@class='txt-box']/h3/a"):
+        for soup_a in soup.find_all("txt-box"):
             blist = {}
-            hot_name = soup_a.text.replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").strip()
-            hot_url = soup_a.get('href')
+            hot_name = soup_a.find('h3').find('a').text.replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").strip()
+            hot_url = soup_a.find('h3').find('a').get('href')
             group = "weixin"
             blist["name"] = hot_name
             blist["url"] = hot_url
@@ -599,7 +598,7 @@ def parse_douban():
         list_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
         jsondict["time"] = list_time
         jsondict["title"] = "豆瓣热帖"
-        for soup_a in soup.find_all("div", "channel-item"):
+        for soup_a in soup.find_all'li'("div", "channel-item"):
             blist = {}
             hot_name = soup_a.find('h3').find('a').text.replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").strip()
             hot_url = soup_a.find('h3').find('a').get('href')
@@ -688,7 +687,7 @@ def parse_huxiu():
         def class_filter(class_text):
             return (class_text is not None) and ((class_text == "article-item--large") or ('article-item--normal' in class_text))
 
-        for soup_a in soup.find_all(class_=class_filter):
+        for soup_a in soup.find_all'li'(class_=class_filter):
             blist = {}
             hot_name = soup_a.find('h5').text.replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").strip()
             hot_url = soup_a.find('a').get('href')
@@ -887,7 +886,7 @@ def parse_bilibili():
         list_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
         jsondict["time"] = list_time
         jsondict["title"] = "Bilibili"
-        for soup_a in soup.find_all("a", "title"):
+        for soup_a in soup.find_all'li'("a", "title"):
             blist = {}
             hot_name = soup_a.text.replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").strip()
             hot_url = soup_a.get('href')
