@@ -412,11 +412,11 @@ def parse_weixin():
         list_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
         jsondict["time"] = list_time
         jsondict["title"] = "搜索热词"
-        hot_news=soup.find('ol', 'hot-news')
+        hot_news = soup.find('ol', 'hot-news')
         for soup_a in hot_news.find_all('li'):
             blist = {}
             hot_name = soup_a.find("a").get('title').replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").strip()
-            hot_url = soup_a.find("a").get('herf')
+            hot_url = soup_a.find("a").get('href')
             group = "weixin"
             blist["name"] = hot_name
             blist["url"] = hot_url
@@ -428,7 +428,7 @@ def parse_weixin():
         list = []
         jsondict["time"] = list_time
         jsondict["title"] = "热门文章"
-        for soup_a in soup.find_all("txt-box"):
+        for soup_a in soup.find_all("div", "txt-box"):
             blist = {}
             hot_name = soup_a.find('h3').find('a').text.replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").strip()
             hot_url = soup_a.find('h3').find('a').get('href')
