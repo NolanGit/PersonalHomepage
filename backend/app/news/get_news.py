@@ -179,7 +179,7 @@ def parse_36kr():
             return (class_text is not None) and (('hotlist-item-other-title' in class_text) or ('hotlist-item-toptwo-title' in class_text))
 
         list = []
-        for soup_a in soup.find_all'li'(class_=hot_class_filter):
+        for soup_a in soup.find_all(class_=hot_class_filter):
             blist = {}
             hot_name = soup_a.text.replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").strip()
             hot_url = 'https://36kr.com' + soup_a.get('href')
