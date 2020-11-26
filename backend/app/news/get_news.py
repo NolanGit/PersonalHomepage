@@ -7,6 +7,7 @@ import json
 import base64
 import datetime
 import requests
+import traceback
 from lxml import etree
 from threading import Thread
 from bs4 import BeautifulSoup
@@ -20,7 +21,7 @@ dir = os.path.dirname(os.path.abspath(__file__)) + "/json/"
 try:
     os.mkdir(dir)
 except Exception as e:
-    print(e)
+    traceback.print_exc()
     print("json文件夹创建失败(已存在或无写入权限)")
 
 
@@ -69,9 +70,8 @@ def parse_baidu(name):
         content = json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
         with open(fname, "w+", encoding='utf-8') as f:
             f.write(content)
-        return jsondict
-    except Exception as e:
-        print(e)
+    except:
+        traceback.print_exc()
         print(sys._getframe().f_code.co_name + "(" + name + ")" + "采集错误，请及时更新规则！")
 
 
@@ -106,9 +106,8 @@ def parse_hacpai(name):
         content = json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
         with open(fname, "w+", encoding='utf-8') as f:
             f.write(content)
-        return jsondict
-    except Exception as e:
-        print(e)
+    except:
+        traceback.print_exc()
         print(sys._getframe().f_code.co_name + "(" + name + ")" + "采集错误，请及时更新规则！")
 
 
@@ -157,9 +156,8 @@ def parse_smzdm_article(name):
         content = json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
         with open(fname, "w+", encoding='utf-8') as f:
             f.write(content)
-        return jsondict
-    except Exception as e:
-        print(e)
+    except:
+        traceback.print_exc()
         print(sys._getframe().f_code.co_name + "(" + name + ")" + "采集错误，请及时更新规则！")
 
 
@@ -215,10 +213,77 @@ def parse_36kr():
         content = json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
         with open(fname, "w+", encoding='utf-8') as f:
             f.write(content)
-        return jsondict
 
-    except Exception as e:
-        print(e)
+    except:
+        traceback.print_exc()
+        print(sys._getframe().f_code.co_name + "采集错误，请及时更新规则！")
+
+
+#新京报
+def parse_bjnews():
+    try:
+        url = "http://www.bjnews.com.cn/"
+        headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36'}
+        r = requests.get(url, headers=headers, timeout=(5, 10))
+        soup = BeautifulSoup(r.text, 'html.parser')
+        jsondict = {}
+        jsondict['website'] = 'bjnews'
+        list_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+        jsondict["time"] = list_time
+
+        list = []
+        for soup_a in soup.find_all('div', 'pin_demo'):
+            blist = {}
+            hot_name = soup_a.find('a').find('div').text.replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").strip()
+            hot_url = soup_a.find('a').get('href')
+            group = "bjnews"
+            blist["name"] = hot_name
+            blist["url"] = hot_url
+            list.append(blist)
+        jsondict["title"] = "推荐"
+        jsondict["data"] = list
+        fname = dir + "bjnews_suggestion.json"
+        content = json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
+        with open(fname, "w+", encoding='utf-8') as f:
+            f.write(content)
+
+        list = []
+        ranking = soup.find('div', 'ranking')
+        ranking['class'] = 'processed'
+        for soup_a in ranking.find_all('a', 'link'):
+            blist = {}
+            hot_name = soup_a.text.replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").strip()[2:]
+            hot_url = soup_a.get('href')
+            group = "bjnews"
+            blist["name"] = hot_name
+            blist["url"] = hot_url
+            list.append(blist)
+        jsondict["title"] = "热榜"
+        jsondict["data"] = list
+        fname = dir + "bjnews_ranking.json"
+        content = json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
+        with open(fname, "w+", encoding='utf-8') as f:
+            f.write(content)
+
+        list = []
+        ranking = soup.find('div', 'hotComment')
+        for soup_a in ranking.find_all('a', 'link'):
+            blist = {}
+            hot_name = soup_a.text.replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").strip()[2:]
+            hot_url = soup_a.get('href')
+            group = "bjnews"
+            blist["name"] = hot_name
+            blist["url"] = hot_url
+            list.append(blist)
+        jsondict["title"] = "热评"
+        jsondict["data"] = list
+        fname = dir + "bjnews_comment_ranking.json"
+        content = json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
+        with open(fname, "w+", encoding='utf-8') as f:
+            f.write(content)
+
+    except:
+        traceback.print_exc()
         print(sys._getframe().f_code.co_name + "采集错误，请及时更新规则！")
 
 
@@ -254,9 +319,8 @@ def parse_zhihu_hot():
         content = json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
         with open(fname, "w+", encoding='utf-8') as f:
             f.write(content)
-        return jsondict
-    except Exception as e:
-        print(e)
+    except:
+        traceback.print_exc()
         print(sys._getframe().f_code.co_name + "采集错误，请及时更新规则！")
 
 
@@ -296,9 +360,8 @@ def parse_zhihu_good():
         content = json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
         with open(fname, "w+", encoding='utf-8') as f:
             f.write(content)
-        return jsondict
-    except Exception as e:
-        print(e)
+    except:
+        traceback.print_exc()
         print(sys._getframe().f_code.co_name + "采集错误，请及时更新规则！")
 
 
@@ -328,9 +391,8 @@ def parse_zhihu_daily():
         content = json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
         with open(fname, "w+", encoding='utf-8') as f:
             f.write(content)
-        return jsondict
-    except Exception as e:
-        print(e)
+    except:
+        traceback.print_exc()
         print(sys._getframe().f_code.co_name + "采集错误，请及时更新规则！")
 
 
@@ -343,22 +405,21 @@ def parse_weixin():
         fname2 = dir + "weixin_hot.json"
         r = requests.get(url, headers=headers, timeout=(5, 10))
         r.encoding = 'utf-8'
-        soup = etree.HTML(r.text)
+        soup = BeautifulSoup(r.text, 'html.parser')
         list = []
         jsondict = {}
         jsondict['website'] = 'weixin'
         list_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
         jsondict["time"] = list_time
         jsondict["title"] = "搜索热词"
-        for soup_a in soup.xpath("//ol[@class='hot-news']/li"):
+        hot_news = soup.find('ol', 'hot-news')
+        for soup_a in hot_news.find_all('li'):
             blist = {}
-            hot_name = soup_a.xpath("./a/text()")[0].replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").strip()
-            hot_url = soup_a.xpath("./a/@href")[0]
-            hot_num = soup_a.xpath("./span/span/@style")[0].replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").replace("width:", "").replace("%", "").strip()
+            hot_name = soup_a.find("a").get('title').replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").strip()
+            hot_url = soup_a.find("a").get('href')
             group = "weixin"
             blist["name"] = hot_name
             blist["url"] = hot_url
-            blist["num"] = hot_num
             list.append(blist)
         jsondict["data"] = list
         content = json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
@@ -367,10 +428,10 @@ def parse_weixin():
         list = []
         jsondict["time"] = list_time
         jsondict["title"] = "热门文章"
-        for soup_a in soup.xpath("//div[@class='txt-box']/h3/a"):
+        for soup_a in soup.find('ul', 'news-list').find_all("div", "txt-box"):
             blist = {}
-            hot_name = soup_a.text.replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").strip()
-            hot_url = soup_a.get('href')
+            hot_name = soup_a.find("h3").find("a").text.replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").strip()
+            hot_url = soup_a.find("h3").find("a").get('href').replace('×tamp','&timestamp')
             group = "weixin"
             blist["name"] = hot_name
             blist["url"] = hot_url
@@ -379,9 +440,8 @@ def parse_weixin():
         content = json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
         with open(fname2, "w+", encoding='utf-8') as f:
             f.write(content)
-        return jsondict
-    except Exception as e:
-        print(e)
+    except:
+        traceback.print_exc()
         print(sys._getframe().f_code.co_name + "采集错误，请及时更新规则！")
 
 
@@ -422,9 +482,8 @@ def parse_weibo():
         content = json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
         with open(fname, "w+", encoding='utf-8') as f:
             f.write(content)
-        return jsondict
-    except Exception as e:
-        print(e)
+    except:
+        traceback.print_exc()
         print(sys._getframe().f_code.co_name + "采集错误，请及时更新规则！")
 
 
@@ -453,9 +512,8 @@ def parse_v2ex():
         content = json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
         with open(fname, "w+", encoding='utf-8') as f:
             f.write(content)
-        return jsondict
-    except Exception as e:
-        print(e)
+    except:
+        traceback.print_exc()
         print(sys._getframe().f_code.co_name + "采集错误，请及时更新规则！")
 
 
@@ -490,9 +548,8 @@ def parse_chouti():
         content = json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
         with open(fname, "w+", encoding='utf-8') as f:
             f.write(content)
-        return jsondict
-    except Exception as e:
-        print(e)
+    except:
+        traceback.print_exc()
         print(sys._getframe().f_code.co_name + "采集错误，请及时更新规则！")
 
 
@@ -522,9 +579,8 @@ def parse_jandan():
         content = json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
         with open(fname, "w+", encoding='utf-8') as f:
             f.write(content)
-        return jsondict
-    except Exception as e:
-        print(e)
+    except:
+        traceback.print_exc()
         print(sys._getframe().f_code.co_name + "采集错误，请及时更新规则！")
 
 
@@ -555,9 +611,8 @@ def parse_douban():
         content = json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
         with open(fname, "w+", encoding='utf-8') as f:
             f.write(content)
-        return jsondict
-    except Exception as e:
-        print(e)
+    except:
+        traceback.print_exc()
         print(sys._getframe().f_code.co_name + "采集错误，请及时更新规则！")
 
 
@@ -610,9 +665,8 @@ def parse_guokr():
         content = json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
         with open(fname, "w+", encoding='utf-8') as f:
             f.write(content)
-        return jsondict
-    except Exception as e:
-        print(e)
+    except:
+        traceback.print_exc()
         print(sys._getframe().f_code.co_name + "采集错误，请及时更新规则！")
 
 
@@ -648,9 +702,8 @@ def parse_huxiu():
         content = json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
         with open(fname, "w+", encoding='utf-8') as f:
             f.write(content)
-        return jsondict
-    except Exception as e:
-        print(e)
+    except:
+        traceback.print_exc()
         print(sys._getframe().f_code.co_name + "采集错误，请及时更新规则！")
 
 
@@ -685,9 +738,8 @@ def parse_cnbeta():
         content = json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
         with open(fname, "w+", encoding='utf-8') as f:
             f.write(content)
-        return jsondict
-    except Exception as e:
-        print(e)
+    except:
+        traceback.print_exc()
         print(sys._getframe().f_code.co_name + "采集错误，请及时更新规则！")
 
 
@@ -718,9 +770,8 @@ def parse_zaobao():
         content = json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
         with open(fname, "w+", encoding='utf-8') as f:
             f.write(content)
-        return jsondict
-    except Exception as e:
-        print(e)
+    except:
+        traceback.print_exc()
         print(sys._getframe().f_code.co_name + "采集错误，请及时更新规则！")
 
 
@@ -751,9 +802,8 @@ def parse_thepaper():
         content = json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
         with open(fname, "w+", encoding='utf-8') as f:
             f.write(content)
-        return jsondict
-    except Exception as e:
-        print(e)
+    except:
+        traceback.print_exc()
         print(sys._getframe().f_code.co_name + "采集错误，请及时更新规则！")
 
 
@@ -784,9 +834,8 @@ def parse_nytimes():
         content = json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
         with open(fname, "w+", encoding='utf-8') as f:
             f.write(content)
-        return jsondict
-    except Exception as e:
-        print(e)
+    except:
+        traceback.print_exc()
         print(sys._getframe().f_code.co_name + "采集错误，请及时更新规则！")
 
 
@@ -817,9 +866,8 @@ def parse_solidot():
         content = json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
         with open(fname, "w+", encoding='utf-8') as f:
             f.write(content)
-        return jsondict
-    except Exception as e:
-        print(e)
+    except:
+        traceback.print_exc()
         print(sys._getframe().f_code.co_name + "采集错误，请及时更新规则！")
 
 
@@ -851,9 +899,8 @@ def parse_bilibili():
         content = json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
         with open(fname, "w+", encoding='utf-8') as f:
             f.write(content)
-        return jsondict
-    except Exception as e:
-        print(e)
+    except:
+        traceback.print_exc()
         print(sys._getframe().f_code.co_name + "采集错误，请及时更新规则！")
 
 
@@ -886,9 +933,8 @@ def parse_sinatech():
         content = json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
         with open(fname, "w+", encoding='utf-8') as f:
             f.write(content)
-        return jsondict
-    except Exception as e:
-        print(e)
+    except:
+        traceback.print_exc()
         print(sys._getframe().f_code.co_name + "采集错误，请及时更新规则！")
 
 
@@ -929,9 +975,8 @@ def parse_hostloc():
         content = json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
         with open(fname, "w+", encoding='utf-8') as f:
             f.write(content)
-        return jsondict
-    except Exception as e:
-        print(e)
+    except:
+        traceback.print_exc()
         print(sys._getframe().f_code.co_name + "采集错误，请及时更新规则！")
 
 
@@ -941,7 +986,7 @@ def multi_run():
     t1 = time.time()
     threads = []
     threads.append(Thread(target=parse_bilibili))
-    threads.append(Thread(target=parse_hostloc))
+    threads.append(Thread(target=parse_bjnews))
     threads.append(Thread(target=parse_sinatech))
     threads.append(Thread(target=parse_solidot))
     threads.append(Thread(target=parse_nytimes))

@@ -171,9 +171,9 @@ def cancel():
 def changeName():
     try:
         user_id = request.get_json()['user_id']
-        id = request.get_json()['id']
+        file_id = request.get_json()['file_id']
         file_name = request.get_json()['file_name']
-        _ = upload.get(upload.id == id)
+        _ = upload.get(upload.id == file_id)
         if int(_.user_id) != int(user_id):
             return rsp.refuse('文件归属错误！'), 403
         else:

@@ -1,11 +1,14 @@
 <template>
   <section>
     <el-row class="margin_bottom-large">
-      <div class="margin_left-medium margin_right-medium" style="text-align: center;">
+      <div
+        class="margin_left-medium margin_right-medium"
+        style="text-align: center"
+      >
         <el-upload
           class="upload-demo"
           ref="upload"
-          style="text-align: center;"
+          style="text-align: center"
           drag
           action="/upload"
           :on-preview="handlePreview"
@@ -28,45 +31,72 @@
       <div class="margin_left-medium margin_right-medium">
         <div
           class="scrollbar-div"
-          style="max-height:calc(100vh - 435px); height: calc(100vh - 435px);"
+          style="max-height: calc(100vh - 435px); height: calc(100vh - 435px)"
         >
-          <el-table :data="tableData" style="text-align: center;" size="small">
+          <el-table :data="tableData" style="text-align: center" size="small">
             <el-table-column label="名称">
               <template slot-scope="scope">
-                <div style="display: inline-flex;">
+                <div style="display: inline-flex">
                   <span
-                    v-if="scope.row.editMode==false"
+                    v-if="scope.row.editMode == false"
                     style="margin-right: 10px"
-                  >{{ scope.row.file_name }}</span>
+                    >{{ scope.row.file_name }}</span
+                  >
                   <i
-                    v-if="scope.row.editMode==false"
+                    v-if="scope.row.editMode == false"
                     class="el-icon-edit"
-                    style="cursor: pointer; margin-top: 6px; font-size: 13px;"
-                    @click="changeEditMode(scope.row.id,'enable')"
+                    style="cursor: pointer; margin-top: 6px; font-size: 13px"
+                    @click="changeEditMode(scope.row.id, 'enable')"
                   ></i>
                   <el-input
-                    v-if="scope.row.editMode==true"
+                    v-if="scope.row.editMode == true"
                     v-model="scope.row.file_name"
                     placeholder="请输入内容"
                     size="mini"
                   ></el-input>
                   <i
-                    v-if="scope.row.editMode==true"
+                    v-if="scope.row.editMode == true"
                     class="el-icon-check"
-                    style="cursor: pointer; margin-top: 6px; font-size: 13px; color: #67C23A; padding-left: 5px"
-                    @click="submitEditMode(scope.row.id,scope.row.file_name)"
+                    style="
+                      cursor: pointer;
+                      margin-top: 6px;
+                      font-size: 13px;
+                      color: #67c23a;
+                      padding-left: 5px;
+                    "
+                    @click="
+                      submitEditMode(
+                        scope.row.id,
+                        scope.row.file_id,
+                        scope.row.file_name
+                      )
+                    "
                   ></i>
                   <i
-                    v-if="scope.row.editMode==true"
+                    v-if="scope.row.editMode == true"
                     class="el-icon-close"
-                    style="cursor: pointer; margin-top: 6px; font-size: 13px; color: #F56C6C; padding-left: 5px"
-                    @click="changeEditMode(scope.row.id,'disable')"
+                    style="
+                      cursor: pointer;
+                      margin-top: 6px;
+                      font-size: 13px;
+                      color: #f56c6c;
+                      padding-left: 5px;
+                    "
+                    @click="changeEditMode(scope.row.id, 'disable')"
                   ></i>
                 </div>
               </template>
             </el-table-column>
-            <el-table-column prop="size" label="大小" width="100"></el-table-column>
-            <el-table-column prop="update_time" label="上传时间" width="170"></el-table-column>
+            <el-table-column
+              prop="size"
+              label="大小"
+              width="100"
+            ></el-table-column>
+            <el-table-column
+              prop="update_time"
+              label="上传时间"
+              width="170"
+            ></el-table-column>
             <el-table-column label="操作" width="280">
               <template slot-scope="scope">
                 <el-tooltip content="下载" placement="top">
@@ -79,9 +109,13 @@
                     @click="download(scope.row.file_id)"
                   ></el-button>
                 </el-tooltip>
-                <el-tooltip v-if="scope.row.share==0" content="分享" placement="top">
+                <el-tooltip
+                  v-if="scope.row.share == 0"
+                  content="分享"
+                  placement="top"
+                >
                   <el-button
-                    v-if="scope.row.share==0"
+                    v-if="scope.row.share == 0"
                     class="noMargin"
                     size="mini"
                     plain
@@ -90,9 +124,13 @@
                     @click="share(scope.row.id)"
                   ></el-button>
                 </el-tooltip>
-                <el-tooltip v-if="scope.row.share==1" content="复制分享链接" placement="top">
+                <el-tooltip
+                  v-if="scope.row.share == 1"
+                  content="复制分享链接"
+                  placement="top"
+                >
                   <el-button
-                    v-if="scope.row.share==1"
+                    v-if="scope.row.share == 1"
                     class="noMargin"
                     size="mini"
                     plain
@@ -103,15 +141,19 @@
                     v-clipboard:error="onError"
                   ></el-button>
                 </el-tooltip>
-                <el-tooltip v-if="scope.row.share==1" content="取消分享" placement="top">
+                <el-tooltip
+                  v-if="scope.row.share == 1"
+                  content="取消分享"
+                  placement="top"
+                >
                   <el-button
-                    v-if="scope.row.share==1"
+                    v-if="scope.row.share == 1"
                     class="noMargin"
                     size="mini"
                     plain
                     type="warning"
                     icon="el-icon-close"
-                    @click="unShare(scope.row.file_id)"
+                    @click="unShare(scope.row.id)"
                   ></el-button>
                 </el-tooltip>
                 <el-tooltip content="删除" placement="top">
@@ -138,7 +180,7 @@
           :page-size="pagination.pageSize"
           layout="total, sizes, prev, pager, next"
           :total="pagination.total"
-          style="text-align:center"
+          style="text-align: center"
         ></el-pagination>
       </div>
     </el-row>
@@ -192,11 +234,11 @@ export default {
     uploadProgress() {
       this.$emit("cloudStatusChanged", 1);
     },
-    async submitEditMode(rowId, rowFileName) {
+    async submitEditMode(rowId, file_id, rowFileName) {
       try {
         const { data: res } = await axios.post(api.changeName, {
           user_id: this.user_id,
-          id: rowId,
+          file_id: file_id,
           file_name: rowFileName,
         });
         await this.changeEditMode(rowId, "disable");
@@ -308,7 +350,7 @@ export default {
     onError(e) {
       alert("复制失败");
     },
-    async unShare(fileId) {
+    async unShare(id) {
       this.$confirm(
         "取消分享后，原来的分享链接将失效，确定取消分享吗？",
         "提示",
@@ -317,7 +359,7 @@ export default {
         try {
           const { data: res } = await axios.post(api.unShare, {
             user_id: this.user_id,
-            id: fileId,
+            id: id,
           });
           this.get();
           this.$message({
