@@ -245,13 +245,13 @@ def parse_bjnews():
         content = json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
         with open(fname, "w+", encoding='utf-8') as f:
             f.write(content)
-        
+
         list = []
-        ranking=soup.find('div','ranking')
+        ranking = soup.find('div', 'ranking')
         for soup_a in ranking.find_all('a', 'link'):
             blist = {}
-            hot_name = soup_a.find('span').text.replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").strip()
-            hot_url =  soup_a.get('href')
+            hot_name = soup_a.text.replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").strip()
+            hot_url = soup_a.get('href')
             group = "bjnews"
             blist["name"] = hot_name
             blist["url"] = hot_url
@@ -262,7 +262,27 @@ def parse_bjnews():
         content = json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
         with open(fname, "w+", encoding='utf-8') as f:
             f.write(content)
-        
+
+        def class_filter(class_text):
+            return (class_text is not None) and ('hotComment' in class_text) and ('ranking' not in class_text)
+
+        list = []
+        ranking = soup.find(class_=class_filter)
+        for soup_a in ranking.find_all('a', 'link'):
+            blist = {}
+            hot_name = soup_a.text.replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").strip()
+            hot_url = soup_a.get('href')
+            group = "bjnews"
+            blist["name"] = hot_name
+            blist["url"] = hot_url
+            list.append(blist)
+        jsondict["title"] = "热评"
+        jsondict["data"] = list
+        fname = dir + "bjnews_comment_ranking.json"
+        content = json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
+        with open(fname, "w+", encoding='utf-8') as f:
+            f.write(content)
+
     except Exception as e:
         print(e)
         print(sys._getframe().f_code.co_name + "采集错误，请及时更新规则！")
