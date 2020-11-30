@@ -221,11 +221,7 @@
 
 功能：查找苹果软件商店的应用并监控其价格，当小于设定的阈值时，提醒用户。
 
-![image](https://user-images.githubusercontent.com/27627484/94397623-cebac180-0196-11eb-962b-b87e9891cf8b.png)
-
-![image](https://user-images.githubusercontent.com/27627484/87305689-7a198a00-c549-11ea-9925-d944bdb839e5.png)
-
-![image](https://user-images.githubusercontent.com/27627484/88994520-2b2a6d80-d31b-11ea-9b3a-3f764f83b575.png)
+![image](https://user-images.githubusercontent.com/27627484/100566472-1974c900-3301-11eb-97d9-cd126c0a2840.gif)
 
 ### 小组件-便签
 
