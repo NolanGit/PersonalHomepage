@@ -29,7 +29,7 @@
 - 小组件-基金（支持设置触发阈值后推送微信或发送邮件）
 - 小组件-新闻
 
-![screenshot-2020 11 05-12_45_52](https://user-images.githubusercontent.com/27627484/98199030-4e416a80-1f65-11eb-9934-8b6e269b5d07.png)
+![screenshot](https://user-images.githubusercontent.com/27627484/100566224-6dcb7900-3300-11eb-825b-c61c4dc0e386.png)
 
 ## 特性
 
