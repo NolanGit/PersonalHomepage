@@ -29,7 +29,7 @@ data_source = []
 
 def get_valid_stock_id():
     stock_belong_query = stock_belong.select().where(stock_belong.is_valid == 1).dicts()
-    return [{'stock_id': _['stock_id']} for _ in stock_belong_query]
+    return [{'stock_id': _} for _ in set([_['stock_id'] for _ in stock_belong_query])]
 
 
 def get_stock():

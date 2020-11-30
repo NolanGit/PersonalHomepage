@@ -5,13 +5,13 @@
         <div class="widget-label">APP</div>
       </el-row>
       <el-carousel
-        height="180px"
+        height="224px"
         trigger="click"
         interval="5000"
         indicator-position="outside"
       >
         <el-carousel-item v-for="appData in appSuite" :key="appData">
-          <el-table :data="appData" style="width: 100%" size="mini">
+          <el-table height="224" :data="appData" style="width: 100%" size="mini">
             <el-table-column prop="name" label="名称"></el-table-column>
             <el-table-column
               prop="price"
