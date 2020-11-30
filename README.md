@@ -256,7 +256,7 @@
 
 功能：爬取沪深股市、港股、美股股票数据，并可以设置超过阈值后提醒功能。
 
-![image](https://user-images.githubusercontent.com/27627484/100584446-1987bf80-3327-11eb-9833-4fff6c07f449.gif)
+![image](https://user-images.githubusercontent.com/27627484/100586792-9f593a00-332a-11eb-83a5-7708642eb130.gif)
 
 ### 小组件-基金
 
@@ -264,7 +264,7 @@
 
 功能：爬取基金数据，并可以设置超过阈值后提醒功能。
 
-![image](https://user-images.githubusercontent.com/27627484/100584638-518f0280-3327-11eb-8d8a-cffb2b1fc0c8.gif)
+![image](https://user-images.githubusercontent.com/27627484/100586449-25c14c00-332a-11eb-9e11-7046a739d30f.gif)
 
 ### 小组件-新闻
 
