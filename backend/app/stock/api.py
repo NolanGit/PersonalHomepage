@@ -42,8 +42,6 @@ def add():
         name = request.get_json()['name']
         market = int(request.get_json()['market'])
         push = int(request.get_json()['push'])
-        threshold_max = float(request.get_json()['threshold_max'])
-        threshold_min = float(request.get_json()['threshold_min'])
 
         s = Stock(code=code, name=name, market=int(market))
         stock_id = check_stock_exist(s)
@@ -51,11 +49,15 @@ def add():
             stock_id = s.create().id
 
         if push == 1:
+            threshold_max = float(request.get_json()['threshold_max'])
+            threshold_min = float(request.get_json()['threshold_min'])
             if threshold_min >= threshold_max:
                 return rsp.failed('阈值最小值不能大于或等于阈值最大值'), 500
             if user_id == 0:
                 return rsp.failed('无法为未登录用户设定阈值'), 500
-        threshold = [threshold_min, threshold_max]
+            threshold = [threshold_min, threshold_max]
+        else:
+            threshold = [0, 0]
 
         StockBelong(stock_id=stock_id, user_id=user_id, push=push, push_threshold=threshold, is_valid=1, update_time=datetime.datetime.now()).create()
         return rsp.success()
