@@ -2,9 +2,7 @@
 
 - 当前大部分导航页类开源项目的可定制度都不高，个人想要关注的信息又过于分散，因此决定自己写一个可以由用户高度定制的导航页，并整合自己所需要的信息和功能。
 
-- 前端使用Vue.js，后端使用Python，MariaDB+Redis提供数据存储。
-
-- 前端框架使用Element UI，后端框架使用Flask，后端ORM使用Peewee。
+- 前端使用Vue.js，后端使用Python，MariaDB+Redis提供数据存储。前端框架使用Element UI，后端框架使用Flask，后端ORM使用Peewee。
 
 - 🐞 如果有任何BUG/需求/建议，欢迎提Issues！
 
