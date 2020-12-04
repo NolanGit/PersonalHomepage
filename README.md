@@ -223,8 +223,7 @@
 
 功能：使用[translators](https://github.com/UlionTse/translators)实现，使用的是阿里的服务，当在左侧输入区输入文字后，一段间隔后，会根据上方选择的语言进行翻译。
 
-![image](https://user-images.githubusercontent.com/27627484/92317176-9ceb8a80-f030-11ea-9e73-0e6656fcbe73.png)
-
+![image](https://user-images.githubusercontent.com/27627484/101163586-c5564580-366e-11eb-975e-ed64a5f7a17f.gif)
 
 ### 小组件-必应每日壁纸
 
