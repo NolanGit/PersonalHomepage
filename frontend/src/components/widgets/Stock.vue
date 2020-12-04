@@ -16,39 +16,24 @@
       >
         暂无数据
       </a>
-      <div class="better_font_style" style="text-align: left; font-size: 12px">
-        <span class="margin_right-medium">{{"当前单价：" + latestUnitPrice}}</span>
-        <span v-if="chartData.rows.length != 0"> 涨跌幅： </span>
-        <span
-          style="color: #f56c6c"
-          v-if="(chartData.rows.length != 0) & (latestRange > 0)"
-        >
-          +
-        </span>
-        <span
-          style="color: #f56c6c"
-          v-if="(chartData.rows.length != 0) & (latestRange > 0)"
-        >
+      <div
+        v-if="chartData.rows.length != 0"
+        class="better_font_style"
+        style="text-align: left; font-size: 12px"
+      >
+        <span class="margin_right-medium">{{
+          "当前单价：" + latestUnitPrice
+        }}</span>
+        <span> 涨跌幅： </span>
+        <span style="color: #f56c6c" v-if="latestRange > 0"> + </span>
+        <span style="color: #f56c6c" v-if="latestRange > 0">
           {{ latestRange }}
         </span>
-        <span
-          style="color: #f56c6c"
-          v-if="(chartData.rows.length != 0) & (latestRange > 0)"
-        >
-          %
-        </span>
-        <span
-          style="color: #67c23a"
-          v-if="(chartData.rows.length != 0) & (latestRange <= 0)"
-        >
+        <span style="color: #f56c6c" v-if="latestRange > 0"> % </span>
+        <span style="color: #67c23a" v-if="latestRange <= 0">
           {{ latestRange }}
         </span>
-        <span
-          style="color: #67c23a"
-          v-if="(chartData.rows.length != 0) & (latestRange <= 0)"
-        >
-          %
-        </span>
+        <span>
       </div>
       <ve-line
         height="215px"
@@ -143,6 +128,10 @@
             ></el-input>
           </div>
         </el-form-item>
+        <p v-if="edit.push"
+          class="warningInfo"
+          style="font-size: 12px; color: #F56C6C; padding-top: 0px; margin-top: 0px; margin-bottom: 0px"
+        >*设置推送阈值后，需要打开组件的推送总开关（组件下方的推送按钮）才可以正常推送。</p>
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" size="small" @click="editSubmit()"
@@ -383,7 +372,9 @@ export default {
           if (this.stockData[x].price_list.length != 0) {
             var listLen = this.stockData[x].price_list.length;
             this.latestRange = this.stockData[x].price_list[listLen - 1].range;
-            this.latestUnitPrice = this.stockData[x].price_list[listLen - 1].price;
+            this.latestUnitPrice = this.stockData[x].price_list[
+              listLen - 1
+            ].price;
           }
           return;
         }
@@ -428,7 +419,7 @@ export default {
         var listLen = res.data[0].price_list.length;
         this.latestRange = res.data[0].price_list[listLen - 1].range;
         this.latestUnitPrice = res.data[0].price_list[listLen - 1].price;
-        
+
         this.$nextTick((_) => {
           for (let x = 0; x < this.stockData.length; x++) {
             this.$refs[`chart`].echarts.resize();

@@ -8,7 +8,7 @@
     </el-row>
     <el-row>
       <el-col :span="11">
-        <el-select size="mini" v-model="fromLanguage" placeholder="请选择" style="width: 100%;">
+        <el-select size="mini" v-model="fromLanguage" placeholder="请选择" style="width: 100%;" @change="translate()">
           <el-option
             v-for="item in options"
             :key="item.value"
@@ -25,7 +25,7 @@
         ></i>
       </el-col>
       <el-col :span="11">
-        <el-select size="mini" v-model="toLanguage" placeholder="请选择" @change="translate()">
+        <el-select size="mini" v-model="toLanguage" placeholder="请选择" style="width: 100%;" @change="translate()">
           <el-option
             v-for="item in options"
             :key="item.value"
