@@ -6,7 +6,7 @@ sys.path.append(parentUrl)
 sys.path.append(currentUrl)
 from flask import Flask
 from flask_cors import CORS
-from .model.model_function import BaseDb()
+from .model.model_function import BaseDb
 from playhouse.flask_utils import FlaskDB
 
 

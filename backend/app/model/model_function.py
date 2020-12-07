@@ -1,10 +1,12 @@
 import os
+import sys
 import peewee
 import configparser
 from peewee import Model
 from playhouse.pool import PooledMySQLDatabase
 
-from ..common_func import singleton
+sys.path.append('../')
+from common_func import singleton
 
 
 @singleton
