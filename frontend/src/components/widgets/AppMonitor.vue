@@ -5,7 +5,7 @@
         <div class="widget-label">APP</div>
       </el-row>
       <el-carousel
-        style="max-height: 224px"
+        height="224px"
         trigger="click"
         interval="5000"
         indicator-position="outside"
