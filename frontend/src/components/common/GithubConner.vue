@@ -1,6 +1,6 @@
 <template>
   <a
-    href="https://github.com/shr1213/PersonalHomepage"
+    href="https://github.com/NolanGit/PersonalHomepage"
     target="_blank"
     class="github-corner"
     aria-label="View source on GitHub"
