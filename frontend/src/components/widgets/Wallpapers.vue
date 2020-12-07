@@ -1,7 +1,7 @@
 <template>
   <section>
     <el-carousel
-      style="height: 100%"
+      style="height: 100%; overflow-y: hidden"
       trigger="click"
       :autoplay="true"
       :interval="5000"

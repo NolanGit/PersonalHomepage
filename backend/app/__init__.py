@@ -6,13 +6,13 @@ sys.path.append(parentUrl)
 sys.path.append(currentUrl)
 from flask import Flask
 from flask_cors import CORS
-from .model.model_function import db
+from .model.model_function import BaseDb
 from playhouse.flask_utils import FlaskDB
 
 
 def create_app(config_name):
     app = Flask(__name__, static_folder="../../dist/static", template_folder="../../dist")
-    FlaskDB(app, db)  # 解决peewee不自动关闭连接池连接，参见https://www.cnblogs.com/xueweihan/p/6698456.html
+    FlaskDB(app, BaseDb().db)  # 解决peewee不自动关闭连接池连接，参见https://www.cnblogs.com/xueweihan/p/6698456.html
     CORS(app, supports_credentials=True)
 
     from .main import main as main_blueprint

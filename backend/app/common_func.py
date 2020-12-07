@@ -5,6 +5,7 @@ import inspect
 
 
 class CommonFunc(object):
+
     def random_str(self, num):
         H = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
 
@@ -68,3 +69,14 @@ class CommonFunc(object):
         for b in bbb:
             ccc[b[0]] = b[1]
         return ccc
+
+
+def singleton(cls):
+    instances = {}
+
+    def wrapper(*args, **kwargs):
+        if cls not in instances:
+            instances[cls] = cls(*args, **kwargs)
+        return instances[cls]
+
+    return wrapper
