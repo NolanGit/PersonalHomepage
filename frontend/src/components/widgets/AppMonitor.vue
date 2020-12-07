@@ -5,13 +5,17 @@
         <div class="widget-label">APP</div>
       </el-row>
       <el-carousel
-        height="224px"
+        style="max-height: 224px"
         trigger="click"
         interval="5000"
         indicator-position="outside"
       >
         <el-carousel-item v-for="appData in appSuite" :key="appData">
-          <el-table height="224" :data="appData" style="width: 100%" size="mini">
+          <el-table
+            :data="appData"
+            style="width: 100%; max-height: 224px"
+            size="mini"
+          >
             <el-table-column prop="name" label="名称"></el-table-column>
             <el-table-column
               prop="price"
@@ -314,7 +318,7 @@ export default {
           user_id: this.user_id,
         });
         this.appRawData = res.data;
-        const STEP = 4; // 每页几行
+        const STEP = 5; // 每页几行
         let temp = [];
         for (let x = 0; x < res.data.length; x += STEP) {
           temp.push([]);
