@@ -8,13 +8,17 @@ from ..common_func import singleton
 
 
 @singleton
-class BaseModel(Model):
+class BaseDb():
 
-    class Meta:
-        from ..common_func import singleton
+    def __init__(self):
         PATH = lambda p: os.path.abspath(os.path.join(os.path.dirname(__file__), p))
         cf = configparser.ConfigParser()
         cf.read(PATH('../homepage.config'))
         DB_PASS = cf.get('config', 'DB_PASS')
-        db = PooledMySQLDatabase('PersonalHomepage', user='root', password=DB_PASS, host='localhost', port=3306)
-        database = db
+        self.db = PooledMySQLDatabase('PersonalHomepage', user='root', password=DB_PASS, host='localhost', port=3306)
+
+
+class BaseModel(Model):
+
+    class Meta:
+        database = BaseDb().db
