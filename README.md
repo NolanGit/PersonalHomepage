@@ -147,17 +147,14 @@
 功能：使用"用户-角色-权限"模型编写的接口层级的权限控制系统，接口使用一个装饰器即可以对权限进行控制。默认用户请求接口时，请求IP必须与登录时使用的IP一致，这是一种较为严格的策略，在"/backend/app/privilege/privilege_control.py:20"可以关闭
 
 模块：
-- 用户设置：新增用户、禁用用户、删除用户、修改用户角色、修改用户密码
 
-![image](https://user-images.githubusercontent.com/27627484/87305367-f5c70700-c548-11ea-89b4-5ce69d93dd9c.png)
+- 用户设置：新增用户、禁用用户、删除用户、修改用户角色、修改用户密码
 
 - 角色对应权限设置：新增角色、禁用角色、删除角色、修改角色名称、修改角色对应权限
 
-![image](https://user-images.githubusercontent.com/27627484/87307869-eea1f800-c54c-11ea-8862-ccc5503f333a.png)
-
 - 权限设置：新增权限、禁用权限、删除权限、修改权限
 
-![image](https://user-images.githubusercontent.com/27627484/87305485-2444e200-c549-11ea-91cb-612b3a4c9ca5.png)
+![image](https://user-images.githubusercontent.com/27627484/101615806-85fe6f00-3a49-11eb-9981-4c038ee2aa27.gif)
 
 ### 控制台-小组件编辑器
 
