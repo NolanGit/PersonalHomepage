@@ -13,19 +13,19 @@
         <el-carousel-item v-for="appData in appSuite" :key="appData">
           <el-table
             :data="appData"
-            style="width: 100%; max-height: 224px"
+            style="width: 100%; max-height: 224px; overflow: auto;"
             size="mini"
           >
             <el-table-column prop="name" label="名称"></el-table-column>
             <el-table-column
               prop="price"
               label="当前价格"
-              width="80"
+              width="75"
             ></el-table-column>
             <el-table-column
               prop="update_time"
               label="更新时间"
-              width="180"
+              width="150"
             ></el-table-column>
           </el-table>
         </el-carousel-item>
