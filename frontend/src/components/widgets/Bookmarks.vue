@@ -16,7 +16,7 @@
               <el-col :span="6" v-for="bookmark in bookmarksArray" :key="bookmark">
                 <el-button
                   class="bookmarks-main-button"
-                  size="small"
+                  size="mini"
                   @click="bookmarksClicked(bookmark.url)"
                 >
                   <i :class="bookmark.icon" style="margin-right: 5px; font-size: 15px"></i>
@@ -139,7 +139,7 @@ export default {
       window.open(bookmarkUrl);
     },
     bookmarksSuitesGenerate() {
-      const STEP1 = 4; // 每行有几个
+      const STEP1 = 5; // 每行有几个
       const STEP2 = 3; // 每页有几行
       let temp1 = [];
       let temp2 = [];

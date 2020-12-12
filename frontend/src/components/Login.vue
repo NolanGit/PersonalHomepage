@@ -8,7 +8,7 @@
       placement="top"
       width="160"
       v-model="visible"
-      v-show="user_id==0"
+      v-show="user_id == 0"
     >
       <div style="text-align: right; margin: 0">
         <el-input
@@ -26,17 +26,30 @@
           show-password
           @keyup.enter.native="login()"
         ></el-input>
-        <el-button class="login" size="small" type="primary" @click="login()">登录</el-button>
+        <el-button
+          :loading="loading"
+          class="login"
+          size="small"
+          type="primary"
+          @click="login()"
+          >登录</el-button
+        >
       </div>
       <el-button type="text" slot="reference">登录</el-button>
     </el-popover>
 
-    <el-dropdown class="user-popover" trigger="hover" v-show="user_id!=0">
-      <span class="el-dropdown-link userinfo-inner">{{user_name}}</span>
+    <el-dropdown class="user-popover" trigger="hover" v-show="user_id != 0">
+      <span class="el-dropdown-link userinfo-inner">{{ user_name }}</span>
       <el-dropdown-menu slot="dropdown">
-        <el-dropdown-item @click.native="consoleClicked">控制台</el-dropdown-item>
-        <el-dropdown-item @click.native="cloudClicked">网盘 / 图床</el-dropdown-item>
-        <el-dropdown-item divided @click.native="logout">退出登录</el-dropdown-item>
+        <el-dropdown-item @click.native="consoleClicked"
+          >控制台</el-dropdown-item
+        >
+        <el-dropdown-item @click.native="cloudClicked"
+          >网盘 / 图床</el-dropdown-item
+        >
+        <el-dropdown-item divided @click.native="logout"
+          >退出登录</el-dropdown-item
+        >
       </el-dropdown-menu>
     </el-dropdown>
 
@@ -47,10 +60,14 @@
       :size="drawer.size"
       :before-close="drawerBeforeClose"
     >
-      <Console :user_id="user_id" :login_name="login_name" v-if="drawer.title=='控制台'" />
+      <Console
+        :user_id="user_id"
+        :login_name="login_name"
+        v-if="drawer.title == '控制台'"
+      />
       <CloudDriveAndImageHosting
         :user_id="user_id"
-        v-if="drawer.title=='网盘 / 图床'"
+        v-if="drawer.title == '网盘 / 图床'"
         @cloudStatusChanged="cloudStatusChanged"
       />
     </el-drawer>
@@ -64,18 +81,18 @@ import Console from "./loginDropdowns/Console.vue";
 import CloudDriveAndImageHosting from "./loginDropdowns/CloudDrive&ImageHosting.vue";
 const api = {
   userLogin: "/login/userLogin",
-  userLoginSalt: "/login/userLoginSalt"
+  userLoginSalt: "/login/userLoginSalt",
 };
 export default {
   name: "login",
   components: {
     Console,
-    CloudDriveAndImageHosting
+    CloudDriveAndImageHosting,
   },
   props: {
     login_name: String,
     user_name: String,
-    user_id: Number
+    user_id: Number,
   },
   data() {
     return {
@@ -84,12 +101,13 @@ export default {
       salt: "",
       user: "",
       cloudStatus: 0,
+      loading: false,
       drawer: {
         title: "",
         size: "",
         visible: false,
-        direction: "ttb"
-      }
+        direction: "ttb",
+      },
     };
   },
   methods: {
@@ -108,12 +126,13 @@ export default {
       ) {
         this.$notify.error({
           message: "请填写用户名和密码",
-          type: "error"
+          type: "error",
         });
       } else {
+        this.loading = true;
         try {
           const { data: res } = await axios.post(api.userLoginSalt, {
-            login_name: this.login_name
+            login_name: this.login_name,
           });
           var para = {
             login_name: this.login_name,
@@ -121,13 +140,13 @@ export default {
               this.md5It(this.md5It(this.password) + res.data.stable_salt) +
                 res.data.salt
             ),
-            is_generate_cookie: true
+            is_generate_cookie: true,
           };
           const { data: res2 } = await axios.post(api.userLogin, para);
           this.visible = false;
           this.$message({
             message: res2.msg,
-            type: "success"
+            type: "success",
           });
           this.$cookies.set("user_key", res2.user_key);
           this.$cookies.set(
@@ -144,8 +163,9 @@ export default {
           console.log(e);
           this.$message({
             message: e.response.data.msg,
-            type: "error"
+            type: "error",
           });
+          this.loading = false;
         }
       }
     },
@@ -156,7 +176,7 @@ export default {
       this.$cookies.remove("user_id");
       this.$message({
         message: "退出成功！",
-        type: "success"
+        type: "success",
       });
       location.reload();
     },
@@ -183,7 +203,7 @@ export default {
           "检测到您的文件仍在上传中，关闭页面会打断上传，仍然要关闭吗?",
           "提示",
           {}
-        ).then(_ => {
+        ).then((_) => {
           this.drawer.title = "";
           done();
           this.cloudStatus = 0;
@@ -192,10 +212,10 @@ export default {
         this.drawer.title = "";
         done();
       }
-    }
+    },
   },
   created() {},
-  mounted() {}
+  mounted() {},
 };
 </script>
 <style scoped>
