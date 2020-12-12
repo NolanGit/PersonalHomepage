@@ -26,13 +26,17 @@
                 v-for="bookmark in bookmarksArray"
                 :key="bookmark"
               >
-                <el-button type="text" @click="bookmarksClicked(bookmark.url)">
+                <el-link
+                  type="text"
+                  @click="bookmarksClicked(bookmark.url)"
+                  style="text-decoration: underline; color: #606266"
+                >
                   <i
                     :class="bookmark.icon"
                     style="margin-right: 5px; font-size: 15px"
                   ></i>
                   {{ bookmark.name }}
-                </el-button>
+                </el-link>
               </el-col>
             </el-row>
           </el-carousel-item>
