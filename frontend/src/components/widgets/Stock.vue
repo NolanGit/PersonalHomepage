@@ -1,7 +1,8 @@
 <template>
   <div class="stock-main">
     <el-main class="noPadding" style="height: 300px">
-      <el-tabs v-model="activeName" @tab-click="handleClick">
+      <el-tabs
+        tab-position="left" style="max-height: 210px; min-height: 210px;" v-model="activeName" @tab-click="handleClick">
         <el-tab-pane
           v-for="data in stockData"
           :key="data"
