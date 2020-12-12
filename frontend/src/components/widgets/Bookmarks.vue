@@ -26,18 +26,28 @@
                 v-for="bookmark in bookmarksArray"
                 :key="bookmark"
               >
-                <el-button
-                  class="bookmarks-main-button"
-                  size="mini"
-                  @click="bookmarksClicked(bookmark.url)"
-                  style="color: #606266"
+                <el-tooltip
+                  class="item"
+                  effect="dark"
+                  :content="bookmark.name"
+                  placement="top"
                 >
-                  <i
-                    :class="bookmark.icon"
-                    style="margin-right: 5px; font-size: 15px"
-                  ></i>
-                  {{ bookmark.name }}
-                </el-button>
+                  <el-button
+                    class="bookmarks-main-button"
+                    size="mini"
+                    @click="bookmarksClicked(bookmark.url)"
+                    style="
+                      color: #606266;
+                      text-overflow: ellipsis;
+                      white-space: nowrap;
+                      max-width: 80px;
+                      overflow: hidden;
+                    "
+                  >
+                    <i :class="bookmark.icon" style="font-size: 12px"></i>
+                    {{ bookmark.name }}
+                  </el-button>
+                </el-tooltip>
               </el-col>
             </el-row>
           </el-carousel-item>
@@ -313,6 +323,6 @@ export default {
   min-height: 210px;
 }
 .bookmarks-main-button {
-  width: 90px;
+  width: 80px;
 }
 </style>
