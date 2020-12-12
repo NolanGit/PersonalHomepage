@@ -1,26 +1,37 @@
 <template>
   <div class="bookmarks-main">
-    <el-main class="noPadding" style="height: 300px;">
+    <el-main class="noPadding" style="height: 300px">
       <el-row type="flex" justify="center">
         <div class="widget-label">书签</div>
       </el-row>
 
       <div class="bookmarks-data-row-main">
-        <el-carousel height="198px" trigger="click" :autoplay="false" indicator-position="outside">
-          <el-carousel-item v-for="bookmarksSuite in bookmarksSuites" :key="bookmarksSuite">
+        <el-carousel
+          height="198px"
+          trigger="click"
+          :autoplay="false"
+          indicator-position="outside"
+        >
+          <el-carousel-item
+            v-for="bookmarksSuite in bookmarksSuites"
+            :key="bookmarksSuite"
+          >
             <el-row
               class="margin_bottom-medium"
               v-for="bookmarksArray in bookmarksSuite"
               :key="bookmarksArray"
             >
-              <el-col :span="6" v-for="bookmark in bookmarksArray" :key="bookmark">
-                <el-button
-                  class="bookmarks-main-button"
-                  size="mini"
-                  @click="bookmarksClicked(bookmark.url)"
-                >
-                  <i :class="bookmark.icon" style="margin-right: 5px; font-size: 15px"></i>
-                  {{bookmark.name}}
+              <el-col
+                :span="4"
+                v-for="bookmark in bookmarksArray"
+                :key="bookmark"
+              >
+                <el-button type="text" @click="bookmarksClicked(bookmark.url)">
+                  <i
+                    :class="bookmark.icon"
+                    style="margin-right: 5px; font-size: 15px"
+                  ></i>
+                  {{ bookmark.name }}
                 </el-button>
               </el-col>
             </el-row>
@@ -29,7 +40,11 @@
       </div>
     </el-main>
 
-    <el-footer height="31px" style="justify-content: center; display: flex;" v-if="user_id != 0">
+    <el-footer
+      height="31px"
+      style="justify-content: center; display: flex"
+      v-if="user_id != 0"
+    >
       <WidgetButton
         :user_id="user_id"
         :widget_id="widget_id"
@@ -49,7 +64,11 @@
       <el-form ref="form" :model="bookmarksEditForm" size="mini">
         <el-form-item label="网站名称">
           <div class="div-flex">
-            <el-input size="small" v-model="bookmarksEditForm.name" placeholder="网站名称"></el-input>
+            <el-input
+              size="small"
+              v-model="bookmarksEditForm.name"
+              placeholder="网站名称"
+            ></el-input>
           </div>
         </el-form-item>
         <el-form-item label="网站链接">
@@ -63,18 +82,32 @@
         </el-form-item>
         <el-form-item label="图标名称">
           <div class="div-flex">
-            <el-input size="small" v-model="bookmarksEditForm.icon" placeholder="图标名称" disabled></el-input>
+            <el-input
+              size="small"
+              v-model="bookmarksEditForm.icon"
+              placeholder="图标名称"
+              disabled
+            ></el-input>
             <el-button size="small" @click="iconChoose()">选择图标</el-button>
           </div>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" size="small" @click="bookmarksEditFormConfirmClicked()">确定</el-button>
+        <el-button
+          type="primary"
+          size="small"
+          @click="bookmarksEditFormConfirmClicked()"
+          >确定</el-button
+        >
       </span>
     </el-dialog>
 
     <!--编辑顺序界面-->
-    <el-dialog title="编辑书签" :visible.sync="bookmarksEdit.visible" width="40%">
+    <el-dialog
+      title="编辑书签"
+      :visible.sync="bookmarksEdit.visible"
+      width="40%"
+    >
       <SlickSort
         v-if="bookmarksEdit.visible"
         :list="bookmarksEdit.list"
@@ -139,7 +172,7 @@ export default {
       window.open(bookmarkUrl);
     },
     bookmarksSuitesGenerate() {
-      const STEP1 = 5; // 每行有几个
+      const STEP1 = 6; // 每行有几个
       const STEP2 = 3; // 每页有几行
       let temp1 = [];
       let temp2 = [];
@@ -276,6 +309,5 @@ export default {
 }
 .bookmarks-main-button {
   width: 90px;
-  height: 40px;
 }
 </style>
