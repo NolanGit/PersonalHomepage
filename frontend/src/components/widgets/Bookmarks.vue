@@ -27,7 +27,8 @@
                 :key="bookmark"
               >
                 <el-button
-                  type="text"
+                  class="bookmarks-main-button"
+                  size="mini"
                   @click="bookmarksClicked(bookmark.url)"
                   style="color: #606266"
                 >

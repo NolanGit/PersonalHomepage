@@ -1,50 +1,48 @@
 <template>
   <div class="stock-main">
     <el-main class="noPadding" style="height: 300px">
-      <el-tabs
-        tab-position="left" style="max-height: 210px; min-height: 210px;" v-model="activeName" @tab-click="handleClick">
+      <el-tabs v-model="activeName" @tab-click="handleClick">
         <el-tab-pane
           v-for="data in stockData"
           :key="data"
           :label="data.name"
           :name="data.name"
-        >
-          <a
-            class="better_font_style"
-            style="width: 98%; font-size: 15px"
-            v-show="chartData.rows.length == 0"
-          >
-            暂无数据
-          </a>
-          <div
-            v-if="chartData.rows.length != 0"
-            class="better_font_style"
-            style="text-align: left; font-size: 12px"
-          >
-            <span class="margin_right-medium">{{
-              "当前单价：" + latestUnitPrice
-            }}</span>
-            <span> 涨跌幅： </span>
-            <span style="color: #f56c6c" v-if="latestRange > 0"> + </span>
-            <span style="color: #f56c6c" v-if="latestRange > 0">
-              {{ latestRange }}
-            </span>
-            <span style="color: #f56c6c" v-if="latestRange > 0"> % </span>
-            <span style="color: #67c23a" v-if="latestRange <= 0">
-              {{ latestRange }}
-            </span>
-            <span>
-          </div>
-          <ve-line
-            height="215px"
-            :settings="chartSettings"
-            :data="chartData"
-            ref="chart"
-            :legend-visible="false"
-            v-show="chartData.rows.length != 0"
-          ></ve-line>
-        </el-tab-pane>
+        ></el-tab-pane>
       </el-tabs>
+      <a
+        class="better_font_style"
+        style="width: 98%; font-size: 15px"
+        v-show="chartData.rows.length == 0"
+      >
+        暂无数据
+      </a>
+      <div
+        v-if="chartData.rows.length != 0"
+        class="better_font_style"
+        style="text-align: left; font-size: 12px"
+      >
+        <span class="margin_right-medium">{{
+          "当前单价：" + latestUnitPrice
+        }}</span>
+        <span> 涨跌幅： </span>
+        <span style="color: #f56c6c" v-if="latestRange > 0"> + </span>
+        <span style="color: #f56c6c" v-if="latestRange > 0">
+          {{ latestRange }}
+        </span>
+        <span style="color: #f56c6c" v-if="latestRange > 0"> % </span>
+        <span style="color: #67c23a" v-if="latestRange <= 0">
+          {{ latestRange }}
+        </span>
+        <span>
+      </div>
+      <ve-line
+        height="215px"
+        :settings="chartSettings"
+        :data="chartData"
+        ref="chart"
+        :legend-visible="false"
+        v-show="chartData.rows.length != 0"
+      ></ve-line>
     </el-main>
     <el-footer
       height="31px"
