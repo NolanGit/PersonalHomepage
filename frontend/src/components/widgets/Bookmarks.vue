@@ -22,7 +22,7 @@
               :key="bookmarksArray"
             >
               <el-col
-                :span="4"
+                :span="5"
                 v-for="bookmark in bookmarksArray"
                 :key="bookmark"
               >
@@ -33,14 +33,15 @@
                   placement="top"
                 >
                   <el-button
-                    class="bookmarks-main-button"
                     size="mini"
                     @click="bookmarksClicked(bookmark.url)"
                     style="
                       color: #606266;
                       text-overflow: ellipsis;
                       white-space: nowrap;
-                      max-width: 80px;
+                      max-width: 80%;
+                      width: 80%;
+                      height: 47px;
                       overflow: hidden;
                     "
                   >
@@ -187,7 +188,7 @@ export default {
       window.open(bookmarkUrl);
     },
     bookmarksSuitesGenerate() {
-      const STEP1 = 6; // 每行有几个
+      const STEP1 = 5; // 每行有几个
       const STEP2 = 3; // 每页有几行
       let temp1 = [];
       let temp2 = [];
@@ -322,7 +323,7 @@ export default {
 .bookmarks-data-row-main {
   min-height: 210px;
 }
-.bookmarks-main-button {
-  width: 80px;
+.el-col-5 {
+  width: 20%;
 }
 </style>
