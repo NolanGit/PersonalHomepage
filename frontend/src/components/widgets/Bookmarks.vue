@@ -29,7 +29,7 @@
                 <el-button
                   type="text"
                   @click="bookmarksClicked(bookmark.url)"
-                  style="text-decoration: underline; color: #606266"
+                  style="color: #606266"
                 >
                   <i
                     :class="bookmark.icon"

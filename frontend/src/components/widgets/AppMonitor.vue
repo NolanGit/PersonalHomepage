@@ -13,7 +13,7 @@
         <el-carousel-item v-for="appData in appSuite" :key="appData">
           <el-table
             :data="appData"
-            style="width: 100%; max-height: 224px; overflow: auto;"
+            style="width: 100%; max-height: 224px; overflow: auto"
             size="mini"
           >
             <el-table-column prop="name" label="名称"></el-table-column>
