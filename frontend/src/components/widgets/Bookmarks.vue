@@ -33,7 +33,6 @@
                   placement="top"
                 >
                   <el-button
-                    class="bookmarks-main-button"
                     size="mini"
                     @click="bookmarksClicked(bookmark.url)"
                     style="
@@ -41,6 +40,8 @@
                       text-overflow: ellipsis;
                       white-space: nowrap;
                       max-width: 80%;
+                      width: 80%;
+                      height: 47px;
                       overflow: hidden;
                     "
                   >
@@ -321,9 +322,6 @@ export default {
 }
 .bookmarks-data-row-main {
   min-height: 210px;
-}
-.bookmarks-main-button {
-  width: 80px;
 }
 .el-col-5 {
   width: 20%;
