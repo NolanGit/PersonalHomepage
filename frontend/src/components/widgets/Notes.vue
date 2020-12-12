@@ -346,7 +346,7 @@ export default {
         this.notesData[this.edit.noteIndex].content = this.edit.content;
       } else if (this.edit.dialogTitle == "新建") {
         let timestamp = new Date().getTime();
-        let salt = Math.floor(Math.random() * 100000000000000);
+        let salt = Math.floor(Math.random() * 10000000000000000);
         this.notesData.push({
           name: this.edit.title,
           content: this.edit.content,
