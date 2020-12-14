@@ -16,41 +16,43 @@
             v-for="bookmarksSuite in bookmarksSuites"
             :key="bookmarksSuite"
           >
-            <el-row
-              class="margin_bottom-medium"
-              v-for="bookmarksArray in bookmarksSuite"
-              :key="bookmarksArray"
-            >
-              <el-col
-                :span="5"
-                v-for="bookmark in bookmarksArray"
-                :key="bookmark"
+            <div style="margin-left: 5%; margin-right: 5%;">
+              <el-row
+                class="margin_bottom-medium"
+                v-for="bookmarksArray in bookmarksSuite"
+                :key="bookmarksArray"
               >
-                <el-tooltip
-                  class="item"
-                  effect="dark"
-                  :content="bookmark.name"
-                  placement="top"
+                <el-col
+                  :span="5"
+                  v-for="bookmark in bookmarksArray"
+                  :key="bookmark"
                 >
-                  <el-button
-                    size="mini"
-                    @click="bookmarksClicked(bookmark.url)"
-                    style="
-                      color: #606266;
-                      text-overflow: ellipsis;
-                      white-space: nowrap;
-                      max-width: 80%;
-                      width: 80%;
-                      height: 47px;
-                      overflow: hidden;
-                    "
+                  <el-tooltip
+                    class="item"
+                    effect="dark"
+                    :content="bookmark.name"
+                    placement="top"
                   >
-                    <i :class="bookmark.icon" style="font-size: 12px"></i>
-                    {{ bookmark.name }}
-                  </el-button>
-                </el-tooltip>
-              </el-col>
-            </el-row>
+                    <el-button
+                      size="mini"
+                      @click="bookmarksClicked(bookmark.url)"
+                      style="
+                        color: #606266;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
+                        max-width: 80%;
+                        width: 80%;
+                        height: 47px;
+                        overflow: hidden;
+                      "
+                    >
+                      <i :class="bookmark.icon" style="font-size: 12px"></i>
+                      {{ bookmark.name }}
+                    </el-button>
+                  </el-tooltip>
+                </el-col>
+              </el-row>
+            </div>
           </el-carousel-item>
         </el-carousel>
       </div>
