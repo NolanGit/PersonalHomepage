@@ -48,7 +48,7 @@ def check_fund_valid(fund_code):
         splited_text = r.text.split('\"')
         name = splited_text[7]
     except Exception as e:
-        msg = e + '[原始数据:%s]' % r.text
+        msg = str(e) + '[原始数据:%s]' % r.text
     return name, msg
 
 

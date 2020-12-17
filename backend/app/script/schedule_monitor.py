@@ -28,7 +28,8 @@ def schedule_get():
 
 def run(schedules):
     for schedule in schedules:
-        if schedule['is_valid'] == TAST_TO_BE_RUN:
+        print('处理任务[%s]'% str(schedule['id']))
+        if script_schedule.get_by_id(schedule['id']).is_valid == TAST_TO_BE_RUN:
             success_flag = False
             output = ''
             try:
