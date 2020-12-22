@@ -491,6 +491,10 @@ INSERT INTO `stock_price` (`id`, `stock_id`, `price`, `update_time`, `id`, `code
 INSERT INTO `stock_price` (`id`, `stock_id`, `price`, `update_time`, `id`, `code`, `name`, `market`) VALUES ('3', '3', '17.56', '2020-10-14 09:30:03', '3', '601360', '360', '1');
 INSERT INTO `fund` (`id`, `code`, `name`) VALUES ('1', '005911', '广发双擎');
 INSERT INTO `fund_price` (`id`, `fund_id`, `price`, `range`, `update_time`) VALUES ('1', '1', '3.1172', '0.55', '2020-10-29 15:25:18');
+INSERT INTO `fund_price` (`id`, `fund_id`, `price`, `range`, `update_time`) VALUES ('2', '1', '3.1251', '0', '2020-10-29 14:49:13');
+INSERT INTO `fund_price` (`id`, `fund_id`, `price`, `range`, `update_time`) VALUES ('3', '1', '3.1172', '0.55', '2020-10-29 15:25:18');
+INSERT INTO `fund_price` (`id`, `fund_id`, `price`, `range`, `update_time`) VALUES ('4', '1', '3.1253', '0.34', '2020-10-30 10:18:46');
+INSERT INTO `fund_price` (`id`, `fund_id`, `price`, `range`, `update_time`) VALUES ('5', '1', '3.1211', '0.2', '2020-10-30 10:30:08');
 INSERT INTO `fund_belong` (`id`, `fund_id`, `user_id`, `push`, `push_threshold`, `is_valid`, `update_time`) VALUES ('1', '1', '1', '1', '[]', '1', '2020-10-29 20:14:39');
 INSERT INTO `wallpapers` (`id`, `date`, `url`, `size`, `copyright`, `copyrightlink`, `update_time`) VALUES ('1', '2020-10-23', 'https://www.bing.com/th?id=OHR.UNBuilding_ZH-CN7730281645_1920x1080.jpg', '0.34MB', '纽约市的天际线与联合国总部大楼 (© Sean Pavone/Alamy)', 'https://www.bing.com/search?q=%E8%81%94%E5%90%88%E5%9B%BD%E6%80%BB%E9%83%A8%E5%A4%A7%E6%A5%BC&form=hpcapt&mkt=zh-cn', '2020-10-24 03:00:04');
 INSERT INTO `notes` (`id`, `name`, `token`, `content`, `user_id`, `is_valid`, `update_time`) VALUES ('1', '7.31', '2', '美好的一天！', '1', '1', '2020-08-01 14:38:23');
