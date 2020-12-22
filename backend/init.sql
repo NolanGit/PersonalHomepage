@@ -506,7 +506,7 @@ INSERT INTO `widget` (`id`, `name`, `name_zh`, `is_valid`, `span`, `buttons`, `a
 INSERT INTO `widget` (`id`, `name`, `name_zh`, `is_valid`, `span`, `buttons`, `auto_update`, `update_time`) VALUES ('8', 'stock', '股票', '1', '8', '[\'add\', \'sort\', \'notify\']', '1800000', '2019-10-28 11:35:37');
 INSERT INTO `widget` (`id`, `name`, `name_zh`, `is_valid`, `span`, `buttons`, `auto_update`, `update_time`) VALUES ('9', 'fund', '基金', '1', '8', '[\'add\', \'sort\', \'notify\']', '1800000', '2020-10-29 14:49:04');
 INSERT INTO `widget` (`id`, `name`, `name_zh`, `is_valid`, `span`, `buttons`, `auto_update`, `update_time`) VALUES ('10', 'news', '新闻', '1', '24', '[]', '1800000', '2020-11-02 17:12:34');
-INSERT INTO `widget_suite` (`id`, `name`, `user_id`, `order`, `is_valid`, `detail`, `update_time`) VALUES ('1', '基本组件', '0', '1', '1', '[1,2,7,4,8]', '2019-10-28 11:35:37');
+INSERT INTO `widget_suite` (`id`, `name`, `user_id`, `order`, `is_valid`, `detail`, `update_time`) VALUES ('1', '基本组件', '0', '1', '1', '[1,2,7,4,8,10]', '2019-10-28 11:35:37');
 INSERT INTO `widget_suite` (`id`, `name`, `user_id`, `order`, `is_valid`, `detail`, `update_time`) VALUES ('2', '常用', '1', '0', '1', '[1,2,6]', '2019-10-28 11:35:37');
 INSERT INTO `widget_suite` (`id`, `name`, `user_id`, `order`, `is_valid`, `detail`, `update_time`) VALUES ('3', '其他', '1', '1', '1', '[3,4,5,7]', '2019-10-28 11:35:37');
 INSERT INTO `widget_suite` (`id`, `name`, `user_id`, `order`, `is_valid`, `detail`, `update_time`) VALUES ('4', '全部', '1', '2', '1', '[1,2,3,4,5,6,7,8.9,10]', '2019-10-28 11:35:37');
@@ -541,6 +541,7 @@ INSERT INTO `script_schedule` (`id`, `script_id`, `command`, `detail`, `version`
 INSERT INTO `script_schedule` (`id`, `script_id`, `command`, `detail`, `version`, `user_id`, `is_valid`, `is_automatic`, `interval`, `interval_raw`, `interval_unit`, `trigger_time`, `update_time`) VALUES ('8', '9', 'cd /home/pi/Documents/Github/PersonalHomepage/backend/app/news && python3 get_news.py 直接运行', '[{\'type\': \'input\', \'label\': \'无需参数\', \'value\': \'直接运行\'}]', '1', '1', '1', '1', '60', '1', '1', '2020-06-20 00:00:00', '2020-11-04 16:29:42');
 INSERT INTO `weather_location` (`id`, `location`, `user_id`, `is_valid`, `update_time`) VALUES ('1', '长春', '1', '1', '2019-10-28 11:35:37');
 INSERT INTO `app` (`id`, `name`, `url`, `user_id`, `expect_price`, `order`, `is_valid`, `update_time`) VALUES ('1', 'gorogoa', 'https://apps.apple.com/cn/app/gorogoa/id1269225754?ign-mpt=uo%3D4', '1', '0', '1', '1', '2020-07-22 15:20:46');
+INSERT INTO `app_price` (`id`, `app_id`, `price`, `update_time`) VALUES ('1', '1', '3.0', '2020-12-22 16:36:04');
 INSERT INTO `gold_price` (`id`, `price`, `update_time`) VALUES ('1', '400.7', '2020-07-01 16:51:51');
 INSERT INTO `weather_notify` (`id`, `location`, `user_id`, `notify_type`, `notify_method`, `is_valid`, `update_time`) VALUES ('1', '北京', '1', '[\'rain\', \'air\', \'temperature\']', '1', '1', '2020-09-17 11:18:24');
 INSERT INTO `weather_notify` (`id`, `location`, `user_id`, `notify_type`, `notify_method`, `is_valid`, `update_time`) VALUES ('2', '深圳', '1', '[\'rain\', \'air\', \'temperature\']', '1', '1', '2020-09-17 11:18:24');

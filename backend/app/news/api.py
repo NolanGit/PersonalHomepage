@@ -22,7 +22,7 @@ from . import news
 rsp = MyResponse()
 cf = configparser.ConfigParser()
 cf.read('app/homepage.config')
-NEWS_JSON_PATH = cf.get('config', 'BASE_PATH') + 'backend/app/news/json'
+NEWS_JSON_PATH = cf.get('config', 'BASE_PATH') + '/backend/app/news/json'
 DOMAIN_NAME = cf.get('config', 'DOMAIN_NAME')
 LIMITER_FREQUENCY_NEWS_GET = '10/minute'  # 接口限制的新闻获取访问频次
 LIMITER_FREQUENCY_NEWS_FLUSH = '10/hour'  # 接口限制的新闻刷新访问频次
