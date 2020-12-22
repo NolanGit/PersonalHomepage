@@ -548,5 +548,9 @@ INSERT INTO `weather_location` (`id`, `location`, `user_id`, `is_valid`, `update
 INSERT INTO `app` (`id`, `name`, `url`, `user_id`, `expect_price`, `order`, `is_valid`, `update_time`) VALUES ('1', 'gorogoa', 'https://apps.apple.com/cn/app/gorogoa/id1269225754?ign-mpt=uo%3D4', '1', '0', '1', '1', '2020-07-22 15:20:46');
 INSERT INTO `app_price` (`id`, `app_id`, `price`, `update_time`) VALUES ('1', '1', '3.0', '2020-12-22 16:36:04');
 INSERT INTO `gold_price` (`id`, `price`, `update_time`) VALUES ('1', '400.7', '2020-07-01 16:51:51');
+INSERT INTO `gold_price` (`id`, `price`, `update_time`) VALUES ('2', '400.7', '2020-07-01 16:58:29');
+INSERT INTO `gold_price` (`id`, `price`, `update_time`) VALUES ('3', '400.7', '2020-07-01 19:00:05');
+INSERT INTO `gold_price` (`id`, `price`, `update_time`) VALUES ('4', '399.37', '2020-07-01 21:00:05');
+INSERT INTO `gold_price` (`id`, `price`, `update_time`) VALUES ('5', '396.6', '2020-07-01 23:00:06');
 INSERT INTO `weather_notify` (`id`, `location`, `user_id`, `notify_type`, `notify_method`, `is_valid`, `update_time`) VALUES ('1', '北京', '1', '[\'rain\', \'air\', \'temperature\']', '1', '1', '2020-09-17 11:18:24');
 INSERT INTO `weather_notify` (`id`, `location`, `user_id`, `notify_type`, `notify_method`, `is_valid`, `update_time`) VALUES ('2', '深圳', '1', '[\'rain\', \'air\', \'temperature\']', '1', '1', '2020-09-17 11:18:24');
