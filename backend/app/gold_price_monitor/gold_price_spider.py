@@ -18,8 +18,6 @@ except:
 
 count = 0
 WIDGET_ID_GOLD = widget.get(widget.name == 'gold').id
-print('WIDGET_ID_GOLD:' + str(WIDGET_ID_GOLD))
-
 
 def get_gold_price():
     '''
