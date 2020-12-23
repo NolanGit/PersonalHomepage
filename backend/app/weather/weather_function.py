@@ -12,7 +12,7 @@ try:
     from ..model.weather_model import weather_location
     from ..model.weather_model import weather_data
     cf.read('app/homepage.config')
-    KEY = cf.get('config', 'KEY')
+    WEATHER_KEY = cf.get('config', 'WEATHER_KEY')
 
 except:
     import sys
@@ -25,7 +25,7 @@ except:
     from login.login_funtion import User
     from model.push_model import push_queue
     cf.read('../homepage.config')
-    KEY = cf.get('config', 'KEY')
+    WEATHER_KEY = cf.get('config', 'WEATHER_KEY')
 
 WEATHER_EXPIRE_HOUR = 3
 WEATHER_PUSH_TITLE = '天气异常！'
@@ -49,7 +49,7 @@ class WeatherData(Base):
         try:
             result = {}
             url = 'https://free-api.heweather.net/s6/weather'
-            payload = {'location': self.location, 'key': KEY}
+            payload = {'location': self.location, 'key': WEATHER_KEY}
             r = requests.post(url, params=payload)
             request_result = r.json()
 
@@ -304,7 +304,7 @@ class WeatherNotify():
         self.notify_method = notify_method
 
     def get_weather(self):
-        payload = {'location': self.location, 'key': KEY}
+        payload = {'location': self.location, 'key': WEATHER_KEY}
         r = requests.get('https://free-api.heweather.com/s6/weather/forecast', params=payload)
         today_forecast = r.json()['HeWeather6'][0]['daily_forecast'][0]
         tomorrow_forecast = r.json()['HeWeather6'][0]['daily_forecast'][1]
