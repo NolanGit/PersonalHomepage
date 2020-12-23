@@ -306,6 +306,7 @@ class WeatherNotify():
         tomorrow_forecast = r.json()['HeWeather6'][0]['daily_forecast'][1]
         today_code_n = today_forecast['cond_code_n']
         tomorrow_code_d = tomorrow_forecast['cond_code_d']
+        print('获取[%s]的天气' + self.location)
         print('today_code_n = ' + today_code_n)
         print('tomorrow_code_d = ' + tomorrow_code_d)
         weather_content = air_content = temprature_content = ''

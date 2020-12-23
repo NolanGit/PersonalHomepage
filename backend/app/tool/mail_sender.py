@@ -3,14 +3,12 @@ import os
 import sys
 import time
 import smtplib
-import configparser
 from email.utils import formataddr
 from email.mime.text import MIMEText
+from ..config_helper import ConfigHelper
 
-cf = configparser.ConfigParser()
-cf.read('../homepage.config')
-SENDER = cf.get('config', 'SENDER')
-PASSWORD = cf.get('config', 'PASSWORD')
+SENDER = ConfigHelper().get('SENDER')
+PASSWORD = ConfigHelper().get('PASSWORD')
 
 
 class Mail(object):

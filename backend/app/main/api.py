@@ -6,7 +6,6 @@ import requests
 import datetime
 import traceback
 import threading
-import configparser
 from peewee import DoesNotExist
 from pypinyin import lazy_pinyin
 from flask_cors import cross_origin
@@ -22,15 +21,14 @@ from ..model.upload_model import upload as upload_table, cloud_drive
 
 from . import main
 from ..login.login_funtion import User
+from ..config_helper import ConfigHelper
 from ..response import Response as MyResponse
 from ..privilege.privilege_control import privilegeFunction
 from ..privilege.privilege_control import permission_required
 
 rsp = MyResponse()
-cf = configparser.ConfigParser()
-cf.read('app/homepage.config')
 FRONTEND_FOLDER = 'frontend/'
-UPLOAD_FILE_PATH = cf.get('config', 'BASE_PATH') + '/upload/'
+UPLOAD_FILE_PATH = ConfigHelper().get('BASE_PATH') + '/upload/'
 URL_PREFIX = ''
 
 DICT_DISORDER = {
