@@ -2,31 +2,27 @@ import time
 import datetime
 import requests
 import traceback
-import configparser
 from peewee import DoesNotExist
-
-cf = configparser.ConfigParser()
 
 try:
     from ..base_model import Base
+    from ..config_helper import ConfigHelper
     from ..model.weather_model import weather_location
     from ..model.weather_model import weather_data
-    cf.read('app/homepage.config')
-    WEATHER_KEY = cf.get('config', 'WEATHER_KEY')
 
 except:
     import sys
     sys.path.append('../')
     sys.path.append('../../')
     from base_model import Base
+    from ..config_helper import ConfigHelper
     from model.weather_model import weather_location
     from model.weather_model import weather_data
     from model.weather_model import weather_notify
     from login.login_funtion import User
     from model.push_model import push_queue
-    cf.read('../homepage.config')
-    WEATHER_KEY = cf.get('config', 'WEATHER_KEY')
 
+WEATHER_KEY = ConfigHelper.get('WEATHER_KEY')
 WEATHER_EXPIRE_HOUR = 3
 WEATHER_PUSH_TITLE = '天气异常！'
 WEATHER_PUSH_TYPE_RAIN = 'rain'
