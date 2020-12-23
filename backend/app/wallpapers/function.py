@@ -2,19 +2,18 @@ import os
 import time
 import datetime
 import requests
-import configparser
 from werkzeug.utils import secure_filename
 try:
     from ..model.wallpapers_model import wallpapers as wallpapers_table
+    from ..config_helper import ConfigHelper
 except:
     import sys
     sys.path.append('../')
     sys.path.append('../../')
+    from config_helper import ConfigHelper
     from model.wallpapers_model import wallpapers as wallpapers_table
 
-cf = configparser.ConfigParser()
-cf.read('../homepage.config')
-WALLPAPERS_PATH = cf.get('config', 'BASE_PATH') + '/wallpapers/'
+WALLPAPERS_PATH = ConfigHelper.get('BASE_PATH') + '/wallpapers/'
 
 base_url = "https://cn.bing.com/HPImageArchive.aspx?format=js&idx=0&n=2"
 r = requests.get(base_url)

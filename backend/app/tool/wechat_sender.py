@@ -1,10 +1,8 @@
 #coding=utf-8
 import requests
-import configparser
+from ..config_helper import ConfigHelper
 
-cf = configparser.ConfigParser()
-cf.read('../homepage.config')
-ADMIN_EMAIL = cf.get('config', 'ADMIN_EMAIL')
+ADMIN_EMAIL = ConfigHelper().get('ADMIN_EMAIL')
 
 
 class Wechat(object):

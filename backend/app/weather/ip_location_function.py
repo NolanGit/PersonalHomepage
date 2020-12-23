@@ -36,11 +36,9 @@ class IpLocation(Base):
 
     def _get_location_from_api(self):
         import requests
-        import configparser
+        from ..config_helper import ConfigHelper
 
-        cf = configparser.ConfigParser()
-        cf.read('app/homepage.config')
-        LOCATION = cf.get('config', 'LOCATION')
+        LOCATION = ConfigHelper().get('LOCATION')
         r = requests.get('http://freeapi.ipip.net/' + self.ip)
         self.location = LOCATION if r.json()[0] == '局域网' else r.json()[1]
         self._save()

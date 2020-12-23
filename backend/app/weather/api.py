@@ -3,7 +3,6 @@ import json
 import datetime
 import requests
 import traceback
-import configparser
 from . import weather
 from flask_cors import cross_origin
 from flask import render_template, session, redirect, url_for, current_app, flash, request, jsonify
