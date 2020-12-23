@@ -102,7 +102,6 @@ venv.bak/
 # mypy
 .mypy_cache/
 
-backend/data.sqlite
 backend/app/homepage.config
 backend/app/news/json
 /upload
