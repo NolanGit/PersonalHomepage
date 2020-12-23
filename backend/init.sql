@@ -482,8 +482,8 @@ INSERT INTO `wallpapers` (`id`, `date`, `url`, `size`, `copyright`, `copyrightli
 INSERT INTO `stock` (`id`, `code`, `name`, `market`) VALUES ('1', '000001', '上证指数', '1');
 INSERT INTO `stock` (`id`, `code`, `name`, `market`) VALUES ('2', '601360', '三六零', '1');
 INSERT INTO `stock_belong` (`id`, `stock_id`, `user_id`, `push`, `push_threshold`, `is_valid`, `update_time`) VALUES ('1', '1', '1', '1', '[1000.0, 2000.0]', '0', '2020-10-14 19:28:52');
-INSERT INTO `stock_belong` (`id`, `stock_id`, `user_id`, `push`, `push_threshold`, `is_valid`, `update_time`) VALUES ('2', '2', '1', '0', '[1000.0, 2000.0]', '0', '2020-10-14 19:28:52');
-INSERT INTO `stock_belong` (`id`, `stock_id`, `user_id`, `push`, `push_threshold`, `is_valid`, `update_time`) VALUES ('3', '1', '0', '0', '[0.0, 0.0]', '1', '2020-10-14 19:28:52');
+INSERT INTO `stock_belong` (`id`, `stock_id`, `user_id`, `push`, `push_threshold`, `is_valid`, `update_time`) VALUES ('2', '2', '1', '1', '[1000.0, 2000.0]', '0', '2020-10-14 19:28:52');
+INSERT INTO `stock_belong` (`id`, `stock_id`, `user_id`, `push`, `push_threshold`, `is_valid`, `update_time`) VALUES ('3', '1', '0', '1', '[0.0, 0.0]', '1', '2020-10-14 19:28:52');
 INSERT INTO `stock_price` (`id`, `stock_id`, `price`, `range`, `update_time`) VALUES ('1', '1', '3408.17', '-0.36', '2020-12-22 09:44:06');
 INSERT INTO `stock_price` (`id`, `stock_id`, `price`, `range`, `update_time`) VALUES ('2', '1', '3408.53', '-0.35', '2020-12-22 09:45:06');
 INSERT INTO `stock_price` (`id`, `stock_id`, `price`, `range`, `update_time`) VALUES ('3', '1', '3410.18', '-0.3', '2020-12-22 09:46:07');
@@ -494,9 +494,8 @@ INSERT INTO `stock_price` (`id`, `stock_id`, `price`, `range`, `update_time`) VA
 INSERT INTO `stock_price` (`id`, `stock_id`, `price`, `range`, `update_time`) VALUES ('8', '2', '16.2', '-1.04', '2020-12-22 09:43:06');
 INSERT INTO `stock_price` (`id`, `stock_id`, `price`, `range`, `update_time`) VALUES ('9', '2', '16.12', '-1.53', '2020-12-22 09:45:06');
 INSERT INTO `stock_price` (`id`, `stock_id`, `price`, `range`, `update_time`) VALUES ('10', '2', '16.08', '-1.77', '2020-12-22 09:46:07');
-INSERT INTO `stock_price` (`id`, `stock_id`, `price`, `update_time`) VALUES ('2', '2', '13289.3', '2020-10-09 20:30:48');
 INSERT INTO `fund` (`id`, `code`, `name`) VALUES ('1', '005911', '广发双擎');
-INSERT INTO `fund_price` (`id`, `fund_id`, `price`, `range`, `update_time`) VALUES ('1', '1', '3.1172', '0.55', '2020-10-29 15:25:18');
+INSERT INTO `fund_price` (`id`, `fund_id`, `price`, `range`, `update_time`) VALUES ('1', '1', '3.1172', '0.55', '2020-10-29 14:39:13');
 INSERT INTO `fund_price` (`id`, `fund_id`, `price`, `range`, `update_time`) VALUES ('2', '1', '3.1251', '0', '2020-10-29 14:49:13');
 INSERT INTO `fund_price` (`id`, `fund_id`, `price`, `range`, `update_time`) VALUES ('3', '1', '3.1172', '0.55', '2020-10-29 15:25:18');
 INSERT INTO `fund_price` (`id`, `fund_id`, `price`, `range`, `update_time`) VALUES ('4', '1', '3.1253', '0.34', '2020-10-30 10:18:46');
