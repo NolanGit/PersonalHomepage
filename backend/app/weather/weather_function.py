@@ -22,7 +22,7 @@ except:
     from login.login_funtion import User
     from model.push_model import push_queue
 
-WEATHER_KEY = ConfigHelper.get('WEATHER_KEY')
+WEATHER_KEY = ConfigHelper().get('WEATHER_KEY')
 WEATHER_EXPIRE_HOUR = 3
 WEATHER_PUSH_TITLE = '天气异常！'
 WEATHER_PUSH_TYPE_RAIN = 'rain'
