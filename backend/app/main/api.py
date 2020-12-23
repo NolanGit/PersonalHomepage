@@ -30,7 +30,7 @@ rsp = MyResponse()
 cf = configparser.ConfigParser()
 cf.read('app/homepage.config')
 FRONTEND_FOLDER = 'frontend/'
-UPLOAD_FILE_PATH = cf.get('config', 'BASE_PATH') + 'upload/'
+UPLOAD_FILE_PATH = cf.get('config', 'BASE_PATH') + '/upload/'
 URL_PREFIX = ''
 
 DICT_DISORDER = {
