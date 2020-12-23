@@ -15,7 +15,7 @@ except:
     sys.path.append('../')
     sys.path.append('../../')
     from base_model import Base
-    from ..config_helper import ConfigHelper
+    from config_helper import ConfigHelper
     from model.weather_model import weather_location
     from model.weather_model import weather_data
     from model.weather_model import weather_notify
