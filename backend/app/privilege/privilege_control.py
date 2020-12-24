@@ -87,6 +87,7 @@ def permission_required(privilege):
 # 获取未被删除的用户列表
 def user_list_get(_current_page=None, _pagination_size=None):
     result = []
+    total = None
     if _current_page == None and _pagination_size == None:
         user_query = user.select().where(user.is_valid != -1).order_by(user.id)
         total = user_query.count()
@@ -117,6 +118,7 @@ def user_list_get(_current_page=None, _pagination_size=None):
 # 获取未被删除的角色
 def role_list_get(_current_page=None, _pagination_size=None):
     result = []
+    total = None
     if _current_page == None and _pagination_size == None:
         role_query = role.select().where(role.is_valid != -1).order_by(role.id)
         total = role_query.count()
@@ -141,6 +143,7 @@ def role_list_get(_current_page=None, _pagination_size=None):
 # 获取未被删除的权限
 def privilege_list_get(_current_page=None, _pagination_size=None):
     result = []
+    total = None
     if _current_page == None and _pagination_size == None:
         privilege_query = privilege_model.select().where(privilege_model.is_valid != -1).order_by(privilege_model.id)
         total = privilege_query.count()
@@ -153,7 +156,7 @@ def privilege_list_get(_current_page=None, _pagination_size=None):
         except:
             update_time = ''
         result.append({'id': row['id'], 'name': row['name'], 'mark': row['mark'], 'remark': row['remark'], 'is_valid': row['is_valid'], 'update_time': update_time})
-    return result,total
+    return result, total
 
 
 # 获取有效的角色权限对应关系
