@@ -488,13 +488,11 @@ export default {
         });
         this.pagination.total = res.data.total;
         for (let x = 0; x < res.data.list.length; x++) {
-          if (res.data[x].is_valid == 1) {
-            res.data[x].is_disabled = "否";
-          } else if (res.data[x].is_valid == 0) {
-            res.data[x].is_disabled = "是";
-          }
+          res.data.list[x].is_valid == 1
+            ? (res.data[x].list.is_disabled = "否")
+            : (res.data[x].list.is_disabled = "是");
         }
-        this.userData = res.data;
+        this.userData = res.data.list;
       } catch (e) {
         console.log(e);
         this.$message({
@@ -593,13 +591,11 @@ export default {
         });
         this.pagination.total = res.data.total;
         for (let x = 0; x < res.data.list.length; x++) {
-          if (res.data[x].is_valid == 1) {
-            res.data[x].is_disabled = "否";
-          } else if (res.data[x].is_valid == 0) {
-            res.data[x].is_disabled = "是";
-          }
+          res.data.list[x].is_valid == 1
+            ? (res.data[x].list.is_disabled = "否")
+            : (res.data[x].list.is_disabled = "是");
         }
-        this.roleData = res.data;
+        this.roleData = res.data.list;
       } catch (e) {
         console.log(e);
         this.$message({
@@ -738,14 +734,14 @@ export default {
         this.pagination.total = res.data.total;
         for (let x = 0; x < res.data.list.length; x++) {
           this.privilegeData.push({
-            id: res.data[x].id,
-            label: res.data[x].name,
-            name: res.data[x].name,
-            mark: res.data[x].mark,
-            remark: res.data[x].remark,
-            is_valid: res.data[x].is_valid,
-            update_time: res.data[x].update_time,
-            is_disabled: res.data[x].is_valid == 1 ? "否" : "是",
+            id: res.data.list[x].id,
+            label: res.data.list[x].name,
+            name: res.data.list[x].name,
+            mark: res.data.list[x].mark,
+            remark: res.data.list[x].remark,
+            is_valid: res.data.list[x].is_valid,
+            update_time: res.data.list[x].update_time,
+            is_disabled: res.data.list[x].is_valid == 1 ? "否" : "是",
           });
         }
       } catch (e) {
