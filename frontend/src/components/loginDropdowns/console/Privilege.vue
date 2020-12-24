@@ -489,8 +489,8 @@ export default {
         this.pagination.total = res.data.total;
         for (let x = 0; x < res.data.list.length; x++) {
           res.data.list[x].is_valid == 1
-            ? (res.list.data[x].is_disabled = "否")
-            : (res.list.data[x].is_disabled = "是");
+            ? (res.data.list[x].is_disabled = "否")
+            : (res.data.list[x].is_disabled = "是");
         }
         this.userData = res.data.list;
       } catch (e) {
@@ -592,8 +592,8 @@ export default {
         this.pagination.total = res.data.total;
         for (let x = 0; x < res.data.list.length; x++) {
           res.data.list[x].is_valid == 1
-            ? (res.list.data[x].is_disabled = "否")
-            : (res.list.data[x].is_disabled = "是");
+            ? (res.data.list[x].is_disabled = "否")
+            : (res.data.list[x].is_disabled = "是");
         }
         this.roleData = res.data.list;
       } catch (e) {
