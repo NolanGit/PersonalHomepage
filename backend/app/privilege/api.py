@@ -247,7 +247,7 @@ def roleDelete():
 
 
 #权限列表获取
-@privilege.route('/privilegeGet', methods=['GET'])
+@privilege.route('/privilegeGet', methods=['POST'])
 @permission_required(URL_PREFIX + '/privilegeGet')
 def privilegeGet():
     try:
