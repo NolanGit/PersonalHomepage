@@ -1,8 +1,8 @@
 <template>
   <section>
     <el-row class="main-row margin_bottom-medium" :gutter="20">
-      <el-col :span="5" class="lift-side-bar">
-        <el-card class="left-side-box-card">
+      <el-col :span="5">
+        <el-card class="box-card">
           <el-collapse v-model="activeSystem" @change="handleChange" accordion>
             <el-collapse-item title="用户设置" name="用户设置">
               <div class="collapse-div">包括用户密码、角色的修改</div>
@@ -16,8 +16,8 @@
           </el-collapse>
         </el-card>
       </el-col>
-      <el-col :span="19" class="right-side-bar">
-        <el-card class="left-side-box-card">
+      <el-col :span="19">
+        <el-card class="box-card">
           <div v-if="activeSystem == '用户设置'">
             <el-button
               size="mini"
@@ -821,5 +821,8 @@ export default {
 <style scoped>
 .noMargin {
   margin: 0;
+}
+.box-card {
+    min-height: 550px;
 }
 </style>
