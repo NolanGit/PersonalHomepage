@@ -88,7 +88,9 @@ def permission_required(privilege):
 def user_list_get(_current_page=None, _pagination_size=None):
     result = []
     if _current_page == None and _pagination_size == None:
-        user_query = user.select().where(user.is_valid != -1).order_by(user.id).dicts()
+        user_query = user.select().where(user.is_valid != -1).order_by(user.id)
+        total = user_query.count()
+        user_query = user_query.dicts()
     else:
         user_query = user.select().where(user.is_valid != -1).order_by(user.id).paginate(_current_page, _pagination_size).dicts()
     for row in user_query:
@@ -109,14 +111,16 @@ def user_list_get(_current_page=None, _pagination_size=None):
             'create_time': create_time,
             'update_time': update_time,
         })
-    return result
+    return result, total
 
 
 # 获取未被删除的角色
 def role_list_get(_current_page=None, _pagination_size=None):
     result = []
     if _current_page == None and _pagination_size == None:
-        role_query = role.select().where(role.is_valid != -1).order_by(role.id).dicts()
+        role_query = role.select().where(role.is_valid != -1).order_by(role.id)
+        total = role_query.count()
+        role_query = role_query.dicts()
     else:
         role_query = role.select().where(role.is_valid != -1).order_by(role.id).paginate(_current_page, _pagination_size).dicts()
     for row in role_query:
@@ -131,14 +135,16 @@ def role_list_get(_current_page=None, _pagination_size=None):
             'remark': row['remark'],
             'update_time': update_time,
         })
-    return result
+    return result, total
 
 
 # 获取未被删除的权限
 def privilege_list_get(_current_page=None, _pagination_size=None):
     result = []
     if _current_page == None and _pagination_size == None:
-        privilege_query = privilege_model.select().where(privilege_model.is_valid != -1).order_by(privilege_model.id).dicts()
+        privilege_query = privilege_model.select().where(privilege_model.is_valid != -1).order_by(privilege_model.id)
+        total = privilege_query.count()
+        privilege_query = privilege_query.dicts()
     else:
         privilege_query = privilege_model.select().where(privilege_model.is_valid != -1).order_by(privilege_model.id).paginate(_current_page, _pagination_size).dicts()
     for row in privilege_query:
@@ -147,7 +153,7 @@ def privilege_list_get(_current_page=None, _pagination_size=None):
         except:
             update_time = ''
         result.append({'id': row['id'], 'name': row['name'], 'mark': row['mark'], 'remark': row['remark'], 'is_valid': row['is_valid'], 'update_time': update_time})
-    return result
+    return result,total
 
 
 # 获取有效的角色权限对应关系

@@ -33,8 +33,8 @@ def userGet():
         user_id = int(request.get_json()['user_id'])
         _current_page = request.get_json()['current_page']
         _pagination_size = request.get_json()['pagination_size']
-        role_list = role_list_get()
-        user_list = user_list_get(_current_page, _pagination_size)
+        role_list, _ = role_list_get()
+        user_list, total = user_list_get(_current_page, _pagination_size)
         current_role_id = cf.dict_list_get_single_element(user_list, 'id', user_id, 'role_id')
         current_user_role = cf.dict_list_get_single_element(role_list, 'id', current_role_id, 'name', current_role_id - 1)
         if current_user_role == '管理员':
@@ -47,7 +47,7 @@ def userGet():
                     single_user['is_edit'] = 1
                 else:
                     single_user['is_edit'] = 0
-        return rsp.success(user_list)
+        return rsp.success({'list': user_list, 'total': total})
     except Exception as e:
         traceback.print_exc()
         return rsp.failed(e), 500
@@ -133,7 +133,8 @@ def roleGet():
     try:
         _current_page = request.get_json()['current_page']
         _pagination_size = request.get_json()['pagination_size']
-        return rsp.success(role_list_get(_current_page, _pagination_size))
+        l, total = role_list_get(_current_page, _pagination_size)
+        return rsp.success({'list': l, 'total': total})
     except Exception as e:
         traceback.print_exc()
         return rsp.failed(e), 500
@@ -146,7 +147,7 @@ def rolePrivilegeGet():
     try:
         role_id = request.get_json()['role_id']
         result = []
-        privilege_list = privilege_list_get()
+        privilege_list, _ = privilege_list_get()
         privilege_role_query = privilege_role.select().where((privilege_role.role_id == role_id) & (privilege_role.is_valid == 1)).order_by(privilege_role.id).dicts()
         for row in privilege_role_query:
             result.append({
@@ -252,9 +253,9 @@ def privilegeGet():
     try:
         _current_page = request.get_json()['current_page']
         _pagination_size = request.get_json()['pagination_size']
-        _ = privilege_list_get(_current_page, _pagination_size)
-        _.sort(key=lambda x: x['name'])
-        return rsp.success(_)
+        l, total = privilege_list_get(_current_page, _pagination_size)
+        l.sort(key=lambda x: x['name'])
+        return rsp.success({'list': l, 'total': total})
     except Exception as e:
         traceback.print_exc()
         return rsp.failed(e), 500

@@ -486,7 +486,8 @@ export default {
           pagination_size: this.pagination.pageSize,
           current_page: this.pagination.currentPage,
         });
-        for (let x = 0; x < res.data.length; x++) {
+        this.pagination.total = res.data.total;
+        for (let x = 0; x < res.data.list.length; x++) {
           if (res.data[x].is_valid == 1) {
             res.data[x].is_disabled = "否";
           } else if (res.data[x].is_valid == 0) {
@@ -590,7 +591,8 @@ export default {
           pagination_size: this.pagination.pageSize,
           current_page: this.pagination.currentPage,
         });
-        for (let x = 0; x < res.data.length; x++) {
+        this.pagination.total = res.data.total;
+        for (let x = 0; x < res.data.list.length; x++) {
           if (res.data[x].is_valid == 1) {
             res.data[x].is_disabled = "否";
           } else if (res.data[x].is_valid == 0) {
@@ -733,7 +735,8 @@ export default {
           current_page: this.pagination.currentPage,
         });
         this.privilegeData = [];
-        for (let x = 0; x < res.data.length; x++) {
+        this.pagination.total = res.data.total;
+        for (let x = 0; x < res.data.list.length; x++) {
           this.privilegeData.push({
             id: res.data[x].id,
             label: res.data[x].name,
