@@ -30,7 +30,7 @@
             <el-table
               :key="Math.random()"
               size="mini"
-              height="450"
+              height="480"
               :data="userData"
               stripe
               style="width: 100%"
@@ -113,7 +113,7 @@
               @size-change="paginationSizeChange"
               @current-change="paginationCurrentChange"
               :current-page="pagination.currentPage"
-              :page-sizes="[5, 10, 20, 30]"
+              :page-sizes="[5, 10, 20, 30, 100]"
               :page-size="pagination.pageSize"
               layout="total, sizes, prev, pager, next"
               :total="pagination.total"
@@ -131,7 +131,7 @@
             <el-table
               :key="Math.random()"
               size="mini"
-              height="450"
+              height="480"
               :data="roleData"
               stripe
               style="width: 100%"
@@ -218,7 +218,7 @@
               @size-change="paginationSizeChange"
               @current-change="paginationCurrentChange"
               :current-page="pagination.currentPage"
-              :page-sizes="[5, 10, 20, 30]"
+              :page-sizes="[5, 10, 20, 30, 100]"
               :page-size="pagination.pageSize"
               layout="total, sizes, prev, pager, next"
               :total="pagination.total"
@@ -236,7 +236,7 @@
             <el-table
               :key="Math.random()"
               size="mini"
-              height="450"
+              height="480"
               :data="privilegeData"
               stripe
               style="width: 100%"
@@ -328,7 +328,7 @@
               @size-change="paginationSizeChange"
               @current-change="paginationCurrentChange"
               :current-page="pagination.currentPage"
-              :page-sizes="[5, 10, 20, 30]"
+              :page-sizes="[10, 20, 30, 100]"
               :page-size="pagination.pageSize"
               layout="total, sizes, prev, pager, next"
               :total="pagination.total"
@@ -823,6 +823,6 @@ export default {
   margin: 0;
 }
 .box-card {
-    min-height: 550px;
+  min-height: 550px;
 }
 </style>
