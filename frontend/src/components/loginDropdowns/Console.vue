@@ -23,7 +23,7 @@
     >
       <div
         class="scrollbar-div"
-        style="max-height: 60vh; height: 60vh;"
+        style="max-height: 67vh; height: 67vh;"
       >
         <div class="margin-medium" v-if="drawer.visible==true">
           <div v-if="activeComponent=='Privilege'">
