@@ -433,7 +433,7 @@ export default {
         total: 0,
       }
       this.apiHelper()
-    }
+    },
     apiHelper() {
       if (this.activeSystem == "用户设置") {
         this.userData = [];
