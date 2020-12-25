@@ -21,11 +21,11 @@
       :direction="drawer.direction"
       :size="drawer.size"
     >
-      <div class="margin-medium" v-if="drawer.visible==true">
-        <div
-          class="scrollbar-div"
-          style="max-height: 70vh; height: 70vh; margin-right: 20px;"
-        >
+      <div
+        class="scrollbar-div"
+        style="max-height: 60vh; height: 60vh;"
+      >
+        <div class="margin-medium" v-if="drawer.visible==true">
           <div v-if="activeComponent=='Privilege'">
             <Privilege :user_id="user_id" :login_name="login_name" />
           </div>
