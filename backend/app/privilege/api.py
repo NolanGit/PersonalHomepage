@@ -254,7 +254,6 @@ def privilegeGet():
         _current_page = request.get_json()['current_page']
         _pagination_size = request.get_json()['pagination_size']
         l, total = privilege_list_get(_current_page, _pagination_size)
-        l.sort(key=lambda x: x['name'])
         return rsp.success({'list': l, 'total': total})
     except Exception as e:
         traceback.print_exc()
