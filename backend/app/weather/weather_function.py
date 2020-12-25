@@ -2,31 +2,27 @@ import time
 import datetime
 import requests
 import traceback
-import configparser
 from peewee import DoesNotExist
-
-cf = configparser.ConfigParser()
 
 try:
     from ..base_model import Base
+    from ..config_helper import ConfigHelper
     from ..model.weather_model import weather_location
     from ..model.weather_model import weather_data
-    cf.read('app/homepage.config')
-    WEATHER_KEY = cf.get('config', 'WEATHER_KEY')
 
 except:
     import sys
     sys.path.append('../')
     sys.path.append('../../')
     from base_model import Base
+    from config_helper import ConfigHelper
     from model.weather_model import weather_location
     from model.weather_model import weather_data
     from model.weather_model import weather_notify
     from login.login_funtion import User
     from model.push_model import push_queue
-    cf.read('../homepage.config')
-    WEATHER_KEY = cf.get('config', 'WEATHER_KEY')
 
+WEATHER_KEY = ConfigHelper().get('WEATHER_KEY')
 WEATHER_EXPIRE_HOUR = 3
 WEATHER_PUSH_TITLE = '天气异常！'
 WEATHER_PUSH_TYPE_RAIN = 'rain'
@@ -310,6 +306,7 @@ class WeatherNotify():
         tomorrow_forecast = r.json()['HeWeather6'][0]['daily_forecast'][1]
         today_code_n = today_forecast['cond_code_n']
         tomorrow_code_d = tomorrow_forecast['cond_code_d']
+        print('获取[%s]的天气' + self.location)
         print('today_code_n = ' + today_code_n)
         print('tomorrow_code_d = ' + tomorrow_code_d)
         weather_content = air_content = temprature_content = ''

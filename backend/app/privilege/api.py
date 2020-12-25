@@ -31,8 +31,10 @@ ALLOWED_TIME_SPAN = 100  # 盐过期X秒内允许修改，否则需要重新登�
 def userGet():
     try:
         user_id = int(request.get_json()['user_id'])
-        role_list = role_list_get()
-        user_list = user_list_get()
+        _current_page = request.get_json()['current_page']
+        _pagination_size = request.get_json()['pagination_size']
+        role_list, _ = role_list_get()
+        user_list, total = user_list_get(_current_page, _pagination_size)
         current_role_id = cf.dict_list_get_single_element(user_list, 'id', user_id, 'role_id')
         current_user_role = cf.dict_list_get_single_element(role_list, 'id', current_role_id, 'name', current_role_id - 1)
         if current_user_role == '管理员':
@@ -45,7 +47,7 @@ def userGet():
                     single_user['is_edit'] = 1
                 else:
                     single_user['is_edit'] = 0
-        return rsp.success(user_list)
+        return rsp.success({'list': user_list, 'total': total})
     except Exception as e:
         traceback.print_exc()
         return rsp.failed(e), 500
@@ -125,11 +127,14 @@ def userDelete():
 
 
 # 角色列表获取
-@privilege.route('/roleGet', methods=['GET'])
+@privilege.route('/roleGet', methods=['POST'])
 @permission_required(URL_PREFIX + '/roleGet')
 def roleGet():
     try:
-        return rsp.success(role_list_get())
+        _current_page = request.get_json()['current_page']
+        _pagination_size = request.get_json()['pagination_size']
+        l, total = role_list_get(_current_page, _pagination_size)
+        return rsp.success({'list': l, 'total': total})
     except Exception as e:
         traceback.print_exc()
         return rsp.failed(e), 500
@@ -142,7 +147,7 @@ def rolePrivilegeGet():
     try:
         role_id = request.get_json()['role_id']
         result = []
-        privilege_list = privilege_list_get()
+        privilege_list, _ = privilege_list_get()
         privilege_role_query = privilege_role.select().where((privilege_role.role_id == role_id) & (privilege_role.is_valid == 1)).order_by(privilege_role.id).dicts()
         for row in privilege_role_query:
             result.append({
@@ -242,13 +247,14 @@ def roleDelete():
 
 
 #权限列表获取
-@privilege.route('/privilegeGet', methods=['GET'])
+@privilege.route('/privilegeGet', methods=['POST'])
 @permission_required(URL_PREFIX + '/privilegeGet')
 def privilegeGet():
     try:
-        _ = privilege_list_get()
-        _.sort(key=lambda x: x['name'])
-        return rsp.success(_)
+        _current_page = request.get_json()['current_page']
+        _pagination_size = request.get_json()['pagination_size']
+        l, total = privilege_list_get(_current_page, _pagination_size)
+        return rsp.success({'list': l, 'total': total})
     except Exception as e:
         traceback.print_exc()
         return rsp.failed(e), 500
@@ -265,9 +271,9 @@ def privilegeEdit():
         remark = request.get_json()['remark']
         if privilege_id == 0:
             if cf.is_data_existed_in_db(privilege_model, privilege_model.name, name):
-                response = {'code': 406, 'msg': '已经存在相同名称的权限'}
+                return rsp.failed(msg='已经存在相同名称的权限', code=406), 406
             elif cf.is_data_existed_in_db(privilege_model, privilege_model.mark, mark):
-                response = {'code': 406, 'msg': '已经存在相同标识的权限'}
+                return rsp.failed(msg='已经存在相同标识的权限', code=406), 406
             else:
                 privilege_model.create(name=name, mark=mark, remark=remark, is_valid=1, update_time=datetime.datetime.now())
         else:

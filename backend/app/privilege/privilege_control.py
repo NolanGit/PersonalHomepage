@@ -26,9 +26,7 @@ IS_STATIC_IP = True
 
 # 权限装饰器
 def permission_required(privilege):
-
     def decorator(f):
-
         @wraps(f)
         def decorated_function(*args, **kwargs):
             user_key = request.cookies.get('user_key')
@@ -87,9 +85,14 @@ def permission_required(privilege):
 
 
 # 获取未被删除的用户列表
-def user_list_get():
+def user_list_get(_current_page=None, _pagination_size=None):
     result = []
-    user_query = user.select().where(user.is_valid != -1).order_by(user.id).dicts()
+    user_query = user.select().where(user.is_valid != -1).order_by(user.id)
+    total = user_query.count()
+    if _current_page == None and _pagination_size == None:
+        user_query = user_query.dicts()
+    else:
+        user_query = user.select().where(user.is_valid != -1).order_by(user.id).paginate(_current_page, _pagination_size).dicts()
     for row in user_query:
         try:
             update_time = row['update_time'].strftime("%Y-%m-%d %H:%M:%S")
@@ -108,13 +111,18 @@ def user_list_get():
             'create_time': create_time,
             'update_time': update_time,
         })
-    return result
+    return result, total
 
 
 # 获取未被删除的角色
-def role_list_get():
+def role_list_get(_current_page=None, _pagination_size=None):
     result = []
-    role_query = role.select().where(role.is_valid != -1).order_by(role.id).dicts()
+    role_query = role.select().where(role.is_valid != -1).order_by(role.id)
+    total = role_query.count()
+    if _current_page == None and _pagination_size == None:
+        role_query = role_query.dicts()
+    else:
+        role_query = role.select().where(role.is_valid != -1).order_by(role.id).paginate(_current_page, _pagination_size).dicts()
     for row in role_query:
         try:
             update_time = row['update_time'].strftime("%Y-%m-%d %H:%M:%S")
@@ -127,20 +135,25 @@ def role_list_get():
             'remark': row['remark'],
             'update_time': update_time,
         })
-    return result
+    return result, total
 
 
 # 获取未被删除的权限
-def privilege_list_get():
+def privilege_list_get(_current_page=None, _pagination_size=None):
     result = []
-    privilege_query = privilege_model.select().where(privilege_model.is_valid != -1).order_by(privilege_model.id).dicts()
+    privilege_query = privilege_model.select().where(privilege_model.is_valid != -1).order_by(privilege_model.id)
+    total = privilege_query.count()
+    if _current_page == None and _pagination_size == None:
+        privilege_query = privilege_query.dicts()
+    else:
+        privilege_query = privilege_model.select().where(privilege_model.is_valid != -1).order_by(privilege_model.id).paginate(_current_page, _pagination_size).dicts()
     for row in privilege_query:
         try:
             update_time = row['update_time'].strftime("%Y-%m-%d %H:%M:%S")
         except:
             update_time = ''
         result.append({'id': row['id'], 'name': row['name'], 'mark': row['mark'], 'remark': row['remark'], 'is_valid': row['is_valid'], 'update_time': update_time})
-    return result
+    return result, total
 
 
 # 获取有效的角色权限对应关系
@@ -158,13 +171,11 @@ def privilege_role_list_get():
 
 # 权限相关方法
 class privilegeFunction(object):
-
     '''
         加密：使用随机字符串+登录用户的密码加密，生成cookie，redis保存cookie和用户id的对应关系，用户id和加密后的密码、随机字符串、对应用户id、ip、登录时间的对应哈希，cookie发给客户端后，客户端请求接口要带上cookie
         解密：后端收到cookie后，校验是否存在cookide(是否过期)，如有效则取出用户id后校验ip，如有效则取出cookie对应的加密后的密码、加密时使用的随机字符串，按照加密规则加密后和cookie对比，如果一致，进一步判断权限
         注意：用户修改密码后，应同步处理redis，以使修改密码后cookie失效
     '''
-
     def __init__(self):
         pass
 

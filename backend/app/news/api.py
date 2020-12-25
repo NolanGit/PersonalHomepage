@@ -4,7 +4,6 @@ import json
 import requests
 import datetime
 import traceback
-import configparser
 from threading import Thread
 from flask_cors import cross_origin
 from flask import render_template, session, redirect, url_for, current_app, flash, request, jsonify
@@ -12,6 +11,7 @@ from flask import render_template, session, redirect, url_for, current_app, flas
 from ..limiter import limiter
 from ..common_func import CommonFunc
 from ..login.login_funtion import User
+from ..config_helper import ConfigHelper
 from ..response import Response as MyResponse
 from ..privilege.privilege_control import privilegeFunction
 from ..privilege.privilege_control import permission_required
@@ -20,10 +20,8 @@ from .get_news import parse_baidu, parse_zhihu_hot, parse_weibo, parse_v2ex, par
 from . import news
 
 rsp = MyResponse()
-cf = configparser.ConfigParser()
-cf.read('app/homepage.config')
-NEWS_JSON_PATH = cf.get('config', 'BASE_PATH') + '/backend/app/news/json'
-DOMAIN_NAME = cf.get('config', 'DOMAIN_NAME')
+NEWS_JSON_PATH = ConfigHelper().get('BASE_PATH') + '/backend/app/news/json'
+DOMAIN_NAME = ConfigHelper().get('DOMAIN_NAME')
 LIMITER_FREQUENCY_NEWS_GET = '10/minute'  # 接口限制的新闻获取访问频次
 LIMITER_FREQUENCY_NEWS_FLUSH = '10/hour'  # 接口限制的新闻刷新访问频次
 

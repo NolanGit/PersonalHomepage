@@ -2,25 +2,23 @@ import time
 import json
 import datetime
 import traceback
-import configparser
 from flask_cors import cross_origin
 from . import cloud_drive as cloud_drive_blue_print
 from flask import session, redirect, current_app, request, jsonify
 
 from ..response import Response
 from ..common_func import CommonFunc
+from ..config_helper import ConfigHelper
 from ..model.upload_model import cloud_drive, upload
 from ..privilege.privilege_control import privilegeFunction
 from ..privilege.privilege_control import permission_required
 from ..short_url.function import set_content
 
-cf = configparser.ConfigParser()
-cf.read('app/homepage.config')
-DOMAIN_NAME = cf.get('config', 'DOMAIN_NAME')
-
-common_func = CommonFunc()
 rsp = Response()
+common_func = CommonFunc()
+
 URL_PREFIX = '/cloudDrive'
+DOMAIN_NAME = ConfigHelper().get('DOMAIN_NAME')
 
 
 @cloud_drive_blue_print.route('/save', methods=['POST'])
@@ -165,6 +163,7 @@ def cancel():
     except Exception as e:
         traceback.print_exc()
         return rsp.failed(e), 500
+
 
 @cloud_drive_blue_print.route('/changeName', methods=['POST'])
 @permission_required(URL_PREFIX + '/changeName')

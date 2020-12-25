@@ -21,15 +21,20 @@
       :direction="drawer.direction"
       :size="drawer.size"
     >
-      <div class="margin-medium" v-if="drawer.visible==true">
-        <div v-if="activeComponent=='Privilege'">
-          <Privilege :user_id="user_id" :login_name="login_name" />
-        </div>
-        <div v-if="activeComponent=='Script'">
-          <Script :user_id="user_id" />
-        </div>
-        <div v-if="activeComponent=='widgetEdit'">
-          <widgetEdit :user_id="user_id" />
+      <div
+        class="scrollbar-div"
+        style="max-height: 73vh;"
+      >
+        <div class="margin-medium" v-if="drawer.visible==true">
+          <div v-if="activeComponent=='Privilege'">
+            <Privilege :user_id="user_id" :login_name="login_name" />
+          </div>
+          <div v-if="activeComponent=='Script'">
+            <Script :user_id="user_id" />
+          </div>
+          <div v-if="activeComponent=='widgetEdit'">
+            <widgetEdit :user_id="user_id" />
+          </div>
         </div>
       </div>
     </el-drawer>
@@ -85,7 +90,7 @@ export default {
       this.drawer.title = consoleOption.name;
       this.drawer.visible = true;
       this.drawer.direction = "ttb";
-      this.drawer.size = "80%";
+      this.drawer.size = "85%";
     },
   },
   created() {},

@@ -1,8 +1,8 @@
 <template>
   <section>
     <el-row class="main-row margin_bottom-medium" :gutter="20">
-      <el-col :span="5" class="lift-side-bar">
-        <el-card class="left-side-box-card">
+      <el-col :span="5">
+        <el-card class="box-card">
           <el-collapse v-model="activeSystem" @change="handleChange" accordion>
             <el-collapse-item title="用户设置" name="用户设置">
               <div class="collapse-div">包括用户密码、角色的修改</div>
@@ -16,191 +16,321 @@
           </el-collapse>
         </el-card>
       </el-col>
-      <el-col :span="19" class="right-side-bar">
-        <el-card class="left-side-box-card">
-          <div v-if="activeSystem=='用户设置'">
+      <el-col :span="19">
+        <el-card class="box-card">
+          <div v-if="activeSystem == '用户设置'">
             <el-button
               size="mini"
               class="margin_bottom-small"
               type="primary"
               @click="userAdd()"
-            >新增用户</el-button>
+              >新增用户</el-button
+            >
             <!-- 如果不加:key，vue会试图复用原有的组件，会产生问题 详情参见vue中:key的作用 -->
             <el-table
               :key="Math.random()"
               size="mini"
-              height="400"
               :data="userData"
               stripe
               style="width: 100%"
               ref="userTable"
             >
               <!-- <el-table-column :key="Math.random()" prop="id" sortable label="ID" width="70"></el-table-column> -->
-              <el-table-column :key="Math.random()" prop="name" label="姓名" width="120"></el-table-column>
-              <el-table-column :key="Math.random()" prop="login_name" label="登录名" width="180"></el-table-column>
-              <el-table-column :key="Math.random()" prop="role_name" label="角色" width="120"></el-table-column>
-              <el-table-column :key="Math.random()" prop="is_disabled" label="是否禁用" width="80"></el-table-column>
-              <el-table-column :key="Math.random()" prop="update_time" label="修改时间"></el-table-column>
+              <el-table-column
+                :key="Math.random()"
+                prop="name"
+                label="姓名"
+                width="120"
+              ></el-table-column>
+              <el-table-column
+                :key="Math.random()"
+                prop="login_name"
+                label="登录名"
+                width="180"
+              ></el-table-column>
+              <el-table-column
+                :key="Math.random()"
+                prop="role_name"
+                label="角色"
+                width="120"
+              ></el-table-column>
+              <el-table-column
+                :key="Math.random()"
+                prop="is_disabled"
+                label="是否禁用"
+                width="80"
+              ></el-table-column>
+              <el-table-column
+                :key="Math.random()"
+                prop="update_time"
+                label="修改时间"
+              ></el-table-column>
               <el-table-column :key="Math.random()" label="操作">
                 <template slot-scope="scope">
                   <el-button
-                    v-show="scope.row.is_valid==1"
+                    v-show="scope.row.is_valid == 1"
                     class="noMargin"
                     size="mini"
                     plain
                     type="danger"
                     @click="userDisable(scope.row.id)"
-                  >禁用</el-button>
+                    >禁用</el-button
+                  >
                   <el-button
-                    v-show="scope.row.is_valid==0"
+                    v-show="scope.row.is_valid == 0"
                     class="noMargin"
                     size="mini"
                     plain
                     type="primary"
                     @click="userEnable(scope.row.id)"
-                  >启用</el-button>
+                    >启用</el-button
+                  >
                   <el-button
-                    v-if="scope.row.is_edit==1"
+                    v-if="scope.row.is_edit == 1"
                     class="noMargin"
                     size="mini"
                     plain
                     type="primary"
                     @click="userSetting(scope.row.login_name)"
-                  >修改</el-button>
+                    >修改</el-button
+                  >
                   <el-button
-                    v-show="scope.row.is_valid==0"
+                    v-show="scope.row.is_valid == 0"
                     class="noMargin"
                     size="mini"
                     type="danger"
                     @click="userDelete(scope.row.id)"
-                  >删除</el-button>
+                    >删除</el-button
+                  >
                 </template>
               </el-table-column>
             </el-table>
+
+            <el-pagination
+              small
+              class="margin_top-medium"
+              @size-change="paginationSizeChange"
+              @current-change="paginationCurrentChange"
+              :current-page="pagination.currentPage"
+              :page-sizes="[5, 10, 20, 30, 100]"
+              :page-size="pagination.pageSize"
+              layout="total, sizes, prev, pager, next"
+              :total="pagination.total"
+              style="text-align: center"
+            ></el-pagination>
           </div>
-          <div v-if="activeSystem=='角色对应权限设置'">
+          <div v-if="activeSystem == '角色对应权限设置'">
             <el-button
               size="mini"
               class="margin_bottom-small"
               type="primary"
               @click="roleAdd()"
-            >新增角色</el-button>
+              >新增角色</el-button
+            >
             <el-table
               :key="Math.random()"
               size="mini"
-              height="400"
               :data="roleData"
               stripe
               style="width: 100%"
               ref="roleTable"
             >
               <!-- <el-table-column :key="Math.random()" prop="id" sortable label="ID" width="70"></el-table-column> -->
-              <el-table-column :key="Math.random()" prop="name" label="名称" width="180"></el-table-column>
-              <el-table-column :key="Math.random()" prop="remark" label="备注" width="180"></el-table-column>
-              <el-table-column :key="Math.random()" prop="is_disabled" label="是否禁用" width="80"></el-table-column>
-              <el-table-column :key="Math.random()" prop="update_time" label="修改时间" width="180"></el-table-column>
+              <el-table-column
+                :key="Math.random()"
+                prop="name"
+                label="名称"
+                width="180"
+              ></el-table-column>
+              <el-table-column
+                :key="Math.random()"
+                prop="remark"
+                label="备注"
+                width="180"
+              ></el-table-column>
+              <el-table-column
+                :key="Math.random()"
+                prop="is_disabled"
+                label="是否禁用"
+                width="80"
+              ></el-table-column>
+              <el-table-column
+                :key="Math.random()"
+                prop="update_time"
+                label="修改时间"
+                width="180"
+              ></el-table-column>
               <el-table-column :key="Math.random()" label="操作">
                 <template slot-scope="scope">
                   <el-button
-                    v-show="scope.row.is_valid==1"
+                    v-show="scope.row.is_valid == 1"
                     class="noMargin"
                     size="mini"
                     plain
                     type="danger"
                     @click="roleDisable(scope.row.id)"
-                  >禁用</el-button>
+                    >禁用</el-button
+                  >
                   <el-button
-                    v-show="scope.row.is_valid==0"
+                    v-show="scope.row.is_valid == 0"
                     class="noMargin"
                     size="mini"
                     plain
                     type="primary"
                     @click="roleEnable(scope.row.id)"
-                  >启用</el-button>
+                    >启用</el-button
+                  >
                   <el-button
-                    v-show="scope.row.is_valid==0"
+                    v-show="scope.row.is_valid == 0"
                     class="noMargin"
                     size="mini"
                     plain
                     type="primary"
-                    @click="roleEdit(scope.row.id,scope.row.name,scope.row.remark)"
-                  >修改</el-button>
+                    @click="
+                      roleEdit(scope.row.id, scope.row.name, scope.row.remark)
+                    "
+                    >修改</el-button
+                  >
                   <el-button
                     class="noMargin"
                     size="mini"
                     plain
                     type="primary"
                     @click="roleSetting(scope.row.id)"
-                  >配置对应权限</el-button>
+                    >配置对应权限</el-button
+                  >
                   <el-button
-                    v-show="scope.row.is_valid==0"
+                    v-show="scope.row.is_valid == 0"
                     class="noMargin"
                     size="mini"
                     type="danger"
                     @click="roleDelete(scope.row.id)"
-                  >删除</el-button>
+                    >删除</el-button
+                  >
                 </template>
               </el-table-column>
             </el-table>
+            <el-pagination
+              small
+              class="margin_top-medium"
+              @size-change="paginationSizeChange"
+              @current-change="paginationCurrentChange"
+              :current-page="pagination.currentPage"
+              :page-sizes="[5, 10, 20, 30, 100]"
+              :page-size="pagination.pageSize"
+              layout="total, sizes, prev, pager, next"
+              :total="pagination.total"
+              style="text-align: center"
+            ></el-pagination>
           </div>
-          <div v-if="activeSystem=='权限设置'">
+          <div v-if="activeSystem == '权限设置'">
             <el-button
               size="mini"
               class="margin_bottom-small"
               type="primary"
               @click="privilegeAdd()"
-            >新增权限</el-button>
+              >新增权限</el-button
+            >
             <el-table
               :key="Math.random()"
               size="mini"
-              height="400"
               :data="privilegeData"
               stripe
               style="width: 100%"
               ref="privilegeTable"
             >
               <!-- <el-table-column :key="Math.random()" prop="id" sortable label="ID" width="70"></el-table-column> -->
-              <el-table-column :key="Math.random()" prop="name" sortable label="名称" width="220"></el-table-column>
-              <el-table-column :key="Math.random()" prop="mark" sortable label="标识" width="200"></el-table-column>
-              <el-table-column :key="Math.random()" prop="remark" label="备注" width="170"></el-table-column>
-              <el-table-column :key="Math.random()" prop="is_disabled" label="是否禁用" width="70"></el-table-column>
-              <el-table-column :key="Math.random()" prop="update_time" sortable label="修改时间"></el-table-column>
+              <el-table-column
+                :key="Math.random()"
+                prop="name"
+                sortable
+                label="名称"
+                width="220"
+              ></el-table-column>
+              <el-table-column
+                :key="Math.random()"
+                prop="mark"
+                sortable
+                label="标识"
+                width="200"
+              ></el-table-column>
+              <el-table-column
+                :key="Math.random()"
+                prop="remark"
+                label="备注"
+                width="170"
+              ></el-table-column>
+              <el-table-column
+                :key="Math.random()"
+                prop="is_disabled"
+                label="是否禁用"
+                width="70"
+              ></el-table-column>
+              <el-table-column
+                :key="Math.random()"
+                prop="update_time"
+                sortable
+                label="修改时间"
+              ></el-table-column>
               <el-table-column :key="Math.random()" label="操作">
                 <template slot-scope="scope">
                   <el-button
-                    v-show="scope.row.is_valid==1"
+                    v-show="scope.row.is_valid == 1"
                     class="noMargin"
                     size="mini"
                     plain
                     type="danger"
                     @click="privilegeDisable(scope.row.id)"
-                  >禁用</el-button>
+                    >禁用</el-button
+                  >
                   <el-button
-                    v-show="scope.row.is_valid==0"
+                    v-show="scope.row.is_valid == 0"
                     class="noMargin"
                     size="mini"
                     plain
                     type="primary"
                     @click="privilegeEnable(scope.row.id)"
-                  >启用</el-button>
+                    >启用</el-button
+                  >
                   <el-button
-                    v-show="scope.row.is_valid==0"
+                    v-show="scope.row.is_valid == 0"
                     class="noMargin"
                     size="mini"
                     plain
                     type="primary"
-                    @click="privilegeEditFront(scope.row.id,scope.row.name,scope.row.mark,scope.row.remark)"
-                  >修改</el-button>
+                    @click="
+                      privilegeEditFront(
+                        scope.row.id,
+                        scope.row.name,
+                        scope.row.mark,
+                        scope.row.remark
+                      )
+                    "
+                    >修改</el-button
+                  >
                   <el-button
-                    v-show="scope.row.is_valid==0"
+                    v-show="scope.row.is_valid == 0"
                     class="noMargin"
                     size="mini"
                     type="danger"
                     @click="privilegeDelete(scope.row.id)"
-                  >删除</el-button>
+                    >删除</el-button
+                  >
                 </template>
               </el-table-column>
             </el-table>
+            <el-pagination
+              small
+              class="margin_top-medium"
+              @size-change="paginationSizeChange"
+              @current-change="paginationCurrentChange"
+              :current-page="pagination.currentPage"
+              :page-sizes="[10, 20, 30, 100]"
+              :page-size="pagination.pageSize"
+              layout="total, sizes, prev, pager, next"
+              :total="pagination.total"
+              style="text-align: center"
+            ></el-pagination>
           </div>
         </el-card>
       </el-col>
@@ -211,7 +341,7 @@
         @closed="editFormClosed"
         direction="btt"
       >
-        <div v-if="edit.type=='user' & edit.visible">
+        <div v-if="(edit.type == 'user') & edit.visible">
           <PrivilegeEditUser
             :user_id="user_id"
             :login_name="edit.login_name"
@@ -219,7 +349,7 @@
             @close="close()"
           />
         </div>
-        <div v-if="edit.type=='role' & edit.visible">
+        <div v-if="(edit.type == 'role') & edit.visible">
           <PrivilegeEditRole
             :action="edit.roleEditAction"
             :checkedPrivilege="edit.checkedPrivilege"
@@ -230,7 +360,7 @@
             @close="close()"
           />
         </div>
-        <div v-if="edit.type=='privilege' & edit.visible">
+        <div v-if="(edit.type == 'privilege') & edit.visible">
           <PrivilegeEditPrivilege
             :action="edit.privilegeEditAction"
             :privilegeId="edit.privilegeEditPrivilegeId"
@@ -263,18 +393,18 @@ const api = {
   privilegeGet: "/privilege/privilegeGet",
   privilegeDisable: "/privilege/privilegeDisable",
   privilegeEnable: "/privilege/privilegeEnable",
-  privilegeDelete: "/privilege/privilegeDelete"
+  privilegeDelete: "/privilege/privilegeDelete",
 };
 export default {
   name: "ConsolePrivilege",
   components: {
     PrivilegeEditUser,
     PrivilegeEditRole,
-    PrivilegeEditPrivilege
+    PrivilegeEditPrivilege,
   },
   props: {
     user_id: Number,
-    login_name: String
+    login_name: String,
   },
   data() {
     return {
@@ -285,13 +415,26 @@ export default {
       edit: {
         title: "编辑",
         visible: false,
-        type: ""
-      }
+        type: "",
+      },
+      pagination: {
+        currentPage: 1,
+        pageSize: 10,
+        total: 0,
+      },
     };
   },
   methods: {
     //切换handle
     handleChange() {
+      this.pagination = {
+        currentPage: 1,
+        pageSize: 10,
+        total: 0,
+      }
+      this.apiHelper()
+    },
+    apiHelper() {
       if (this.activeSystem == "用户设置") {
         this.userData = [];
         this.userGet();
@@ -302,6 +445,14 @@ export default {
         this.privilegeData = [];
         this.privilegeGet();
       }
+    },
+    paginationCurrentChange(currentPage) {
+      this.pagination.currentPage = currentPage;
+      this.apiHelper();
+    },
+    paginationSizeChange(pageSize) {
+      this.pagination.pageSize = pageSize;
+      this.apiHelper();
     },
     //各组件编辑窗口关闭后回调
     close() {
@@ -336,21 +487,22 @@ export default {
     async userGet() {
       try {
         const { data: res } = await axios.post(api.userGet, {
-          user_id: this.user_id
+          user_id: this.user_id,
+          pagination_size: this.pagination.pageSize,
+          current_page: this.pagination.currentPage,
         });
-        for (let x = 0; x < res.data.length; x++) {
-          if (res.data[x].is_valid == 1) {
-            res.data[x].is_disabled = "否";
-          } else if (res.data[x].is_valid == 0) {
-            res.data[x].is_disabled = "是";
-          }
+        this.pagination.total = res.data.total;
+        for (let x = 0; x < res.data.list.length; x++) {
+          res.data.list[x].is_valid == 1
+            ? (res.data.list[x].is_disabled = "否")
+            : (res.data.list[x].is_disabled = "是");
         }
-        this.userData = res.data;
+        this.userData = res.data.list;
       } catch (e) {
         console.log(e);
         this.$message({
           message: e.response.data.msg,
-          type: "error"
+          type: "error",
         });
       }
     },
@@ -358,18 +510,18 @@ export default {
     async userDisable(user_id) {
       try {
         const { data: res } = await axios.post(api.userDisable, {
-          user_id: user_id
+          user_id: user_id,
         });
         this.$message({
           message: res["msg"],
-          type: "success"
+          type: "success",
         });
         this.userGet();
       } catch (e) {
         console.log(e);
         this.$message({
           message: e.response.data.msg,
-          type: "error"
+          type: "error",
         });
       }
     },
@@ -377,18 +529,18 @@ export default {
     async userEnable(user_id) {
       try {
         const { data: res } = await axios.post(api.userEnable, {
-          user_id: user_id
+          user_id: user_id,
         });
         this.$message({
           message: res["msg"],
-          type: "success"
+          type: "success",
         });
         this.userGet();
       } catch (e) {
         console.log(e);
         this.$message({
           message: e.response.data.msg,
-          type: "error"
+          type: "error",
         });
       }
     },
@@ -397,18 +549,18 @@ export default {
       this.$confirm("确认删除吗?", "提示", {}).then(async () => {
         try {
           const { data: res } = await axios.post(api.userDelete, {
-            user_id: user_id
+            user_id: user_id,
           });
           this.$message({
             message: res["msg"],
-            type: "success"
+            type: "success",
           });
           this.userGet();
         } catch (e) {
           console.log(e);
           this.$message({
             message: e.response.data.msg,
-            type: "error"
+            type: "error",
           });
         }
       });
@@ -438,20 +590,22 @@ export default {
     //角色获取数据
     async roleGet() {
       try {
-        const { data: res } = await axios.get(api.roleGet);
-        for (let x = 0; x < res.data.length; x++) {
-          if (res.data[x].is_valid == 1) {
-            res.data[x].is_disabled = "否";
-          } else if (res.data[x].is_valid == 0) {
-            res.data[x].is_disabled = "是";
-          }
+        const { data: res } = await axios.post(api.roleGet, {
+          pagination_size: this.pagination.pageSize,
+          current_page: this.pagination.currentPage,
+        });
+        this.pagination.total = res.data.total;
+        for (let x = 0; x < res.data.list.length; x++) {
+          res.data.list[x].is_valid == 1
+            ? (res.data.list[x].is_disabled = "否")
+            : (res.data.list[x].is_disabled = "是");
         }
-        this.roleData = res.data;
+        this.roleData = res.data.list;
       } catch (e) {
         console.log(e);
         this.$message({
           message: e.response.data.msg,
-          type: "error"
+          type: "error",
         });
       }
     },
@@ -459,7 +613,7 @@ export default {
     async roleSetting(role_id) {
       try {
         const { data: res } = await axios.post(api.rolePrivilegeGet, {
-          role_id: role_id
+          role_id: role_id,
         });
         this.edit.checkedPrivilege = [];
         for (let x = 0; x < res.data.length; x++) {
@@ -470,7 +624,7 @@ export default {
         for (let x = 0; x < res2.data.length; x++) {
           this.edit.privilegeData.push({
             id: res2.data[x].id,
-            label: res2.data[x].name
+            label: res2.data[x].name,
           });
         }
         this.edit.roleEditRoleId = role_id;
@@ -482,7 +636,7 @@ export default {
         console.log(e);
         this.$message({
           message: e.response.data.msg,
-          type: "error"
+          type: "error",
         });
       }
     },
@@ -490,18 +644,18 @@ export default {
     async roleDisable(role_id) {
       try {
         const { data: res } = await axios.post(api.roleDisable, {
-          role_id: role_id
+          role_id: role_id,
         });
         this.$message({
           message: res["msg"],
-          type: "success"
+          type: "success",
         });
         this.roleGet();
       } catch (e) {
         console.log(e);
         this.$message({
           message: e.response.data.msg,
-          type: "error"
+          type: "error",
         });
       }
     },
@@ -509,18 +663,18 @@ export default {
     async roleEnable(role_id) {
       try {
         const { data: res } = await axios.post(api.roleEnable, {
-          role_id: role_id
+          role_id: role_id,
         });
         this.$message({
           message: res["msg"],
-          type: "success"
+          type: "success",
         });
         this.roleGet();
       } catch (e) {
         console.log(e);
         this.$message({
           message: e.response.data.msg,
-          type: "error"
+          type: "error",
         });
       }
     },
@@ -529,18 +683,18 @@ export default {
       this.$confirm("确认删除吗?", "提示", {}).then(async () => {
         try {
           const { data: res } = await axios.post(api.userDelete, {
-            role_id: role_id
+            role_id: role_id,
           });
           this.$message({
             message: res["msg"],
-            type: "success"
+            type: "success",
           });
           this.roleGet();
         } catch (e) {
           console.log(e);
           this.$message({
             message: e.response.data.msg,
-            type: "error"
+            type: "error",
           });
         }
       });
@@ -577,25 +731,29 @@ export default {
     //权限获取数据
     async privilegeGet() {
       try {
-        const { data: res } = await axios.get(api.privilegeGet);
+        const { data: res } = await axios.post(api.privilegeGet, {
+          pagination_size: this.pagination.pageSize,
+          current_page: this.pagination.currentPage,
+        });
         this.privilegeData = [];
-        for (let x = 0; x < res.data.length; x++) {
+        this.pagination.total = res.data.total;
+        for (let x = 0; x < res.data.list.length; x++) {
           this.privilegeData.push({
-            id: res.data[x].id,
-            label: res.data[x].name,
-            name: res.data[x].name,
-            mark: res.data[x].mark,
-            remark: res.data[x].remark,
-            is_valid: res.data[x].is_valid,
-            update_time: res.data[x].update_time,
-            is_disabled: res.data[x].is_valid == 1 ? "否" : "是"
+            id: res.data.list[x].id,
+            label: res.data.list[x].name,
+            name: res.data.list[x].name,
+            mark: res.data.list[x].mark,
+            remark: res.data.list[x].remark,
+            is_valid: res.data.list[x].is_valid,
+            update_time: res.data.list[x].update_time,
+            is_disabled: res.data.list[x].is_valid == 1 ? "否" : "是",
           });
         }
       } catch (e) {
         console.log(e);
         this.$message({
           message: e.response.data.msg,
-          type: "error"
+          type: "error",
         });
       }
     },
@@ -603,18 +761,18 @@ export default {
     async privilegeDisable(privilege_id) {
       try {
         const { data: res } = await axios.post(api.privilegeDisable, {
-          privilege_id: privilege_id
+          privilege_id: privilege_id,
         });
         this.$message({
           message: res["msg"],
-          type: "success"
+          type: "success",
         });
         this.privilegeGet();
       } catch (e) {
         console.log(e);
         this.$message({
           message: e.response.data.msg,
-          type: "error"
+          type: "error",
         });
       }
     },
@@ -622,18 +780,18 @@ export default {
     async privilegeEnable(privilege_id) {
       try {
         const { data: res } = await axios.post(api.privilegeEnable, {
-          privilege_id: privilege_id
+          privilege_id: privilege_id,
         });
         this.$message({
           message: res["msg"],
-          type: "success"
+          type: "success",
         });
         this.privilegeGet();
       } catch (e) {
         console.log(e);
         this.$message({
           message: e.response.data.msg,
-          type: "error"
+          type: "error",
         });
       }
     },
@@ -642,31 +800,34 @@ export default {
       this.$confirm("确认删除吗?", "提示", {}).then(async () => {
         try {
           const { data: res } = await axios.post(api.privilegeDelete, {
-            privilege_id: privilege_id
+            privilege_id: privilege_id,
           });
           this.$message({
             message: res["msg"],
-            type: "success"
+            type: "success",
           });
           this.privilegeGet();
         } catch (e) {
           console.log(e);
           this.$message({
             message: e.response.data.msg,
-            type: "error"
+            type: "error",
           });
         }
       });
-    }
+    },
   },
   mounted() {
     this.userGet();
-  }
+  },
 };
 </script>
 
 <style scoped>
 .noMargin {
   margin: 0;
+}
+.box-card {
+  min-height: 400px;
 }
 </style>
