@@ -432,6 +432,9 @@ export default {
         pageSize: 10,
         total: 0,
       }
+      this.apiHelper()
+    }
+    apiHelper() {
       if (this.activeSystem == "用户设置") {
         this.userData = [];
         this.userGet();
@@ -445,11 +448,11 @@ export default {
     },
     paginationCurrentChange(currentPage) {
       this.pagination.currentPage = currentPage;
-      this.handleChange();
+      this.apiHelper();
     },
     paginationSizeChange(pageSize) {
       this.pagination.pageSize = pageSize;
-      this.handleChange();
+      this.apiHelper();
     },
     //各组件编辑窗口关闭后回调
     close() {
