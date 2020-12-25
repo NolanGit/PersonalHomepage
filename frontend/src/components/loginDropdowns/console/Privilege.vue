@@ -30,7 +30,6 @@
             <el-table
               :key="Math.random()"
               size="mini"
-              height="550"
               :data="userData"
               stripe
               style="width: 100%"
@@ -131,7 +130,6 @@
             <el-table
               :key="Math.random()"
               size="mini"
-              height="550"
               :data="roleData"
               stripe
               style="width: 100%"
@@ -236,7 +234,6 @@
             <el-table
               :key="Math.random()"
               size="mini"
-              height="550"
               :data="privilegeData"
               stripe
               style="width: 100%"
