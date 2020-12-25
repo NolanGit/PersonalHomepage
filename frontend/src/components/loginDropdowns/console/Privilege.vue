@@ -431,7 +431,7 @@ export default {
         currentPage: 1,
         pageSize: 10,
         total: 0,
-      },
+      }
       if (this.activeSystem == "用户设置") {
         this.userData = [];
         this.userGet();
