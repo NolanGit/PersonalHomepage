@@ -156,7 +156,10 @@ export default {
     },
     async roleGetFront() {
       try {
-        const { data: res } = await axios.get(api.roleGet);
+        const { data: res } = await axios.post(api.roleGet, {
+          current_page: null,
+          pagination_size: null
+        });
         for (let x = 0; x < res.data.length; x++) {
           if (res.data[x].is_valid == 1) {
             this.roleData.push({
