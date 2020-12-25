@@ -22,14 +22,19 @@
       :size="drawer.size"
     >
       <div class="margin-medium" v-if="drawer.visible==true">
-        <div v-if="activeComponent=='Privilege'">
-          <Privilege :user_id="user_id" :login_name="login_name" />
-        </div>
-        <div v-if="activeComponent=='Script'">
-          <Script :user_id="user_id" />
-        </div>
-        <div v-if="activeComponent=='widgetEdit'">
-          <widgetEdit :user_id="user_id" />
+        <div
+          class="scrollbar-div"
+          style="max-height: calc(100vh - 435px); height: calc(100vh - 435px)"
+        >
+          <div v-if="activeComponent=='Privilege'">
+            <Privilege :user_id="user_id" :login_name="login_name" />
+          </div>
+          <div v-if="activeComponent=='Script'">
+            <Script :user_id="user_id" />
+          </div>
+          <div v-if="activeComponent=='widgetEdit'">
+            <widgetEdit :user_id="user_id" />
+          </div>
         </div>
       </div>
     </el-drawer>
