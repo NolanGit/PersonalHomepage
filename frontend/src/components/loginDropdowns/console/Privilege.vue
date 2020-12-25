@@ -427,6 +427,11 @@ export default {
   methods: {
     //切换handle
     handleChange() {
+      this.pagination = {
+        currentPage: 1,
+        pageSize: 10,
+        total: 0,
+      },
       if (this.activeSystem == "用户设置") {
         this.userData = [];
         this.userGet();
