@@ -626,8 +626,8 @@ export default {
         this.edit.privilegeData = [];
         for (let x = 0; x < res2.data.list.length; x++) {
           this.edit.privilegeData.push({
-            id: res2.data[x].id,
-            label: res2.data[x].name,
+            id: res2.data.list[x].id,
+            label: res2.data.list[x].name,
           });
         }
         this.edit.roleEditRoleId = role_id;
