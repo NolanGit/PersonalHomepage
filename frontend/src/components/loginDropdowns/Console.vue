@@ -90,7 +90,7 @@ export default {
       this.drawer.title = consoleOption.name;
       this.drawer.visible = true;
       this.drawer.direction = "ttb";
-      this.drawer.size = "80%";
+      this.drawer.size = "85%";
     },
   },
   created() {},
