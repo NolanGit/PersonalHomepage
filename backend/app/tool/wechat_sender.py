@@ -1,6 +1,12 @@
 #coding=utf-8
 import requests
-from ..config_helper import ConfigHelper
+try:
+    from ..config_helper import ConfigHelper
+except:
+    import sys
+    sys.append('../')
+    sys.append('../../')
+    from config_helper import ConfigHelper
 
 ADMIN_EMAIL = ConfigHelper().get('ADMIN_EMAIL')
 
