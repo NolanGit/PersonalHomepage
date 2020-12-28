@@ -619,7 +619,7 @@ export default {
         for (let x = 0; x < res.data.length; x++) {
           this.edit.checkedPrivilege.push(res.data[x].privilege_name);
         }
-        const { data: res2 } = await axios.post(api.privilegeGet,{
+        const { data: res2 } = await axios.post(api.privilegeGet, {
           pagination_size: null,
           current_page: null
         });
