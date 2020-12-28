@@ -120,7 +120,7 @@ if first_excution == 'n' or first_excution == 'N':
         else:
             print('错误的选项，请输入操作数字')
 
-    first_excution = input('那么，需要执行初始化SQL吗? (y/n):')
+    first_excution = input('那么，需要执行初始化SQL吗? 所有数据都会被置为初始状态 (y/n):')
     print('')
     if first_excution != 'y':
         bye()

@@ -624,10 +624,10 @@ export default {
           current_page: null
         });
         this.edit.privilegeData = [];
-        for (let x = 0; x < res2.data.length; x++) {
+        for (let x = 0; x < res2.data.list.length; x++) {
           this.edit.privilegeData.push({
-            id: res2.data[x].id,
-            label: res2.data[x].name,
+            id: res2.data.list[x].id,
+            label: res2.data.list[x].name,
           });
         }
         this.edit.roleEditRoleId = role_id;
