@@ -13,7 +13,7 @@ except:
     from config_helper import ConfigHelper
     from model.wallpapers_model import wallpapers as wallpapers_table
 
-WALLPAPERS_PATH = ConfigHelper.get('BASE_PATH') + '/wallpapers/'
+WALLPAPERS_PATH = ConfigHelper().get('BASE_PATH') + '/wallpapers/'
 
 base_url = "https://cn.bing.com/HPImageArchive.aspx?format=js&idx=0&n=2"
 r = requests.get(base_url)
