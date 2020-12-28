@@ -4,8 +4,8 @@ try:
     from ..config_helper import ConfigHelper
 except:
     import sys
-    sys.append('../')
-    sys.append('../../')
+    sys.path.append('../')
+    sys.path.append('../../')
     from config_helper import ConfigHelper
 
 ADMIN_EMAIL = ConfigHelper().get('ADMIN_EMAIL')
