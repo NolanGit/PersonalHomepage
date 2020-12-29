@@ -135,24 +135,16 @@ export default {
           cb([]);
         } catch (e) {}
       } else {
-        var lastWord = sessionStorage.getItem("lastWord");
-        if (lastWord == queryString) {
-          cb(eval(sessionStorage.getItem("lastWordAutoComplete")));
-        } else {
-          sessionStorage.setItem("lastWord", queryString);
           var autoCompleteUrl = this.searchEngines.suggest_url.replace(
             "%word%",
             this.word
           );
           try {
-            const { data: res } = await axios.get(autoCompleteUrl);
-            var reg = this.searchEngines.suggest_regex;
-            var result = str.match(reg);
-            sessionStorage.setItem(
-              "lastWordAutoComplete",
-              JSON.stringify(result)
-            );
-            cb(result);
+    let script = document.createElement("script");
+    script.src = autoCompleteUrl;
+eval("window.baidu = {sug: function (json) {console.log(json.s);cb(json.s.map(function (x){return {'value':x}}))}}")
+    document.querySelector("head").appendChild(script);
+    document.querySelector("head").removeChild(script);
           } catch (e) {
             console.log(e);
             this.$message({
@@ -160,7 +152,6 @@ export default {
               type: "error",
             });
           }
-        }
       }
     },
   },
