@@ -7,7 +7,8 @@ from .model_function import BaseModel
 class search_engines(BaseModel):
     name = CharField()
     main_url = CharField()
-    auto_complete_url = CharField()
+    suggest_url = CharField()
+    suggest_regex = CharField()
     icon = CharField()
 
     class Meta:

@@ -14,12 +14,11 @@ from ..model.search_model import search_engines, search_engines_log
 
 rsp = MyResponse()
 
-@search.route('/searchEnginesData', methods=['GET'])
-def searchEnginesData():
-    result = []
+@search.route('/searchEngines', methods=['GET'])
+def searchEngines():
     try:
         search_engines_query = search_engines.select().dicts()
-        return rsp.success([{'id': row['id'], 'name': row['name'], 'main_url': row['main_url'], 'auto_complete_url': row['auto_complete_url'], 'icon': row['icon']} for row in search_engines_query])
+        return rsp.success([{'id': row['id'], 'name': row['name'], 'main_url': row['main_url'], 'suggest_url': row['suggest_url'], 'suggest_regex': row['suggest_regex'], 'icon': row['icon']} for row in search_engines_query])
     except Exception as e:
         return rsp.failed(e)
 
@@ -28,16 +27,6 @@ def searchEnginesData():
 def searchEnginesAutoComplete():
     try:
         return rsp.success(eval(requests.get(request.get_json()['autoCompleteUrl']).text.split('s:')[1].split('});')[0]))
-    except Exception as e:
-        traceback.print_exc()
-        return rsp.failed(e)
-
-
-@search.route('/searchEnginesSearch', methods=['POST'])
-def searchEnginesSearch():
-    try:
-        if request.get_json()['name'] == '百度':
-            return rsp.success(eval(urllib.request.urlopen(request.get_json()['autoCompleteUrl']).read().decode('gbk').split('s:')[1].split('});')[0]))
     except Exception as e:
         traceback.print_exc()
         return rsp.failed(e)
