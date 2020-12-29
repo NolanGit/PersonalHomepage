@@ -94,12 +94,11 @@ export default {
       try {
         const { data: res } = await axios.get(api.searchEngines);
         for (let s = 0; s < res.data.length; s++) {
+          let suggest_url = default_suggest_url;
+          let suggest_func = default_suggest_func;
           if (md5(res.data[s].suggest_func) == res.data[s].s) {
-            let suggest_url = res.data[s].suggest_url;
-            let suggest_func = res.data[s].suggest_func;
-          } else {
-            let suggest_url = default_suggest_url;
-            let suggest_func = default_suggest_func;
+            suggest_url = res.data[s].suggest_url;
+            suggest_func = res.data[s].suggest_func;
           }
           this.searchEngines.options.push({
             id: res.data[s].id,
