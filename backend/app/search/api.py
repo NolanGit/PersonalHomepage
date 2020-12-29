@@ -8,17 +8,30 @@ from . import search
 from flask_cors import cross_origin
 from flask import render_template, session, redirect, url_for, current_app, flash, request, jsonify
 
+from ..common_func import CommonFunc
 from ..login.login_funtion import User
 from ..response import Response as MyResponse
 from ..model.search_model import search_engines, search_engines_log
 
 rsp = MyResponse()
+cf = CommonFunc()
+
 
 @search.route('/searchEngines', methods=['GET'])
 def searchEngines():
     try:
         search_engines_query = search_engines.select().dicts()
-        return rsp.success([{'id': row['id'], 'name': row['name'], 'main_url': row['main_url'], 'suggest_url': row['suggest_url'], 'suggest_regex': row['suggest_regex'], 'icon': row['icon']} for row in search_engines_query])
+        return rsp.success([
+            {
+                'id': row['id'],
+                'name': row['name'],
+                'main_url': row['main_url'],
+                'suggest_url': row['suggest_url'],
+                'suggest_func': row['suggest_func'],
+                's': cf.md5_it(row['suggest_func']),  # 简单加密，防君子不防小人
+                'icon': row['icon']
+            } for row in search_engines_query
+        ])
     except Exception as e:
         return rsp.failed(e)
 

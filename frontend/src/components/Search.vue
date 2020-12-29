@@ -40,8 +40,13 @@
   </div>
 </template>
 <script>
+import md5 from "js-md5";
 import axios from "axios";
 import Router from "vue-router";
+const default_suggest_url =
+  "https://suggestion.baidu.com/su?wd=%word%&cb=window.baidu.sug";
+const default_suggest_func =
+  "window.baidu={sug:function(json){cb(json.s.map(function(x){return{'value':x}}))}}";
 const api = {
   searchEngines: "/search/searchEngines",
   searchLog: "/search/searchLog",
@@ -61,7 +66,7 @@ export default {
         select_engine_id: 0,
         main_url: "",
         suggest_url: "",
-        suggest_regex: "",
+        suggest_func: "",
         options: [],
       },
     };
@@ -70,12 +75,18 @@ export default {
     searchEnginesChanged() {
       for (let x = 0; x < this.searchEngines.options.length; x++) {
         if (this.searchEngines.select == this.searchEngines.options[x].value) {
-          this.searchEngines.select_engine_id = this.searchEngines.options[x].id;
+          this.searchEngines.select_engine_id = this.searchEngines.options[
+            x
+          ].id;
           this.searchEngines.main_url = this.searchEngines.options[x].main_url;
-          this.searchEngines.suggest_url = this.searchEngines.options[x].suggest_url;
-          this.searchEngines.suggest_regex = this.searchEngines.options[x].suggest_regex;
+          this.searchEngines.suggest_url = this.searchEngines.options[
+            x
+          ].suggest_url;
+          this.searchEngines.suggest_func = this.searchEngines.options[
+            x
+          ].suggest_func;
           this.searchIcon = this.searchEngines.options[x].icon;
-          return
+          return;
         }
       }
     },
@@ -83,11 +94,18 @@ export default {
       try {
         const { data: res } = await axios.get(api.searchEngines);
         for (let s = 0; s < res.data.length; s++) {
+          if (md5(res.data[s].suggest_func) == res.data[s].s) {
+            let suggest_url = res.data[s].suggest_url;
+            let suggest_func = res.data[s].suggest_func;
+          } else {
+            let suggest_url = default_suggest_url;
+            let suggest_func = default_suggest_func;
+          }
           this.searchEngines.options.push({
             id: res.data[s].id,
             main_url: res.data[s].main_url,
-            suggest_url: res.data[s].suggest_url,
-            suggest_regex: res.data[s].suggest_regex,
+            suggest_url: suggest_url,
+            suggest_func: suggest_func,
             icon: res.data[s].icon,
             label: res.data[s].name,
             value: res.data[s].name,
@@ -97,7 +115,7 @@ export default {
         this.searchEngines.select_engine_id = this.searchEngines.options[0].id;
         this.searchEngines.main_url = this.searchEngines.options[0].main_url;
         this.searchEngines.suggest_url = this.searchEngines.options[0].suggest_url;
-        this.searchEngines.suggest_regex = this.searchEngines.options[0].suggest_regex;
+        this.searchEngines.suggest_func = this.searchEngines.options[0].suggest_func;
         this.searchIcon = this.searchEngines.options[0].icon;
       } catch (e) {
         console.log(e);
@@ -108,10 +126,7 @@ export default {
       }
     },
     async search() {
-      var searchUrl = this.searchEngines.main_url.replace(
-        "%word%",
-        this.word
-      );
+      var searchUrl = this.searchEngines.main_url.replace("%word%", this.word);
       window.open(searchUrl);
       this.autoComplete("");
       try {
@@ -135,23 +150,23 @@ export default {
           cb([]);
         } catch (e) {}
       } else {
-          var autoCompleteUrl = this.searchEngines.suggest_url.replace(
-            "%word%",
-            this.word
-          );
-          try {
-    let script = document.createElement("script");
-    script.src = autoCompleteUrl;
-eval("window.baidu = {sug: function (json) {console.log(json.s);cb(json.s.map(function (x){return {'value':x}}))}}")
-    document.querySelector("head").appendChild(script);
-    document.querySelector("head").removeChild(script);
-          } catch (e) {
-            console.log(e);
-            this.$message({
-              message: e.response.data.msg,
-              type: "error",
-            });
-          }
+        var autoCompleteUrl = this.searchEngines.suggest_url.replace(
+          "%word%",
+          this.word
+        );
+        try {
+          let script = document.createElement("script");
+          script.src = autoCompleteUrl;
+          eval(this.searchEngines.suggest_func);
+          document.querySelector("head").appendChild(script);
+          document.querySelector("head").removeChild(script);
+        } catch (e) {
+          console.log(e);
+          this.$message({
+            message: e.response.data.msg,
+            type: "error",
+          });
+        }
       }
     },
   },
