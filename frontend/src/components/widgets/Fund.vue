@@ -22,7 +22,7 @@
         style="text-align: left; font-size: 12px"
       >
         <span class="margin_right-medium">{{
-          "当前单价：" + latestUnitPrice
+          "单价：" + latestUnitPrice
         }}</span>
         <span> 涨跌幅： </span>
         <span style="color: #f56c6c" v-if="latestRange > 0"> + </span>
