@@ -9,7 +9,7 @@
         "build": "cross-env NODE_ENV=production env_config=prod node build/build.js"
     },
     "dependencies": {
-        "axios": "^0.19.0",
+        "axios": ">=0.21.1",
         "better-scroll": "^1.15.2",
         "echarts": "^4.8.0",
         "element-ui": "2.12.0",
