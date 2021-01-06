@@ -22,7 +22,7 @@
         style="text-align: left; font-size: 12px"
       >
         <span class="margin_right-medium">{{
-          "当前单价：" + latestUnitPrice
+          "单价：" + latestUnitPrice
         }}</span>
         <span> 涨跌幅： </span>
         <span style="color: #f56c6c" v-if="latestRange > 0"> + </span>
@@ -33,7 +33,9 @@
         <span style="color: #67c23a" v-if="latestRange <= 0">
           {{ latestRange }}
         </span>
-        <span>
+        <el-tooltip class="item" effect="dark" :content="latestTime" placement="right">
+          <span class="el-icon-info" style="margin-top: 6px; margin-left: 6px;"></span>
+        </el-tooltip>
       </div>
       <ve-line
         height="215px"
@@ -198,6 +200,7 @@ export default {
       chartData: {
         rows: [],
       },
+      latestTime: null,
       latestRange: 0,
       latestUnitPrice: 0,
       activeName: "",
@@ -417,6 +420,7 @@ export default {
         };
 
         var listLen = res.data[0].price_list.length;
+        this.latestTime = '更新于：' + res.data[0].price_list[listLen - 1].update_time
         this.latestRange = res.data[0].price_list[listLen - 1].range;
         this.latestUnitPrice = res.data[0].price_list[listLen - 1].price;
 
