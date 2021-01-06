@@ -54,11 +54,9 @@ def edit():
 
         threshold = [threshold_min, threshold_max]
         try:
-            _ = gold_price_push_option.get((gold_price_push_option.is_valid == 1) & (gold_price_push_option.user_id == user_id))
-            _.is_valid = 0
-            _.save()
+            _ = gold_price_push_option.update(is_valid=0).where((gold_price_push_option.is_valid == 1) & (gold_price_push_option.user_id == user_id)).execute()
         except DoesNotExist:
-            pass
+            ...
         gold_price_push_option.create(user_id=user_id, is_valid=1, push_threshold=str(threshold), update_time=datetime.datetime.now())
         return rsp.success()
     except Exception as e:
