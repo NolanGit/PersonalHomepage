@@ -16,7 +16,7 @@ class IpLocation(Base):
 
     def get_location(self):
         self._get_location_from_db()
-        if self.location == None:
+        if self.location is None:
             self._get_location_from_api()
         return self
 

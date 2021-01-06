@@ -42,7 +42,7 @@ def subprocess_clean():
 
     temp_status = True
     for x in range(len(running_subprocess)):
-        if running_subprocess[x].poll() == None:  # 存在运行状态的子线程
+        if running_subprocess[x].poll() is None:  # 存在运行状态的子线程
             temp_status = False
             break
     if temp_status:
@@ -145,7 +145,7 @@ def run():
     command = request.get_json()['command']
     user_key = request.cookies.get('user_key')
     redis_conn = privilegeFunction().get_redis_conn0()
-    if user_key == None or redis_conn.exists(user_key) == 0:
+    if user_key is None or redis_conn.exists(user_key) == 0:
         user_id = 0
     user_id = redis_conn.get(user_key)
     sign = cf.md5_it(str(id) + str(user_id) + user_key + str(salt) + command)
@@ -210,7 +210,7 @@ def runOutput():
             return rsp.success({'output': '', 'status': -1})
         else:
             output = ''
-            status = 1 if running_subprocess[process_id].poll() == None else 0
+            status = 1 if running_subprocess[process_id].poll() is None else 0
             for _ in range(5):
                 # 此接口只会返回新增的输出，不会保存完成输出，运行日志中每个任务的完整输出是由前端保存新增输出后返回的，如果前端存的不完整，后端也就不完整了，建议修改成后端保存完整输出，运行结束后将完整输出返回并保存至数据库
                 try:

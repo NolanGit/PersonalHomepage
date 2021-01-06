@@ -34,7 +34,7 @@ def permission_required(privilege):
             redis_conn = pf.get_redis_conn0()
 
             # 是否存在cookie
-            if user_key == None or redis_conn.exists(user_key) == 0:
+            if user_key is None or redis_conn.exists(user_key) == 0:
                 msg = ('[权限校验失败]cookie:%s,URL:%s,原因:不存在cookie' % (user_key, privilege))
                 short_msg = '[权限校验失败]登录状态已失效，请刷新页面'
                 print(msg)
@@ -89,7 +89,7 @@ def user_list_get(_current_page=None, _pagination_size=None):
     result = []
     user_query = user.select().where(user.is_valid != -1).order_by(user.id)
     total = user_query.count()
-    if _current_page == None and _pagination_size == None:
+    if _current_page is None and _pagination_size is None:
         user_query = user_query.dicts()
     else:
         user_query = user.select().where(user.is_valid != -1).order_by(user.id).paginate(_current_page, _pagination_size).dicts()
@@ -119,7 +119,7 @@ def role_list_get(_current_page=None, _pagination_size=None):
     result = []
     role_query = role.select().where(role.is_valid != -1).order_by(role.id)
     total = role_query.count()
-    if _current_page == None and _pagination_size == None:
+    if _current_page is None and _pagination_size is None:
         role_query = role_query.dicts()
     else:
         role_query = role.select().where(role.is_valid != -1).order_by(role.id).paginate(_current_page, _pagination_size).dicts()
@@ -143,7 +143,7 @@ def privilege_list_get(_current_page=None, _pagination_size=None):
     result = []
     privilege_query = privilege_model.select().where(privilege_model.is_valid != -1).order_by(privilege_model.id)
     total = privilege_query.count()
-    if _current_page == None and _pagination_size == None:
+    if _current_page is None and _pagination_size is None:
         privilege_query = privilege_query.dicts()
     else:
         privilege_query = privilege_model.select().where(privilege_model.is_valid != -1).order_by(privilege_model.id).paginate(_current_page, _pagination_size).dicts()

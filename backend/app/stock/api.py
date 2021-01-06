@@ -87,7 +87,7 @@ def get():
         if user_id != 0:
             user_key = request.cookies.get('user_key')
             redis_conn = privilegeFunction().get_redis_conn0()
-            if user_key == None or redis_conn.exists(user_key) == 0:
+            if user_key is None or redis_conn.exists(user_key) == 0:
                 user_id = 0
             user_id_in_redis = redis_conn.get(user_key)
             if user_id != user_id_in_redis:

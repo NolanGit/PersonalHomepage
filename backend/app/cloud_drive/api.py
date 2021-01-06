@@ -46,7 +46,7 @@ def get():
         redis_conn = privilegeFunction().get_redis_conn0()
 
         # 判断user_key是否有效
-        if user_key == None or redis_conn.exists(user_key) == 0:
+        if user_key is None or redis_conn.exists(user_key) == 0:
             return rsp.failed('错误的用户信息'), 403
 
         # 判断user_id是否一致
@@ -102,7 +102,7 @@ def share_set():
         redis_conn = privilegeFunction().get_redis_conn0()
 
         # 判断user_key是否有效
-        if user_key == None or redis_conn.exists(user_key) == 0:
+        if user_key is None or redis_conn.exists(user_key) == 0:
             return rsp.failed('错误的用户信息'), 403
 
         # 判断user_id是否一致
@@ -143,7 +143,7 @@ def cancel():
         redis_conn = privilegeFunction().get_redis_conn0()
 
         # 判断user_key是否有效
-        if user_key == None or redis_conn.exists(user_key) == 0:
+        if user_key is None or redis_conn.exists(user_key) == 0:
             return rsp.failed('错误的用户信息'), 403
 
         # 判断user_id是否一致

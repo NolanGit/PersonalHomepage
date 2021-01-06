@@ -161,7 +161,7 @@ def iconCategory():
 def upload():
     user_key = request.cookies.get('user_key')
     redis_conn = privilegeFunction().get_redis_conn0()
-    if user_key == None or redis_conn.exists(user_key) == 0:
+    if user_key is None or redis_conn.exists(user_key) == 0:
         user_id = 0
     user_id = redis_conn.get(user_key)
 
@@ -182,12 +182,12 @@ def download():
     file_id = request.args.get('file_id')
     share_token = request.args.get('share_token')
 
-    if share_token == None:
+    if share_token is None:
         user_key = request.cookies.get('user_key')
-        if user_key == None:
+        if user_key is None:
             return rsp.failed('参数错误')
         redis_conn = privilegeFunction().get_redis_conn0()
-        if user_key == None or redis_conn.exists(user_key) == 0:
+        if user_key is None or redis_conn.exists(user_key) == 0:
             user_id = 0
         else:
             user_id = redis_conn.get(user_key)
