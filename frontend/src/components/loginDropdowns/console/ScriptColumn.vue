@@ -7,38 +7,65 @@
         :title="singleSystem.title"
         :name="singleSystem.title"
       >
-        <a
-          style="color: #606266; font-size: 12px; font-family: Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,SimSun,sans-serif;"
-        >包括：</a>
-        <div class="margin_left-medium" v-for="singleForm in formData" :key="singleForm.key">
+        <a style="color: #606266; font-size: 12px" class="better_font_style"
+          >包括：</a
+        >
+        <div
+          class="margin_left-medium"
+          v-for="singleForm in formData"
+          :key="singleForm.key"
+        >
           <a
-            style="cursor: pointer; color: #409EFF; font-size: 12px; font-family: Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,SimSun,sans-serif;"
+            style="cursor: pointer; color: #409eff; font-size: 12px"
+            class="better_font_style"
             type="text"
             size="small"
             @click="scriptLabelClicked(singleForm.id)"
-          >{{singleForm.title}}</a>
+            >{{ "- " + singleForm.title }}</a
+          >
         </div>
         <a
-          class="collapse-div"
-          style="color: #606266; font-size: 12px; font-family: Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,SimSun,sans-serif;"
-          v-show="formData.length==0"
-        >本栏目暂无脚本</a>
+          class="collapse-div better_font_style"
+          style="color: #606266; font-size: 12px"
+          v-show="formData.length == 0"
+          >本栏目暂无脚本</a
+        >
         <div>
-          <el-button type="text" v-show="formData.length==0" size="small" @click="newTab">需要新增？</el-button>
+          <el-button
+            type="text"
+            v-show="formData.length == 0"
+            size="small"
+            @click="newTab"
+            >需要新增？</el-button
+          >
           <el-button
             class="noMargin"
             type="text"
-            style="color: #f56c6c;"
+            style="color: #f56c6c"
             size="small"
             @click="subSystemDelete()"
-          >删除栏目</el-button>
+            >删除栏目</el-button
+          >
         </div>
       </el-collapse-item>
     </el-collapse>
     <el-popover placement="right" trigger="hover">
-      <el-input size="mini" style="width: 170px" placeholder="请输入栏目名称" v-model="subSystemName"></el-input>
-      <el-button class="margin_top-mini" size="mini" @click="subSystemAdd">确定</el-button>
-      <el-button slot="reference" class="margin_top-medium" type="text" size="small">新增栏目</el-button>
+      <el-input
+        size="mini"
+        style="width: 170px"
+        placeholder="请输入栏目名称"
+        v-model="subSystemName"
+      ></el-input>
+      <el-button class="margin_top-mini" size="mini" @click="subSystemAdd"
+        >确定</el-button
+      >
+      <el-button
+        slot="reference"
+        class="margin_top-medium"
+        type="text"
+        size="small"
+        >新增栏目</el-button
+      >
     </el-popover>
   </el-card>
 </template>
