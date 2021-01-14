@@ -97,7 +97,7 @@ def base_58(target: int):
     # 接受一个整数，返回不会重复的较短的字符串
     r = ''
     target = int(str(target) + str(time.time()).split('.')[0][-6:])
-    while target > 58:
+    while target >= 58:
         r += str(DICT_DISORDER[target % 58])
         target = target // 58
     r += str(DICT_DISORDER[target])
