@@ -35,7 +35,7 @@
                 </td>
                 <td class="tomorrowWeatherText">
                   <div class="tomorrowWeatherTextDiv">
-                    明日:{{ weather.weatherForm.tomorrow_tmp_min }}°C-{{
+                    明日:{{ weather.weatherForm.tomorrow_tmp_min }}°C ~ {{
                     weather.weatherForm.tomorrow_tmp_max
                     }}°C
                   </div>
@@ -48,7 +48,7 @@
             <div class="weatherSideText">
               <td>
                 <div class="weatherSideTextDetail">
-                  今日: {{ weather.weatherForm.tmp_min }}°C-{{
+                  今日: {{ weather.weatherForm.tmp_min }}°C ~ {{
                   weather.weatherForm.tmp_max
                   }}°C
                 </div>
