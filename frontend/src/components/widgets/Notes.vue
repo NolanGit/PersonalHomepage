@@ -4,8 +4,13 @@
       <el-row type="flex" justify="center">
         <div class="widget-label">便签</div>
       </el-row>
-      <el-tabs tab-position="left" class="scrollbar-div" v-model="activeNote">
+      <el-tabs
+        tab-position="left"
+        style="max-height: 250px"
+        v-model="activeNote"
+      >
         <el-tab-pane
+          class="scrollbar-div"
           v-for="singleNotesData in notesData"
           :key="singleNotesData"
           :label="singleNotesData.name"
