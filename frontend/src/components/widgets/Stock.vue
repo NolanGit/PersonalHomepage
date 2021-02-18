@@ -33,6 +33,7 @@
         <span style="color: #67c23a" v-if="latestRange <= 0">
           {{ latestRange }}
         </span>
+        <span style="color: #67c23a" v-if="latestRange <= 0"> % </span>
         <el-tooltip class="item" effect="dark" :content="latestTime" placement="right">
           <span class="el-icon-info" style="margin-top: 6px; margin-left: 6px;"></span>
         </el-tooltip>
