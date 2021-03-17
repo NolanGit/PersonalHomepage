@@ -4,7 +4,7 @@
 
 - 前端使用Vue.js，后端使用Python，MariaDB+Redis提供数据存储。前端框架使用Element UI，后端框架使用Flask，后端ORM使用Peewee。
 
-- 🐞 如果有任何BUG/需求/建议，欢迎提Issues！
+- 🐞 如果有任何BUG/需求/建议，欢迎附上复现步骤/想法并提Issues！
 
 - ⭐ 欢迎star！
 
