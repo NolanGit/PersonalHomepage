@@ -53,7 +53,12 @@
           </span>
           <p
             class="notesText scrollbar-div"
-            style="max-width: 77%; max-height: 250px; min-height: 250px"
+            style="
+              padding-right: 10px;
+              max-width: 93%;
+              max-height: 250px;
+              min-height: 250px;
+            "
           >
             {{ singleNotesData.content }}
           </p>

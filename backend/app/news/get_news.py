@@ -11,6 +11,12 @@ import traceback
 from lxml import etree
 from threading import Thread
 from bs4 import BeautifulSoup
+from model.news_model import news
+from ..config_helper import ConfigHelper
+
+sys.path.append('../')
+sys.path.append('../..')
+NEWS_JSON_PATH = ConfigHelper().get('BASE_PATH') + '/backend/app/news/json'
 
 #理论python和前端js会自动转义，但如果采集名称因引号或其它需转义的字符报错，请将相应采集名修改如下
 #hot_name = .replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").replace("\"", "").replace("\'", "").strip()
@@ -1021,5 +1027,26 @@ def multi_run():
     print("耗时:", time.time() - t1)
 
 
+def json_2_db(news_json):
+    news.create(news_json=news_json,create_time=datetime.datetime.now())
+
 if __name__ == "__main__":
     multi_run()
+
+    temp = {}
+    r = []
+    files = os.listdir(NEWS_JSON_PATH)
+    for file in files:
+        file_path = os.path.join(NEWS_JSON_PATH, file)
+        temp[file] = json.load(open(file_path))
+    r.append({'title': '百度', 'data': [temp.pop('baidu_now.json'), temp.pop('baidu_today.json'), temp.pop('baidu_week.json')]})
+    r.append({'title': '什么值得买', 'data': [temp.pop('smzdm_article_today.json'), temp.pop('smzdm_article_week.json'), temp.pop('smzdm_article_month.json')]})
+    r.append({'title': '知乎', 'data': [temp.pop('zhihu_daily.json'), temp.pop('zhihu_good.json'), temp.pop('zhihu_hot.json')]})
+    r.append({'title': '微信', 'data': [temp.pop('weixin_hot.json'), temp.pop('weixin.json')]})
+    r.append({'title': '36Kr', 'data': [temp.pop('36kr_hot.json'), temp.pop('36kr_article.json')]})
+    r.append({'title': '新京报', 'data': [temp.pop('bjnews_suggestion.json'), temp.pop('bjnews_ranking.json'), temp.pop('bjnews_comment_ranking.json')]})
+    r.append({'title': '黑客派', 'data': [temp.pop('hacpai_hot.json'), temp.pop('hacpai_play.json')]})
+    for key in temp:
+        r.append({'title': temp[key]['title'], 'data': [temp[key]]})
+    json_2_db(r)
+
