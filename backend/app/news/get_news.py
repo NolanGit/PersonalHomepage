@@ -438,7 +438,7 @@ def parse_weixin():
         for soup_a in soup.find('ul', 'news-list').find_all("div", "txt-box"):
             blist = {}
             hot_name = soup_a.find("h3").find("a").text.replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").strip()
-            hot_url = soup_a.find("h3").find("a").get('href').replace('×tamp','&timestamp')
+            hot_url = soup_a.find("h3").find("a").get('href').replace('×tamp', '&timestamp')
             group = "weixin"
             blist["name"] = hot_name
             blist["url"] = hot_url
@@ -1028,12 +1028,11 @@ def multi_run():
     print("耗时:", time.time() - t1)
 
 
-def json_2_db(news_json):
-    news.create(news_json=news_json,create_time=datetime.datetime.now())
-
 if __name__ == "__main__":
     multi_run()
 
+    # 以下为存库逻辑
+    current_time = datetime.datetime.now()
     temp = {}
     r = []
     files = os.listdir(NEWS_JSON_PATH)
@@ -1049,5 +1048,7 @@ if __name__ == "__main__":
     r.append({'title': '黑客派', 'data': [temp.pop('hacpai_hot.json'), temp.pop('hacpai_play.json')]})
     for key in temp:
         r.append({'title': temp[key]['title'], 'data': [temp[key]]})
-    json_2_db(str(r))
-
+    for s_r in r:
+        website = s_r['title']
+        for s_s_r in s_r['data']:
+            news.create(website=news_json, category=s_s_r['title'], content=s_s_r['data'], create_time=current_time)
