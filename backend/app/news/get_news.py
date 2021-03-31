@@ -244,7 +244,7 @@ def parse_bjnews():
             hot_name = soup_a.find('a').find('div').text.replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").strip()
             hot_url = soup_a.find('a').get('href')
             group = "bjnews"
-            blist["name"] = hot_name
+            blist["name"] = hot_name.strip()
             blist["url"] = hot_url
             list.append(blist)
         jsondict["title"] = "推荐"
@@ -262,7 +262,7 @@ def parse_bjnews():
             hot_name = soup_a.text.replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").strip()[2:]
             hot_url = soup_a.get('href')
             group = "bjnews"
-            blist["name"] = hot_name
+            blist["name"] = hot_name.strip()
             blist["url"] = hot_url
             list.append(blist)
         jsondict["title"] = "热榜"
@@ -279,7 +279,7 @@ def parse_bjnews():
             hot_name = soup_a.text.replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").strip()[2:]
             hot_url = soup_a.get('href')
             group = "bjnews"
-            blist["name"] = hot_name
+            blist["name"] = hot_name.strip()
             blist["url"] = hot_url
             list.append(blist)
         jsondict["title"] = "热评"
@@ -1051,4 +1051,4 @@ if __name__ == "__main__":
     for s_r in r:
         website = s_r['title']
         for s_s_r in s_r['data']:
-            news.create(website=news_json, category=s_s_r['title'], content=s_s_r['data'], create_time=current_time)
+            news.create(website=website, category=s_s_r['title'], content=s_s_r['data'], create_time=current_time)
