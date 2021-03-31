@@ -2,6 +2,9 @@
 import os
 import re
 import sys
+sys.path.append('../')
+sys.path.append('../..')
+
 import time
 import json
 import base64
@@ -12,10 +15,8 @@ from lxml import etree
 from threading import Thread
 from bs4 import BeautifulSoup
 from model.news_model import news
-from ..config_helper import ConfigHelper
+from config_helper import ConfigHelper
 
-sys.path.append('../')
-sys.path.append('../..')
 NEWS_JSON_PATH = ConfigHelper().get('BASE_PATH') + '/backend/app/news/json'
 
 #理论python和前端js会自动转义，但如果采集名称因引号或其它需转义的字符报错，请将相应采集名修改如下
@@ -1048,5 +1049,5 @@ if __name__ == "__main__":
     r.append({'title': '黑客派', 'data': [temp.pop('hacpai_hot.json'), temp.pop('hacpai_play.json')]})
     for key in temp:
         r.append({'title': temp[key]['title'], 'data': [temp[key]]})
-    json_2_db(r)
+    json_2_db(str(r))
 
