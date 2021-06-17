@@ -36,35 +36,33 @@ def utc2local(utc_st):
 
 
 #百度
-def parse_baidu(name):
+def parse_baidu():
     try:
         jsondict = {}
         jsondict['website'] = 'baidu'
-        if name == 'now':
-            jsondict["title"] = "实时"
-            url = "http://top.baidu.com/buzz?b=1"
-        if name == 'today':
-            jsondict["title"] = "今日"
-            url = "http://top.baidu.com/buzz?b=341"
-        if name == 'week':
-            jsondict["title"] = "七日"
-            url = "http://top.baidu.com/buzz?b=42"
-        fname = dir + "baidu_" + name + ".json"
+        jsondict["title"] = "实时"
+        url = "https://top.baidu.com/board?tab=realtime"
+        fname = dir + "baidu.json"
         r = requests.get(url, timeout=(5, 10))
-        r.encoding = 'gb2312'
-        soup = etree.HTML(r.text.replace("<tr >", "<tr class=\"hideline\">"))
+        # r.encoding = 'gb2312'
+        soup = BeautifulSoup(r.text, 'html.parser')
+
         list = []
         list_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
         jsondict["time"] = list_time
-        for soup_a in soup.xpath("//tr[@class='hideline']"):
+
+        def hot_class_filter(class_text):
+            print(class_text)
+            return (class_text is not None) and (class_text.startswith('title_'))
+
+        for soup_a in soup.find_all(class_=hot_class_filter):
             blist = {}
-            hot_name = soup_a.xpath("./td[2]/a[1]/text()")[0].replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").strip()
-            hot_url = soup_a.xpath("./td[2]/a[1]/@href")[0]
-            hot_num = soup_a.xpath("./td[@class='last']/span/text()")[0]
-            group = name
+            hot_name = soup_a.text.replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").replace(" 爆", "").replace(" 热", "").replace(" 新", "").strip()
+            hot_url = soup_a.get('href')
+            if hot_url == None:
+                continue
             blist["name"] = hot_name
             blist["url"] = hot_url
-            blist["num"] = hot_num
             list.append(blist)
         jsondict["data"] = list
         content = json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
@@ -72,7 +70,7 @@ def parse_baidu(name):
             f.write(content)
     except:
         traceback.print_exc()
-        print(sys._getframe().f_code.co_name + "(" + name + ")" + "采集错误，请及时更新规则！")
+        print(sys._getframe().f_code.co_name + "采集错误，请及时更新规则！")
 
 
 #黑客派-好玩
@@ -989,10 +987,10 @@ def multi_run():
     threads.append(Thread(target=parse_bjnews))
     threads.append(Thread(target=parse_sinatech))
     threads.append(Thread(target=parse_solidot))
-    threads.append(Thread(target=parse_nytimes))
+    # threads.append(Thread(target=parse_nytimes)) #墙了
     threads.append(Thread(target=parse_thepaper))
     threads.append(Thread(target=parse_weixin))
-    threads.append(Thread(target=parse_zaobao))
+    # threads.append(Thread(target=parse_zaobao)) # 墙了
     threads.append(Thread(target=parse_cnbeta))
     threads.append(Thread(target=parse_huxiu))
     threads.append(Thread(target=parse_guokr))
@@ -1003,11 +1001,9 @@ def multi_run():
     threads.append(Thread(target=parse_jandan))
     threads.append(Thread(target=parse_chouti))
     threads.append(Thread(target=parse_36kr))
-    threads.append(Thread(target=parse_v2ex))
+    # threads.append(Thread(target=parse_v2ex)) # 墙了
     threads.append(Thread(target=parse_weibo))
-    threads.append(Thread(target=parse_baidu, args=("now", )))
-    threads.append(Thread(target=parse_baidu, args=("today", )))
-    threads.append(Thread(target=parse_baidu, args=("week", )))
+    threads.append(Thread(target=parse_baidu))
     threads.append(Thread(target=parse_zhihu_hot))
     threads.append(Thread(target=parse_zhihu_good))
     threads.append(Thread(target=parse_smzdm_article, args=("today", )))

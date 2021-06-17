@@ -54,7 +54,6 @@ def get():
         for file in files:
             file_path = os.path.join(NEWS_JSON_PATH, file)
             temp[file] = json.load(open(file_path))
-        r.append({'title': '百度', 'data': [temp.pop('baidu_now.json'), temp.pop('baidu_today.json'), temp.pop('baidu_week.json')]})
         r.append({'title': '什么值得买', 'data': [temp.pop('smzdm_article_today.json'), temp.pop('smzdm_article_week.json'), temp.pop('smzdm_article_month.json')]})
         r.append({'title': '知乎', 'data': [temp.pop('zhihu_daily.json'), temp.pop('zhihu_good.json'), temp.pop('zhihu_hot.json')]})
         r.append({'title': '微信', 'data': [temp.pop('weixin_hot.json'), temp.pop('weixin.json')]})
@@ -83,10 +82,7 @@ def flush():
             return rsp.refuse(), 403
 
         target = request.get_json()['target']
-        if target == 'baidu':
-            threads = [MyThread(target=parse_baidu, args=("now", )), MyThread(target=parse_baidu, args=("today", )), MyThread(target=parse_baidu, args=("week", ))]
-            file_path = ['baidu_now.json', 'baidu_today.json', 'baidu_week.json']
-        elif target == 'smzdm_article':
+        if target == 'smzdm_article':
             threads = [MyThread(target=parse_smzdm_article, args=("today", )), MyThread(target=parse_smzdm_article, args=("week", )), MyThread(target=parse_smzdm_article, args=("month", ))]
             file_path = ['smzdm_article_today.json', 'smzdm_article_week.json', 'smzdm_article_month.json']
         elif target == 'zhihu':
@@ -106,6 +102,7 @@ def flush():
             file_path = ['hacpai_hot.json', 'hacpai_play.json']
         else:
             news_dict = {
+                'baidu': {'parse_thread':[MyThread(target=parse_baidu)],'file_path':['baidu.json']},
                 '36kr': {'parse_thread':[MyThread(target=parse_36kr)],'file_path':['36kr.json']},
                 'v2ex': {'parse_thread':[MyThread(target=parse_v2ex)],'file_path':['v2ex.json']},
                 'huxiu': {'parse_thread':[MyThread(target=parse_huxiu)],'file_path':['huxiu.json']},
