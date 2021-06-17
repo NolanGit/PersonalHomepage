@@ -40,7 +40,7 @@ def parse_baidu():
     try:
         jsondict = {}
         jsondict['website'] = 'baidu'
-        jsondict["title"] = "实时"
+        jsondict["title"] = "百度热点"
         url = "https://top.baidu.com/board?tab=realtime"
         fname = dir + "baidu.json"
         r = requests.get(url, timeout=(5, 10))
@@ -52,7 +52,6 @@ def parse_baidu():
         jsondict["time"] = list_time
 
         def hot_class_filter(class_text):
-            print(class_text)
             return (class_text is not None) and (class_text.startswith('title_'))
 
         for soup_a in soup.find_all(class_=hot_class_filter):
