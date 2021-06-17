@@ -8,8 +8,6 @@
 
 - ⭐ 欢迎star！
 
-- 🤖最近在学Go，想抽时间用Go重构这个项目的后端，欢迎关注【[GoHomepage](https://github.com/NolanGit/GoHomepage)】！
-
 - 💼字节跳动社招内推直接戳[此链接](https://job.toutiao.com/s/e8cukQt)投递即可，校招内推码：AWN958P，欢迎转发扩散！
 
 ## 功能
