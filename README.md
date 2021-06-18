@@ -4,9 +4,13 @@
 
 - 前端使用Vue.js，后端使用Python，MariaDB+Redis提供数据存储。前端框架使用Element UI，后端框架使用Flask，后端ORM使用Peewee。
 
-- 🐞 如果有任何BUG/需求/建议，欢迎提Issues！
+- 🐞 如果有任何BUG/需求/建议，欢迎附上复现步骤/想法并提Issues！
 
-- ⭐ 欢迎star！尽量保证每天都有提交！
+- ⭐ 欢迎star！
+
+- 🤖最近在学Go，想抽时间用Go重构这个项目的后端，欢迎关注【[GoHomepage](https://github.com/NolanGit/GoHomepage)】！
+
+- 💼字节跳动社招内推直接戳[此链接](https://job.toutiao.com/s/e8cukQt)投递即可，校招内推码：AWN958P，欢迎转发扩散！
 
 ## 功能
 
@@ -57,6 +61,8 @@
 | /upload  | 存储用户上传的文件 |
 | /wallpapers  | 存储爬取的必应壁纸 |
 
+可以[点击这里](https://github1s.com/NolanGit/PersonalHomepage)来使用vscode临时查阅代码
+
 ---------------------------------------------------------------------------------------------------------------------------------
 
 ## 介绍
@@ -65,7 +71,7 @@
 
 入口：主页
 
-功能：输入内容后跳转到搜索网址，进入页面焦点自动置于搜索框内，输入文字可以带出提示（使用的百度的接口）增加引擎的话是在数据库中增加数据(search_engines)
+功能：输入内容后跳转到搜索网址，进入页面焦点自动置于搜索框内，输入文字可以带出提示（需要在数据表search_engines中配置相应引擎的回调函数，增减引擎的话同样是在数据库中增加数据）
 
 ![image](https://user-images.githubusercontent.com/27627484/100199925-d9949700-2f38-11eb-92ab-2c532bb86b49.gif)
 
