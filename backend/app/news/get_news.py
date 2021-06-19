@@ -76,7 +76,7 @@ def parse_baidu():
 def parse_toutiao():
     try:
         jsondict = {}
-        jsondict['website'] = 'baidu'
+        jsondict['website'] = 'toutiao'
         jsondict["title"] = "今日头条"
         url = "https://www.toutiao.com/hot-event/hot-board/?origin=toutiao_pc"
         fname = dir + "toutiao.json"
