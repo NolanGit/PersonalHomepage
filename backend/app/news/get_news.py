@@ -121,8 +121,6 @@ def parse_sspai():
         for x in range(len(r['data'])):
             hot_name = r['data'][x]['title']
             hot_url = "https://sspai.com/post/" + str(r['data'][x]['id'])
-            print(hot_name)
-            print(hot_url)
             if hot_url == None:
                 continue
             list.append({ "name": hot_name, "url": hot_url })
