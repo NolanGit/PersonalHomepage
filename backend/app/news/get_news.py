@@ -79,6 +79,67 @@ def parse_baidu():
         print(sys._getframe().f_code.co_name + "采集错误，请及时更新规则！")
 
 
+#头条
+def parse_toutiao():
+    try:
+        jsondict = {}
+        jsondict['website'] = 'toutiao'
+        jsondict["title"] = "今日头条"
+        url = "https://www.toutiao.com/hot-event/hot-board/?origin=toutiao_pc"
+        fname = dir + "toutiao.json"
+        r = requests.get(url, timeout=(5, 10)).json()
+        # r.encoding = 'gb2312'
+
+        list = []
+        list_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+        jsondict["time"] = list_time
+
+        for x in range(len(r['data'])):
+            hot_name = r['data'][x]['Title']
+            hot_url = r['data'][x]['Url']
+            if hot_url == None:
+                continue
+            list.append({ "name": hot_name, "url": hot_url })
+        jsondict["data"] = list
+        content = json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
+        with open(fname, "w+", encoding='utf-8') as f:
+            f.write(content)
+    except:
+        traceback.print_exc()
+        print(sys._getframe().f_code.co_name + "采集错误，请及时更新规则！")
+
+
+#少数派
+def parse_sspai():
+    try:
+        t = time.time()
+        jsondict = {}
+        jsondict['website'] = 'sspai'
+        jsondict["title"] = "少数派"
+        url = "https://sspai.com/api/v1/article/tag/page/get?limit=20&offset=0&created_at=" + str(int(t)) + "&tag=%E7%83%AD%E9%97%A8%E6%96%87%E7%AB%A0&released=false"
+        fname = dir + "sspai.json"
+        r = requests.get(url, timeout=(5, 10)).json()
+        # r.encoding = 'gb2312'
+
+        list = []
+        list_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+        jsondict["time"] = list_time
+
+        for x in range(len(r['data'])):
+            hot_name = r['data'][x]['title']
+            hot_url = "https://sspai.com/post/" + str(r['data'][x]['id'])
+            if hot_url == None:
+                continue
+            list.append({ "name": hot_name, "url": hot_url })
+        jsondict["data"] = list
+        content = json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
+        with open(fname, "w+", encoding='utf-8') as f:
+            f.write(content)
+    except:
+        traceback.print_exc()
+        print(sys._getframe().f_code.co_name + "采集错误，请及时更新规则！")
+
+
 #黑客派-好玩
 def parse_hacpai(name):
     try:
@@ -1001,6 +1062,8 @@ def multi_run():
     threads.append(Thread(target=parse_huxiu))
     threads.append(Thread(target=parse_guokr))
     threads.append(Thread(target=parse_douban))
+    threads.append(Thread(target=parse_toutiao))
+    threads.append(Thread(target=parse_sspai))
     threads.append(Thread(target=parse_hacpai, args=("play", )))
     threads.append(Thread(target=parse_hacpai, args=("hot", )))
     threads.append(Thread(target=parse_zhihu_daily))
