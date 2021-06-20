@@ -15,7 +15,7 @@ from ..config_helper import ConfigHelper
 from ..response import Response as MyResponse
 from ..privilege.privilege_control import privilegeFunction
 from ..privilege.privilege_control import permission_required
-from .get_news import parse_baidu, parse_toutiao, parse_ifanr, parse_sspai, parse_zhihu_hot, parse_weibo, parse_v2ex, parse_36kr, parse_chouti, parse_jandan, parse_zhihu_daily, parse_hacpai, parse_douban, parse_guokr, parse_huxiu, parse_cnbeta, parse_zaobao, parse_weixin, parse_thepaper, parse_nytimes, parse_solidot, parse_bilibili, parse_sinatech, parse_bjnews, parse_smzdm_article, parse_zhihu_good
+from .get_news import parse_baidu, parse_toutiao, parse_ifanr, parse_dgtle, parse_sspai, parse_zhihu_hot, parse_weibo, parse_v2ex, parse_36kr, parse_chouti, parse_jandan, parse_zhihu_daily, parse_hacpai, parse_douban, parse_guokr, parse_huxiu, parse_cnbeta, parse_zaobao, parse_weixin, parse_thepaper, parse_nytimes, parse_solidot, parse_bilibili, parse_sinatech, parse_bjnews, parse_smzdm_article, parse_zhihu_good
 
 from . import news
 
@@ -105,6 +105,7 @@ def flush():
                 'baidu': {'parse_thread':[MyThread(target=parse_baidu)],'file_path':['baidu.json']},
                 'toutiao': {'parse_thread':[MyThread(target=parse_toutiao)],'file_path':['toutiao.json']},
                 'sspai': {'parse_thread':[MyThread(target=parse_sspai)],'file_path':['sspai.json']},
+                'dgtle': {'parse_thread':[MyThread(target=parse_dgtle)],'file_path':['dgtle.json']},
                 'ifanr': {'parse_thread':[MyThread(target=parse_ifanr)],'file_path':['ifanr.json']},
                 '36kr': {'parse_thread':[MyThread(target=parse_36kr)],'file_path':['36kr.json']},
                 'v2ex': {'parse_thread':[MyThread(target=parse_v2ex)],'file_path':['v2ex.json']},

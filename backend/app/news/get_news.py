@@ -109,6 +109,37 @@ def parse_toutiao():
         print(sys._getframe().f_code.co_name + "采集错误，请及时更新规则！")
 
 
+#数字尾巴
+def parse_dgtle():
+    try:
+        t = time.time()
+        jsondict = {}
+        jsondict['website'] = 'dgtle'
+        jsondict["title"] = "数字尾巴"
+        url = "https://www.dgtle.com/article/getList/0?page=1&pushed=1&last_id=0"
+        fname = dir + "dgtle.json"
+        r = requests.get(url, timeout=(5, 10)).json()
+
+        list = []
+        list_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+        jsondict["time"] = list_time
+
+        for x in range(len(r['data']['dataList'])):
+            hot_name = r['data']['dataList'][x]['title']
+            hot_url = 'https://www.dgtle.com/article-' + str(r['data']['dataList'][x]['id']) + '-1.html'
+            if hot_url == None:
+                continue
+            list.append({ "name": hot_name, "url": hot_url })
+        jsondict["data"] = list
+        content = json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
+        with open(fname, "w+", encoding='utf-8') as f:
+            f.write(content)
+    except:
+        traceback.print_exc()
+        print(sys._getframe().f_code.co_name + "采集错误，请及时更新规则！")
+
+
+
 #爱范儿
 def parse_ifanr():
     try:
@@ -1094,6 +1125,7 @@ def multi_run():
     threads.append(Thread(target=parse_douban))
     threads.append(Thread(target=parse_toutiao))
     threads.append(Thread(target=parse_sspai))
+    threads.append(Thread(target=parse_dgtle))
     threads.append(Thread(target=parse_ifanr))
     threads.append(Thread(target=parse_hacpai, args=("play", )))
     threads.append(Thread(target=parse_hacpai, args=("hot", )))
