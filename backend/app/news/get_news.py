@@ -109,6 +109,36 @@ def parse_toutiao():
         print(sys._getframe().f_code.co_name + "采集错误，请及时更新规则！")
 
 
+#爱范儿
+def parse_ifanr():
+    try:
+        t = time.time()
+        jsondict = {}
+        jsondict['website'] = 'ifanr'
+        jsondict["title"] = "爱范儿"
+        url = "https://sso.ifanr.com/api/v5/wp/web-feed/"
+        fname = dir + "ifanr.json"
+        r = requests.get(url, timeout=(5, 10)).json()
+
+        list = []
+        list_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+        jsondict["time"] = list_time
+
+        for x in range(len(r['data'])):
+            hot_name = r['data'][x]['post_title']
+            hot_url = r['data'][x]['post_url']
+            if hot_url == None:
+                continue
+            list.append({ "name": hot_name, "url": hot_url })
+        jsondict["data"] = list
+        content = json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
+        with open(fname, "w+", encoding='utf-8') as f:
+            f.write(content)
+    except:
+        traceback.print_exc()
+        print(sys._getframe().f_code.co_name + "采集错误，请及时更新规则！")
+
+
 #少数派
 def parse_sspai():
     try:
@@ -1064,6 +1094,7 @@ def multi_run():
     threads.append(Thread(target=parse_douban))
     threads.append(Thread(target=parse_toutiao))
     threads.append(Thread(target=parse_sspai))
+    threads.append(Thread(target=parse_ifanr))
     threads.append(Thread(target=parse_hacpai, args=("play", )))
     threads.append(Thread(target=parse_hacpai, args=("hot", )))
     threads.append(Thread(target=parse_zhihu_daily))

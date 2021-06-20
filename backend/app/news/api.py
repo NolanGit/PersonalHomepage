@@ -105,6 +105,7 @@ def flush():
                 'baidu': {'parse_thread':[MyThread(target=parse_baidu)],'file_path':['baidu.json']},
                 'toutiao': {'parse_thread':[MyThread(target=parse_toutiao)],'file_path':['toutiao.json']},
                 'sspai': {'parse_thread':[MyThread(target=parse_sspai)],'file_path':['sspai.json']},
+                'ifanr': {'parse_thread':[MyThread(target=parse_ifanr)],'file_path':['ifanr.json']},
                 '36kr': {'parse_thread':[MyThread(target=parse_36kr)],'file_path':['36kr.json']},
                 'v2ex': {'parse_thread':[MyThread(target=parse_v2ex)],'file_path':['v2ex.json']},
                 'huxiu': {'parse_thread':[MyThread(target=parse_huxiu)],'file_path':['huxiu.json']},
