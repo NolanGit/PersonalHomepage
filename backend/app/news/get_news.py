@@ -124,9 +124,9 @@ def parse_ifanr():
         list_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
         jsondict["time"] = list_time
 
-        for x in range(len(r['data'])):
-            hot_name = r['data'][x]['post_title']
-            hot_url = r['data'][x]['post_url']
+        for x in range(len(r['objects'])):
+            hot_name = r['objects'][x]['post_title']
+            hot_url = r['objects'][x]['post_url']
             if hot_url == None:
                 continue
             list.append({ "name": hot_name, "url": hot_url })
