@@ -860,6 +860,7 @@ def parse_cnbeta():
             blist["name"] = hot_name
             blist["url"] = hot_url
             list.append(blist)
+        list.pop(0)
         jsondict["data"] = list
         content = json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
         with open(fname, "w+", encoding='utf-8') as f:
