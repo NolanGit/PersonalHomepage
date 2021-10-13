@@ -10,6 +10,8 @@ cf = configparser.ConfigParser()
 cf.read('app/homepage.config')
 try:
     HTTPS = cf.get('config', 'HTTPS')
+    if HTTPS != 'True':
+        HTTPS = False
 except:
     HTTPS = False
 

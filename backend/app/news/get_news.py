@@ -574,10 +574,12 @@ def parse_weixin():
 #微博热点排行榜
 def parse_weibo():
     try:
+        from requests_html import HTMLSession
         fname = dir + "weibo.json"
-        weibo_ssrd = "https://s.weibo.com/top/summary?cate=realtimehot"
+        weibo_ssrd = "https://m.weibo.cn/api/container/getIndex?containerid=106003type%3D25%26t%3D3%26disable_hot%3D1%26filter_type%3Drealtimehot"
         weibo = "https://s.weibo.com"
         r = requests.get(weibo_ssrd, timeout=(5, 10))
+        data_list = r.json()['data']['cards'][0]['card_group']
         r.encoding = 'utf-8'
         soup = etree.HTML(r.text)
         list = []
@@ -586,25 +588,12 @@ def parse_weibo():
         list_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
         jsondict["time"] = list_time
         jsondict["title"] = "微博热点排行榜"
-        for soup_a in soup.xpath("//td[@class='td-02']"):
+        for i in data_list:
             blist = {}
-            hot_name = soup_a.xpath("./a/text()")[0].replace("\\n", "").replace("\n", "").replace("\\r", "").replace("\r", "").strip()
-            hot_url = weibo + soup_a.xpath("./a/@href")[0]
-            try:
-                hot_num = soup_a.xpath("./span/text()")[0]
-            except IndexError:
-                hot_num = ''
-#            hot_num = None #与''皆是赋值空
-            if "javascript:void(0)" in hot_url:  #过滤微博的广告，做个判断
-                str_list = ""
-            else:
-                group = "weibo"
-                blist["name"] = hot_name
-                blist["url"] = hot_url
-                if hot_num:
-                    blist["num"] = hot_num
-                list.append(blist)
-                jsondict["data"] = list
+            blist["name"] = i['desc']
+            blist["url"] = 'https://s.weibo.com/weibo?q=%23' + i['desc'] + '%23&Refer=new_time'
+            list.append(blist)
+        jsondict["data"] = list
         content = json.dumps(jsondict, ensure_ascii=False, indent=2, separators=(',', ':'))
         with open(fname, "w+", encoding='utf-8') as f:
             f.write(content)
