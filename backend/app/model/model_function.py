@@ -15,7 +15,9 @@ class BaseDb():
     def __init__(self):
         PATH = lambda p: os.path.abspath(os.path.join(os.path.dirname(__file__), p))
         DB_PASS = ConfigHelper().get('DB_PASS')
-        self.db = PooledMySQLDatabase('PersonalHomepage', user='root', password=DB_PASS, host='localhost', port=3306)
+        DB_HOST = cf.get('config', 'DB_HOST')
+        DB_USER = cf.get('config', 'DB_USER')
+        self.db = PooledMySQLDatabase('PersonalHomepage', user=DB_USER, password=DB_PASS, host=DB_HOST, port=3306)
 
 
 class BaseModel(Model):
