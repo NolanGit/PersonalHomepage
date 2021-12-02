@@ -41,6 +41,8 @@
 ## 部署
   
 - **dev分支为开发中分支，运行可能会有问题，建议使用master分支进行部署测试**
+  
+- **docker已经在搞啦～**
 
 - 首先需要Python3、Pip、MySQL（测试时使用的是MariaDB）和Redis环境
 
