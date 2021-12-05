@@ -150,7 +150,7 @@ print('- 个人邮箱（用于接收推送信息）')
 print('- SeverChan的微信推送key，请参考http://sc.ftqq.com/')
 print('- 用于发送邮件的邮箱')
 print('- 用于发送邮件的邮箱的口令，可以搜一下"如何获取邮箱口令"')
-print('- 装好MySQL，准备好地址、端口、用户名和密码')
+print('- MySQL的地址、用户名和密码，Redis的地址')
 print('- 和风天气API的Key，请参考https://dev.heweather.com/')
 
 iamready = input('准备好了吗(y/n):')
@@ -184,7 +184,7 @@ print('')
 mail_sender_password = input('[第6步/共10步]请输入发送的邮件地址的口令(非邮箱密码，qq邮箱获取方法见：https://service.mail.qq.com/cgi-bin/help?subtype=1&id=28&no=166):')
 print(mail_sender_password)
 print('')
-mysql_host = input('[第7步/共10步]请输入MySQL的地址，如"localhost":')
+mysql_host = input('[第7步/共10步]请输入MySQL的地址，如"localhost"，端口将默认为3306:')
 print(mysql_host)
 print('')
 mysql_user = input('[第8步/共10步]请输入MySQL的连接用户名:')
@@ -193,7 +193,10 @@ print('')
 mysql_password = input('[第9步/共10步]请输入MySQL的连接用户名的密码:')
 print(mysql_password)
 print('')
-domain = input('[第10步/共10步]请输入服务域名及端口(用于生成网盘的分享链接和防止csrf攻击，不填写则为默认值"http://localhost:50000"；如果你有域名或公网IP，则填写"http://+公网IP或域名+端口"，如"http://baidu.com:666"):')
+redis_host = input('[第10步/共11步]请输入Redis的地址，如"localhost":')
+print(redis_host)
+print('')
+domain = input('[第11步/共11步]请输入服务域名及端口(用于生成网盘的分享链接和防止csrf攻击，不填写则为默认值"http://localhost:50000"；如果你有域名或公网IP，则填写"http://+公网IP或域名+端口"，如"http://baidu.com:666"):')
 if domain == None:
     domain = "http://localhost:50000"
 print(domain)
@@ -209,8 +212,20 @@ flag = True
 try:
     print('%s开始配置' % CONFIG_PATH)
     backup(CONFIG_PATH)
-    homepage_text = '[config]\nADMIN_EMAIL = %s\nSENDER = %s\nPASSWORD = %s\nDB_HOST=%s\nDB_USER=%s\nDB_PASS=%s\nWEATHER_KEY = %s\nLOCATION = %s\nBASE_PATH = %s\nDOMAIN_NAME = %s' % (
-        admin_email, mail_sender_address, mail_sender_password, mysql_host, mysql_user, mysql_password, weather_api_key, weather_default_location, CURRENT_RUNNING_PATH, domain)
+    homepage_text = '''
+[config]
+ADMIN_EMAIL = %s
+SENDER = %s
+PASSWORD = %s
+DB_HOST=%s
+DB_USER=%s
+DB_PASS=%s
+REDIS_HOST=%s
+WEATHER_KEY = %s
+LOCATION = %s
+BASE_PATH = %s
+DOMAIN_NAME = %s''' % (
+        admin_email, mail_sender_address, mail_sender_password, mysql_host, mysql_user, mysql_password, redis_host, weather_api_key, weather_default_location, CURRENT_RUNNING_PATH, domain)
     with open(CONFIG_PATH, 'w') as w:
         w.write(homepage_text)
         print('%s配置成功' % CONFIG_PATH)

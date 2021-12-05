@@ -12,12 +12,15 @@ from ..model.privilege_model import role, privilege_role
 from ..model.privilege_model import privilege as privilege_model
 from ..common_func import CommonFunc
 from ..response import Response
+from ..config_helper import ConfigHelper
 
 rsp = Response()
 cf = CommonFunc()
+config_helper = ConfigHelper()
 
-pool0 = redis.ConnectionPool(host='localhost', port=6379, decode_responses=True, db=0)
-pool1 = redis.ConnectionPool(host='localhost', port=6379, decode_responses=True, db=1)
+REDIS_HOST = config_helper.get('REDIS_HOST')
+pool0 = redis.ConnectionPool(host=REDIS_HOST, port=6379, decode_responses=True, db=0)
+pool1 = redis.ConnectionPool(host=REDIS_HOST, port=6379, decode_responses=True, db=1)
 
 cf = CommonFunc()
 LOGIN_STATUS_EXPIRE_TIME = 36000  # 登录状态在X秒后不活跃则会被置为失效
