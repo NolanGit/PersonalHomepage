@@ -15,4 +15,4 @@ class ConfigHelper(object):
             self.cf.read('../homepage.config')
 
     def get(self, config_name):
-        return cf.get('config', config_name)
+        return self.cf.get('config', config_name)
