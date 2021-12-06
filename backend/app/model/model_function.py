@@ -18,7 +18,7 @@ class BaseDb():
         DB_PASS = config_helper.get('DB_PASS')
         DB_HOST = config_helper.get('DB_HOST')
         DB_USER = config_helper.get('DB_USER')
-        DB_PORT = config_helper.get('DB_PORT')
+        DB_PORT = int(config_helper.get('DB_PORT'))
         self.db = PooledMySQLDatabase('PersonalHomepage', user=DB_USER, password=DB_PASS, host=DB_HOST, port=DB_PORT)
 
 

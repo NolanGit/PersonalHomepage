@@ -17,7 +17,7 @@ rsp = Response()
 cf = CommonFunc()
 
 REDIS_HOST = config_helper.get('REDIS_HOST')
-REDIS_PORT = config_helper.get('REDIS_PORT')
+REDIS_PORT = int(config_helper.get('REDIS_PORT'))
 pool0 = redis.ConnectionPool(host=REDIS_HOST, port=REDIS_PORT, decode_responses=True, db=0)
 pool1 = redis.ConnectionPool(host=REDIS_HOST, port=REDIS_PORT, decode_responses=True, db=1)
 
