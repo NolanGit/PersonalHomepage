@@ -2,16 +2,17 @@ import configparser
 
 from common_func import singleton
 
-cf = configparser.ConfigParser()
 
 
 @singleton
 class ConfigHelper(object):
+    
+    def __init__(self):
+        self.cf = configparser.ConfigParser()
+        try:
+            self.cf.read('app/homepage.config')
+        except:
+            self.cf.read('../homepage.config')
 
     def get(self, config_name):
-        try:
-            cf.read('app/homepage.config')
-            return cf.get('config', config_name)
-        except:
-            cf.read('../homepage.config')
-            return cf.get('config', config_name)
+        return cf.get('config', config_name)

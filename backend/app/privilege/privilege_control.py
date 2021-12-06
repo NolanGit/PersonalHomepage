@@ -16,8 +16,10 @@ from ..response import Response
 rsp = Response()
 cf = CommonFunc()
 
-pool0 = redis.ConnectionPool(host='localhost', port=6379, decode_responses=True, db=0)
-pool1 = redis.ConnectionPool(host='localhost', port=6379, decode_responses=True, db=1)
+REDIS_HOST = config_helper.get('REDIS_HOST')
+REDIS_PORT = config_helper.get('REDIS_PORT')
+pool0 = redis.ConnectionPool(host=REDIS_HOST, port=REDIS_PORT, decode_responses=True, db=0)
+pool1 = redis.ConnectionPool(host=REDIS_HOST, port=REDIS_PORT, decode_responses=True, db=1)
 
 cf = CommonFunc()
 LOGIN_STATUS_EXPIRE_TIME = 36000  # 登录状态在X秒后不活跃则会被置为失效
