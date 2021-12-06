@@ -41,8 +41,10 @@
 ## 部署
   
 - **dev分支为开发中分支，运行可能会有问题，建议使用master分支进行部署测试**
+  
+- **docker已经在搞啦～**
 
-- 首先需要本地安装MySQL（测试时使用的是MariaDB）和Redis
+- 首先需要Python3、Pip、MySQL（测试时使用的是MariaDB）和Redis环境
 
 - 申请[SeverChan](http://sc.ftqq.com)的key用于推送提醒到微信；[和风天气](https://dev.heweather.com/)的key用于获取天气信息；默认发送邮箱和口令，参考[QQ邮箱的口令获取方式](https://service.mail.qq.com/cgi-bin/help?subtype=1&id=28&no=166)
   

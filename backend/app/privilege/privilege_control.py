@@ -12,9 +12,11 @@ from ..model.privilege_model import role, privilege_role
 from ..model.privilege_model import privilege as privilege_model
 from ..common_func import CommonFunc
 from ..response import Response
+from ..config_helper import ConfigHelper
 
 rsp = Response()
 cf = CommonFunc()
+config_helper = ConfigHelper()
 
 REDIS_HOST = config_helper.get('REDIS_HOST')
 REDIS_PORT = int(config_helper.get('REDIS_PORT'))

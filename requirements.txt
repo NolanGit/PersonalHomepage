@@ -8,3 +8,4 @@ redis==3.5.3
 pypinyin==0.38.0
 translators==4.6.20
 flask-limiter==1.4
+cryptography==35.0.0
