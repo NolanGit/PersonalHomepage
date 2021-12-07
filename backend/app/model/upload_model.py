@@ -18,9 +18,9 @@ class upload(BaseModel):
 class cloud_drive(BaseModel):
     file_id = IntegerField()
     user_id = IntegerField()
-    share_token = CharField()
-    share_link = CharField()
-    share_expire_time = DateTimeField()
+    share_token = CharField(null=True)
+    share_link = CharField(null=True)
+    share_expire_time = DateTimeField(null=True)
     is_valid = IntegerField()
     update_time = DateTimeField()
 
