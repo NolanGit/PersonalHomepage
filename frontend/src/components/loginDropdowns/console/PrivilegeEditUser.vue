@@ -160,11 +160,11 @@ export default {
           current_page: null,
           pagination_size: null
         });
-        for (let x = 0; x < res.data.length; x++) {
-          if (res.data[x].is_valid == 1) {
+        for (let x = 0; x < res.data.list.length; x++) {
+          if (res.data.list[x].is_valid == 1) {
             this.roleData.push({
-              label: res.data[x].name,
-              value: res.data[x].id
+              label: res.data.list[x].name,
+              value: res.data.list[x].id
             });
           }
         }

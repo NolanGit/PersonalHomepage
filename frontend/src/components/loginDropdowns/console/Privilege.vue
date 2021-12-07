@@ -685,7 +685,7 @@ export default {
     async roleDelete(role_id) {
       this.$confirm("确认删除吗?", "提示", {}).then(async () => {
         try {
-          const { data: res } = await axios.post(api.userDelete, {
+          const { data: res } = await axios.post(api.roleDelete, {
             role_id: role_id,
           });
           this.$message({
