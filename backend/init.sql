@@ -1,3 +1,531 @@
+create table app
+(
+	id int auto_increment
+		primary key,
+	name varchar(255) not null,
+	url varchar(255) not null,
+	user_id int not null,
+	expect_price int not null,
+	`order` int not null,
+	is_valid int not null,
+	update_time datetime not null
+)
+charset=utf8;
+
+create table app_price
+(
+	id int auto_increment
+		primary key,
+	app_id int not null,
+	price varchar(255) not null,
+	update_time datetime not null
+)
+charset=utf8;
+
+create table bookmarks
+(
+	id int auto_increment
+		primary key,
+	name varchar(255) not null,
+	url varchar(255) not null,
+	icon varchar(255) not null,
+	`order` int not null,
+	user_id int not null,
+	is_valid int not null,
+	update_time datetime not null
+)
+charset=utf8;
+
+create table cloud_drive
+(
+	id int auto_increment
+		primary key,
+	file_id int not null,
+	user_id int not null,
+	share_token varchar(255) null,
+	share_link varchar(255) null,
+	share_expire_time datetime null,
+	is_valid int not null,
+	update_time datetime not null
+)
+charset=utf8;
+
+create table console
+(
+	id int auto_increment
+		primary key,
+	name varchar(255) not null,
+	`order` int not null,
+	icon varchar(255) null,
+	component_name varchar(255) null,
+	is_valid int null,
+	update_time datetime null
+)
+charset=utf8;
+
+create table fund
+(
+	id int auto_increment
+		primary key,
+	code varchar(255) not null,
+	name varchar(255) not null
+)
+charset=utf8;
+
+create table fund_belong
+(
+	id int auto_increment
+		primary key,
+	fund_id int not null,
+	user_id int not null,
+	push int not null,
+	push_threshold varchar(255) not null,
+	is_valid int not null,
+	update_time datetime not null
+)
+charset=utf8;
+
+create table fund_price
+(
+	id int auto_increment
+		primary key,
+	fund_id int not null,
+	price float not null,
+	`range` float null,
+	update_time datetime not null
+)
+charset=utf8;
+
+create table gold_price
+(
+	id int auto_increment
+		primary key,
+	price varchar(255) not null,
+	update_time datetime not null
+)
+charset=utf8;
+
+create table gold_price_push_option
+(
+	id int auto_increment
+		primary key,
+	user_id int not null,
+	is_valid int not null,
+	push_threshold varchar(255) not null,
+	update_time datetime not null
+)
+charset=utf8;
+
+create table icon
+(
+	id int auto_increment
+		primary key,
+	name varchar(255) not null,
+	category int not null
+)
+charset=utf8;
+
+create table icon_category
+(
+	id int auto_increment
+		primary key,
+	name varchar(255) not null
+)
+charset=utf8;
+
+create table image_hosting
+(
+	id int auto_increment
+		primary key,
+	file_name varchar(255) not null,
+	file_path varchar(255) not null,
+	token varchar(255) not null,
+	shorted_link varchar(255) not null,
+	user_id int not null,
+	is_valid int not null,
+	update_time datetime not null
+)
+charset=utf8;
+
+create table ip_location
+(
+	id int auto_increment
+		primary key,
+	ip varchar(255) not null,
+	location varchar(255) not null,
+	update_time datetime not null
+)
+charset=utf8;
+
+create table news
+(
+	id int auto_increment
+		primary key,
+	website text charset utf8 not null,
+	category text charset utf8 not null,
+	content text charset utf8 not null,
+	create_time datetime not null
+);
+
+create table notes
+(
+	id int auto_increment
+		primary key,
+	name varchar(255) not null,
+	token varchar(255) null,
+	content varchar(255) not null,
+	user_id int not null,
+	is_valid int not null,
+	update_time datetime not null
+)
+charset=utf8;
+
+create table privilege
+(
+	id int auto_increment
+		primary key,
+	name varchar(255) not null,
+	mark varchar(255) not null,
+	remark varchar(255) null,
+	is_valid int not null,
+	update_time datetime null
+)
+charset=utf8;
+
+create table privilege_role
+(
+	id int auto_increment
+		primary key,
+	privilege_id int not null,
+	role_id int not null,
+	is_valid int not null
+)
+charset=utf8;
+
+create table push
+(
+	id int auto_increment
+		primary key,
+	user_id int not null,
+	widget_id int not null,
+	is_valid int not null,
+	notify int not null,
+	notify_method int not null,
+	notify_interval_raw int not null,
+	notify_interval_unit int not null,
+	notify_interval int not null,
+	notify_trigger_time datetime not null,
+	update_time datetime not null
+)
+charset=utf8;
+
+create table push_queue
+(
+	id int auto_increment
+		primary key,
+	user_id int not null,
+	method int not null,
+	address varchar(255) not null,
+	title varchar(255) not null,
+	content varchar(255) not null,
+	status int not null,
+	trigger_time datetime not null,
+	log varchar(255) not null,
+	create_time datetime not null,
+	update_time datetime not null
+)
+charset=utf8;
+
+create table role
+(
+	id int auto_increment
+		primary key,
+	name varchar(255) not null,
+	remark varchar(255) null,
+	is_valid int not null,
+	update_time datetime null
+)
+charset=utf8;
+
+create table script
+(
+	id int auto_increment
+		primary key,
+	name varchar(255) not null,
+	sub_system_id int null,
+	start_folder text null,
+	start_script text null,
+	type int null,
+	runs int not null,
+	is_valid int null,
+	version int not null,
+	user text not null,
+	update_time datetime null
+)
+charset=utf8;
+
+create table script_detail
+(
+	id int auto_increment
+		primary key,
+	script_id int null,
+	type text null,
+	label text null,
+	value text null,
+	place_holder text null,
+	options text null,
+	createable int not null,
+	disabled int null,
+	extra_button int null,
+	extra_button_label text null,
+	extra_button_script text null,
+	remark text null,
+	is_important int not null,
+	is_valid int not null,
+	visible int not null,
+	version int not null,
+	user text null,
+	update_time datetime null
+)
+charset=utf8;
+
+create table script_log
+(
+	id int auto_increment
+		primary key,
+	script_id int null,
+	command text null,
+	detail text null,
+	output text null,
+	version int null,
+	user_id int null,
+	user text null,
+	start_time datetime null,
+	end_time datetime null
+)
+charset=utf8;
+
+create table script_schedule
+(
+	id int auto_increment
+		primary key,
+	script_id int null,
+	command text null,
+	detail text null,
+	version int null,
+	user_id int not null,
+	is_valid int not null,
+	is_automatic int not null,
+	`interval` int not null,
+	interval_raw int not null,
+	interval_unit int not null,
+	trigger_time datetime null,
+	update_time datetime null
+)
+charset=utf8;
+
+create table script_sub_system
+(
+	id int auto_increment
+		primary key,
+	name varchar(255) not null,
+	user_id int not null,
+	is_valid int null,
+	update_time datetime null
+)
+charset=utf8;
+
+create table search_engines
+(
+	id int auto_increment
+		primary key,
+	name varchar(255) not null,
+	main_url varchar(255) not null,
+	suggest_url varchar(255) not null,
+	suggest_func varchar(255) null,
+	icon varchar(255) not null
+)
+charset=utf8;
+
+create table search_engines_log
+(
+	id int auto_increment
+		primary key,
+	user_id int not null,
+	user varchar(255) not null,
+	engine_id int not null,
+	search_text varchar(255) not null,
+	ip varchar(255) not null,
+	update_time datetime not null
+)
+charset=utf8;
+
+create table short_content
+(
+	id int auto_increment
+		primary key,
+	code varchar(255) not null,
+	content varchar(255) not null,
+	type int not null,
+	is_valid int not null,
+	expire_time datetime not null,
+	update_time datetime not null
+)
+charset=utf8;
+
+create table stock
+(
+	id int auto_increment
+		primary key,
+	code varchar(255) not null,
+	name varchar(255) not null,
+	market int not null
+)
+charset=utf8;
+
+create table stock_belong
+(
+	id int auto_increment
+		primary key,
+	stock_id int not null,
+	user_id int not null,
+	push int null,
+	push_threshold varchar(255) null,
+	is_valid int not null,
+	update_time datetime not null
+)
+charset=utf8;
+
+create table stock_price
+(
+	id int auto_increment
+		primary key,
+	stock_id int not null,
+	price float not null,
+	`range` float null,
+	update_time datetime not null
+)
+charset=utf8;
+
+create table upload
+(
+	id int auto_increment
+		primary key,
+	file_name varchar(255) not null,
+	file_path varchar(255) not null,
+	size varchar(255) null,
+	user_id int not null,
+	update_time datetime not null
+)
+charset=utf8;
+
+create table user
+(
+	id int auto_increment
+		primary key,
+	name varchar(255) not null,
+	login_name varchar(255) not null,
+	password varchar(255) not null,
+	stable_salt varchar(255) not null,
+	salt varchar(255) not null,
+	salt_expire_time datetime not null,
+	role_id int not null,
+	email varchar(255) not null,
+	wechat_key varchar(255) not null,
+	is_valid int not null,
+	create_time datetime not null,
+	update_time datetime not null
+)
+charset=utf8;
+
+create table wallpapers
+(
+	id int auto_increment
+		primary key,
+	date varchar(255) not null,
+	url varchar(255) not null,
+	size varchar(255) not null,
+	copyright varchar(255) not null,
+	copyrightlink varchar(255) not null,
+	update_time datetime not null
+)
+charset=utf8;
+
+create table weather_data
+(
+	id int auto_increment
+		primary key,
+	location_id int not null,
+	aqi int not null,
+	cond_code_d int not null,
+	cond_code_n int not null,
+	cond_txt_d varchar(255) not null,
+	cond_txt_n varchar(255) not null,
+	fl int not null,
+	tmp int not null,
+	tmp_max int not null,
+	tmp_min int not null,
+	tomorrow_cond_code_d int not null,
+	tomorrow_cond_txt_d varchar(255) not null,
+	tomorrow_tmp_max int not null,
+	tomorrow_tmp_min int not null,
+	wind varchar(255) not null,
+	update_time datetime not null
+)
+charset=utf8;
+
+create table weather_location
+(
+	id int auto_increment
+		primary key,
+	location varchar(255) not null,
+	user_id int not null,
+	is_valid int not null,
+	update_time datetime not null
+)
+charset=utf8;
+
+create table weather_notify
+(
+	id int auto_increment
+		primary key,
+	location varchar(255) not null,
+	user_id int not null,
+	notify_type varchar(255) not null,
+	notify_method int not null,
+	is_valid int not null,
+	update_time datetime not null
+)
+charset=utf8;
+
+create table widget
+(
+	id int auto_increment
+		primary key,
+	name varchar(255) not null,
+	name_zh varchar(255) null,
+	is_valid int not null,
+	span int not null,
+	buttons varchar(255) null,
+	auto_update int null,
+	update_time datetime not null
+)
+charset=utf8;
+
+create table widget_suite
+(
+	id int auto_increment
+		primary key,
+	name varchar(255) null,
+	user_id int not null,
+	`order` int not null,
+	is_valid int not null,
+	detail varchar(255) not null,
+	update_time datetime not null
+)
+charset=utf8;
+
+
 TRUNCATE TABLE `search_engines`;
 INSERT INTO `search_engines` (`id`, `name`, `main_url`, `suggest_url`, `suggest_func`, `icon`) VALUES ('1', '百度', 'https://www.baidu.com/s?word=%word%', 'https://suggestion.baidu.com/su?wd=%word%&cb=window.baidu.sug', 'window.baidu={sug:function(json){cb(json.s.map(function(x){return{\'value\':x}}))}}', 'iconfont icon-baidu-line');
 INSERT INTO `search_engines` (`id`, `name`, `main_url`, `suggest_url`, `suggest_func`, `icon`) VALUES ('2', 'Google', 'https://www.google.com/search?q=%word%&oq=1&sourceid=chrome&ie=UTF-8', 'https://suggestqueries.google.com/complete/search?client=youtube&q=%word%&jsonp=window.google.ac.h', 'window.google={ac:{h:function(json){cb(json[1].map(function(x){return{\'value\':x[0]}}))}}}', 'iconfont icon-google-line');
