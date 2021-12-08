@@ -77,10 +77,8 @@ def alter(file, alter_dict):
 def msg():
     print('\n')
     print('- 首先，在"frontend"目录下使用"npm i"安装必需前端组件，使用"npm run build"打包前端代码')
-    print('- 接着，使用crontab配置定时任务脚本，频率为每5分钟运行一次，可直接复制参数:"*/5 * * * * %s"粘贴到crontab中，配置完成后，应用内配置的脚本（获取App价格脚本、推送脚本）将在明天后被驱动运行，具体可在"控制台-运行脚本-定时任务"查看' %
+    print('- 然后，使用crontab配置定时任务脚本，频率为每5分钟运行一次，可直接复制参数:"*/5 * * * * %s"粘贴到crontab中，配置完成后，应用内配置的脚本（获取App价格脚本、推送脚本）将在明天后被驱动运行，具体可在"控制台-运行脚本-定时任务"查看' %
           ('cd ' + SCHEDULE_SCRIPT_PATH + ' && ' + PYTHON_PATH + ' schedule_monitor.py'))
-    print('- 然后，在backend/目录下运行"python3 run.py"（如不在此目录下运行会产生问题），此操作会启用服务并自动建表')
-    print('- 接着，运行了run.py后，使用"ctrl+c"停止服务，切回到根目录，运行此初始化脚本(python3 start.py)以执行初始化SQL')
     print('- 最后，在backend/目录下运行"python3 run.py"，登录50000端口试试看吧！初始用户名为admin，密码为123456')
 
 
@@ -99,7 +97,7 @@ if first_excution == 'n' or first_excution == 'N':
     import configparser
 
     while True:
-        print('请选择需要执行的操作：\n    1.我现在需要做什么\n    2.执行初始化sql\n    3.https相关\n    0.退出')
+        print('请选择需要执行的操作：\n    1.我现在需要做什么\n    2.再次执行初始化sql\n    3.https相关\n    0.退出')
         option = input('输入需要执行的操作数字(1/2/3/0):')
         print('')
         if str(option) == '1':
@@ -269,6 +267,23 @@ try:
 except Exception as e:
     traceback.print_exc()
     print('创建数据库失败！请手动确认。')
+    flag = False
+
+print('开始执行初始化SQL')
+try:
+    PATH = lambda p: os.path.abspath(os.path.join(os.path.dirname(__file__), p))
+    cf = configparser.ConfigParser()
+    cf.read(CONFIG_PATH)
+    DB_PASS = cf.get('config', 'DB_PASS')
+    DB_HOST = cf.get('config', 'DB_HOST')
+    DB_USER = cf.get('config', 'DB_USER')
+    db = pymysql.connect(host=DB_HOST, user=DB_USER, passwd=DB_PASS, db='PersonalHomepage', charset='utf8')
+    executeScriptsFromFile(INIT_SQL_PATH, db)
+    print('初始化SQL执行完成，应用的默认用户名初始化为：admin，默认密码为：123456')
+
+except Exception as e:
+    traceback.print_exc()
+    print('初始化SQL执行失败！请手动确认。')
     flag = False
 
 if flag:
