@@ -4,23 +4,13 @@ import requests
 import traceback
 from peewee import DoesNotExist
 
-try:
-    from ..base_model import Base
-    from ..config_helper import ConfigHelper
-    from ..model.weather_model import weather_location
-    from ..model.weather_model import weather_data
-
-except:
-    import sys
-    sys.path.append('../')
-    sys.path.append('../../')
-    from base_model import Base
-    from config_helper import ConfigHelper
-    from model.weather_model import weather_location
-    from model.weather_model import weather_data
-    from model.weather_model import weather_notify
-    from login.login_funtion import User
-    from model.push_model import push_queue
+from app.base_model import Base
+from app.config_helper import ConfigHelper
+from app.model.weather_model import weather_location
+from app.model.weather_model import weather_data
+from app.model.weather_model import weather_notify
+from app.login.login_funtion import User
+from app.model.push_model import push_queue
 
 WEATHER_KEY = ConfigHelper().get('WEATHER_KEY')
 WEATHER_EXPIRE_HOUR = 3

@@ -5,12 +5,7 @@ import time
 import smtplib
 from email.utils import formataddr
 from email.mime.text import MIMEText
-try:
-    from ..config_helper import ConfigHelper
-except:
-    sys.path.append('../')
-    sys.path.append('../../')
-    from config_helper import ConfigHelper
+from app.config_helper import ConfigHelper
 
 SENDER = ConfigHelper().get('SENDER')
 PASSWORD = ConfigHelper().get('PASSWORD')

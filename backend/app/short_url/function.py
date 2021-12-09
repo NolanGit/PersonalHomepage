@@ -4,14 +4,8 @@ import sys
 import time
 import datetime
 from peewee import DoesNotExist
-try:
-    from ..config_helper import ConfigHelper
-    from ..model.short_content_model import short_content as short_content_table
-except:
-    sys.path.append('../')
-    sys.path.append('../../')
-    from config_helper import ConfigHelper
-    from model.short_content_model import short_content as short_content_table
+from app.config_helper import ConfigHelper
+from app.model.short_content_model import short_content as short_content_table
 
 DOMAIN_NAME = ConfigHelper().get('DOMAIN_NAME')
 

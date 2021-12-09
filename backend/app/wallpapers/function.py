@@ -3,15 +3,8 @@ import time
 import datetime
 import requests
 from werkzeug.utils import secure_filename
-try:
-    from ..model.wallpapers_model import wallpapers as wallpapers_table
-    from ..config_helper import ConfigHelper
-except:
-    import sys
-    sys.path.append('../')
-    sys.path.append('../../')
-    from config_helper import ConfigHelper
-    from model.wallpapers_model import wallpapers as wallpapers_table
+from app.model.wallpapers_model import wallpapers as wallpapers_table
+from app.config_helper import ConfigHelper
 
 WALLPAPERS_PATH = ConfigHelper().get('BASE_PATH') + '/wallpapers/'
 
