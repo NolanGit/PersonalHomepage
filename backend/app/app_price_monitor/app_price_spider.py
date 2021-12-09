@@ -11,19 +11,17 @@ import peewee
 import datetime
 import requests
 import threading
-sys.path.append('../')
-sys.path.append('../../')
 from bs4 import BeautifulSoup
 
-from model.push_model import push
-from model.widget_model import widget
-from model.app_model import app as app_table
-from model.app_model import app_price as app_price_table
+from app.model.push_model import push
+from app.model.widget_model import widget
+from app.model.app_model import app as app_table
+from app.model.app_model import app_price as app_price_table
 
-from login.login_funtion import User
-from push.push_function import PushList, PushData
+from app.login.login_funtion import User
+from app.push.push_function import PushList, PushData
 
-from app_function import app_get, app_price_get
+from app.app_price_monitor.app_function import app_get, app_price_get
 
 count = 0
 WIDGET_ID_APP = widget.get(widget.name == 'app').id

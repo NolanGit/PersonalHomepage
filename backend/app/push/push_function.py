@@ -1,28 +1,11 @@
 import datetime
 import traceback
 from functools import wraps
-if __name__ != 'app.push.push_function':
-    try:
-        from ..tool.wechat_sender import Wechat
-        from ..tool.mail_sender import Mail
-    except:
-        import sys
-        sys.path.append('../')
-        sys.path.append('../../')
-        from tool.wechat_sender import Wechat
-        from tool.mail_sender import Mail
-
-try:
-    from ..model.push_model import push
-    from ..model.push_model import push_queue
-    from ..login.login_funtion import User
-except:
-    import sys
-    sys.path.append('../')
-    sys.path.append('../../')
-    from model.push_model import push
-    from model.push_model import push_queue
-    from login.login_funtion import User
+from app.tool.wechat_sender import Wechat
+from app.tool.mail_sender import Mail
+from app.model.push_model import push
+from app.model.push_model import push_queue
+from app.login.login_funtion import User
 
 
 class PushData(object):
