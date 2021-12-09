@@ -14,7 +14,7 @@ import traceback
 from lxml import etree
 from threading import Thread
 from bs4 import BeautifulSoup
-from model.news_model import news
+from backend.app.model.news_model import news
 from config_helper import ConfigHelper
 
 NEWS_JSON_PATH = ConfigHelper().get('BASE_PATH') + '/backend/app/news/json'
