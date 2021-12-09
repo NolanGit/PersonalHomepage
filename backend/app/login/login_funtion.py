@@ -1,10 +1,4 @@
-try:
-    from ..model.login_model import user
-except:
-    import sys
-    sys.path.append('../')
-    sys.path.append('../../')
-    from model.login_model import user
+from app.model.login_model import user
 
 
 class User(object):

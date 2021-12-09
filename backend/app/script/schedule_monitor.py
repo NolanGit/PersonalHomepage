@@ -4,15 +4,8 @@ import logging
 import datetime
 import traceback
 import subprocess
-try:
-    from ..model.script_model import script_sub_system, script, script_detail, script_detail, script_log, script_schedule
-    from ..login.login_funtion import User
-except:
-    import sys
-    sys.path.append('../')
-    sys.path.append('../../')
-    from model.script_model import script_sub_system, script, script_detail, script_detail, script_log, script_schedule
-    from login.login_funtion import User
+from app.model.script_model import script_sub_system, script, script_detail, script_detail, script_log, script_schedule
+from app.login.login_funtion import User
 
 TAST_TO_BE_RUN = 1          # 任务未被运行
 TASK_FAILED = -1            # 任务运行失败
