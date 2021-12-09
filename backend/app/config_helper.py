@@ -1,6 +1,6 @@
 import configparser
 
-from common_func import singleton
+from app.common_func import singleton
 
 
 

@@ -2,8 +2,6 @@
 import os
 import re
 import sys
-sys.path.append('../')
-sys.path.append('../..')
 
 import time
 import json
@@ -14,8 +12,8 @@ import traceback
 from lxml import etree
 from threading import Thread
 from bs4 import BeautifulSoup
-from backend.app.model.news_model import news
-from config_helper import ConfigHelper
+from app.model.news_model import news
+from app.config_helper import ConfigHelper
 
 NEWS_JSON_PATH = ConfigHelper().get('BASE_PATH') + '/backend/app/news/json'
 

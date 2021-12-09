@@ -3,10 +3,8 @@ import sys
 import peewee
 from peewee import Model
 from playhouse.pool import PooledMySQLDatabase
-
-sys.path.append('../')
-from common_func import singleton
-from config_helper import ConfigHelper
+from app.common_func import singleton
+from app.config_helper import ConfigHelper
 
 
 @singleton

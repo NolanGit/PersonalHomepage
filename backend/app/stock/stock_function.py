@@ -4,15 +4,13 @@ import datetime
 import threading
 
 import sys
-sys.path.append('../')
-sys.path.append('../..')
 
-from common_func import CommonFunc
+from app.common_func import CommonFunc
 
-from model.widget_model import widget
+from app.model.widget_model import widget
 
-from model.stock_model import stock as stock_table
-from model.stock_model import stock_price, stock_belong
+from app.model.stock_model import stock as stock_table
+from app.model.stock_model import stock_price, stock_belong
 
 cf = CommonFunc()
 
