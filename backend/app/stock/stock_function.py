@@ -186,7 +186,7 @@ def stock_push_generator():
 
 
 if __name__ == '__main__':
-    from push.push_function import PushList, PushData
+    from app.push.push_function import PushList, PushData
     valid_stock_list = get_valid_stock()
     threads = []
     for x in range(len(valid_stock_list)):
