@@ -264,7 +264,7 @@ try:
     con = pymysql.connect(host=mysql_host, user=mysql_user, passwd=mysql_password, charset='utf8')
     cur = con.cursor()
     cur.execute("drop database if exists PersonalHomepage;")
-    cur.execute("create database PersonalHomepage character set utf8;")
+    cur.execute("create database PersonalHomepage character set utf8mb4;")
     con.close()
     print('数据库创建完成')
 
