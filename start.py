@@ -6,7 +6,7 @@ import traceback
 import subprocess
 
 CURRENT_RUNNING_PATH = os.path.abspath('.')
-IS_IN_DOCKER = os.path.exists('.dockerenv')
+IS_IN_DOCKER = os.path.exists('/.dockerenv')
 TOMORROW = (datetime.datetime.today().replace(hour=0, minute=0, second=0, microsecond=0) + datetime.timedelta(days=1)).strftime("%Y-%m-%d")
 PYTHON_PATH = sys.executable
 INIT_SQL_PATH = CURRENT_RUNNING_PATH + '/backend/init.sql'
