@@ -8,7 +8,7 @@ from threading import Thread
 from flask_cors import cross_origin
 from flask import render_template, session, redirect, url_for, current_app, flash, request, jsonify
 
-from app.model.news import news as news_table
+from app.model.news_model import news as news_table
 from ..limiter import limiter
 from ..common_func import CommonFunc
 from ..login.login_funtion import User
