@@ -1,15 +1,23 @@
 <template>
   <section>
-    <el-row
-      :gutter="20"
-      v-for="singleDataSuite in cookedData"
-      :key="singleDataSuite"
-    >
-      <el-col :span="6" v-for="data in singleDataSuite" :key="data">
-        <el-card shadow="hover" class="margin_bottom-medium">
-          <newsModule :newsData="data" @done="done()" />
-        </el-card>
-      </el-col>
+    <el-row>
+      <el-radio-group v-model="target">
+        <el-radio-button label="当前新闻"></el-radio-button>
+        <el-radio-button label="新闻检索"></el-radio-button>
+      </el-radio-group>
+    </el-row>
+    <el-row v-if="target == '新闻检索'">
+      <el-row
+        :gutter="20"
+        v-for="singleDataSuite in cookedData"
+        :key="singleDataSuite"
+      >
+        <el-col :span="6" v-for="data in singleDataSuite" :key="data">
+          <el-card shadow="hover" class="margin_bottom-medium">
+            <newsModule :newsData="data" @done="done()" />
+          </el-card>
+        </el-col>
+      </el-row>
     </el-row>
   </section>
 </template>
@@ -33,6 +41,7 @@ export default {
   watch: {},
   data() {
     return {
+      target: "当前新闻",
       rawData: [],
       cookedData: {},
     };
