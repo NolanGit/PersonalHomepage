@@ -1,7 +1,7 @@
 <template>
   <section>
     <el-row>
-      <el-radio-group v-model="target">
+      <el-radio-group style="text-align: left" v-model="target" size="mini">
         <el-radio-button label="当前新闻"></el-radio-button>
         <el-radio-button label="新闻检索"></el-radio-button>
       </el-radio-group>
@@ -18,6 +18,33 @@
           </el-card>
         </el-col>
       </el-row>
+    </el-row>
+    <el-row v-if="target == '当前新闻'">
+      <el-row>
+        <div>
+          <el-input v-model="keyword">
+            <el-date-picker
+              slot="prepend"
+              v-model="dateRange"
+              type="daterange"
+              align="right"
+              unlink-panels
+              range-separator="至"
+              start-placeholder="开始日期"
+              end-placeholder="结束日期"
+              :picker-options="pickerOptions"
+            >
+            </el-date-picker>
+            <el-button
+              class="search-button"
+              slot="append"
+              icon="el-icon-search"
+              @click="search()"
+            ></el-button>
+          </el-input>
+        </div>
+      </el-row>
+      <el-row></el-row>
     </el-row>
   </section>
 </template>
@@ -42,6 +69,35 @@ export default {
   data() {
     return {
       target: "当前新闻",
+      dateRange: [],
+      keyword: "",
+      pickerOptions: {
+        shortcuts: [{
+          text: '最近一周',
+          onClick(picker) {
+            const end = new Date();
+            const start = new Date();
+            start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+            picker.$emit('pick', [start, end]);
+          }
+        }, {
+          text: '最近一个月',
+          onClick(picker) {
+            const end = new Date();
+            const start = new Date();
+            start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+            picker.$emit('pick', [start, end]);
+          }
+        }, {
+          text: '最近三个月',
+          onClick(picker) {
+            const end = new Date();
+            const start = new Date();
+            start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+            picker.$emit('pick', [start, end]);
+          }
+        }]
+      },
       rawData: [],
       cookedData: {},
     };
@@ -87,6 +143,10 @@ export default {
         });
       }
     },
+    search() {
+      console.log(this.dateRange)
+      console.log(this.keyword)
+    }
   },
   mounted() {
     this.get();
