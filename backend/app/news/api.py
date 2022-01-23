@@ -9,14 +9,14 @@ from flask_cors import cross_origin
 from flask import render_template, session, redirect, url_for, current_app, flash, request, jsonify
 
 from app.model.news_model import news as news_table
-from ..limiter import limiter
-from ..common_func import CommonFunc
-from ..login.login_funtion import User
-from ..config_helper import ConfigHelper
-from ..response import Response as MyResponse
-from ..privilege.privilege_control import privilegeFunction
-from ..privilege.privilege_control import permission_required
-from .get_news import parse_baidu, parse_toutiao, parse_ifanr, parse_dgtle, parse_sspai, parse_zhihu_hot, parse_weibo, parse_v2ex, parse_36kr, parse_chouti, parse_jandan, parse_zhihu_daily, parse_hacpai, parse_douban, parse_guokr, parse_huxiu, parse_cnbeta, parse_zaobao, parse_weixin, parse_thepaper, parse_nytimes, parse_solidot, parse_bilibili, parse_sinatech, parse_bjnews, parse_smzdm_article, parse_zhihu_good
+from app.limiter import limiter
+from app.common_func import CommonFunc
+from app.login.login_funtion import User
+from app.config_helper import ConfigHelper
+from app.response import Response as MyResponse
+from app.privilege.privilege_control import privilegeFunction
+from app.privilege.privilege_control import permission_required
+from app.news.get_news import parse_baidu, parse_toutiao, parse_ifanr, parse_dgtle, parse_sspai, parse_zhihu_hot, parse_weibo, parse_v2ex, parse_36kr, parse_chouti, parse_jandan, parse_zhihu_daily, parse_hacpai, parse_douban, parse_guokr, parse_huxiu, parse_cnbeta, parse_zaobao, parse_weixin, parse_thepaper, parse_nytimes, parse_solidot, parse_bilibili, parse_sinatech, parse_bjnews, parse_smzdm_article, parse_zhihu_good
 
 from . import news
 

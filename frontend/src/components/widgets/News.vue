@@ -19,13 +19,14 @@
         </el-col>
       </el-row>
     </el-row>
-    <el-row v-if="target == '当前新闻'">
+    <el-row v-if="target == '新闻检索'">
       <el-row>
         <div>
-          <el-input v-model="keyword">
+          <el-input size="mini" v-model="keyword">
             <el-date-picker
               slot="prepend"
               v-model="dateRange"
+              size="mini"
               type="daterange"
               align="right"
               unlink-panels
@@ -38,6 +39,7 @@
             <el-button
               class="search-button"
               slot="append"
+              size="mini"
               icon="el-icon-search"
               @click="search()"
             ></el-button>
