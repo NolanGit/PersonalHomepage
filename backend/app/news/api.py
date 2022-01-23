@@ -8,6 +8,7 @@ from threading import Thread
 from flask_cors import cross_origin
 from flask import render_template, session, redirect, url_for, current_app, flash, request, jsonify
 
+from app.model.news import news as news_table
 from ..limiter import limiter
 from ..common_func import CommonFunc
 from ..login.login_funtion import User
@@ -134,6 +135,30 @@ def flush():
             file_path = os.path.join(NEWS_JSON_PATH, file)
             result.append(json.load(open(file_path)))
         return rsp.success(result)
+    except Exception as e:
+        traceback.print_exc()
+        return rsp.failed(e), 500
+
+@news.route('/search', methods=['POST'])
+@limiter.limit(LIMITER_FREQUENCY_NEWS_GET)
+def search():
+    try:
+        data = request.get_json()
+        if not request.referrer.startswith(DOMAIN_NAME):
+            return rsp.refuse(), 403
+        csrf_token_send = data['token']
+        csrf_token = request.cookies.get('csrf_token')
+        if csrf_token != csrf_token_send:
+            return rsp.refuse(), 403
+
+        keyword = data['keyword']
+        start_time = data['start_date'] + ' 00:00:00'
+        end_time = data['end_date'] + '59:59:59'
+        r = []
+
+        r = news_table.select().where((news_table.content.contains(keyword)) & (news_table.create_time >= start_time) & (news_table.create_time <= end_time)).dicts()
+
+        return rsp.success(r)
     except Exception as e:
         traceback.print_exc()
         return rsp.failed(e), 500

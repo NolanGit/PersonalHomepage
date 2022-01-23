@@ -6,7 +6,7 @@
         <el-radio-button label="新闻检索"></el-radio-button>
       </el-radio-group>
     </el-row>
-    <el-row v-if="target == '新闻检索'">
+    <el-row v-if="target == '当前新闻'">
       <el-row
         :gutter="20"
         v-for="singleDataSuite in cookedData"
