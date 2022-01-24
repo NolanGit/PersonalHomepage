@@ -1,27 +1,14 @@
 <template>
   <section>
     <el-row>
-      <el-radio-group style="text-align: left" v-model="target" size="mini">
-        <el-radio-button label="当前新闻"></el-radio-button>
-        <el-radio-button label="新闻检索"></el-radio-button>
-      </el-radio-group>
-    </el-row>
-    <el-row v-if="target == '当前新闻'">
-      <el-row
-        :gutter="20"
-        v-for="singleDataSuite in cookedData"
-        :key="singleDataSuite"
-      >
-        <el-col :span="6" v-for="data in singleDataSuite" :key="data">
-          <el-card shadow="hover" class="margin_bottom-medium">
-            <newsModule :newsData="data" @done="done()" />
-          </el-card>
-        </el-col>
-      </el-row>
-    </el-row>
-    <el-row v-if="target == '新闻检索'">
-      <el-row>
-        <el-input size="medium" v-model="keyword">
+      <el-col>
+        <el-radio-group style="text-align: left" v-model="target" size="mini">
+          <el-radio-button label="当前新闻"></el-radio-button>
+          <el-radio-button label="新闻检索"></el-radio-button>
+        </el-radio-group>
+      </el-col>
+      <el-col>
+        <el-input v-if="target == '新闻检索'" size="medium" v-model="keyword">
           <el-date-picker
             slot="prepend"
             v-model="dateRange"
@@ -41,8 +28,20 @@
             @click="search()"
           ></el-button>
         </el-input>
+      </el-col>
+    </el-row>
+    <el-row v-if="target == '当前新闻'">
+      <el-row
+        :gutter="20"
+        v-for="singleDataSuite in cookedData"
+        :key="singleDataSuite"
+      >
+        <el-col :span="6" v-for="data in singleDataSuite" :key="data">
+          <el-card shadow="hover" class="margin_bottom-medium">
+            <newsModule :newsData="data" @done="done()" />
+          </el-card>
+        </el-col>
       </el-row>
-      <el-row></el-row>
     </el-row>
   </section>
 </template>
