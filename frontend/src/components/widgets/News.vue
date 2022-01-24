@@ -21,30 +21,26 @@
     </el-row>
     <el-row v-if="target == '新闻检索'">
       <el-row>
-        <div>
-          <el-input size="mini" v-model="keyword">
-            <el-date-picker
-              slot="prepend"
-              v-model="dateRange"
-              size="mini"
-              type="daterange"
-              align="right"
-              unlink-panels
-              range-separator="至"
-              start-placeholder="开始日期"
-              end-placeholder="结束日期"
-              :picker-options="pickerOptions"
-            >
-            </el-date-picker>
-            <el-button
-              class="search-button"
-              slot="append"
-              size="mini"
-              icon="el-icon-search"
-              @click="search()"
-            ></el-button>
-          </el-input>
-        </div>
+        <el-input size="medium" v-model="keyword">
+          <el-date-picker
+            slot="prepend"
+            v-model="dateRange"
+            type="daterange"
+            align="right"
+            unlink-panels
+            range-separator="至"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+            :picker-options="pickerOptions"
+          >
+          </el-date-picker>
+          <el-button
+            class="search-button"
+            slot="append"
+            icon="el-icon-search"
+            @click="search()"
+          ></el-button>
+        </el-input>
       </el-row>
       <el-row></el-row>
     </el-row>
