@@ -150,8 +150,8 @@ export default {
         console.log(this.keyword)
         const { data: res } = await axios.post(api.search, {
           token: this.$cookies.get("csrf_token"),
-          start_time: this.dateRange[0],
-          end_time: this.dateRange[1],
+          start_date: this.dateRange[0],
+          end_date: this.dateRange[1],
           keyword: this.keyword
         });
       } catch (e) {
