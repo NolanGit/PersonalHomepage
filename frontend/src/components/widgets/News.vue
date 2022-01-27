@@ -1,13 +1,13 @@
 <template>
   <section>
     <el-row>
-      <el-col>
+      <div style="margin-bottom: 20px">
         <el-radio-group style="text-align: left" v-model="target" size="mini">
           <el-radio-button label="当前新闻"></el-radio-button>
           <el-radio-button label="新闻检索"></el-radio-button>
         </el-radio-group>
-      </el-col>
-      <el-col>
+      </div>
+      <div>
         <el-input v-if="target == '新闻检索'" size="medium" v-model="keyword">
           <el-date-picker
             slot="prepend"
@@ -28,7 +28,7 @@
             @click="search()"
           ></el-button>
         </el-input>
-      </el-col>
+      </div>
     </el-row>
     <el-row v-if="target == '当前新闻'">
       <el-row
