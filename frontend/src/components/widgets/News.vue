@@ -8,7 +8,7 @@
         </el-radio-group>
       </div>
       <div style="width: 50%">
-        <el-input v-if="target == '新闻检索'" size="medium" v-model="keyword">
+        <el-input v-if="target == '新闻检索'" size="mini" v-model="keyword">
           <el-date-picker
             slot="prepend"
             v-model="dateRange"
@@ -19,9 +19,11 @@
             start-placeholder="开始日期"
             end-placeholder="结束日期"
             :picker-options="pickerOptions"
+            size="mini"
           >
           </el-date-picker>
           <el-button
+            size="mini"
             class="search-button"
             slot="append"
             icon="el-icon-search"
