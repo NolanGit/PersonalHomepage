@@ -8,7 +8,7 @@
         </el-radio-group>
       </div>
     </el-row>
-    <el-row>
+    <el-row type="flex" justify="center">
       <div v-if="target == '新闻检索'" style="width: 50%; display: flex">
         <el-date-picker
           v-model="dateRange"
@@ -55,6 +55,7 @@ import { deepClone } from "../../js/common";
 
 const api = {
   get: "/news/get",
+  search: "/news/search"
 };
 
 export default {
@@ -143,9 +144,23 @@ export default {
         });
       }
     },
-    search() {
-      console.log(this.dateRange)
-      console.log(this.keyword)
+    async search() {
+      try {
+        console.log(this.dateRange)
+        console.log(this.keyword)
+        const { data: res } = await axios.post(api.search, {
+          token: this.$cookies.get("csrf_token"),
+          start_time: this.dateRange[0],
+          end_time: this.dateRange[1],
+          keyword: this.keyword
+        });
+      } catch (e) {
+        console.log(e);
+        this.$message({
+          message: e.response.data.msg,
+          type: "error",
+        });
+      }
     }
   },
   mounted() {
