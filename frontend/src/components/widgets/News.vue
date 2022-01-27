@@ -7,29 +7,29 @@
           <el-radio-button label="新闻检索"></el-radio-button>
         </el-radio-group>
       </div>
-      <div style="width: 50%">
-        <el-input v-if="target == '新闻检索'" size="mini" v-model="keyword">
-          <el-date-picker
-            slot="prepend"
-            v-model="dateRange"
-            type="daterange"
-            align="right"
-            unlink-panels
-            range-separator="至"
-            start-placeholder="开始日期"
-            end-placeholder="结束日期"
-            :picker-options="pickerOptions"
-            size="mini"
-          >
-          </el-date-picker>
-          <el-button
-            size="mini"
-            class="search-button"
-            slot="append"
-            icon="el-icon-search"
-            @click="search()"
-          ></el-button>
+    </el-row>
+    <el-row>
+      <div v-if="target == '新闻检索'" style="width: 50%; display: flex">
+        <el-date-picker
+          v-model="dateRange"
+          type="daterange"
+          align="right"
+          unlink-panels
+          range-separator="至"
+          start-placeholder="开始日期"
+          end-placeholder="结束日期"
+          :picker-options="pickerOptions"
+          size="mini"
+        >
+        </el-date-picker>
+        <el-input size="mini" v-model="keyword">
         </el-input>
+        <el-button
+          size="mini"
+          class="search-button"
+          icon="el-icon-search"
+          @click="search()"
+        ></el-button>
       </div>
     </el-row>
     <el-row v-if="target == '当前新闻'">
