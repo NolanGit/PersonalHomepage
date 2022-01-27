@@ -21,7 +21,7 @@
           :picker-options="pickerOptions"
           size="mini"
           style="margin-right: 20px; min-width: 20vw"
-        >
+          value-format="yyyy-MM-dd">
         </el-date-picker>
         <el-input placeholder="请输入需要查询的关键字" style="margin-right: 20px; min-width: 40vw" size="mini" v-model="keyword">
         </el-input>
