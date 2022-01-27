@@ -7,7 +7,7 @@
           <el-radio-button label="新闻检索"></el-radio-button>
         </el-radio-group>
       </div>
-      <div>
+      <div style="width: 50%">
         <el-input v-if="target == '新闻检索'" size="medium" v-model="keyword">
           <el-date-picker
             slot="prepend"
