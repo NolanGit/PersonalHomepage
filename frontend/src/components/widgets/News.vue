@@ -9,7 +9,7 @@
       </div>
     </el-row>
     <el-row>
-      <div v-if="target == '新闻检索'" style="width: 50%; display: flex">
+      <div v-if="target == '新闻检索'" style="width: 50%; display: flex; min-height: 100px">
         <el-date-picker
           v-model="dateRange"
           type="daterange"
@@ -20,9 +20,10 @@
           end-placeholder="结束日期"
           :picker-options="pickerOptions"
           size="mini"
+          style="margin-left: 20px"
         >
         </el-date-picker>
-        <el-input size="mini" v-model="keyword">
+        <el-input placeholder="请输入需要查询的关键字" style="margin-left: 20px; min-width: 40vw" size="mini" v-model="keyword">
         </el-input>
         <el-button
           size="mini"
