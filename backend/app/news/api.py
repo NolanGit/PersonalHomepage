@@ -154,10 +154,9 @@ def search():
         keyword = data['keyword']
         start_time = data['start_date'] + ' 00:00:00'
         end_time = data['end_date'] + '59:59:59'
-        r = []
 
-        r = news_table.select().where((news_table.content.contains(keyword)) & (news_table.create_time >= start_time) & (news_table.create_time <= end_time)).dicts()
-
+        _ = news_table.select().where((news_table.content.contains(keyword)) & (news_table.create_time >= start_time) & (news_table.create_time <= end_time)).dicts()
+        r = [{'website': __['website'], 'category': __['category'], 'content': __['content'], 'create_time': __['create_time'], } for __ in _]
         return rsp.success(r)
     except Exception as e:
         traceback.print_exc()
