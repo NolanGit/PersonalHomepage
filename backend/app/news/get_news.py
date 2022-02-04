@@ -1160,3 +1160,6 @@ if __name__ == "__main__":
         website = s_r['title']
         for s_s_r in s_r['data']:
             news.create(website=website, category=s_s_r['title'], content=s_s_r['data'], create_time=current_time)
+            for i in s_s_r['data']:
+                pass
+                new_news.create()
