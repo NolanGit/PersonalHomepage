@@ -12,7 +12,7 @@ import traceback
 from lxml import etree
 from threading import Thread
 from bs4 import BeautifulSoup
-from app.model.news_model import news
+from app.model.news_model import news, news_new
 from app.config_helper import ConfigHelper
 
 NEWS_JSON_PATH = ConfigHelper().get('BASE_PATH') + '/backend/app/news/json'
@@ -1161,5 +1161,4 @@ if __name__ == "__main__":
         for s_s_r in s_r['data']:
             news.create(website=website, category=s_s_r['title'], content=s_s_r['data'], create_time=current_time)
             for i in s_s_r['data']:
-                pass
-                new_news.create()
+                news_new.create(website=website, category=s_s_r['title'], name=i['name'] , url=i['url'] , create_time=current_time)
