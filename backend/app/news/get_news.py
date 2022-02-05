@@ -1161,4 +1161,10 @@ if __name__ == "__main__":
         for s_s_r in s_r['data']:
             news.create(website=website, category=s_s_r['title'], content=s_s_r['data'], create_time=current_time)
             for i in s_s_r['data']:
-                news_new.create(website=website, category=s_s_r['title'], name=i['name'] , url=i['url'] , create_time=current_time)
+                current_time = datetime.datetime.now()
+                five_days_ago = current_time - datetime.timedelta(days=5)
+                start_time = current_time.strftime('%Y-%m-%d %H:%M:%S')
+                end_time = five_days_ago.strftime('%Y-%m-%d %H:%M:%S')
+                _ = news_new.select().where((news_new.create_time >= start_time) & (news_new.create_time <= end_time)).where(news_new.url == url).dicts()
+                if len(_) == 0:
+                    news_new.create(website=website, category=s_s_r['title'], name=i['name'] , url=i['url'] , create_time=current_time)
