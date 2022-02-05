@@ -1159,7 +1159,7 @@ if __name__ == "__main__":
     for s_r in r:
         website = s_r['title']
         for s_s_r in s_r['data']:
-            news.create(website=website, category=s_s_r['title'], content=s_s_r['data'], create_time=current_time)
+            # news.create(website=website, category=s_s_r['title'], content=s_s_r['data'], create_time=current_time)
             for i in s_s_r['data']:
                 current_time = datetime.datetime.now()
                 five_days_ago = current_time - datetime.timedelta(days=5)
