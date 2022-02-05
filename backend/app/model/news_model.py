@@ -13,5 +13,13 @@ class news(BaseModel):
     class Meta:
         table_name = 'news'
 
+class news_new(BaseModel):
+    website = TextField()
+    category = TextField()
+    name = TextField()
+    url = TextField()
+    create_time = DateTimeField()
+
 
 news.create_table()
+news_new.create_table()
