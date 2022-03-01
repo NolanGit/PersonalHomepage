@@ -1,3 +1,4 @@
+import json
 import datetime
 import traceback
 from ..base_model import Base
@@ -39,8 +40,9 @@ class IpLocation(Base):
         from ..config_helper import ConfigHelper
 
         LOCATION = ConfigHelper().get('LOCATION')
-        r = requests.get('http://freeapi.ipip.net/' + self.ip)
-        self.location = LOCATION if r.json()[0] == '局域网' else r.json()[1]
+        r = requests.get('https://whois.pconline.com.cn/ipJson.jsp?json=true&ip=' + self.ip)
+        _ = json.loads(r.text)
+        self.location = LOCATION if _['city'] == '局域网' else _['city']
         self._save()
 
     def _save(self):
