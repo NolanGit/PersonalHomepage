@@ -20,7 +20,7 @@ CODE_HK: 3
 CODE_US: 4
 MARKET_PREFIX = ['sh', 'sz', 'hk', 'gb_']  # 顺序与上方code严格对应
 MARKET_TEXT = ['SH', 'SZ', 'HK', 'US']  # 顺序与上方code严格对应
-STOCK_BASE_URL = 'http://hq.sinajs.cn/list='
+STOCK_BASE_URL = 'https://qt.gtimg.cn/?q='
 
 data_source = []
 
