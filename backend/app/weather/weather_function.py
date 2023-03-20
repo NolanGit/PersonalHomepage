@@ -38,10 +38,11 @@ class WeatherData(Base):
             payload = {'location': self.location, 'key': WEATHER_KEY}
             r = requests.post(url, params=payload)
             request_result = r.json()
+            print(request_result)
 
             result['fl'] = None
             try:
-                result['fl'] = request_result['HeWeather6'][0]['now']['fl']
+                result['fl'] = request_result['HeWeather6'][0]['now']['wind_spd']
             except:
                 result['fl'] = 0
             result['tmp'] = request_result['HeWeather6'][0]['now']['tmp']
