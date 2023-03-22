@@ -1,11 +1,11 @@
-requests==2.21.0
-Flask==1.0.2
+requests==2.28.2
+Flask==2.0.3
 beautifulsoup4==4.9.1
 flask_cors==3.0.9
-peewee==3.13.3
+peewee==3.16.0
 pymysql==0.9.3
 redis==3.5.3
 pypinyin==0.38.0
-translators==4.6.20
+translators==5.6.3
 flask-limiter==1.4
-cryptography==35.0.0
+cryptography==39.0.2
