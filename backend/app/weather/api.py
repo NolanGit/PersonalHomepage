@@ -4,6 +4,7 @@ import datetime
 import requests
 import traceback
 from . import weather
+from peewee import DoesNotExist
 from flask_cors import cross_origin
 from flask import render_template, session, redirect, url_for, current_app, flash, request, jsonify
 
@@ -14,7 +15,6 @@ from ..response import Response as MyResponse
 from app.weather.model import WeatherLocation, WeatherData, WeatherNotifyTable
 from ..privilege.privilege_control import permission_required
 from app.weather.weather_function import WeatherData as WeatherDataFunction
-from app.weather.weather_function import WeatherLocation as WeatherLocationFunction
 from app.weather.weather_function import WeatherLocationList
 
 rsp = MyResponse()
@@ -41,7 +41,15 @@ def get():
         else:
             _weather_location_list = []
 
-        _weather_location_list.insert(0, WeatherLocationFunction(location=_ip_location, user_id=TEMP_USER_ID, create_if_not_exist=True).complete())
+        try:
+            _location = WeatherLocation.get(WeatherLocation.location == _ip_location)
+        except DoesNotExist:
+            _location = WeatherLocation.create(
+                location=_ip_location,
+                user_id=TEMP_USER_ID
+            )
+        
+        _weather_location_list.insert(0, _location)
         for weather_location in _weather_location_list:
             weather_data = WeatherDataFunction(weather_location.id, weather_location.location)
             
@@ -63,9 +71,7 @@ def weatherLocationListEdit():
 
         WeatherLocationList(user_id=user_id, is_valid=1).delete()
         for location in locations:
-            _ = WeatherLocationFunction(location=location, user_id=user_id)
-            _.is_valid = 1
-            _.create()
+            _ = WeatherLocation.create(location=location, user_id=user_id)
             
         return rsp.success()
     except Exception as e:
@@ -79,7 +85,7 @@ def weatherLocationCreate():
     try:
         user_id = request.get_json()['user_id']
         location = request.get_json()['location']
-        WeatherLocationFunction(location=location, user_id=user_id).create()
+        WeatherLocation.create(location=location, user_id=user_id)
         return rsp.success()
     except Exception as e:
         traceback.print_exc()

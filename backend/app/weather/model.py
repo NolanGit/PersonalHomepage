@@ -1,14 +1,14 @@
-import os
-import peewee
-from peewee import CharField, IntegerField, DateTimeField
+import datetime
+from peewee import CharField, IntegerField, DateTimeField, AutoField
 from app.model.BaseModel import BaseModel
 
 
 class WeatherLocation(BaseModel):
+    id = AutoField()
     location = CharField()
     user_id = IntegerField()
-    is_valid = IntegerField()
-    update_time = DateTimeField()
+    is_valid = IntegerField(default=1)
+    update_time = DateTimeField(default=datetime.datetime.now())
 
     class Meta:
         table_name = 'weather_location'
