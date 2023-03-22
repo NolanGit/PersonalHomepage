@@ -9,16 +9,19 @@ from flask import render_template, session, redirect, url_for, current_app, flas
 
 from ..common_func import CommonFunc
 from ..login.login_funtion import User
-from .ip_location_function import IpLocation
+from app.weather.ip_location_function import IpLocation
 from ..response import Response as MyResponse
-from ..model.weather_model import weather_notify
+from app.weather.model import WeatherLocation, WeatherData, WeatherNotifyTable
 from ..privilege.privilege_control import permission_required
-from .weather_function import WeatherData, WeatherLocation, WeatherLocationList
+from app.weather.weather_function import WeatherData as WeatherDataFunction
+from app.weather.weather_function import WeatherLocation as WeatherLocationFunction
+from app.weather.weather_function import WeatherLocationList
 
 rsp = MyResponse()
 cf = CommonFunc()
 
 URL_PREFIX = '/weather'
+TEMP_USER_ID = -1
 
 
 @weather.route('/get', methods=['POST'])
@@ -30,17 +33,20 @@ def get():
         result = []
         user_id = request.get_json()['user_id']
         user_ip = request.remote_addr
-        ip_location = IpLocation(user_ip).get_location().location
+
+        _ip_location = IpLocation(user_ip).get_location().location
         if user_id != 0:
             _ = WeatherLocationList(user_id=user_id).get().list
-            weather_location_list = _ if _ != None else []
+            _weather_location_list = _ if _ != None else []
         else:
-            weather_location_list = []
-        weather_location_list.insert(0, WeatherLocation(location=ip_location, user_id=-1, create_if_not_exist=True).complete())
-        for weather_location in weather_location_list:
-            weather_data = WeatherData(weather_location.id, weather_location.location)
-            if not weather_data.get_latest():
-                weather_data.update_self().create()
+            _weather_location_list = []
+
+        _weather_location_list.insert(0, WeatherLocationFunction(location=_ip_location, user_id=TEMP_USER_ID, create_if_not_exist=True).complete())
+        for weather_location in _weather_location_list:
+            weather_data = WeatherDataFunction(weather_location.id, weather_location.location)
+            
+            if not weather_data.exist_in_db():
+                weather_data.update_from_api().create()
             result.append(cf.attr_to_dict(weather_data))
         return rsp.success(result)
     except Exception as e:
@@ -54,11 +60,13 @@ def weatherLocationListEdit():
     try:
         user_id = request.get_json()['user_id']
         locations = request.get_json()['locations']
+
         WeatherLocationList(user_id=user_id, is_valid=1).delete()
         for location in locations:
-            _ = WeatherLocation(location=location, user_id=user_id)
+            _ = WeatherLocationFunction(location=location, user_id=user_id)
             _.is_valid = 1
             _.create()
+            
         return rsp.success()
     except Exception as e:
         traceback.print_exc()
@@ -71,7 +79,7 @@ def weatherLocationCreate():
     try:
         user_id = request.get_json()['user_id']
         location = request.get_json()['location']
-        WeatherLocation(location=location, user_id=user_id).create()
+        WeatherLocationFunction(location=location, user_id=user_id).create()
         return rsp.success()
     except Exception as e:
         traceback.print_exc()
@@ -120,7 +128,7 @@ def notifySet():
 def check():
     try:
         location = request.get_json()['location']
-        result = WeatherData(0, location).get_weather_data_from_api()
+        result = WeatherDataFunction(0, location).get_weather_data_from_api()
         if result == {}:
             return rsp.failed('非法的地理位置！'), 500
         else:
