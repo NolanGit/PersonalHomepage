@@ -4,7 +4,7 @@ beautifulsoup4==4.9.1
 flask_cors==3.0.9
 peewee==3.16.0
 pymysql==0.9.3
-redis==3.5.3
+redis==4.4.4
 pypinyin==0.38.0
 translators==5.6.3
 flask-limiter==1.4
