@@ -12,6 +12,8 @@
 
 - 💼**字节跳动社招内推直接戳[此链接](https://job.toutiao.com/s/e8cukQt)投递即可，校招内推码：AWN958P，欢迎转发扩散！**
 
+- 🪜**个人用了好几年的机场，速度快价格便宜，戳[此链接](https://portal.shadowsocks.au/aff.php?aff=20982)！**
+
 ## 功能
 
 - 多用户登录
