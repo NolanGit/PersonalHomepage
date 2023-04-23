@@ -10,9 +10,9 @@
 
 - ⭐ 欢迎star！
 
-- 💼**字节跳动社招内推直接戳[此链接](https://job.toutiao.com/s/e8cukQt)投递即可，校招内推码：AWN958P，欢迎转发扩散！**
+- 🪜**个人用了好几年的机场，速度快价格便宜，良心推荐，真的非常好用！戳[此链接](https://portal.shadowsocks.au/aff.php?aff=20982)！**
 
-- 🪜**个人用了好几年的机场，速度快价格便宜，戳[此链接](https://portal.shadowsocks.au/aff.php?aff=20982)！**
+- 💼字节跳动社招内推直接戳[此链接](https://job.toutiao.com/s/e8cukQt)投递即可，校招内推码：AWN958P，欢迎转发扩散！
 
 ## 功能
 
@@ -41,6 +41,18 @@
 - 灵活的组件配置：用不到某个组件？不满意默认的排序方式？使用组件编辑器轻松组织你的主页组件！
 - 组件内容随心定制：几乎所有的组件都可以自由修改内容，显示的天气、展示的书签、关注的App Store应用、跟踪的股票或基金、黄金价格提醒的阈值...统统可以自由修改！
 - 功能丰富的后端：当前类似的导航页项目大部分都仅有前端，或只有负责爬取数据的后端，本项目有功能丰富的后端，数据均会被保存在库中，相对于无前端可以实现更多的功能，With great backend comes great ability!
+
+## 广告
+
+全球代理[SmartProxy](https://www.smartproxy.cn/regist?invite=36R4PD)
+
+专业海外http代理商，有1亿真实住宅IP资源，覆盖全球，高匿稳定提供100%原生住宅IP，支持社交账户、电商平台,网络数据收集等服务。
+
+匿名性很好，伪装度很高，IP限制问题轻松解决。
+
+现在价格优惠，动态住宅代理只要65折！通过[专属链接](https://www.smartproxy.cn/regist?invite=36R4PD)注册送500M流量！
+
+![logo](https://www.smartproxy.cn/_nuxt/img/logo1.1af8601.png)
 
 ## 部署
   
