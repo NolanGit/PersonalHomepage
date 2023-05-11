@@ -42,18 +42,6 @@
 - 组件内容随心定制：几乎所有的组件都可以自由修改内容，显示的天气、展示的书签、关注的App Store应用、跟踪的股票或基金、黄金价格提醒的阈值...统统可以自由修改！
 - 功能丰富的后端：当前类似的导航页项目大部分都仅有前端，或只有负责爬取数据的后端，本项目有功能丰富的后端，数据均会被保存在库中，相对于无前端可以实现更多的功能，With great backend comes great ability!
 
-## 广告
-
-全球代理[SmartProxy](https://www.smartproxy.cn/regist?invite=36R4PD)
-
-专业海外http代理商，有1亿真实住宅IP资源，覆盖全球，高匿稳定提供100%原生住宅IP，支持社交账户、电商平台,网络数据收集等服务。
-
-匿名性很好，伪装度很高，IP限制问题轻松解决。
-
-现在价格优惠，动态住宅代理只要65折！通过[专属链接](https://www.smartproxy.cn/regist?invite=36R4PD)注册送500M流量！
-
-![logo](https://www.smartproxy.cn/_nuxt/img/logo1.1af8601.png)
-
 ## 部署
   
 - **dev分支为开发中分支，运行可能会有问题，建议使用master分支进行部署测试**
